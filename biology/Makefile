@@ -3,6 +3,7 @@
     SUBDIR += R-cran-Biobase
     SUBDIR += R-cran-BiocGenerics
     SUBDIR += R-cran-BiocManager
+    SUBDIR += TrimGalore
     SUBDIR += abyss
     SUBDIR += ad2vcf
     SUBDIR += andi
@@ -77,7 +78,6 @@
     SUBDIR += gffread
     SUBDIR += gkl
     SUBDIR += gmap
-    SUBDIR += gperiodic
     SUBDIR += graphlan
     SUBDIR += groopm
     SUBDIR += haplohseq
@@ -143,7 +143,6 @@
     SUBDIR += p5-Bio-Variation
     SUBDIR += p5-BioPerl
     SUBDIR += p5-BioPerl-Run
-    SUBDIR += p5-TrimGalore
     SUBDIR += p5-transdecoder
     SUBDIR += paml
     SUBDIR += pbbam
@@ -228,7 +227,6 @@
     SUBDIR += sigviewer
     SUBDIR += slclust
     SUBDIR += smithwaterman
-    SUBDIR += snpeff
     SUBDIR += spoa
     SUBDIR += sra-tools
     SUBDIR += stacks

@@ -1,8 +1,8 @@
 PORTNAME=	nextcloud
-PORTVERSION=	32.0.3
-PORTREVISION=	4
+PORTVERSION=	34.0.1
+PORTREVISION=	1
 CATEGORIES=	www
-MASTER_SITES=	https://github.com/nextcloud-releases/server/releases/download/v${PORTVERSION} \
+MASTER_SITES=	https://github.com/nextcloud-releases/server/releases/download/v${PORTVERSION}/ \
 		https://download.nextcloud.com/server/releases/
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 DIST_SUBDIR=	${PORTNAME}
@@ -17,6 +17,7 @@ USES=		cpe gettext-runtime php:flavors,web tar:bzip2
 USE_PHP=	bcmath bz2 ctype curl dom fileinfo filter gd gmp iconv \
 		mbstring pcntl pdo posix session simplexml sodium \
 		xml xmlreader xmlwriter xsl zip zlib
+IGNORE_WITH_PHP=	86
 
 NEXTCLOUD_USERNAME?=	${WWWOWN}
 NEXTCLOUD_GROUPNAME?=	${WWWGRP}
@@ -51,6 +52,7 @@ SYSVSEM_DESC=	Enable System V semaphore support (recommended)
 APCU_RUN_DEPENDS=	${PECL_PKGNAMEPREFIX}APCu>0:devel/pecl-APCu@${PHP_FLAVOR}
 EXIF_USE=	PHP=exif
 IMAGICK_RUN_DEPENDS=	${PECL_PKGNAMEPREFIX}imagick>=2.2.2:graphics/pecl-imagick@${PHP_FLAVOR}
+IMAGICK_VARS=	IGNORE_WITH_PHP=86
 INTL_USE=	PHP=intl
 LDAP_USE=	PHP=ldap
 MYSQL_USE=	PHP=pdo_mysql
@@ -73,7 +75,6 @@ post-patch:
 		${WRKSRC}/config/config.documented.php
 	@${RM} ${WRKSRC}/config/config.documented.php.* \
 		 ${WRKSRC}/updater/updater.phar
-	@${RMDIR} ${WRKSRC}/apps/suspicious_login/vendor/amphp/*/docs/.shared
 	@${MV} ${WRKSRC}/apps ${WRKSRC}/apps-pkg
 
 do-install:

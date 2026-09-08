@@ -3,6 +3,8 @@ DISTVERSIONPREFIX=	jdk-
 DISTVERSION=	${JDK_MAJOR_VERSION}.${JDK_MINOR_VERSION}.${JDK_PATCH_VERSION}+${JDK_BUILD_NUMBER}-${BSD_JDK_VERSION}
 CATEGORIES=	java devel
 PKGNAMESUFFIX?=	${JDK_MAJOR_VERSION}
+MASTER_SITES=	LOCAL/openjdk/:boot
+DISTFILES=	${BOOTSTRAPJDKFILE}:boot
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
 
@@ -42,18 +44,18 @@ NO_CCACHE=	yes
 # Suppress passing -j to do-build target via Mk/bsd.port.mk
 # In the JDK build the number of parallel jobs is passed in via configure --with-num-cores=N
 _MAKE_JOBS=	#
-MAKE_ENV=	LANG="C" \
-		LC_ALL="C" \
-		CLASSPATH="" \
+MAKE_ENV=	CLASSPATH="" \
 		JAVA_HOME="" \
 		LD_LIBRARY_PATH="" \
 		CC=${CC} \
 		CXX=${CXX} \
 		CPP=${CPP} \
 		LOG=cmdlines \
-		MAKEFLAGS=""
+		MAKEFLAGS="CONF_CHECK=ignore"
 
-JDK_OSARCH=	bsd-${ARCH:S/amd64/x86_64/:C/armv.*/arm/:S/i386/x86/:S/powerpc/ppc/}
+JDK_ARCH=	${ARCH:S/amd64/x86_64/:C/armv.*/arm/:S/i386/x86/:S/powerpc/ppc/}
+BOOTSTRAPJDKFILE=	openjdk11-11.0.29+7.1.${JDK_ARCH}.tar.xz
+JDK_OSARCH=	bsd-${JDK_ARCH}
 JDK_BUILDDIR=	${WRKSRC}/build/${JDK_OSARCH}-normal-${JDK_BUILD_JVM}-${JDK_BUILD_TYPE}
 .if defined(BUILD_JRE)
 JDK_IMAGEDIR=	${JDK_BUILDDIR}/images/jre
@@ -61,12 +63,13 @@ JDK_IMAGEDIR=	${JDK_BUILDDIR}/images/jre
 JDK_IMAGEDIR=	${JDK_BUILDDIR}/images/jdk
 .endif
 INSTALLDIR=	${PREFIX}/${PKGBASE}
+BOOTSTRAPJDKDIR=	${WRKDIR}/boot-jdk
 
 NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	11
 JDK_MINOR_VERSION=	0
-JDK_PATCH_VERSION=	29
+JDK_PATCH_VERSION=	30
 JDK_BUILD_NUMBER=	7
 BSD_JDK_VERSION=	1
 
@@ -128,29 +131,8 @@ JDK_BUILD_TYPE=		release
 
 .include <bsd.port.pre.mk>
 
-# portsfallout.com shows flapping builds on 13.5 and 14.2
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1403000
-MAKE_JOBS_UNSAFE=	yes
-.endif
-
 .if !${PORT_OPTIONS:MCUPS}
 MASTER_SITES+=	https://codeload.github.com/OpenPrinting/cups/tar.gz/v${CUPS_INC_VER}?dummy=/:cups
-.endif
-
-BOOTSTRAP_JDKS=	${LOCALBASE}/openjdk11 \
-		${LOCALBASE}/bootstrap-openjdk11
-
-# do we have valid native jdk installed?
-.for BJDK in ${BOOTSTRAP_JDKS}
-.  if !defined(BOOTSTRAPJDKDIR) && exists(${BJDK}/bin/javac)
-BOOTSTRAPJDKDIR=	${BJDK}
-.  endif
-.endfor
-
-# if no valid jdk found, set dependency
-.if !defined(BOOTSTRAPJDKDIR)
-BOOTSTRAPJDKDIR?=	${LOCALBASE}/bootstrap-openjdk11
-BUILD_DEPENDS+=		${BOOTSTRAPJDKDIR}/bin/javac:java/bootstrap-openjdk11
 .endif
 
 .if ${ARCH} == powerpc
@@ -200,7 +182,7 @@ ICONV_LDFLAGS=	-L${LOCALBASE}/lib
 ICONV_LIBS=	${ICONV_LIB}
 .endif
 
-post-patch:
+pre-configure:
 	@${FIND} ${WRKSRC} -name '*.orig' -delete
 	@${CHMOD} 755 ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \

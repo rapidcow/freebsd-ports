@@ -1,6 +1,5 @@
 PORTNAME=	jupyter-server
-PORTVERSION=	2.17.0
-PORTREVISION=	1
+PORTVERSION=	2.20.0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI \
 		https://github.com/jupyter-server/jupyter_server/releases/download/v${PORTVERSION}/
@@ -33,12 +32,15 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}anyio>=3.1.0:devel/py-anyio@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}terminado>=0.8.3:net/py-terminado@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}tornado>=6.2.0:www/py-tornado@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}traitlets>=5.6.0:devel/py-traitlets@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}websocket-client>=1.3:www/py-websocket-client@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}websocket-client>=1.7:www/py-websocket-client@${PY_FLAVOR}
 
-USES=		python
+USES=		cpe python
 USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes
+
+CPE_VENDOR=	jupyter
+CPE_PRODUCT=	jupyter_server
 
 .include <bsd.port.pre.mk>
 

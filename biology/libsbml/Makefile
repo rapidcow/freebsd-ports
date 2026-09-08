@@ -1,6 +1,5 @@
 PORTNAME=	libsbml
-PORTVERSION=	5.20.5
-PORTREVISION=	1
+PORTVERSION=	5.21.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	biology devel
 
@@ -13,7 +12,7 @@ WWW=		https://sbml.org/software/libsbml/ \
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
-USES=		cmake:testing iconv:build
+USES=		cmake:testing cpe iconv:build
 
 CMAKE_OFF=	EXIT_ON_ERROR \
 		LIBSBML_SKIP_SHARED_LIBRARY \
@@ -47,6 +46,8 @@ PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	sbmlteam
+
+CPE_VENDOR=	libsbml_project
 
 OPTIONS_DEFINE=	EXAMPLES PYTHON RUBY
 OPTIONS_SINGLE=	XML

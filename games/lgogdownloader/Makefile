@@ -1,10 +1,9 @@
 PORTNAME=	lgogdownloader
-DISTVERSION=	3.17
-PORTREVISION=	3
+DISTVERSION=	3.18
 CATEGORIES=	games
 MASTER_SITES=	https://github.com/Sude-/${PORTNAME}/releases/download/v${DISTVERSION}/
 
-MAINTAINER=	Alexander88207@protonmail.com
+MAINTAINER=	avereeken@fastmail.de
 COMMENT=	Unofficial downloader for GOG.com
 WWW=		https://sites.google.com/site/gogdownloader
 

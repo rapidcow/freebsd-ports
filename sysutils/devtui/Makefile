@@ -1,7 +1,6 @@
 PORTNAME=	devtui
-DISTVERSIONPREFIX=	v
-DISTVERSION=	0.32.5
-PORTREVISION=	2
+DISTVERSION=	0.34.2
+PORTREVISION=	4
 CATEGORIES=	sysutils
 
 MAINTAINER=	vidar@karlsen.tech
@@ -11,7 +10,7 @@ WWW=		https://devtui.com
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:modules
+USES=		go:1.25+,modules
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	skatkov

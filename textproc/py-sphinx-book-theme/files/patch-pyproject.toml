@@ -1,4 +1,4 @@
---- pyproject.toml.orig	2025-02-20 16:31:55 UTC
+--- pyproject.toml.orig	2026-03-09 23:19:55 UTC
 +++ pyproject.toml
 @@ -1,6 +1,6 @@
  [build-system]
@@ -9,14 +9,3 @@
  
  [tool.sphinx-theme-builder]
  node-version = "20.9.0"
-@@ -36,8 +36,8 @@ dependencies = [
- 
- requires-python = ">=3.9"
- dependencies = [
--  "sphinx>=6.1",
--  "pydata-sphinx-theme==0.15.4"
-+  "sphinx>=5.3",
-+  "pydata-sphinx-theme>=0.15.4"
- ]
- 
- license = { file = "LICENSE" }

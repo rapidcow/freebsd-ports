@@ -1,5 +1,6 @@
 PORTNAME=	chromium
-PORTVERSION=	144.0.7559.109
+PORTVERSION=	151.0.7922.137
+PORTREVISION=	2
 PULSEMV=	16
 PULSEV=		${PULSEMV}.1
 CATEGORIES=	www wayland
@@ -7,8 +8,11 @@ MASTER_SITES=	https://commondatastorage.googleapis.com/chromium-browser-official
 		https://nerd.hu/distfiles/:external \
 		https://freedesktop.org/software/pulseaudio/releases/:pulseaudio
 DISTFILES=	${DISTNAME}-lite${EXTRACT_SUFX} \
-		${DISTNAME}-profdata${EXTRACT_SUFX}:external \
 		pulseaudio-${PULSEV}.tar.gz:pulseaudio
+
+USE_GITHUB=	nodefault
+GH_TUPLE=	rollup:rollup:v4.60.4:rollup/rollup \
+		evanw:esbuild:v${_ESBUILD_VERSION:sh}:esbuild/esbuild
 
 MAINTAINER=	chromium@FreeBSD.org
 COMMENT=	Google web browser based on WebKit
@@ -23,6 +27,7 @@ BUILD_DEPENDS=	bash:shells/bash \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>0:devel/py-Jinja2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ply>0:devel/py-ply@${PY_FLAVOR} \
 		bindgen:devel/rust-bindgen-cli \
+		esbuild:devel/esbuild \
 		gperf:devel/gperf \
 		flock:sysutils/flock \
 		node:www/node \
@@ -32,7 +37,7 @@ BUILD_DEPENDS=	bash:shells/bash \
 		${LOCALBASE}/share/usbids/usb.ids:misc/usbids \
 		${PYTHON_PKGNAMEPREFIX}html5lib>0:www/py-html5lib@${PY_FLAVOR} \
 		${LOCALBASE}/include/va/va.h:multimedia/libva \
-		${LOCALBASE}/libdata/pkgconfig/dri.pc:graphics/mesa-dri \
+		${LOCALBASE}/libdata/pkgconfig/dri.pc:graphics/mesa-libs \
 		${LOCALBASE}/libdata/pkgconfig/Qt5Core.pc:devel/qt5-core \
 		${LOCALBASE}/libdata/pkgconfig/Qt5Widgets.pc:x11-toolkits/qt5-widgets
 
@@ -74,9 +79,21 @@ LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-core \
 RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 		noto-basic>0:x11-fonts/noto-basic
 
-USES=		bison compiler:c++17-lang cpe desktop-file-utils gl gmake gnome \
-		iconv:wchar_t jpeg localbase:ldflags ninja perl5 pkgconfig \
-		python:build qt:5 shebangfix tar:xz xorg
+USES=		bison cargo compiler:c++17-lang cpe desktop-file-utils gl gmake \
+		go:no_targets gnome iconv:wchar_t jpeg localbase:ldflags ninja perl5 \
+		pkgconfig python:build qt:5 shebangfix tar:xz xorg
+
+WITHOUT_FBSD10_FIX=	Yes
+
+CARGO_CARGOTOML=	${WRKSRC}/rollup/rust/Cargo.toml
+CARGO_CARGOLOCK=	${WRKSRC}/rollup/rust/Cargo.lock
+CARGO_TARGET_DIR=	${WRKSRC}/rollup/rust/target
+
+CARGO_INSTALL=		No
+CARGO_BUILD=		No
+CARGO_TEST=		No
+
+_ESBUILD_VERSION=	${MAKE} -C ${PORTSDIR}/devel/esbuild -V DISTVERSION
 
 CPE_VENDOR=	google
 CPE_PRODUCT=	chrome
@@ -172,7 +189,6 @@ CUPS_LIB_DEPENDS=	libcups.so:print/cups
 CUPS_VARS=		GN_ARGS+=use_cups=true
 CUPS_VARS_OFF=		GN_ARGS+=use_cups=false
 
-DEBUG_BUILD_DEPENDS=	esbuild:devel/esbuild
 DEBUG_VARS=		BUILDTYPE=Debug \
 			GN_ARGS+=is_debug=true \
 			GN_ARGS+=is_component_build=false \
@@ -231,7 +247,7 @@ TEST_ALL_TARGET=	${TEST_TARGETS}
 IGNORE=		you have selected HEIMDAL_BASE but do not have Heimdal installed in base
 .endif
 
-LLVM_DEFAULT=		21
+LLVM_DEFAULT=		22
 BUILD_DEPENDS+=		clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
 BINARY_ALIAS+=		cpp=${LOCALBASE}/bin/clang-cpp${LLVM_DEFAULT} \
 			cc=${LOCALBASE}/bin/clang${LLVM_DEFAULT} \
@@ -271,6 +287,9 @@ MAKE_ENV+=	RUSTC_BOOTSTRAP=1
 GN_ARGS+=	enable_rust=true \
 		rust_sysroot_absolute="${LOCALBASE}"
 
+# go
+MAKE_ENV+=	GOCACHE=${WRKDIR}/go-cache
+
 pre-everything::
 	@${ECHO_MSG}
 	@${ECHO_MSG} "To build ${PORTNAME}, you should have at least:"
@@ -286,10 +305,8 @@ pre-configure:
 	#./build/linux/unbundle/remove_bundled_libraries.py [list of preserved]
 	cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} ${PYTHON_CMD} \
 		./build/linux/unbundle/replace_gn_files.py --system-libraries \
-		dav1d flac fontconfig harfbuzz-ng libdrm libpng \
+		dav1d flac fontconfig harfbuzz libdrm libpng \
 		libusb libwebp libxml libxslt openh264 opus || ${FALSE}
-	@cd ${WRKSRC}/chrome/build/pgo_profiles && _p=$$(echo *.profdata) && \
-		${LOCALBASE}/bin/llvm-profdata${LLVM_DEFAULT} merge $${_p}.txt --output=$${_p}
 	# Chromium uses an unreleased version of FFmpeg, so configure it
 	cd ${WRKSRC}/media/ffmpeg && \
 		${PYTHON_CMD} scripts/build_ffmpeg.py freebsd ${FFMPEG_TARGET} \
@@ -305,13 +322,27 @@ pre-configure:
 		${WRKSRC}/build/rust/rust_bindgen.gni \
 		${WRKSRC}/build/rust/rust_bindgen_generator.gni
 
+pre-build:
+	@${CARGO_CARGO_RUN} build \
+		--manifest-path ${CARGO_CARGOTOML} \
+		--verbose \
+		--verbose \
+		${CARGO_BUILD_ARGS}
+	(cd ${WRKSRC}/third_party/devtools-frontend/src/node_modules/@rollup && \
+		mkdir -p rollup-freebsd && \
+		cp ${CARGO_TARGET_DIR}/release/libbindings_napi.so \
+			rollup-freebsd/rollup.freebsd.node && \
+		echo '{ "main": "./rollup.freebsd.node" }' \
+			> rollup-freebsd/package.json)
+
 do-configure:
-	@( \
-		echo "#ifndef GPU_WEBGPU_DAWN_COMMIT_HASH_H_" ;\
-		echo "#define GPU_WEBGPU_DAWN_COMMIT_HASH_H_" ;\
-		echo "#define DAWN_COMMIT_HASH \"$$(cat ${WRKSRC}/gpu/webgpu/DAWN_VERSION)\"" ;\
-		echo "#endif  // GPU_WEBGPU_DAWN_COMMIT_HASH_H_" \
-	) > ${WRKSRC}/gpu/webgpu/dawn_commit_hash.h
+	(cd ${WRKSRC}/esbuild && \
+		${LOCALBASE}/bin/node scripts/esbuild.js \
+		/usr/local/bin/esbuild --neutral && \
+		rm -rf ${WRKSRC}/third_party/devtools-frontend/src/node_modules/esbuild && \
+		ln -sf ${WRKSRC}/esbuild/npm/esbuild \
+		${WRKSRC}/third_party/devtools-frontend/src/node_modules/esbuild \
+	)
 	# GN generator bootstrapping and generating ninja files
 	cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} CC=${CC} CXX=${CXX} LD=${CXX} \
 		READELF=${READELF} AR=${AR} NM=${NM} ${PYTHON_CMD} \
@@ -322,6 +353,16 @@ do-configure:
 	# Setup nodejs dependency
 	@${MKDIR} ${WRKSRC}/third_party/node/freebsd/node-freebsd/bin
 	${LN} -sf ${LOCALBASE}/bin/node ${WRKSRC}/third_party/node/freebsd/node-freebsd/bin/node
+
+	# Setup rustc dependency
+	@${MKDIR} ${WRKSRC}/third_party/rust-toolchain/bin
+	${LN} -sf ${LOCALBASE}/bin/rustc ${WRKSRC}/third_party/rust-toolchain/bin/rustc
+
+	# Setup esbuild dependency
+	${LN} -sf ${LOCALBASE}/bin/esbuild ${WRKSRC}/third_party/devtools-frontend/src/third_party/esbuild/esbuild
+
+	# Setup gperf dependency
+	${LN} -sf ${LOCALBASE}/bin/gperf ${WRKSRC}/third_party/gperf/cipd/bin/gperf
 
 	# Setup buildtools/freebsd
 	@${MKDIR} ${WRKSRC}/buildtools/freebsd
@@ -388,7 +429,7 @@ post-install-DRIVER-on:
 
 do-test-TEST-on:
 .for t in ${TEST_TARGETS}
-	cd ${WRKSRC}/out/${BUILDTYPE} && ${SETENV} LC_ALL=en_US.UTF-8 \
+	cd ${WRKSRC}/out/${BUILDTYPE} && \
 		./${t} --gtest_filter=-${EXCLUDE_${t}:ts:} || ${TRUE}
 .endfor
 

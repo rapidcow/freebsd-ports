@@ -11,9 +11,12 @@ WWW=		https://www.swig.org/
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE-GPL
 
+DEPRECATED=	Outdated. Use devel/swig instead
+EXPIRATION_DATE=2026-06-30
+
 LIB_DEPENDS=	libpcre.so:devel/pcre
 
-USES=		lua:build
+USES=		cpe lua:build
 
 ALL_TARGET=	# empty
 CFLAGS+=	-fPIC -DPIC
@@ -25,6 +28,8 @@ GNU_CONFIGURE=	yes
 TEST_TARGET=	check
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
+
+CPE_VENDOR=	swig_project
 
 PORTSCOUT=	limit:^4\.0\.
 

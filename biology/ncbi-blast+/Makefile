@@ -1,5 +1,6 @@
 PORTNAME=	ncbi-blast+
 DISTVERSION=	2.17.0
+PORTREVISION=	1
 CATEGORIES=	biology perl5 python
 MASTER_SITES=	https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ \
 		https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/${PORTVERSION}/
@@ -12,12 +13,13 @@ WWW=		https://blast.ncbi.nlm.nih.gov/
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/scripts/projects/blast/LICENSE
 
-ONLY_FOR_ARCHS=		aarch64 amd64 powerpc64 powerpc64le riscv64
-ONLY_FOR_ARCHS_REASON=	Requires 64-bit processor
+# also for 64 bit only
+ONLY_FOR_ARCHS=		aarch64 amd64
+ONLY_FOR_ARCHS_REASON= deflate.c:149:2: error: "Only 64-bit Intel and ARM architectures are supported"
 
 BUILD_DEPENDS=	grpc>0:devel/grpc
 LIB_DEPENDS=	libdw.so:devel/elfutils \
-		liblmdb.so:databases/lmdb \
+		liblmdb.so:databases/lmdb0 \
 		liblzo2.so:archivers/lzo2 \
 		libnghttp2.so:www/libnghttp2 \
 		libpcre2-8.so:devel/pcre2 \

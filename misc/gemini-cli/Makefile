@@ -1,5 +1,5 @@
 PORTNAME=	gemini-cli
-DISTVERSION=	0.22.5
+DISTVERSION=	0.49.0
 CATEGORIES=	misc # machine-learning
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,6 +12,7 @@ LICENSE=	APACHE20
 
 BUILD_DEPENDS=	npm:www/npm
 FETCH_DEPENDS=	npm:www/npm
+RUN_DEPENDS=	bash:shells/bash
 
 USES=		nodejs:build,run python:build
 
@@ -45,10 +46,10 @@ do-fetch:
 		${MKDIR} -p lib/node_modules/@google && \
 		${MKDIR} -p bin && \
 		${MV} node_modules/${PACKAGE_NAME} lib/node_modules/@google/ && \
-		${LN} -sf ../lib/node_modules/${PACKAGE_NAME}/dist/index.js bin/gemini && \
+		${LN} -sf ../lib/node_modules/${PACKAGE_NAME}/bundle/gemini.js bin/gemini && \
 		${RM} -rf node_modules package.json && \
 		${FIND} ${WRKDIR} -and -exec ${TOUCH} -h -d 1970-01-01T00:00:00Z {} \; && \
-		cd ${WRKDIR} && ${FIND} ${PORTNAME}-${DISTVERSION} -print0 | LC_ALL=C ${SORT} -z | \
+		cd ${WRKDIR} && ${FIND} ${PORTNAME}-${DISTVERSION} -print0 | ${SORT} -z | \
 			${TAR} czf ${DISTDIR}/${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} --format=bsdtar --gid 0 --uid 0 --options gzip:!timestamp --no-recursion --null -T - \
 	); fi
 
@@ -56,7 +57,7 @@ do-build:
 	# Build native modules for node-pty
 	@cd ${WRKSRC}/lib/node_modules/${PACKAGE_NAME}/node_modules/node-pty && \
 		${SETENV} HOME=${WRKDIR} CFLAGS="-I${LOCALBASE}/include" CXXFLAGS="-I${LOCALBASE}/include" \
-		npm rebuild --nodedir=${LOCALBASE}
+		PYTHON=${PYTHON_CMD} npm rebuild --nodedir=${LOCALBASE}
 
 do-install:
 	# install files
@@ -64,9 +65,9 @@ do-install:
 		${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}
 	# update
 	${REINPLACE_CMD} -i '' \
-		-e "s|#!/usr/bin/env node|#!${PREFIX}/bin/node|" \
-		${STAGEDIR}${PREFIX}/lib/node_modules/${PACKAGE_NAME}/dist/index.js
+		-e "s|#!/usr/bin/env -S node|#!${PREFIX}/bin/node|" \
+		${STAGEDIR}${PREFIX}/lib/node_modules/${PACKAGE_NAME}/bundle/gemini.js
 	# set exec bit
-	@${CHMOD} +x ${STAGEDIR}${PREFIX}/lib/node_modules/${PACKAGE_NAME}/dist/index.js
+	@${CHMOD} +x ${STAGEDIR}${PREFIX}/lib/node_modules/${PACKAGE_NAME}/bundle/gemini.js
 
 .include <bsd.port.mk>

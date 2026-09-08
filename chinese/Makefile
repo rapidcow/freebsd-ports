@@ -28,7 +28,6 @@
     SUBDIR += fcitx-cloudpinyin
     SUBDIR += fcitx-configtool
     SUBDIR += fcitx-libpinyin
-    SUBDIR += fcitx-rime
     SUBDIR += fcitx-table-extra
     SUBDIR += fcitx-ui-light
     SUBDIR += fcitx5-chewing
@@ -68,6 +67,7 @@
     SUBDIR += lunar
     SUBDIR += moettf
     SUBDIR += opencc
+    SUBDIR += opencc-cli
     SUBDIR += opendesktop-fonts
     SUBDIR += oto
     SUBDIR += p5-Date-Chinese
@@ -90,6 +90,8 @@
     SUBDIR += pcmanx
     SUBDIR += php-opencc
     SUBDIR += phpbb3-tw
+    SUBDIR += py-OpenCC
+    SUBDIR += py-chinese-calendar
     SUBDIR += py-rjieba
     SUBDIR += pycangjie
     SUBDIR += pyzy

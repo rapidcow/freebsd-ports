@@ -1,11 +1,11 @@
 PORTNAME=	qpageview
-DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.1
+DISTVERSION=	1.0.5
 CATEGORIES=	graphics python
+MASTER_SITES=	https://github.com/frescobaldi/${PORTNAME}/releases/download/v${DISTVERSION}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	m.ne@gmx.net
-COMMENT=	Page-based viewer widget for Qt5/PyQt5
+COMMENT=	Page-based viewer widget for Qt6/PyQt6
 WWW=		https://qpageview.org/
 
 LICENSE=	GPLv3
@@ -14,8 +14,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hatchling>0:devel/py-hatchling@${PY_FLAVOR}
 
 USES=		pyqt:6 python qt:6
-USE_GITHUB=	yes
-GH_ACCOUNT=	frescobaldi
 USE_PYQT=	pyqt6
 USE_PYTHON=	autoplist pep517
 

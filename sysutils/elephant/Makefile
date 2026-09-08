@@ -1,7 +1,7 @@
 PORTNAME=	elephant
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.18.1
-PORTREVISION=	2
+DISTVERSION=	2.21.0
+PORTREVISION=	5
 CATEGORIES=	sysutils
 
 MAINTAINER=	tagattie@FreeBSD.org
@@ -24,12 +24,12 @@ PORTDOCS=	README.md
 
 OPTIONS_DEFINE=		DOCS
 # BITWARDEN: Runtime dependency rbw is not in ports tree yet
-OPTIONS_DEFAULT=	${OPTIONS_GROUP_PROVIDERS:NBITWARDEN:NNIRISESSIONS}
+OPTIONS_DEFAULT=	${OPTIONS_GROUP_PROVIDERS:NBITWARDEN:NNIRIACTIONS:NNIRISESSIONS}
 OPTIONS_GROUP=		PROVIDERS
 OPTIONS_GROUP_PROVIDERS=1PASSWORD BITWARDEN BOOKMARKS CALC CLIPBOARD \
-			DESKTOPAPPLICATIONS FILES MENUS NIRISESSIONS \
-			PROVIDERLIST RUNNER SNIPPETS SYMBOLS TODO UNICODE \
-			WEBSEARCH WINDOWS
+			DESKTOPAPPLICATIONS FILES MENUS NIRIACTIONS \
+			NIRISESSIONS PLAYERCTL PROVIDERLIST RUNNER SNIPPETS \
+			SYMBOLS TODO UNICODE WEBSEARCH WINDOWS WIREPLUMBER
 
 PROVIDERS_DESC=		Enabled providers
 1PASSWORD_DESC=		Access your 1Password vaults
@@ -40,8 +40,10 @@ CLIPBOARD_DESC=		Store clipboard history
 DESKTOPAPPLICATIONS_DESC=Run installed desktop applications
 FILES_DESC=		Find files/folders
 MENUS_DESC=		Create custom menus
+NIRIACTIONS_DESC=	Search and execute Niri actions
 NIRISESSIONS_DESC=	Create predefined session layouts and open them
 PROVIDERLIST_DESC=	Lists all providers and configured menus
+PLAYERCTL_DESC=		Control media/audio players with playerctl
 RUNNER_DESC=		Execute everything installed in your PATH
 SNIPPETS_DESC=		Create and access text snippets
 SYMBOLS_DESC=		Search for emojis and symbols
@@ -49,6 +51,7 @@ TODO_DESC=		Basic Todolist
 UNICODE_DESC=		Search for unicode symbols
 WEBSEARCH_DESC=		Search web with custom defined search engines
 WINDOWS_DESC=		Find and focus opened windows
+WIREPLUMBER_DESC=	Configure audio devices via Pipewire/Wireplumber
 
 1PASSWORD_RUN_DEPENDS=	op:security/1password-client2
 1PASSWORD_PLIST_FILES=	etc/xdg/elephant/providers/1password.so
@@ -68,8 +71,12 @@ DESKTOPAPPLICATIONS_PLIST_FILES=etc/xdg/elephant/providers/desktopapplications.s
 FILES_RUN_DEPENDS=	fd:sysutils/fd
 FILES_PLIST_FILES=	etc/xdg/elephant/providers/files.so
 MENUS_PLIST_FILES=	etc/xdg/elephant/providers/menus.so
+NIRIACTIONS_RUN_DEPENDS=niri:x11-wm/niri
+NIRIACTIONS_PLIST_FILES=etc/xdg/elephant/providers/niriactions.so
 NIRISESSIONS_RUN_DEPENDS=niri:x11-wm/niri
 NIRISESSIONS_PLIST_FILES=etc/xdg/elephant/providers/nirisessions.so
+PLAYERCTL_RUN_DEPENDS=	playerctl:multimedia/playerctl
+PLAYERCTL_PLIST_FILES=	etc/xdg/elephant/providers/playerctl.so
 PROVIDERLIST_PLIST_FILES=etc/xdg/elephant/providers/providerlist.so
 RUNNER_PLIST_FILES=	etc/xdg/elephant/providers/runner.so
 SNIPPETS_RUN_DEPENDS=	wtype:x11/wtype
@@ -83,6 +90,8 @@ UNICODE_PLIST_FILES=	etc/xdg/elephant/providers/unicode.so
 WEBSEARCH_PLIST_FILES=	etc/xdg/elephant/providers/websearch.so
 WINDOWS_LIB_DEPENDS=	libwayland-client.so:graphics/wayland
 WINDOWS_PLIST_FILES=	etc/xdg/elephant/providers/windows.so
+WIREPLUMBER_RUN_DEPENDS=wireplumber:multimedia/wireplumber
+WIREPLUMBER_PLIST_FILES=etc/xdg/elephant/providers/wireplumber.so
 
 .include <bsd.port.options.mk>
 

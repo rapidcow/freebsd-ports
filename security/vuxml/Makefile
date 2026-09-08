@@ -61,7 +61,7 @@ do-test:
 ${VUXML_FLAT_NAME}: ${VUXML_FILE} vuln/*.xml
 	xmllint -noent ${.ALLSRC:[1]} > ${.TARGET}
 
-validate: tidy
+validate: tidy check-portepoch
 	@${SH} ${FILESDIR}/validate.sh "${VUXML_FLAT_FILE}"
 	@${ECHO_MSG} Checking if tidy differs...
 	@if ${DIFF} -u "${VUXML_FLAT_FILE}" "${VUXML_FILE}.tidy"; \
@@ -82,6 +82,17 @@ validate: tidy
 		${ECHO_CMD} Consider using ${VUXML_FILE}.unexpanded for final commit; \
 		return 1; \
 	fi
+	@${ECHO_MSG} Checking CVE IDs...
+	@(NON_CANONICAL_CVE="`cd ${.CURDIR} && ${GREP} -Fn '<cvename>' vuln/*.xml | ${EGREP} -v '(CAN|CVE)-' | ${SED} -E 's/([0-9]+:)[[:space:]]*</\1 </' || ${TRUE}`"; \
+	if [ -z "$${NON_CANONICAL_CVE}" ]; \
+	then \
+		${ECHO_MSG} ... seems okay; \
+	else \
+		${ECHO_MSG} Only CVE IDs are allowed within cvename tags. These lines are wrong:; \
+		printf "%s\n" "$${NON_CANONICAL_CVE}"; \
+		return 1; \
+	fi)
+
 	${PYTHON_CMD} ${FILESDIR}/extra-validation.py ${VUXML_FLAT_FILE}
 	@${ECHO_CMD}
 	@${ECHO_CMD} 'Be sure to get versioning right for PORTEPOCH and remember possible linux-* ports!'
@@ -95,6 +106,9 @@ tidy: ${VUXML_FLAT_NAME}
 		exit 1; \
 	fi
 	${SH} ${FILESDIR}/tidy.sh "${FILESDIR}/tidy.xsl" "${VUXML_FLAT_FILE}" > "${VUXML_FILE}.tidy"
+
+check-portepoch:
+	${PYTHON_CMD} ${FILESDIR}/check_vuln_portepoch.py ${VUXML_CURRENT_FILE}
 
 newentry:
 	@${ECHO_CMD}

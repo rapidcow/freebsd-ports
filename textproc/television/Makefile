@@ -1,5 +1,5 @@
 PORTNAME=	television
-DISTVERSION=	0.14.3
+DISTVERSION=	0.15.9
 CATEGORIES=	textproc
 
 MAINTAINER=	uzsolt@FreeBSD.org
@@ -27,6 +27,7 @@ post-install:
 		${LN} tv.1 television.1
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/.config/config.toml ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/docs/01-Users/* ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC}/docs && \
+		${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR} "-name *\.md"
 
 .include <bsd.port.mk>

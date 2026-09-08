@@ -25,6 +25,7 @@
     SUBDIR += afni
     SUBDIR += agrum
     SUBDIR += aircraft-datcom
+    SUBDIR += amrex
     SUBDIR += antioch
     SUBDIR += apbs
     SUBDIR += arbor
@@ -59,7 +60,6 @@
     SUBDIR += clhep
     SUBDIR += clipper
     SUBDIR += code_saturne
-    SUBDIR += colt
     SUBDIR += conduit
     SUBDIR += coordgenlibs
     SUBDIR += cp2k
@@ -111,6 +111,7 @@
     SUBDIR += ghmm
     SUBDIR += gnudatalanguage
     SUBDIR += gpaw-setups
+    SUBDIR += gperiodic
     SUBDIR += gramps
     SUBDIR += gromacs
     SUBDIR += gsmc
@@ -121,6 +122,7 @@
     SUBDIR += hdf5
     SUBDIR += hdf5-110
     SUBDIR += hdf5-18
+    SUBDIR += hdf5-21
     SUBDIR += healpix
     SUBDIR += helfem
     SUBDIR += hepmc3
@@ -134,7 +136,7 @@
     SUBDIR += kalzium
     SUBDIR += kim-api
     SUBDIR += kplib
-    SUBDIR += kst2
+    SUBDIR += kst
     SUBDIR += lammps
     SUBDIR += lamprop
     SUBDIR += latte
@@ -154,6 +156,7 @@
     SUBDIR += libkml
     SUBDIR += liblinear
     SUBDIR += libmbd
+    SUBDIR += libminc
     SUBDIR += libmsym
     SUBDIR += libnegf
     SUBDIR += liboglappth
@@ -184,7 +187,7 @@
     SUBDIR += medit
     SUBDIR += meep
     SUBDIR += metaphysicl
-    SUBDIR += minc2
+    SUBDIR += minc-tools
     SUBDIR += mmdb2
     SUBDIR += mmg
     SUBDIR += mmtf-cpp
@@ -192,6 +195,7 @@
     SUBDIR += molgif
     SUBDIR += molscript
     SUBDIR += molsketch
+    SUBDIR += moltui
     SUBDIR += mopac
     SUBDIR += mp2d
     SUBDIR += mpb
@@ -205,6 +209,7 @@
     SUBDIR += mutationpp
     SUBDIR += namd
     SUBDIR += ncrystal
+    SUBDIR += neko
     SUBDIR += nest
     SUBDIR += netcdf
     SUBDIR += netcdf-cxx
@@ -349,13 +354,16 @@
     SUBDIR += py-geometric
     SUBDIR += py-gpaw
     SUBDIR += py-gsd
+    SUBDIR += py-gwlearn
     SUBDIR += py-h5json
     SUBDIR += py-h5netcdf
     SUBDIR += py-h5py
     SUBDIR += py-h5pyd
+    SUBDIR += py-hdmf
     SUBDIR += py-hiPhive
     SUBDIR += py-hoomd-blue
     SUBDIR += py-icet
+    SUBDIR += py-igor2
     SUBDIR += py-inequality
     SUBDIR += py-ipygany
     SUBDIR += py-jupyter_jsmol
@@ -363,6 +371,7 @@
     SUBDIR += py-kimpy
     SUBDIR += py-kinematics
     SUBDIR += py-kliff
+    SUBDIR += py-klusta
     SUBDIR += py-kpLib
     SUBDIR += py-liac-arff
     SUBDIR += py-libgetar
@@ -375,6 +384,7 @@
     SUBDIR += py-mmtf-python
     SUBDIR += py-mne
     SUBDIR += py-molmod
+    SUBDIR += py-morphio
     SUBDIR += py-mp-api
     SUBDIR += py-mpcontribs-client
     SUBDIR += py-mplhep
@@ -386,6 +396,7 @@
     SUBDIR += py-netcdf-flattener
     SUBDIR += py-nglview
     SUBDIR += py-nibabel
+    SUBDIR += py-nixio
     SUBDIR += py-obspy
     SUBDIR += py-oddt
     SUBDIR += py-openEMS
@@ -398,22 +409,28 @@
     SUBDIR += py-periodictable
     SUBDIR += py-phono3py
     SUBDIR += py-phonopy
+    SUBDIR += py-phonors
+    SUBDIR += py-plumed
     SUBDIR += py-pnetcdf
+    SUBDIR += py-probeinterface
     SUBDIR += py-pupynere
     SUBDIR += py-py3Dmol
     SUBDIR += py-pyaixi
     SUBDIR += py-pyberny
     SUBDIR += py-pycsw
     SUBDIR += py-pydicom
+    SUBDIR += py-pydoe
     SUBDIR += py-pygeodesy
     SUBDIR += py-pygeometa
     SUBDIR += py-pygmo2
     SUBDIR += py-pyked
     SUBDIR += py-pymatgen
     SUBDIR += py-pymatgen-analysis-alloys
+    SUBDIR += py-pymatgen-core
     SUBDIR += py-pymbd
     SUBDIR += py-pymol
     SUBDIR += py-pynrrd
+    SUBDIR += py-pynwb
     SUBDIR += py-pyosf
     SUBDIR += py-pyphot
     SUBDIR += py-pyprecice
@@ -423,6 +440,7 @@
     SUBDIR += py-pyteomics
     SUBDIR += py-qcelemental
     SUBDIR += py-qcengine
+    SUBDIR += py-qcmanybody
     SUBDIR += py-qiskit
     SUBDIR += py-qspin
     SUBDIR += py-quantities
@@ -446,6 +464,7 @@
     SUBDIR += py-skrebate
     SUBDIR += py-spaghetti
     SUBDIR += py-spglib
+    SUBDIR += py-spml
     SUBDIR += py-symfc
     SUBDIR += py-tensorflow
     SUBDIR += py-thewalrus

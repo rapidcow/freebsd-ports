@@ -1,5 +1,5 @@
 PORTNAME=	hunspell
-PORTVERSION=	20251201
+PORTVERSION=	20260601
 CATEGORIES=	polish textproc
 MASTER_SITES=	https://sjp.pl/slownik/ort/ \
 		LOCAL/sunpoet/${PORTNAME}

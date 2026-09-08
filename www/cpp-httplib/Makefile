@@ -1,6 +1,6 @@
 PORTNAME=	cpp-httplib
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.30.0
+DISTVERSION=	0.49.0
 CATEGORIES=	www devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -9,8 +9,6 @@ WWW=		https://github.com/yhirose/cpp-httplib
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_FreeBSD_13=	configure fails: OpenSSL is too old: Found unsuitable version "1.1.1t", but required is at least "3.0.0"
 
 TEST_DEPENDS=	gmake:devel/gmake
 
@@ -32,7 +30,7 @@ PLIST_FILES=	include/httplib.h \
 		lib/cmake/httplib/httplibConfigVersion.cmake \
 		lib/cmake/httplib/httplibTargets.cmake
 
-CONFLICTS_BUILD=	googletest # should be CONFLICTS_TEST
+#CONFLICTS_BUILD=	googletest # should be CONFLICTS_TEST
 
 OPTIONS_DEFINE=		BROTLI SSL
 OPTIONS_DEFAULT=	BROTLI SSL
@@ -47,9 +45,9 @@ SSL_CMAKE_BOOL=		HTTPLIB_REQUIRE_OPENSSL HTTPLIB_USE_OPENSSL_IF_AVAILABLE
 do-test:
 	@cd ${WRKSRC}/test && ${SETENV} ${MAKE_ENV} ${GMAKE} CXXFLAGS="${CXXFLAGS} -I${WRKSRC}/test" LDFLAGS="${LDFLAGS}"
 
-# tests as of 0.30.0:
-# [----------] Global test environment tear-down
-# [==========] 542 tests from 117 test suites ran. (203930 ms total)
-# [  PASSED  ] 542 tests.
+# [==========] 713 tests from 150 test suites ran. (257976 ms total)
+# [  PASSED  ] 712 tests.
+# [  FAILED  ] 1 test, listed below:
+# [  FAILED  ] YahooRedirectTest3.NewResultInterface_Online
 
 .include <bsd.port.mk>

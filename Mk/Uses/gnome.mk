@@ -42,10 +42,6 @@
 #				add the following to your Makefile:
 #				"GLIB_SCHEMAS=foo.gschema.xml bar.gschema.xml".
 #
-# INSTALLS_OMF		- If set, bsd.gnome.mk will automatically scan pkg-plist
-#				file and add apropriate @postexec/@postunexec directives for
-#				each .omf file found to track OMF registration database.
-#
 # MAINTAINER: gnome@FreeBSD.org
 
 .if !defined(_INCLUDE_USES_GNOME_MK)
@@ -86,10 +82,6 @@ _USE_GNOME_ALL+=gtk40 libadwaita gtksourceview5 gnomedesktop4 nautilus4
 _USE_GNOME_ALL+=atkmm cairomm cairomm11 glibmm glibmm26 gtkmm24 \
 		gtkmm30 gtkmm40 gtksourceviewmm3 libxml++26 libsigc++20 \
 		libsigc++30 pangomm pangomm24
-
-# glib-mkenums often fails with C locale
-# https://gitlab.gnome.org/GNOME/glib/issues/1430
-USE_LOCALE?=	en_US.UTF-8
 
 GNOME_HTML_DIR?=	${PREFIX}/share/doc
 GCONF_CONFIG_OPTIONS?=	merged
@@ -439,17 +431,6 @@ gnome-post-gconf-schemas:
 
 .  if defined(GLIB_SCHEMAS)
 PLIST_FILES+=	${GLIB_SCHEMAS:C,^,share/glib-2.0/schemas/,}
-.  endif
-
-.  if defined(INSTALLS_OMF)
-_USES_install+=	690:gnome-post-omf
-gnome-post-omf:
-	@for i in `${GREP} "\.omf$$" ${TMPPLIST}`; do \
-		${ECHO_CMD} "@postexec scrollkeeper-install -q %D/$${i} 2>/dev/null || /usr/bin/true" \
-			>> ${TMPPLIST}; \
-		${ECHO_CMD} "@postunexec scrollkeeper-uninstall -q %D/$${i} 2>/dev/null || /usr/bin/true" \
-			>> ${TMPPLIST}; \
-	done
 .  endif
 
 .endif

@@ -1,8 +1,8 @@
 PORTNAME=	cego
-PORTVERSION=	2.53.8
+PORTVERSION=	2.54.38
 
 CATEGORIES=	databases
-MASTER_SITES=	http://www.lemke-it.com/
+MASTER_SITES=	https://www.lemke-it.com/
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Relational and transactional database system
@@ -15,9 +15,11 @@ LIB_DEPENDS=	liblfcbase.so:devel/lfcbase \
 		liblfcxml.so:devel/lfcxml
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		libtool localbase ncurses readline shebangfix sudo
-SHEBANG_FILES=	tools/cgbackup tools/cgrecover tools/cgsimload \
-		tools/logManager tools/backupManager
+USES=		libtool localbase ncurses readline shebangfix sudo tar:bz2
+SHEBANG_FILES=	tools/backupExecuter tools/backupManager \
+		tools/cgbackup tools/cgrecover tools/cgsimload \
+		tools/logManager \
+		tools/traceLog tools/tsSpace
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 TEST_TARGET=	check

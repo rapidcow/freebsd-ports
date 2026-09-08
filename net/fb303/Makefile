@@ -1,7 +1,6 @@
 PORTNAME=	fb303
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2026.01.05.00
-PORTREVISION=	1
+DISTVERSION=	2026.07.06.00
 CATEGORIES=	net
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -22,12 +21,13 @@ LIB_DEPENDS=	libboost_regex.so:devel/boost-libs \
 		libglog.so:devel/glog \
 		libicuuc.so:devel/icu \
 		liblz4.so:archivers/liblz4 \
-		libmvfst_server.so:net/mvfst \
+		libmvfst.so:net/mvfst \
 		libsnappy.so:archivers/snappy \
 		libsodium.so:security/libsodium \
 		libthriftcpp2.so:devel/fbthrift \
 		libunwind.so:devel/libunwind \
 		libwangle.so:net/wangle \
+		libxxhash.so:devel/xxhash \
 		libzstd.so:archivers/zstd
 
 USES=		cmake compiler:c++17-lang ssl

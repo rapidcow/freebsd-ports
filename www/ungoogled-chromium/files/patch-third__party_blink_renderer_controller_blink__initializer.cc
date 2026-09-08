@@ -1,7 +1,7 @@
---- third_party/blink/renderer/controller/blink_initializer.cc.orig	2025-12-06 13:30:52 UTC
+--- third_party/blink/renderer/controller/blink_initializer.cc.orig	2026-08-13 07:41:05 UTC
 +++ third_party/blink/renderer/controller/blink_initializer.cc
-@@ -83,12 +83,12 @@
- #include "third_party/blink/renderer/controller/private_memory_footprint_provider.h"
+@@ -87,12 +87,12 @@
+ #include "third_party/blink/renderer/platform/fonts/font_cache.h"
  #endif
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
@@ -13,9 +13,9 @@
 -    BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_WIN)
 +    BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
  #include "third_party/blink/renderer/controller/highest_pmf_reporter.h"
- #include "third_party/blink/renderer/controller/user_level_memory_pressure_signal_generator.h"
  #endif
-@@ -261,7 +261,7 @@ void BlinkInitializer::RegisterInterfaces(mojo::Binder
+ 
+@@ -266,7 +266,7 @@ void BlinkInitializer::RegisterInterfaces(mojo::Binder
        main_thread_task_runner);
  #endif
  
@@ -24,7 +24,7 @@
    binders.Add<mojom::blink::MemoryUsageMonitorLinux>(
        ConvertToBaseRepeatingCallback(
            CrossThreadBindRepeating(&MemoryUsageMonitorPosix::Bind)),
-@@ -310,7 +310,7 @@ void BlinkInitializer::RegisterMemoryWatchers(Platform
+@@ -319,7 +319,7 @@ void BlinkInitializer::RegisterMemoryWatchers(Platform
    MemorySaverController::Initialize();
  
  #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || \

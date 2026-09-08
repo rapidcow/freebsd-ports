@@ -1,18 +1,18 @@
 PORTNAME=	xlibre
-PORTVERSION=	0.1
+PORTVERSION=	1.0
 CATEGORIES=	x11
 
-MAINTAINER=	b-aazbsd@proton.me
+MAINTAINER=	xlibre@FreeBSD.org
 COMMENT=	XLibre + X.Org complete distribution metaport
 WWW=		https://github.com/X11Libre/ \
 		https://www.x.org/
 
 USES=		metaport
 
-RUN_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/dri.pc:graphics/mesa-dri
+RUN_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/dri.pc:graphics/mesa-libs
 
 # data
-RUN_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/xbitmaps.pc:x11/xbitmaps \
+RUN_DEPENDS+=	${LOCALBASE}/share/pkgconfig/xbitmaps.pc:x11/xbitmaps \
 		${LOCALBASE}/share/icons/handhelds/cursors/X_cursor:x11-themes/xcursor-themes
 
 OPTIONS_DEFINE=	DOCS

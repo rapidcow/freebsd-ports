@@ -10,7 +10,7 @@ WWW=		https://github.com/CESNET/ipfixcol2
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=		aarch64 amd64
+ONLY_FOR_ARCHS=		aarch64 amd64 powerpc64 powerpc64le
 ONLY_FOR_ARCHS_REASON=	Requires 64bit time_t: static_assert(sizeof(uint64_t) == sizeof(time_t), "Assumed that time_t is uint64_t, but it's not")
 
 BUILD_DEPENDS=	rst2man:textproc/py-docutils
@@ -33,12 +33,6 @@ GROUPS=		${PORTNAME}
 PORTEXAMPLES=	*
 
 OPTIONS_DEFINE=	EXAMPLES
-
-# XXX Drop after FreeBSD 13 EOL around 2026-04-30
-.if !exists(/usr/include/sys/timerfd.h)
-CFLAGS+=	`pkg-config --cflags epoll-shim`
-LDFLAGS+=	`pkg-config --libs epoll-shim`
-.endif
 
 post-install:
 	${MKDIR} ${STAGEDIR}${ETCDIR} ${STAGEDIR}/var/run/${PORTNAME}

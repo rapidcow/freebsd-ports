@@ -22,7 +22,8 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}flaky>=3.8.1:devel/py-flaky@${PY_FLAVOR}
 #GH_ACCOUNT=	sagemath
 
 USES=		compiler:c11 localbase:ldflags meson pytest python
-USE_PYTHON=	cython3
+USE_PYTHON=	cython
+BINARY_ALIAS=	cython=cython-${PYTHON_VER}
 
 .if !defined(WITH_DEBUG)
 LDFLAGS+=	-s

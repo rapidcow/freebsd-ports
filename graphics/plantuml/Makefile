@@ -1,17 +1,18 @@
 PORTNAME=	plantuml
-DISTVERSION=	1.2025.10
+DISTVERSION=	1.2026.5
 CATEGORIES=	graphics java textproc
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/
 EXTRACT_SUFX=	.jar
 EXTRACT_ONLY=
 
-MAINTAINER=	awoonyaa@gmail.com
+MAINTAINER=	eric@camachat.org
 COMMENT=	Application for swift and straightforward diagram creation
 WWW=		https://plantuml.com/
 
 LICENSE=	GPLv3
 
 USES=		java
+JAVA_VERSION=	11+
 
 NO_ARCH=	yes
 NO_BUILD=	yes

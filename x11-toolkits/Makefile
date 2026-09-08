@@ -194,7 +194,7 @@
     SUBDIR += py-superqt
     SUBDIR += py-tkinter
     SUBDIR += py-tktreectrl
-    SUBDIR += py-wxPython4
+    SUBDIR += py-wxpython
     SUBDIR += pythonqt
     SUBDIR += qhotkey
     SUBDIR += qml-box2d
@@ -212,6 +212,7 @@
     SUBDIR += qt5-virtualkeyboard
     SUBDIR += qt5-widgets
     SUBDIR += qt5pas
+    SUBDIR += qt6-canvaspainter
     SUBDIR += qt6-charts
     SUBDIR += qt6-datavis3d
     SUBDIR += qt6-declarative
@@ -242,7 +243,6 @@
     SUBDIR += rubygem-vte3
     SUBDIR += rubygem-vte4
     SUBDIR += scenefx04
-    SUBDIR += scintilla
     SUBDIR += sdl2_pango
     SUBDIR += sdl_pango
     SUBDIR += skinlf
@@ -250,6 +250,8 @@
     SUBDIR += swt
     SUBDIR += tepl6
     SUBDIR += termit
+    SUBDIR += thentenaar-motif
+    SUBDIR += thentenaar-motif-devel
     SUBDIR += tix
     SUBDIR += tk-wrapper
     SUBDIR += tk86
@@ -267,6 +269,7 @@
     SUBDIR += wlroots017
     SUBDIR += wlroots018
     SUBDIR += wlroots019
+    SUBDIR += wlroots020
     SUBDIR += wmapp
     SUBDIR += wxgtk30
     SUBDIR += wxgtk32

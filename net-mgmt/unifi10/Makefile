@@ -1,6 +1,6 @@
 PORTNAME=	unifi10
-PORTVERSION=	10.0.160
-PORTREVISION?=	0
+PORTVERSION=	10.4.57
+PORTREVISION=	1
 CATEGORIES=	net-mgmt java
 MASTER_SITES=	http://dl.ubnt.com/unifi/%SUBDIR%/:unifi \
 		https://repo1.maven.org/maven2/%SUBDIR%/:jax
@@ -26,7 +26,7 @@ externaldb_PKGNAMESUFFIX=	-externaldb
 USES=		cpe java
 CPE_VENDOR=	ui
 CPE_PRODUCT=	unifi_controller
-JAVA_VERSION=	17
+JAVA_VERSION=	25
 USE_RC_SUBR=	unifi
 
 CONFLICTS_INSTALL=	unifi9
@@ -66,7 +66,6 @@ EXTERNALDB_VARS_OFF=	RUN_DEPENDS+=mongodb70${MONGODB_PKGNAMESUFFIX}>0:databases/
 _DIR_LIST=	conf data logs run work
 _JAX_DISTNAME=	javax.activation-api
 _JAX_VERSION=	1.2.0
-_SNAPPY_VERSION=	1.1.10.5
 
 post-extract:
 	${INSTALL_DATA} ${DISTDIR}/${DIST_SUBDIR}/${_JAX_DISTNAME}-${_JAX_VERSION}.jar \
@@ -74,8 +73,7 @@ post-extract:
 
 post-patch:
 	(cd ${WRKSRC}/usr/lib/unifi/lib/local && \
-		${RM} snappy-java-${_SNAPPY_VERSION}.jar && \
-		${LN} -f -s ${JAVAJARDIR}/snappy-java.jar snappy-java-${_SNAPPY_VERSION}.jar)
+		${LN} -v -h -f -s ${JAVAJARDIR}/snappy-java.jar snappy-java-*.jar)
 	${RM} -r ${WRKSRC}/usr/lib/unifi/lib/native
 
 do-install:

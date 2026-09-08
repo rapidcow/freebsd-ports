@@ -1,7 +1,6 @@
 PORTNAME=	eternalterminal
 DISTVERSIONPREFIX=	et-v
-DISTVERSION=	6.2.11
-PORTREVISION=	2
+DISTVERSION=	7.0.0
 CATEGORIES=	net
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -10,8 +9,6 @@ WWW=		https://eternalterminal.dev/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_FreeBSD_13=	OpenSSL versions prior to 3.0.0 are not supported
 
 LIB_DEPENDS=	libabsl_log_internal_check_op.so:devel/abseil \
 		libprotobuf.so:devel/protobuf \

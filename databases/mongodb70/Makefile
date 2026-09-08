@@ -1,6 +1,6 @@
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
-DISTVERSION=	7.0.28
+DISTVERSION=	7.0.37
 CATEGORIES=	databases net
 PKGNAMESUFFIX=	${DISTVERSION:R:S/.//}
 
@@ -29,7 +29,7 @@ BUILD_DEPENDS=	${PY_SETUPTOOLS} \
 		${PYTHON_PKGNAMEPREFIX}pymongo>0:databases/py-pymongo@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyyaml>=3.11:devel/py-pyyaml@${PY_FLAVOR} \
 		rust-cbindgen>0:devel/rust-cbindgen
-# build depends used while running ${WRKSRC}/src/third_party/mozjs/gen-config.sh
+# build depends used while running ${WRKSRC}/src/third_party/mozjs/scripts/gen-config.sh
 BUILD_DEPENDS+=	gm4:devel/m4 \
 		gsed:textproc/gsed
 LIB_DEPENDS=	libcurl.so:ftp/curl \
@@ -44,12 +44,12 @@ FLAVORS=	default armv80a
 armv80a_PKGNAMESUFFIX=	${DISTVERSION:R:S/.//}-armv80a
 
 USES=		compiler:c++20-lang cpe python:build scons shebangfix ssl
-# gmake is used while running ${WRKSRC}/src/third_party/mozjs/gen-config.sh
+# gmake is used while running ${WRKSRC}/src/third_party/mozjs/scripts/gen-config.sh
 USES+=		gmake pkgconfig
 CPE_PRODUCT=	mongodb
 
-# mozjs tag comes from ${WRKSRC}/src/third_party/mozjs/get-sources.sh
-MOZJS_TAG=	5acd3be6c9563ad3e7ca6182285c69a38de47bab
+# mozjs tag comes from ${WRKSRC}/src/third_party/mozjs/scripts/import.sh
+MOZJS_TAG=	dd4a007275927572d0b10857d3f11b28550d0095
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mongodb mongodb-forks:mozjs
@@ -61,7 +61,7 @@ SHEBANG_FILES=	buildscripts/scons.py
 python_OLD_CMD=	@python_interpreter@
 
 HAS_CONFIGURE=		yes
-CONFIGURE_SCRIPT=	gen-config.sh
+CONFIGURE_SCRIPT=	scripts/gen-config.sh
 CONFIGURE_ARGS=		${MOZJS_ARCH} \
 			freebsd
 CONFIGURE_ENV+=		PYTHON3="${PYTHON_CMD}"
@@ -130,7 +130,6 @@ MOZJS_WRKSRC=	${WRKSRC}/src/third_party/mozjs
 
 .if ${FLAVOR:U} == armv80a
 OPTIONS_SET+=	ARMV80A
-MAKE_JOBS_UNSAFE=	yes
 .endif
 
 .include <bsd.port.pre.mk>
@@ -149,7 +148,8 @@ MOZJS_ARCH=	${ARCH}
 
 post-extract:
 # Verify we downloaded the proper mozjs git tag.
-	${SH} -xc "test \"X`grep -E '^LIB_GIT_REVISION=' ${MOZJS_WRKSRC}/get-sources.sh`\" = \"XLIB_GIT_REVISION=${MOZJS_TAG}\""
+	${SH} -xc "test \"X`grep -E '^LIB_GIT_REVISION=' ${MOZJS_WRKSRC}/scripts/import.sh`\" = \"XLIB_GIT_REVISION=${MOZJS_TAG}\""
+	${PATCH} -d ${WRKDIR}/spidermonkey-${MOZJS_TAG} -p1 < ${PATCHDIR}/d497aa4f770ca02f6083e93b94996a8fe32c2ff4.patch
 
 post-patch:
 # fix build with python-3.11
@@ -159,7 +159,7 @@ post-patch:
 	${REINPLACE_CMD} -e 's#rU#r#g' ${WRKDIR}/spidermonkey-${MOZJS_TAG}/python/mozbuild/mozbuild/action/process_define_files.py
 
 pre-configure:
-# Replacement of ${WRKSRC}/src/third_party/mozjs/get-sources.sh
+# Replacement of ${WRKSRC}/src/third_party/mozjs/scripts/import.sh
 	${LN} -sF ${WRKDIR}/spidermonkey-${MOZJS_TAG} ${MOZJS_WRKSRC}/mozilla-release
 
 do-build:

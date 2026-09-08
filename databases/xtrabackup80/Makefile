@@ -1,7 +1,7 @@
 PORTNAME=	xtrabackup80
 PORTVERSION=	8.0.35
 DISTVERSIONSUFFIX=	-30
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	databases
 MASTER_SITES=	https://downloads.percona.com/downloads/Percona-XtraBackup-8.0/Percona-XtraBackup-8.0.35-30/source/tarball/:percona \
 		SF/boost/boost/${BOOST_VERSION}:boost
@@ -15,11 +15,15 @@ WWW=		https://docs.percona.com/percona-xtrabackup/8.0/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+DEPRECATED=		Upstream has reached EOL favor of databases/xtrabackup84
+EXPIRATION_DATE=	2026-09-30
+
 ONLY_FOR_ARCHS=	amd64 i386
 
 RUN_DEPENDS=	qpress:archivers/qpress
 
 USES=		bison cmake compiler:c++14-lang cpe pkgconfig ssl
+CPE_PRODUCT=	xtrabackup
 CPE_VENDOR=	percona
 CMAKE_ARGS=	-DBUILD_CONFIG:STRING=xtrabackup_release \
 		-DWITHOUT_COMPONENT_KEYRING_KMIP:STRING=yes \

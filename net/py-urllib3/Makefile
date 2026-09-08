@@ -1,5 +1,5 @@
 PORTNAME=	urllib3
-PORTVERSION=	2.6.2
+PORTVERSION=	2.7.0
 PORTEPOCH=	1
 CATEGORIES=	net python
 MASTER_SITES=	PYPI \
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}hatch-vcs>=0.4.0<0.6.0:devel/py-hatch-vcs@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}hatchling>=1.27.0<2:devel/py-hatchling@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}setuptools-scm>=8<10:devel/py-setuptools-scm@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}setuptools-scm>=8<11:devel/py-setuptools-scm@${PY_FLAVOR}
 TEST_DEPENDS=	${PY_BACKPORTS.ZSTD} \
 		${PYTHON_PKGNAMEPREFIX}brotli>=1.2.0:archivers/py-brotli@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}h2>=4<5:www/py-h2@${PY_FLAVOR} \
@@ -34,8 +34,7 @@ USE_PYTHON=	autoplist concurrent cryptography_test pep517 pytest
 
 NO_ARCH=	yes
 PYTEST_IGNORED_TESTS=	test_ssl_read_timeout
-TEST_ENV=	LC_ALL=en_US.UTF-8 \
-		PYTHONPATH=${STAGEDIR}${PYTHON_SITELIBDIR}
+TEST_ENV=	PYTHONPATH=${STAGEDIR}${PYTHON_SITELIBDIR}
 
 SUB_FILES=	pkg-message
 

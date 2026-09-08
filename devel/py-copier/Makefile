@@ -1,5 +1,5 @@
 PORTNAME=	copier
-PORTVERSION=	9.11.0
+PORTVERSION=	9.16.0
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -28,10 +28,12 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}colorama>=0.4.6:devel/py-colorama@${PY_FLAVO
 		${PYTHON_PKGNAMEPREFIX}pyyaml>=5.3.1:devel/py-pyyaml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}questionary>=1.8.1:devel/py-questionary@${PY_FLAVOR}
 
-USES=		python
+USES=		cpe python
 USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes
+
+CPE_VENDOR=	copier-org
 
 .include <bsd.port.pre.mk>
 

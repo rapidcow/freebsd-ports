@@ -1,5 +1,5 @@
 PORTNAME=	voa
-DISTVERSION=	0.7.0
+DISTVERSION=	0.7.5
 CATEGORIES=	security
 MASTER_SITES=	CRATESIO
 # XXX Teach USES=cargo to have proper default

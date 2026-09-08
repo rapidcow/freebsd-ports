@@ -1,29 +1,38 @@
---- components/feature_engagement/public/feature_list.cc.orig	2026-01-16 13:40:34 UTC
+--- components/feature_engagement/public/feature_list.cc.orig	2026-08-13 07:41:05 UTC
 +++ components/feature_engagement/public/feature_list.cc
-@@ -204,7 +204,7 @@ const base::Feature* const kAllFeatures[] = {
-     &kIPHiOSReaderModeOptionsFeature,
+@@ -247,7 +247,7 @@ const base::Feature* const kAllFeatures[] = {
  #endif  // BUILDFLAG(IS_IOS)
+ 
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
 -    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
 +    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
      &kEsbDownloadRowPromoFeature,
  #endif
-@@ -282,7 +282,7 @@ const base::Feature* const kAllFeatures[] = {
- #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) ||
+@@ -336,7 +336,7 @@ const base::Feature* const kAllFeatures[] = {
          // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
  
--#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
-+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD) || \
-     BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
+     // keep-sorted start case=no
+     &kIPHAutofillAccountNameEmailSuggestionFeature,
      &kIPHAutofillAiOptInFeature,
-     &kIPHAutofillAiValuablesFeature,
-@@ -341,7 +341,7 @@ const base::Feature* const kAllFeatures[] = {
-     &kIPHScalableIphGamingFeature,
+@@ -370,7 +370,7 @@ const base::Feature* const kAllFeatures[] = {
  #endif  // BUILDFLAG(IS_CHROMEOS)
+ 
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+     // keep-sorted start case=no
+     &kIPHDesktopPWAsLinkCapturingLaunch,
+     &kIPHDesktopPWAsLinkCapturingLaunchAppInTab,
+@@ -378,7 +378,7 @@ const base::Feature* const kAllFeatures[] = {
+ #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+         // BUILDFLAG(IS_CHROMEOS)
  
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-     &kIPHDesktopPWAsLinkCapturingLaunch,
-     &kIPHDesktopPWAsLinkCapturingLaunchAppInTab,
+     // keep-sorted start case=no
      &kIPHSignInBenefitsFeature,
+     &kIPHSignInBenefitsNewSigninFeature,

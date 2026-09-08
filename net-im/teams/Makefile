@@ -1,29 +1,31 @@
 PORTNAME=	teams
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.6.18
+DISTVERSION=	2.11.1
+PORTREVISION=	3
 CATEGORIES=	net-im
 
 MAINTAINER=	tagattie@FreeBSD.org
 COMMENT=	Unofficial Microsoft Teams client
-WWW=		https://github.com/IsmaelMartinez/teams-for-linux
+WWW=		https://ismaelmartinez.github.io/teams-for-linux/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-USES=		desktop-file-utils electron:37 localbase:ldflags \
-		nodejs:22,build python:build
+USES=		desktop-file-utils electron:41 localbase:ldflags \
+		nodejs:24,build npm:npm python:build
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	IsmaelMartinez
 GH_PROJECT=	teams-for-linux
 
+BINARY_ALIAS=	python3=${PYTHON_CMD}
 SUB_FILES=	${PORTNAME}
 
 PORTDOCS=	CONTRIBUTING.md HISTORY.md README.md SECURITY.md
 
 OPTIONS_DEFINE=	DOCS
 
-USE_ELECTRON=	npm:npm appbuilder:devel prefetch extract rebuild build:builder
+USE_ELECTRON=	appbuilder:devel rebuild build:builder
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
@@ -35,10 +37,13 @@ do-install:
 .endfor
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	cd ${WRKSRC}/dist/${ELECTRON_BUILDER_APP_OUT_DIR} && \
-		${COPYTREE_SHARE} resources ${STAGEDIR}${DATADIR}
+	${COPYTREE_SHARE} resources ${STAGEDIR}${DATADIR}
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_MAN} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
+
+do-test:
+	cd ${TEST_WRKSRC} && ${SETENV} ${TEST_ENV} npm run test:unit
 
 .include <bsd.port.mk>

@@ -1,5 +1,5 @@
 PORTNAME=	nagios
-DISTVERSION=	4.5.11
+DISTVERSION=	4.5.12
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://assets.nagios.com/downloads/nagioscore/releases/ \
@@ -36,6 +36,8 @@ CONFIGURE_ARGS=	--with-command-user=${NAGIOSUSER} \
 		--with-cgiurl=${NAGIOSCGIURL} \
 		--with-lockfile=${NAGIOSDIR}/${PORTNAME}.lock \
 		--with-cgibindir=${WWWDIR}/cgi-bin \
+		--with-ssl-inc=${OPENSSLINC} \
+		--with-ssl-lib=${OPENSSLLIB} \
 		--libexecdir=${PREFIX}/libexec/${PORTNAME} \
 		--datadir=${WWWDIR} \
 		--sysconfdir=${ETCDIR} \

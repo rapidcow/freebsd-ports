@@ -1,5 +1,5 @@
 PORTNAME=	odoo
-PORTVERSION=	19.0.20251227
+PORTVERSION=	19.0.20260618
 CATEGORIES=	finance www
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -10,7 +10,7 @@ WWW=		https://www.odoo.com
 LICENSE=	LGPL3
 
 USE_GITHUB=	yes
-GH_TAGNAME=	6f1d40b4f5383ed515aa502751139792e18c74f6
+GH_TAGNAME=	77cda8dd500c7f24bd0ee98a0e6b7fadc6be5c31
 
 LIB_DEPENDS=	libxslt.so:textproc/libxslt \
 		libevent.so:devel/libevent \
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libxslt.so:textproc/libxslt \
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Babel>=1.3:devel/py-babel@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}GeoIP2>0:net/py-GeoIP2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>=0:devel/py-Jinja2@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}XlsxWriter>=0:textproc/py-xlsxwriter@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}xlsxwriter>=0:textproc/py-xlsxwriter@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}asn1crypto>=0:devel/py-asn1crypto@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cbor2>0:devel/py-cbor2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}chardet>=0:textproc/py-chardet@${PY_FLAVOR} \

@@ -1,7 +1,6 @@
 PORTNAME=	forms
-PORTVERSION=	5.2.3
+PORTVERSION=	5.3.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
 CATEGORIES=	www
 
 MAINTAINER=	brnrd@FreeBSD.org
@@ -10,7 +9,7 @@ WWW=		https://apps.nextcloud.com/apps/forms
 
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-NEXTCLOUD_RUN_DEPENDS=	30
+NEXTCLOUD_RUN_DEPENDS=	32
 
 USES=		nextcloud php:flavors
 

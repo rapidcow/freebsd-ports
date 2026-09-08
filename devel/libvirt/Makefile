@@ -1,5 +1,5 @@
 PORTNAME=	libvirt
-DISTVERSION=	11.10.0
+DISTVERSION=	12.5.0
 CATEGORIES=	devel
 MASTER_SITES=	http://libvirt.org/sources/ \
 		ftp://libvirt.org/libvirt/
@@ -22,7 +22,7 @@ RUN_DEPENDS=	dnsmasq:dns/dnsmasq
 OPTIONS_DEFINE=	DOCS NLS NSS QEMU READLINE SASL SLIRP LIBSSH LIBSSH2 ZFS
 OPTIONS_DEFAULT=	READLINE LIBSSH LIBSSH2 ZFS
 OPTIONS_DEFINE_amd64=	XEN
-.if exists(/usr/sbin/bhyveload)
+.if exists(/usr/sbin/bhyve)
 OPTIONS_DEFINE+=	BHYVE
 OPTIONS_DEFAULT+=	BHYVE SLIRP
 .else
@@ -143,7 +143,7 @@ USE_PERL5=	build
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
-SHLIB_VER=	0.11010.0
+SHLIB_VER=	0.12005.0
 PLIST_SUB+=	SHLIB_VER=${SHLIB_VER}
 PORTDOCS=	*
 BINARY_ALIAS=	python3=${PYTHON_CMD}
@@ -176,6 +176,7 @@ CONF_FILES=	\
 		libxl.conf \
 		network.conf \
 		qemu.conf \
+		secret.conf \
 		virtbhyved.conf \
 		virtlockd.conf \
 		virtlogd.conf \

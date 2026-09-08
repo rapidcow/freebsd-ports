@@ -11,10 +11,13 @@ WWW=		https://jwilk.net/software/python-djvulibre
 
 LICENSE=	GPLv2
 
+DEPRECATED=	Depends on expired lang/cython0
+EXPIRATION_DATE=2026-09-15
+
 LIB_DEPENDS=	libdjvulibre.so:graphics/djvulibre
 
 USES=		python pkgconfig
-USE_PYTHON=	distutils cython autoplist pytest
+USE_PYTHON=	autoplist cython0 distutils pytest
 
 TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 TEST_WRKSRC=	${WRKSRC}/tests

@@ -1,14 +1,13 @@
 # pkg-help formatted with fmt 59 63
 
 PORTNAME=	bind
-DISTVERSION=	9.20.18
+DISTVERSION=	9.20.27
 .if defined(BIND_TOOLS_SLAVE)
 # dns/bind-tools here
-PORTREVISION=	2
+PORTREVISION=	0
 .else
-# XXX: correct version
 # dns/bind920 here
-PORTREVISION=	2
+PORTREVISION=	0
 .endif
 CATEGORIES=	dns net
 MASTER_SITES=	ISC/bind9/${DISTVERSION}
@@ -155,7 +154,7 @@ IDN_CONFIGURE_OFF=	--without-libidn2
 
 LARGE_FILE_CONFIGURE_ENABLE=	largefile
 
-LMDB_LIB_DEPENDS=	liblmdb.so:databases/lmdb
+LMDB_LIB_DEPENDS=	liblmdb.so:databases/lmdb0
 LMDB_CONFIGURE_WITH=	lmdb=${LOCALBASE}
 
 OVERRIDECACHE_EXTRA_PATCHES=	${FILESDIR}/extrapatch-bind-min-override-ttl
@@ -189,6 +188,10 @@ BUILD_DEPENDS+=		cmocka>0:sysutils/cmocka
 CONFIGURE_ENV+=	ac_cv_path_SPHINX_BUILD=
 .endif
 
+.if ${OSREL:R} >= 15 && ${PORT_OPTIONS:MGSSAPI_HEIMDAL}
+BROKEN=	Does not build
+.endif
+
 .include <bsd.port.pre.mk>
 
 .if ${SSL_DEFAULT} == base
@@ -207,6 +210,20 @@ post-patch:
 .endfor
 
 .if !defined(BIND_TOOLS_SLAVE)
+regen-patches:
+	cd ${.CURDIR} ; \
+		make clean ; \
+		mv files/extrapatch-no-bind-tools files/patch-no-bind-tools ; \
+		mv files/extrapatch-bind-min-override-ttl files/patch-bind-min-override-ttl ; \
+		make extract do-patch makepatch BATCH= NO_IGNORE= PATCH_DEBUG=yes EXTRA_PATCHES= || : ; \
+		mv files/patch-no-bind-tools files/extrapatch-no-bind-tools ; \
+		mv files/patch-bind-min-override-ttl files/extrapatch-bind-min-override-ttl
+	cd ${.CURDIR} ; \
+		mv files/extrapatch-bind-tools files/patch-bind-tools ; \
+		(cd ../bind-tools ; \
+		make clean extract do-patch makepatch BATCH= NO_IGNORE= PATCH_DEBUG=yes EXTRA_PATCHES= MASTERDIR=$$PWD/../bind920 || :) ; \
+		mv files/patch-bind-tools files/extrapatch-bind-tools
+
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/mtree
 	${MKDIR} ${STAGEDIR}${ETCDIR}

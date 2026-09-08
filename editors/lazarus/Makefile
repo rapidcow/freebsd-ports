@@ -1,7 +1,7 @@
 PORTNAME=	lazarus
-DISTVERSION=	4.4
+DISTVERSION=	4.8
 PKGNAMESUFFIX?=  -gtk2
-PORTREVISION?=	1
+PORTREVISION?=	0
 CATEGORIES=	editors devel
 DIST_SUBDIR=	freepascal
 
@@ -15,14 +15,14 @@ CONFLICTS?=	lazarus-gtk2-devel lazarus-gtk3-devel lazarus-qt5 lazarus-qt5-devel 
 BUILD_DEPENDS?=	${LOCALBASE}/bin/as:devel/binutils
 RUN_DEPENDS?=	${LOCALBASE}/bin/as:devel/binutils \
 		gmake:devel/gmake \
-		${LOCALBASE}/share/fpc-source-${FPC_DEFAULT}/Makefile.fpc:lang/fpc${FPC_DEVELSUFFIX}-source
+		${LOCALBASE}/share/fpc${FPC_DEVELSUFFIX}-source-${FPC_DEFAULT}/Makefile.fpc:lang/fpc${FPC_DEVELSUFFIX}-source
 
-ONLY_FOR_ARCHS=	i386 amd64
+ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc64le powerpc64
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	freepascal.org/lazarus
 GL_PROJECT=	${PORTNAME}
-GL_COMMIT=	98f9c7a7a102139e43b39050ebbb5c48d805f59f
+GL_COMMIT=	62c14a4d18c81f222127d42ce9b89b922c63fcbf
 
 USES=		desktop-file-utils fpc:run gettext gmake iconv shared-mime-info xorg
 USE_XORG=	x11
@@ -40,7 +40,7 @@ OPTIONS_DEFAULT=	GDB
 .include <bsd.port.options.mk>
 
 LAZARUS_ARCH=	${ARCH:S,amd64,x86_64,}
-LAZARUS_BASE=	4.4
+LAZARUS_BASE=	4.8
 
 BUILDNAME=	${LAZARUS_ARCH}-${OPSYS:tl}
 LCL_PLATFORM?=	gtk2
@@ -71,8 +71,15 @@ post-extract:
 	@${RM} ${WRKSRC}/.git*
 
 post-patch:
+.if ${ARCH} == "aarch64"
+	@${REINPLACE_CMD} -e 's|Scale(Pen.Width)|Self.Scale(Pen.Width)|g' ${WRKSRC}/components/tachart/tadrawercanvas.pas
+.endif
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' -e 's|%%DATADIR%%|${DATADIR}|g' ${WRKSRC}/${MAKEFILE}
 	@${REINPLACE_CMD} -e 's|startlazarus|${PORTNAME}|g' ${WRKSRC}/install/${PORTNAME}.desktop
+	@${REINPLACE_CMD} \
+		-e 's|powerpc64-linux powerpc64-darwin|powerpc64-linux powerpc64-freebsd powerpc64-darwin|' \
+		-e 's|ifeq ($$(CPU_OS_TARGET),powerpc64-linux)|ifneq ($$(filter $$(CPU_OS_TARGET),powerpc64-linux powerpc64-freebsd),)|g' \
+		${WRKSRC}/lcl/interfaces/*/Makefile
 
 do-build:
 	@cd ${WRKSRC} && \

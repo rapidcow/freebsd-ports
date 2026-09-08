@@ -1,6 +1,6 @@
---- document-server-package/Makefile.orig	2024-02-12 14:46:57 UTC
+--- document-server-package/Makefile.orig	2026-05-14 16:29:43 UTC
 +++ document-server-package/Makefile
-@@ -23,6 +23,7 @@ PACKAGE_VERSION := $(PRODUCT_VERSION)-$(BUILD_NUMBER)
+@@ -23,6 +23,7 @@
  PACKAGE_NAME := $(COMPANY_NAME_LOW)-$(PRODUCT_NAME_LOW)
  PACKAGE_VERSION := $(PRODUCT_VERSION)-$(BUILD_NUMBER)
  
@@ -8,7 +8,7 @@
  UNAME_M ?= $(shell uname -m)
  ifeq ($(UNAME_M),x86_64)
  	RPM_ARCH := x86_64
-@@ -138,6 +139,22 @@ else
+@@ -139,6 +140,22 @@
  	endif
  else
  	UNAME_S := $(shell uname -s)
@@ -31,8 +31,8 @@
  	ifeq ($(UNAME_S),Linux)
  		PLATFORM := linux
  		SHARED_EXT := .so*
-@@ -167,6 +184,12 @@ else
- 		DS_EXAMLE := /var/www/onlyoffice/documentserver-example
+@@ -168,6 +185,12 @@
+ 		DS_EXAMPLE := /var/www/onlyoffice/documentserver-example
  		DEV_NULL := /dev/null
  	endif
 +        ifeq ($(UNAME_P),amd64)
@@ -43,17 +43,17 @@
 +        endif
  	ifeq ($(UNAME_M),x86_64)
  		ARCHITECTURE := 64
- 	endif
-@@ -334,7 +357,7 @@ documentserver:
+ 		PKG_TARGET ?= node18-linux-x64
+@@ -370,7 +393,7 @@
  		
  documentserver:
  	mkdir -p $(DOCUMENTSERVER_FILES)
 -	cp -rf -t $(DOCUMENTSERVER) ../build_tools/out/$(TARGET)/$(COMPANY_NAME_LOW)/$(PRODUCT_SHORT_NAME_LOW)/*
 +	cp -rf ../build_tools/out/$(TARGET)/$(COMPANY_NAME_LOW)/$(PRODUCT_SHORT_NAME_LOW)/* $(DOCUMENTSERVER)
  
- 	mkdir -p $(DOCUMENTSERVER_CONFIG)
- 	mkdir -p $(DOCUMENTSERVER_CONFIG)/log4js
-@@ -343,25 +366,25 @@ documentserver:
+ ifeq ($(PRODUCT_NAME_LOW),documentserver)
+ 	rm -rf $(DOCUMENTSERVER)/server/AdminPanel
+@@ -383,27 +406,27 @@
  	mv -f $(DOCUMENTSERVER)/server/Common/config/log4js/*.json $(DOCUMENTSERVER_CONFIG)/log4js/
  
  	# rename product specific folders
@@ -64,6 +64,7 @@
 -	sed 's|\("db.*": "\)onlyoffice\("\)|\1'$(ONLYOFFICE_VALUE)'\2|'  -i $(DOCUMENTSERVER_CONFIG)/*.json
 +	sed -i '' 's|\("db.*": "\)onlyoffice\("\)|\1'$(ONLYOFFICE_VALUE)'\2|' $(DOCUMENTSERVER_CONFIG)/*.json
  
+ ifneq ($(PRODUCT_NAME_LOW),documentserver)
  	# rename db schema name
 -	sed 's|onlyoffice|'$(ONLYOFFICE_VALUE)'|'  -i $(DOCUMENTSERVER)/server/schema/**/*.sql
 +	sed -i '' 's|onlyoffice|'$(ONLYOFFICE_VALUE)'|' $(DOCUMENTSERVER)/server/schema/**/*.sql
@@ -71,6 +72,7 @@
  	# ignore CREATE DATABASE commands in MySQL
 -	sed -r "s/^(CREATE DATABASE|USE)/-- \1/" -i $(DOCUMENTSERVER)/server/schema/mysql/*.sql
 +	sed -i '' -r "s/^(CREATE DATABASE|USE)/-- \1/" $(DOCUMENTSERVER)/server/schema/mysql/*.sql
+ endif
  
  	# rename product in license
 -	sed 's|ONLYOFFICE|'$(COMPANY_NAME)'|'  -i $(DOCUMENTSERVER)/server/3rd-Party.txt
@@ -86,18 +88,15 @@
  	rm -fr $(3RD_PARTY_LICENSE_FILES)
  
  ifeq ($(PLATFORM),win)
-@@ -371,8 +394,8 @@ endif
+@@ -411,33 +434,33 @@
+ 	echo ; >> $(DOCUMENTSERVER)/3rd-Party.txt
+ 	cat exe/license/3rd-Party.txt ; >> $(DOCUMENTSERVER)/3rd-Party.txt
  endif
- 
- 	[ -f $(LICENSE_FILE) ] \
--		&& cp -f -t $(DOCUMENTSERVER) $(LICENSE_FILE) \
--		|| cp -f -t $(DOCUMENTSERVER) LICENSE.txt
-+		&& cp -f $(LICENSE_FILE) $(DOCUMENTSERVER) \
-+		|| cp -f LICENSE.txt $(DOCUMENTSERVER)
- 
+-	cp -f -t $(DOCUMENTSERVER) $(LICENSE_FILE)
++	cp -f $(LICENSE_FILE) $(DOCUMENTSERVER)
  	chmod u+x $(DOCUMENTSERVER)/server/FileConverter/bin/x2t$(EXEC_EXT)
  	#chmod u+x $(DOCUMENTSERVER)/server/FileConverter/bin/docbuilder$(EXEC_EXT)
-@@ -380,26 +403,26 @@ endif
+ 	[ -f $(HTMLFILEINTERNAL)$(EXEC_EXT) ] && chmod u+x $(HTMLFILEINTERNAL)$(EXEC_EXT) || true
  	chmod u+x $(DOCUMENTSERVER)/server/tools/allfontsgen$(EXEC_EXT)
  
  	mv -f $(DOCUMENTSERVER)/web-apps/apps/api/documents/api.js $(DOCUMENTSERVER)/web-apps/apps/api/documents/api.js.tpl
@@ -132,7 +131,14 @@
  
  ifeq ($(PLATFORM),win)		
  	cd $(DOCUMENTSERVER)/npm && \
-@@ -413,7 +436,7 @@ documentserver-example:
+@@ -445,13 +468,13 @@
+ endif		
+ 	rm -r \
+ 		$(DOCUMENTSERVER)/npm/node_modules \
+-		$(DOCUMENTSERVER)/npm/package-lock.json
++		$(DOCUMENTSERVER)/npm/npm-shrinkwrap.json
+ 
+ 	echo "Done" > $@
  
  documentserver-example:
  	mkdir -p $(DOCUMENTSERVER_EXAMPLE)
@@ -141,7 +147,7 @@
  	
  	mkdir -p $(DOCUMENTSERVER_EXAMPLE_CONFIG)
  
-@@ -422,7 +445,7 @@ documentserver-example:
+@@ -460,7 +483,7 @@
  	# Prevent for modification original config
  	chmod ug=r $(DOCUMENTSERVER_EXAMPLE_CONFIG)/*.json
  
@@ -149,8 +155,8 @@
 +	sed -i '' "s|{{OFFICIAL_PRODUCT_NAME}}|"$(OFFICIAL_PRODUCT_NAME)"|" $(DOCUMENTSERVER_EXAMPLE)/welcome/*.html
  
  	/usr/bin/find $(DOCUMENTSERVER_EXAMPLE)/welcome -depth -type f -exec sed -i "s_{{year}}_$(shell date +"%Y")_g" {} \;
- 
-@@ -517,6 +540,7 @@ $(EXE): iss_file = common.iss
+ 	sed -i "s|{{EXAMPLE_DISABLED_COMMANDS}}|$(EXAMPLE_DISABLED_COMMANDS)|g" $(DOCUMENTSERVER_EXAMPLE)/welcome/example-disabled.html
+@@ -553,6 +576,7 @@
  	cd $(@D) && $(ISCC) $(ISCC_PARAMS) $(iss_file)
  
  $(EXE): iss_file = common.iss

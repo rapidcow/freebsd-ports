@@ -1,6 +1,6 @@
 PORTNAME=	rqlite
 DISTVERSIONPREFIX=	v
-DISTVERSION=	9.3.2
+DISTVERSION=	10.2.7
 PORTREVISION=	3
 CATEGORIES=	databases
 
@@ -12,9 +12,9 @@ WWW=		https://rqlite.io \
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.25+,modules
+USES=		go:1.26+,modules
 
-GO_MODULE=	github.com/rqlite/rqlite/v9
+GO_MODULE=	github.com/rqlite/rqlite/v10
 GO_TARGET=	./cmd/rqbench \
 		./cmd/rqlite \
 		./cmd/rqlited

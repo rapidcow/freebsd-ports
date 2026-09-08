@@ -1,4 +1,4 @@
---- components/optimization_guide/core/feature_registry/feature_registration.cc.orig	2026-01-16 13:40:34 UTC
+--- components/optimization_guide/core/feature_registry/feature_registration.cc.orig	2026-08-13 07:41:05 UTC
 +++ components/optimization_guide/core/feature_registry/feature_registration.cc
 @@ -76,7 +76,7 @@ BASE_FEATURE(kProductSpecificationsMqlsLogging,
  

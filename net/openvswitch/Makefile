@@ -9,8 +9,6 @@ WWW=		http://openvswitch.org/
 
 LICENSE=	APACHE20
 
-BROKEN_mips64=		fails to compile: ofp-actions.h:486: flexible array member in otherwise empty struct
-
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
 
 USES=		compiler:c11 cpe gmake libtool perl5 pkgconfig python \
@@ -35,6 +33,7 @@ SHEBANG_FILES=	ipsec/ovs-monitor-ipsec.in \
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
+CONFIGURE_ENV=	PYTHON3=${PYTHON_CMD}
 CONFIGURE_ARGS=	--enable-shared --disable-static --localstatedir=/var \
 		--with-dbdir=/var/db/${PORTNAME} \
 		--with-openssl=${OPENSSLBASE}

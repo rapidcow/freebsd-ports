@@ -1,15 +1,15 @@
---- chrome/browser/signin/signin_util.cc.orig	2026-01-16 13:40:34 UTC
+--- chrome/browser/signin/signin_util.cc.orig	2026-08-13 07:41:05 UTC
 +++ chrome/browser/signin/signin_util.cc
-@@ -49,7 +49,7 @@
+@@ -47,7 +47,7 @@
  #include "services/network/public/mojom/cookie_manager.mojom.h"
  #include "ui/base/l10n/l10n_util.h"
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
- #include "chrome/browser/ui/browser_dialogs.h"
- #include "chrome/browser/ui/browser_finder.h"
+ #include "chrome/browser/ui/dialogs/browser_dialogs.h"
  #include "components/strings/grit/components_strings.h"
-@@ -374,7 +374,7 @@ bool IsSyncingUserSelectableTypesAllowedByPolicy(
+ #include "ui/base/interaction/element_identifier.h"
+@@ -371,7 +371,7 @@ bool IsSyncingUserSelectableTypesAllowedByPolicy(
    return true;
  }
  

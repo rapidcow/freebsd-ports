@@ -1,5 +1,5 @@
 PORTNAME=	angie-module-auth-totp
-MODULE_VERSION=	1.1.0
+MODULE_VERSION=	1.2.0
 MODULE_PORTREVISION=	3
 GH_TUPLE=	61131:nginx-http-auth-totp:${MODULE_VERSION}:module
 

@@ -1,6 +1,15 @@
---- zfuncs.cc.orig	2025-11-18 09:44:35 UTC
+--- zfuncs.cc.orig	2026-07-04 06:37:19 UTC
 +++ zfuncs.cc
-@@ -490,6 +490,7 @@ int zmalloc_test(int64 cc)
+@@ -74,6 +74,8 @@
+    samefolder              test if two files/folders have the same folder path
+    parsefile               parse filespec into folder, file, extension
+    renamez                 like rename() but works across file systems
++   get_nproc               get number of online CPUs in the system
++   get_prog_path           get our own executable program path
+    check_create_dir        check if folder exists, ask to create if not
+    cp_copy                 same, using shell "cp -f -p"
+    diskspace               get available space on disk of given file, MB
+@@ -503,6 +505,7 @@ int zmalloc_test(int64 cc)
  
  double realmemory()
  {
@@ -8,7 +17,7 @@
     FILE     *fid;
     ch       buff[100], *pp;
     double   rmem = 0;
-@@ -508,15 +509,45 @@ double realmemory()
+@@ -521,15 +524,45 @@ double realmemory()
     }
  
     fclose(fid);
@@ -54,7 +63,7 @@
     FILE     *fid;
     ch       buff[100], *pp;
     double   avmem = 0;
-@@ -541,6 +572,11 @@ double availmemory()
+@@ -554,6 +587,11 @@ double availmemory()
     }
  
     fclose(fid);
@@ -66,16 +75,28 @@
     return avmem;
  }
  
-@@ -793,7 +829,7 @@ void zappcrash(ch *format, ... )
+@@ -784,7 +822,7 @@ void zappcrash(ch *format, ... )
  
-    uname(&unbuff);                                                               //  get cpu arch. 32/64 bit
+    uname(&unbuff);                                                                     //  get cpu arch. 32/64 bit
     arch = unbuff.machine;
--   fid1 = popen("lsb_release -d","r");                                           //  get Linux flavor and release
+-   fid1 = popen("lsb_release -d","r");                                                 //  get Linux flavor and release
 +   fid1 = popen("uname -nv","r");
     if (fid1) {
        ii = fscanf(fid1,"%s %s %s",OS1,OS2,OS3);
        pclose(fid1);
-@@ -1049,13 +1085,13 @@ double get_seconds(int init)
+@@ -817,9 +855,8 @@ void zappcrash(ch *format, ... )
+    fprintf(fid2,"*** please send this crash report to mkornelix@gmail.com *** \n"
+                 "*** if possible, please explain how to repeat this problem *** \n");
+ 
+-   cc = readlink("/proc/self/exe",progexe,300);                                        //  get own program path
+-   if (cc > 0) progexe[cc] = 0;                                                        //  readlink() quirk
+-   else {
++   cc = get_prog_path(progexe, sizeof progexe);
++   if (cc == -1) {
+       fprintf(fid2,"progexe not available \n");
+       Flinenos = 0;
+    }
+@@ -1040,13 +1077,13 @@ double get_seconds(int init)
     static double  secs1 = 0, secs2, secs3;
  
     if (init == 0) {
@@ -85,14 +106,33 @@
        secs1 += time1.tv_nsec * 0.000000001;
        return secs1;
     }
-    else { 
+    else {
 -      clock_gettime(CLOCK_MONOTONIC_RAW,&time1);
 +      clock_gettime(CLOCK_MONOTONIC,&time1);
        secs2 = time1.tv_sec;
        secs2 += time1.tv_nsec * 0.000000001;
        secs3 = secs2 - secs1;
-@@ -1977,6 +2013,10 @@ int samefolder(ch *file1, ch *file2)
-    return 0;
+@@ -1121,6 +1158,7 @@ double CPUtime()
+ 
+ int memused()
+ {
++#if defined(__linux__)
+    ch       buff1[100], buff2[1000];
+    ch       *pp = 0;
+    FILE     *fid;
+@@ -1147,6 +1185,10 @@ int memused()
+    }
+ 
+    return MB;
++#elif defined(__FreeBSD__)
++   struct rusage ru;
++   return getrusage(RUSAGE_SELF, &ru) ? 0 : (ru.ru_maxrss + 1023) / 1024;
++#endif
+ }
+ 
+ 
+@@ -2033,7 +2075,17 @@ int renamez(ch *file1, ch *file2)
+    return err;
  }
  
 +int get_nprocs()
@@ -100,9 +140,16 @@
 +   return sysconf(_SC_NPROCESSORS_ONLN);
 +}
  
- /********************************************************************************/
++int get_prog_path(char *buf, size_t len)
++{
++   const int mib[] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
++   return sysctl(mib, sizeof mib / sizeof mib[0], buf, &len, 0x0, 0);
++}
++
+ /**************************************************************************************/
  
-@@ -2147,7 +2187,7 @@ uint diskspace(ch *file)
+ //  Check if a folder exists. If not, ask user if it should be created.
+@@ -2111,7 +2163,7 @@ uint diskspace(ch *file)
     FILE     *fid;
  
     pp = zescape_quotes(file);
@@ -111,40 +158,45 @@
     zfree(pp);
  
     fid = popen(command,"r");
-@@ -3999,14 +4039,18 @@ ch * SearchWildCase(ch *wpath, int &uflag)
+@@ -3979,14 +4031,18 @@ ch * SearchWildCase(ch *wpath, int &uflag)
     flist and flist[*] are subjects for zfree().
  
     zfind() works for files containing quotes (")
 -   dotfiles (/. and /..) are not included
 +   dotfiles (/. and /..) are not included, if possible
  
- *********************************************************************************/
+ ***************************************************************************************/
  
  int zfind(ch *pattern, ch **&flist, int &NF)
  {
-    ch       **zfind_filelist = 0;                                                //  list of filespecs returned
+    ch       **zfind_filelist = 0;                                                      //  list of filespecs returned
 +#ifdef GLOB_PERIOD
-    int      globflags = GLOB_PERIOD;                                             //  include dotfiles
+    int      globflags = GLOB_PERIOD;                                                   //  include dotfiles
 +#else
 +   int      globflags = 0;
 +#endif
     int      ii, jj, err, cc;
     glob_t   globdata;
     ch       *pp;
-@@ -6033,9 +6077,16 @@ int zinitapp(ch *appvers, int argc, ch *argv[])       
-    if (argc > 1 && strmatchV(argv[1],"-ver","-v",null)) exit(0);                 //  exit if nothing else wanted
+@@ -6014,9 +6070,8 @@ int zinitapp(ch *appvers, int argc, ch *argv[])       
+    if (argc > 1 && strmatchV(argv[1],"-ver","-v",null)) exit(0);                       //  exit if nothing else wanted
  
     progexe = 0;
-+#if defined(__linux__)
-    cc = readlink("/proc/self/exe",buff,300);                                     //  get my executable program path
-    if (cc <= 0) zexit(1,"readlink() /proc/self/exe) failed");
-    buff[cc] = 0;                                                                 //  readlink() quirk
-+#elif defined(__FreeBSD__)
-+   const int mib[4] = { CTL_KERN, KERN_PROC, KERN_PROC_PATHNAME, -1 };
-+   size_t len = sizeof(buff);
-+   cc = sysctl(mib, 4, buff, &len, 0x0, 0);
-+   if (cc == -1) zexit(1,"sysctl(KERN_PROC_PATHNAME) failed");
-+#endif
+-   cc = readlink("/proc/self/exe",buff,300);                                           //  get my executable program path
+-   if (cc <= 0) zexit(1,"readlink() /proc/self/exe) failed");
+-   buff[cc] = 0;                                                                       //  readlink() quirk
++   cc = get_prog_path(buff, sizeof buff);
++   if (cc == -1) zexit(1, "could not obtain program path");
     progexe = zstrdup(buff,"zinitapp");
  
-    printf("program exe: %s \n",progexe);                                         //  executable path
+    printf("program exe: %s \n",progexe);                                               //  executable path
+@@ -8054,8 +8109,7 @@ GtkWidget * add_toolbar_button(GtkWidget *wtbar, ch *b
+       strncatv(iconpath,199,zimagedir,"/",icon,null);
+       err = stat(iconpath,&statB);
+       if (err) {                                                                       //  alternative path
+-         cc = readlink("/proc/self/exe",iconpath,300);                                 //  get own program path
+-         if (cc > 0) iconpath[cc] = 0;                                                 //  readlink() quirk
++         (void)get_prog_path(iconpath, sizeof iconpath);
+          pp = strrchr(iconpath,'/');                                                   //  folder of program
+          if (pp) *pp = 0;
+          strncatv(iconpath,300,"/icons/",icon,null);                                   //  .../icons/iconfile.png

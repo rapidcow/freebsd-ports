@@ -1,6 +1,5 @@
 PORTNAME=	odoo
-PORTVERSION=	16.0.20250719
-PORTREVISION=	5
+PORTVERSION=	16.0.20260618
 CATEGORIES=	finance www
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 PKGNAMESUFFIX=	16
@@ -12,14 +11,14 @@ WWW=		https://www.odoo.com
 LICENSE=	LGPL3
 
 USE_GITHUB=	yes
-GH_TAGNAME=	f50391ee61af8d986154af948c194fef8067f975
+GH_TAGNAME=	6859fbf063fe9e25d5f41f695554cc11feea3c77
 
 LIB_DEPENDS=	libxslt.so:textproc/libxslt \
 		libevent.so:devel/libevent \
 		libsasl2.so:security/cyrus-sasl2
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Babel>=1.3:devel/py-babel@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>=0:devel/py-Jinja2@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}XlsxWriter>=0:textproc/py-xlsxwriter@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}xlsxwriter>=0:textproc/py-xlsxwriter@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}chardet>=0:textproc/py-chardet@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}decorator>0:devel/py-decorator@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}docutils>=0:textproc/py-docutils@${PY_FLAVOR} \

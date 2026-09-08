@@ -1,7 +1,6 @@
 PORTNAME=	kanidm
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.8.5
-PORTREVISION=	1
+DISTVERSION=	1.10.4
 CATEGORIES=	security net
 
 # implicit-approval+: dtxdf
@@ -13,8 +12,7 @@ WWW=		https://kanidm.com \
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-IGNORE_FreeBSD_13=		Does not build on FreeBSD 13.x due to OpenSSL 1.1.1
-ONLY_FOR_ARCHS=	aarch64 amd64
+ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64 powerpc64le
 
 FLAVORS=	client server
 FLAVOR?=	${FLAVORS:[1]}
@@ -25,7 +23,11 @@ server_PKGNAMESUFFIX=	-server
 server_COMMENT=		(server only)
 server_PLIST=	${.CURDIR}/pkg-plist.server
 
-USES=		cargo ssl llvm
+.if ${FLAVOR} == client
+RUN_DEPENDS+=tpm2-tss>0:security/tpm2-tss
+.endif
+
+USES=		cargo llvm
 USE_GITHUB=	yes
 
 MAKE_ENV=    LIBCLANG_PATH=${LLVM_PREFIX}/lib

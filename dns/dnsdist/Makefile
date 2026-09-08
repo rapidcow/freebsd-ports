@@ -1,12 +1,8 @@
 PORTNAME=	dnsdist
-DISTVERSION=	2.0.1
-PORTREVISION=	5
+DISTVERSION=	2.1.1
 CATEGORIES=	dns net
 MASTER_SITES=	https://downloads.powerdns.com/releases/
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
-
-PATCH_SITES=	https://github.com/PowerDNS/pdns/commit/
-PATCHFILES=	8045b2c8860c786d2ca9e13de05c431ba638c90f.diff:-p2
+DISTFILES+=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	tremere@cainites.net
 COMMENT=	Highly DNS-, DoS- and abuse-aware loadbalancer
@@ -91,7 +87,7 @@ GNUTLS_MESON_ENABLED=	tls-gnutls
 IPCIPHER_IMPLIES=	OPENSSL
 IPCIPHER_MESON_ENABLED=	ipcipher
 
-LMDB_LIB_DEPENDS=	liblmdb.so:databases/lmdb
+LMDB_LIB_DEPENDS=	liblmdb.so:databases/lmdb0
 LMDB_MESON_ENABLED=	lmdb
 
 LUAJIT_USES=		luajit
@@ -102,20 +98,14 @@ LUA_MESON_ON=	-Dlua=lua
 
 OPENSSL_USES=		ssl
 OPENSSL_MESON_ENABLED=	libcrypto tls-libssl
-OPENSSL_MESON_ON=	-Dlibcrypto-path=${OPENSSLBASE}
+OPENSSL_MESON_ON=	-Dlibcrypto-path=${OPENSSLBASE} \
+			-Dtls-libssl-engines=true
 
 SNMP_LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp
 SNMP_MESON_ENABLED=	snmp
 
-.include <bsd.port.pre.mk>
-
-.if !(${OSVERSION} < 1400000 && ${SSL_DEFAULT} == "base")
-OPENSSL_MESON_ON+=	-Dtls-libssl-providers=true
-.else
-OPENSSL_MESON_ON+=	-Dtls-libssl-engines=true
-.endif
-
 post-install:
 	${MV} ${STAGEDIR}${ETCDIR}/dnsdist.conf-dist ${STAGEDIR}${ETCDIR}/dnsdist.conf.sample
+	${MV} ${STAGEDIR}${ETCDIR}/dnsdist.yml-dist ${STAGEDIR}${ETCDIR}/dnsdist.yml.sample
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -1,6 +1,6 @@
 PORTNAME=	OpenSim
 DISTVERSION=	4.1
-PORTREVISION=	9
+PORTREVISION=	12
 CATEGORIES=	science
 PKGNAMESUFFIX=	-core
 
@@ -10,6 +10,9 @@ WWW=		https://opensim.stanford.edu/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
+DEPRECATED=	Depends on expired devel/swig40
+EXPIRATION_DATE=2026-09-30
 
 BUILD_DEPENDS=	bash:shells/bash
 LIB_DEPENDS=	libdocopt.so:devel/docopt.cpp \

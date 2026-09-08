@@ -1,5 +1,5 @@
 PORTNAME=	gimp
-DISTVERSION=	3.0.6
+DISTVERSION=	3.2.0
 PORTREVISION=	2
 CATEGORIES?=	graphics gnome
 MASTER_SITES=	GIMP/gimp/v${PORTVERSION:R}
@@ -14,8 +14,9 @@ LICENSE_COMB=	multi
 
 BUILD_DEPENDS=	iso-codes>=0:misc/iso-codes \
 		glib-networking>=0:net/glib-networking \
-		mypaint-brushes>0:graphics/mypaint-brushes \
+		mypaint-brushes2>0:graphics/mypaint-brushes2 \
 		bash:shells/bash \
+		xdg-open:devel/xdg-utils \
 		${LOCALBASE}/include/linux/input.h:devel/evdev-proto \
 		appstreamcli:devel/appstream
 
@@ -42,6 +43,9 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libgudev-1.0.so:devel/libgudev \
 		${LIB_DEPENDS_${ARCH}}
 
+RUN_DEPENDS=	xdg-open:devel/xdg-utils \
+		mypaint-brushes2>0:graphics/mypaint-brushes2
+
 LIB_DEPENDS_aarch64=		libunwind.so:devel/libunwind
 LIB_DEPENDS_amd64=		libunwind.so:devel/libunwind
 LIB_DEPENDS_i386=		libunwind.so:devel/libunwind
@@ -53,7 +57,7 @@ RUN_DEPENDS=	iso-codes>=0:misc/iso-codes \
 		mypaint-brushes>0:graphics/mypaint-brushes
 
 USES=		cpe desktop-file-utils gettext gnome jpeg libarchive \
-		localbase:ldflags meson ninja perl5 pkgconfig python:3.7+ \
+		localbase:ldflags meson ninja perl5 pkgconfig python \
 		shebangfix tar:xz xorg
 USE_CXXSTD=	gnu++14
 USE_GNOME=	gtk30 introspection cairo gdkpixbuf librsvg2 libxslt
@@ -77,14 +81,17 @@ MESON_ARGS=	-Dappdata-test=disabled \
 		-Diff=disabled \
 		-Dfits=disabled
 
-OPTIONS_DEFINE?=	AALIB GHOSTSCRIPT HEIF HELP OPENJPEG JS JXL LIBMNG WMF DOCS VALA CFITSIO
-OPTIONS_DEFAULT?=	AALIB GHOSTSCRIPT HEIF OPENJPEG JS JXL WMF DOCS VALA LUA CFITSIO
+OPTIONS_DEFINE?=	AALIB GHOSTSCRIPT HEIF HELP OPENJPEG JS JXL LIBMNG WMF DOCS VALA CFITSIO BASH
+OPTIONS_DEFAULT?=	AALIB GHOSTSCRIPT HEIF OPENJPEG JS JXL WMF DOCS VALA LUA CFITSIO BAS
 OPTIONS_SINGLE=		SCRIPTS
 OPTIONS_SINGLE_SCRIPTS=	LUA LUAJIT LUA_NONE
 OPTIONS_SUB=	yes
 
 AALIB_LIB_DEPENDS=	libaa.so:graphics/aalib
 AALIB_MESON_ENABLED=	aa
+
+BASH_BUILD_DEPENDS=	bash-completion>0:shells/bash-completion
+BASH_MESON_ENABLED=	bash-completion
 
 CFITSIO_MESON_ENABLED=	fits
 CFITSIO_LIB_DEPENDS=	libcfitsio.so:astro/cfitsio
@@ -137,7 +144,7 @@ LUA_NONE_MESON_FALSE=	lua
 
 LIBS+=		-lexecinfo -lm
 CPE_PRODUCT=	gimp
-CPE_VENDOR=	gnu
+CPE_VENDOR=	gimp
 
 SHEBANG_FILES=	plug-ins/python/*.py \
 		plug-ins/python/python-console/*.py \
@@ -147,7 +154,8 @@ SHEBANG_FILES=	plug-ins/python/*.py \
 
 SHEBANG_LANG+=	gjs
 
-PLIST_SUB+=	BINVER=${PORTVERSION:R:R} ABIVER=${PORTVERSION:R} SHLIBVER=${PORTVERSION:R:E}.${PORTVERSION:E}.${PORTVERSION:R:E}
+#PLIST_SUB+=	BINVER=${PORTVERSION:R:R} ABIVER=${PORTVERSION:R} SHLIBVER=${PORTVERSION:R:E}.${PORTVERSION:E}.${PORTVERSION:R:E}
+PLIST_SUB+=	BINVER=3 ABIVER=3.2 APIVER=3.0 SHLIBVER=0.200.0
 
 .include <bsd.port.options.mk>
 

@@ -1,5 +1,5 @@
 PORTNAME=	rust
-PORTVERSION?=	1.92.0
+PORTVERSION?=	1.96.1
 PORTREVISION?=	0
 CATEGORIES=	lang
 MASTER_SITES=	https://static.rust-lang.org/dist/:src \
@@ -71,10 +71,11 @@ WASM_VARS=		_COMPONENTS+="rust-analysis-${_PACKAGE_VERS}-wasm32-unknown-unknown 
 			_RUST_TARGETS+=wasm32-unknown-unknown
 
 # See WRKSRC/src/stage0 for the date and version values
-BOOTSTRAPS_DATE?=		2025-10-30
-RUST_BOOTSTRAP_VERSION?=	1.91.0
+BOOTSTRAPS_DATE?=		2026-04-16
+LLVM_VERSION=			20
+RUST_BOOTSTRAP_VERSION?=	1.95.0
 
-_LLVM_VERSION=	20
+_LLVM_VERSION=	21
 
 CARGO_VENDOR_DIR?=		${WRKSRC}/vendor
 
@@ -114,9 +115,11 @@ MAKE_ENV+=	RUST_BACKTRACE=1
 .endif
 
 # per https://rust-lang.github.io/rustup/concepts/components.html
-# rustc-dev is only usefull on nightly
+# rustc-dev and miri are only useful on nightly
 .if defined(NIGHTLY_DATE)
-_COMPONENTS+=	rustc-dev-${_PACKAGE_VERS}-${_RUST_TARGET}
+_RUST_TOOLS+=	miri cargo-miri
+_COMPONENTS+=	rustc-dev-${_PACKAGE_VERS}-${_RUST_TARGET} \
+		miri-${_PACKAGE_VERS}-${_RUST_TARGET}
 .endif
 
 .if ${PORT_OPTIONS:MWASM} && ${PORT_OPTIONS:MDOCS}
@@ -151,9 +154,6 @@ post-patch-PORT_LLVM-on:
 		${WRKSRC}/compiler/rustc_target/src/spec/base/wasm.rs
 
 do-configure:
-# Check that the running kernel has COMPAT_FREEBSD11 required by lang/rust post-ino64
-	@${SETENV} CC="${CC}" OPSYS="${OPSYS}" OSVERSION="${OSVERSION}" WRKDIR="${WRKDIR}" \
-		${SH} ${SCRIPTSDIR}/rust-compat11-canary.sh
 .for _component in cargo rust-std rustc
 	@cd ${WRKDIR}/${_component}-*-${OPSYS:tl} && \
 		${SH} install.sh --prefix=${WRKDIR}/bootstrap --verbose
@@ -211,9 +211,9 @@ do-configure:
 # Rust doesn't call the system compiler with the full version of the target.
 # This makes powerpc miscompile due to the secure-plt ABI change.
 # Additionally, force using ld.bfd to work around a linking problem in rustc_mir
-	@${PRINTF} '#!/bin/sh\nexec ${CC} "$$@" --target=powerpc-unknown-freebsd13.2' > ${WRKDIR}/cc-wrapper
+	@${PRINTF} '#!/bin/sh\nexec ${CC} "$$@" --target=powerpc-unknown-freebsd13.5' > ${WRKDIR}/cc-wrapper
 	@${CHMOD} +x ${WRKDIR}/cc-wrapper
-	@${PRINTF} '#!/bin/sh\nexec ${CXX} "$$@" --target=powerpc-unknown-freebsd13.2' > ${WRKDIR}/cxx-wrapper
+	@${PRINTF} '#!/bin/sh\nexec ${CXX} "$$@" --target=powerpc-unknown-freebsd13.5' > ${WRKDIR}/cxx-wrapper
 	@${CHMOD} +x ${WRKDIR}/cxx-wrapper
 .endif
 .for _target in ${_RUST_TARGETS}

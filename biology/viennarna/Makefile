@@ -1,6 +1,5 @@
 PORTNAME=	viennarna
-DISTVERSION=	2.7.0
-PORTREVISION=	2
+DISTVERSION=	2.7.2
 CATEGORIES=	biology
 MASTER_SITES=	https://www.tbi.univie.ac.at/RNA/download/sourcecode/2_7_x/
 DISTNAME=	ViennaRNA-${DISTVERSION}
@@ -31,11 +30,10 @@ USES=		autoreconf bison compiler:c++17-lang fortran gmake \
 USE_XORG=	ice x11 xext # only for build
 
 GNU_CONFIGURE=	yes
-GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_SHELL=	${PREFIX}/bin/bash
 CONFIGURE_ARGS=	--enable-shared --disable-static --with-gsl --with-cluster --with-kinwalker --enable-mpfr --without-python --without-python3 --without-perl
 
-CXXFLAGS+=	-Dregister= # workaround for https://github.com/ViennaRNA/ViennaRNA/issues/214
+CXXFLAGS+=	-Wno-missing-template-arg-list-after-template-kw
 
 TEST_TARGET=	check
 
@@ -63,5 +61,14 @@ post-install:
 	# remove stray files
 	@${RM} ${STAGEDIR}/RNA/RNAconsensus.py
 	@${RMDIR} ${STAGEDIR}/RNA
+
+# tests as of 2.7.2:
+# TOTAL: 83
+# PASS:  83
+# SKIP:  0
+# XFAIL: 0
+# FAIL:  0
+# XPASS: 0
+# ERROR: 0
 
 .include <bsd.port.mk>

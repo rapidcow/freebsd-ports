@@ -1,5 +1,5 @@
 PORTNAME=	lime
-DISTVERSION=	5.4.72
+DISTVERSION=	5.4.121
 CATEGORIES=	security
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -19,5 +19,7 @@ GL_ACCOUNT=	public
 
 CMAKE_ON=	BUILD_SHARED_LIBS
 CMAKE_OFF=	ENABLE_UNIT_TESTS
+
+PORTSCOUT=	ignore:1
 
 .include <bsd.port.mk>

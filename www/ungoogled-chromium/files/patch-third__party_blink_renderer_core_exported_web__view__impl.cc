@@ -1,6 +1,6 @@
---- third_party/blink/renderer/core/exported/web_view_impl.cc.orig	2026-01-16 13:40:34 UTC
+--- third_party/blink/renderer/core/exported/web_view_impl.cc.orig	2026-08-13 07:41:05 UTC
 +++ third_party/blink/renderer/core/exported/web_view_impl.cc
-@@ -422,7 +422,7 @@ void RecordPrerenderActivationSignalDelay(const String
+@@ -402,7 +402,7 @@ void RecordPrerenderActivationSignalDelay(const String
  #if !BUILDFLAG(IS_MAC) && !BUILDFLAG(IS_WIN)
  SkFontHinting RendererPreferencesToSkiaHinting(
      const blink::RendererPreferences& prefs) {
@@ -9,16 +9,16 @@
    if (!prefs.should_antialias_text) {
      // When anti-aliasing is off, GTK maps all non-zero hinting settings to
      // 'Normal' hinting so we do the same. Otherwise, folks who have 'Slight'
-@@ -3472,7 +3472,7 @@ void WebViewImpl::UpdateFontRenderingFromRendererPrefs
+@@ -3631,7 +3631,7 @@ void WebViewImpl::UpdateFontRenderingFromRendererPrefs
        gfx::FontRenderParams::SUBPIXEL_RENDERING_NONE);
    WebFontRenderStyle::SetSubpixelPositioning(
        renderer_preferences_.use_subpixel_positioning);
--#if BUILDFLAG(IS_LINUX)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    if (!renderer_preferences_.system_font_family_name.empty()) {
-     WebFontRenderStyle::SetSystemFontFamily(blink::WebString::FromUTF8(
+     WebFontRenderStyle::SetSystemFontFamily(blink::WebString::FromUtf8(
          renderer_preferences_.system_font_family_name));
-@@ -3610,7 +3610,7 @@ void WebViewImpl::UpdateRendererPreferences(
+@@ -3781,7 +3781,7 @@ void WebViewImpl::UpdateRendererPreferences(
        renderer_preferences_.selection_clipboard_buffer_available);
  #endif  // BUILDFLAG(IS_OZONE)
  

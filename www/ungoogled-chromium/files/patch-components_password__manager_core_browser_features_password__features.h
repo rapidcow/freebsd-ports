@@ -1,8 +1,8 @@
---- components/password_manager/core/browser/features/password_features.h.orig	2026-01-16 13:40:34 UTC
+--- components/password_manager/core/browser/features/password_features.h.orig	2026-08-13 07:41:05 UTC
 +++ components/password_manager/core/browser/features/password_features.h
-@@ -171,7 +171,7 @@ BASE_DECLARE_FEATURE(kPasswordManualFallbackAvailable)
- // terminal.
- BASE_DECLARE_FEATURE(kPasswordManagerLogToTerminal);
+@@ -194,7 +194,7 @@ BASE_DECLARE_FEATURE(kPreventAPCOnFederatedLogin);
+ // Prevents password manager from showing save/update UI on federated login.
+ BASE_DECLARE_FEATURE(kPreventPasswordManagerOnFederatedLogin);
  
 -#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)

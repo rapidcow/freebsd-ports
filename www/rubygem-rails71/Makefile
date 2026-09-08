@@ -1,5 +1,5 @@
 PORTNAME=	rails
-PORTVERSION=	7.1.5.2
+PORTVERSION=	7.1.6
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	71
@@ -64,7 +64,7 @@ USES=		cpe gem
 NO_ARCH=	yes
 
 CPE_VENDOR=	rubyonrails
-CPE_PRODUCT=	ruby_on_rails
+CPE_PRODUCT=	rails
 
 PORTSCOUT=	limit:^7\.1\.
 

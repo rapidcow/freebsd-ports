@@ -1,6 +1,5 @@
 PORTNAME=	calibreweb
-PORTVERSION=	0.6.25
-PORTREVISION=	2
+PORTVERSION=	0.6.27
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,17 +14,17 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	${PY_SETUPTOOLS} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}APScheduler>=0:devel/py-apscheduler@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}bleach>=0:www/py-bleach@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}certifi>=0:security/py-certifi@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}chardet>=0:textproc/py-chardet@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}flask-babel>=0:devel/py-flask-babel@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Flask-HTTPAuth>=0:security/py-flask-httpauth@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Flask-Principal>=0:www/py-flask-principal@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}Flask_Limiter3<3.13:www/py-flask-limiter3@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}flask_limiter>=0:www/py-flask-limiter@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}flask_wtf>=0:www/py-flask-wtf@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}iso-639>=0:textproc/py-iso-639@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}lxml>=0:devel/py-lxml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}netifaces-plus>=0:net/py-netifaces-plus@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}nh3>=0:www/py-nh3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pycountry>=0:textproc/py-pycountry@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pypdf>=0:print/py-pypdf@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}python-magic>=0:devel/py-python-magic@${PY_FLAVOR} \
@@ -57,8 +56,8 @@ POST_PLIST=	fix-plist
 PORTDOCS=	PKG-INFO README.md
 
 # GDRIVE option removed due to expired security/py-oauth2client
-OPTIONS_DEFINE=		CALIBRE COMICS DOCS GMAIL GREADS KOBO LDAP METADATA \
-			OAUTH
+# GREADS option removed due to expired devel/py-goodreads and goodreads API EOL
+OPTIONS_DEFINE=		CALIBRE COMICS DOCS GMAIL KOBO LDAP METADATA OAUTH
 OPTIONS_DEFAULT=	IMAGICK7_X11 SQLA20
 
 OPTIONS_SINGLE=		IMAGICK SQLA
@@ -68,7 +67,6 @@ OPTIONS_SINGLE_SQLA=	SQLA14 SQLA20
 CALIBRE_DESC=		Calibre Desktop Conversion and Metadata Editing
 COMICS_DESC=		Comic Metadata Support
 GMAIL_DESC=		GMail
-GREADS_DESC=		Goodreads API
 IMAGICK6_NOX11_DESC=	ImageMagick6 without X11 support
 IMAGICK6_X11_DESC=	ImageMagick6 with X11 support
 IMAGICK7_NOX11_DESC=	ImageMagick7 without X11 support
@@ -87,15 +85,13 @@ COMICS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}comicapi>=0:archivers/py-comicapi@${P
 			${PYTHON_PKGNAMEPREFIX}natsort>=0:devel/py-natsort@${PY_FLAVOR}
 GMAIL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}google-api-python-client>=0:www/py-google-api-python-client@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}google-auth-oauthlib>=0:security/py-google-auth-oauthlib@${PY_FLAVOR}
-GREADS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}goodreads>=0:devel/py-goodreads@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}Levenshtein>=0:devel/py-Levenshtein@${PY_FLAVOR}
 IMAGICK6_NOX11_USES=	magick:6,run,nox11
 IMAGICK6_X11_USES=	magick:6,run
 IMAGICK7_NOX11_USES=	magick:7,run,nox11
 IMAGICK7_X11_USES=	magick:7,run
 KOBO_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}jsonschema>=0:devel/py-jsonschema@${PY_FLAVOR} \
 			kepubify>=0:textproc/kepubify
-LDAP_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Flask-SimpleLDAP>=0:www/py-flask-simpleldap@${PY_FLAVOR} \
+LDAP_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}flask-simpleldap>=0:www/py-flask-simpleldap@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}python-ldap>=0:net/py-python-ldap@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}sqlalchemy-utils>=0:databases/py-sqlalchemy-utils@${PY_FLAVOR}
 METADATA_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=0:www/py-beautifulsoup@${PY_FLAVOR} \

@@ -1,7 +1,7 @@
 PORTNAME=	mujs
-DISTVERSION=	1.3.8
+DISTVERSION=	1.3.9
 CATEGORIES=	lang devel
-MASTER_SITES=	https://codeberg.org/ccxvii/mujs/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/ \
+MASTER_SITES=	https://mujs.com/downloads/ \
 		https://www.unicode.org/Public/16.0.0/ucd/:unicode
 DIST_SUBDIR=	${PORTNAME}-${DISTVERSION}
 DISTFILES=	UnicodeData.txt:unicode \
@@ -25,8 +25,6 @@ USES=		compiler:c11 cpe gmake python:build readline # c11 is induced by the Free
 USE_LDCONFIG=	yes
 
 CPE_VENDOR=	artifex
-
-WRKSRC=		${WRKDIR}/${PORTNAME}
 
 LDFLAGS=	-Wl,-soname=libmujs.so
 
@@ -60,6 +58,7 @@ SANITIZED_MAKE_ARGS=	build=sanitize
 post-patch:
 	${REINPLACE_CMD} -e 's|https://www.unicode.org/Public/16.0.0/ucd/|file://${DISTDIR}/${DIST_SUBDIR}/|g' \
 		${WRKSRC}/Makefile
+	${REINPLACE_CMD} -e 's|  VERSION = .*|  VERSION = ${DISTVERSION}|' ${WRKSRC}/Makefile
 
 post-install:
 	@${STRIP_CMD} \

@@ -1,5 +1,6 @@
 PORTNAME=	borgbackup
-DISTVERSION=	1.4.3
+DISTVERSION=	1.4.4
+PORTREVISION=	1
 CATEGORIES=	archivers python
 MASTER_SITES=	https://github.com/borgbackup/borg/releases/download/${DISTVERSION}/ \
 		PYPI
@@ -13,7 +14,7 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 # note that borgbackup pins the msgpack version range per patchlevel version!
-_BB_DEPENDS=	${PYTHON_PKGNAMEPREFIX}msgpack>=1.0.3<1.1.3:devel/py-msgpack@${PY_FLAVOR}
+_BB_DEPENDS=	${PYTHON_PKGNAMEPREFIX}msgpack>=1.0.3<1.2.1_99:devel/py-msgpack@${PY_FLAVOR}
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pkgconfig>=0:devel/py-pkgconfig@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}setuptools-scm>=8:devel/py-setuptools-scm@${PY_FLAVOR} \
 		${_BB_DEPENDS}
@@ -29,7 +30,7 @@ TEST_DEPENDS=	${RUN_DEPENDS} \
 		fakeroot:security/fakeroot
 
 USES=		pkgconfig python ssl
-USE_PYTHON=	autoplist cython3 distutils
+USE_PYTHON=	autoplist cython distutils
 MAKE_ENV=	BORG_OPENSSL_PREFIX=${OPENSSLBASE}
 
 OPTIONS_DEFINE=		FUSE
@@ -37,20 +38,6 @@ OPTIONS_DEFAULT=	FUSE
 
 FUSE_DESC=	Support to mount locally borg backup files
 FUSE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}llfuse>0:filesystems/py-llfuse@${PY_FLAVOR}
-
-.include <bsd.port.pre.mk>
-
-.if (${OPSYS} == FreeBSD) && ${OSVERSION} < 1400033 # why 1400033?
-# 1. check for the OLDEST (last in list) history entry on the file, when it was added:
-#    git -C /usr/src hist lib/libc/posix1e/acl_extended_file_np.c
-# 2. check for the version you have obtained what __FreeBSD_version was
-#    and increment by one. This is inaccurate for the interim between file addition
-#    and __FreeBSD_version bump back then, but those versions were no releases and
-#    should no longer be in the field.
-EXTRA_PATCHES	+= ${FILESDIR}/extrapatch-setup.py
-post-patch:
-	${CP} ${FILESDIR}/acl_extended_file_np.c ${WRKSRC}/src/borg/platform/
-.endif
 
 _BORGHOME=${WRKDIR}/testhome
 _BORGENV=-i BORG_PASSPHRASE=secret123 PYTHONPATH=${STAGEDIR}${PYTHON_SITELIBDIR} HOME=${_BORGHOME}
@@ -87,4 +74,4 @@ do-test:
 # the PATH dance works around a strange "pkg-config" file not found error.
 	cd ${WRKSRC} && ${SETENV} ${_BORGENV} PATH=${PATH}:${LOCALBASE}/bin tox-${PYTHON_VER} -e ${PY_FLAVOR} -vv
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

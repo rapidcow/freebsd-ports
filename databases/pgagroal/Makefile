@@ -1,11 +1,11 @@
 PORTNAME=	pgagroal
-DISTVERSION=	1.6.0
+DISTVERSION=	2.1.0
 CATEGORIES=	databases
-MASTER_SITES=	https://github.com/agroal/${PORTNAME}/releases/download/${DISTVERSION}/
+MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/${DISTVERSION}/
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	High-performance protocol-native connection pool for PostgreSQL
-WWW=		https://agroal.github.io/pgagroal/
+WWW=		https://pgagroal.github.io/
 
 LICENSE=	BSD3CLAUSE
 
@@ -14,7 +14,9 @@ BROKEN_i386=	wants long to be a 64 bit type
 
 BUILD_DEPENDS=	rst2man:textproc/py-docutils
 LIB_DEPENDS=	libcjson.so:devel/libcjson \
-		libev.so:devel/libev
+		libev.so:devel/libev \
+		liblz4.so:archivers/liblz4 \
+		libzstd.so:archivers/zstd
 
 USES=		cmake ssl
 USE_LDCONFIG=	yes

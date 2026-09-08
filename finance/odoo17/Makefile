@@ -1,6 +1,5 @@
 PORTNAME=	odoo
-PORTVERSION=	17.0.20250719
-PORTREVISION=	4
+PORTVERSION=	17.0.20260618
 CATEGORIES=	finance www
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 PKGNAMESUFFIX=  17
@@ -12,7 +11,7 @@ WWW=		https://www.odoo.com
 LICENSE=	LGPL3
 
 USE_GITHUB=	yes
-GH_TAGNAME=	e6815cc8d354ae204507485035d2d97919b6ae0f
+GH_TAGNAME=	9ffba3bd6b018ff44ace8c8f3ff30f5188474d82
 
 LIB_DEPENDS=	libxslt.so:textproc/libxslt \
 		libevent.so:devel/libevent \
@@ -20,7 +19,7 @@ LIB_DEPENDS=	libxslt.so:textproc/libxslt \
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Babel>=1.3:devel/py-babel@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}GeoIP2>0:net/py-GeoIP2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>=0:devel/py-Jinja2@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}XlsxWriter>=0:textproc/py-xlsxwriter@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}xlsxwriter>=0:textproc/py-xlsxwriter@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}chardet>=0:textproc/py-chardet@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}decorator>0:devel/py-decorator@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}docutils>=0:textproc/py-docutils@${PY_FLAVOR} \
@@ -88,7 +87,7 @@ GROUPS=		${USERS}
 USE_RC_SUBR=	${PORTNAME}
 SUB_FILES=	pkg-message
 
-CONFLICTS=	odoo16 odoo
+CONFLICTS=	odoo16 odoo18 odoo
 
 ETCDIR=		${PREFIX}/etc/odoo
 

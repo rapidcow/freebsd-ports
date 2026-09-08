@@ -1,15 +1,15 @@
---- chrome/browser/extensions/api/enterprise_reporting_private/enterprise_reporting_private_api.cc.orig	2025-05-06 12:23:00 UTC
+--- chrome/browser/extensions/api/enterprise_reporting_private/enterprise_reporting_private_api.cc.orig	2026-08-13 07:41:05 UTC
 +++ chrome/browser/extensions/api/enterprise_reporting_private/enterprise_reporting_private_api.cc
-@@ -40,7 +40,7 @@
- #include "components/reporting/util/statusor.h"
- #endif
+@@ -29,7 +29,7 @@
+ #include "components/enterprise/connectors/core/reporting_constants.h"
+ #include "google_apis/gaia/gaia_id.h"
  
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  #include <optional>
  
  #include "base/strings/string_util.h"
-@@ -114,7 +114,7 @@ api::enterprise_reporting_private::ContextInfo ToConte
+@@ -282,7 +282,7 @@ api::enterprise_reporting_private::ContextInfo ToConte
  }
  
  bool AllowClientCertificateReportingForUsers() {
@@ -18,7 +18,7 @@
    return base::FeatureList::IsEnabled(
        enterprise_signals::features::kAllowClientCertificateReportingForUsers);
  #else
-@@ -127,7 +127,7 @@ bool IsProfilePrefManaged(Profile* profile, std::strin
+@@ -295,7 +295,7 @@ bool IsProfilePrefManaged(Profile* profile, std::strin
    return pref && pref->IsManaged();
  }
  
@@ -27,7 +27,7 @@
  
  device_signals::SignalsAggregationRequest CreateAggregationRequest(
      device_signals::SignalName signal_name) {
-@@ -189,7 +189,7 @@ EnterpriseReportingPrivateGetDeviceIdFunction::
+@@ -357,7 +357,7 @@ EnterpriseReportingPrivateGetDeviceIdFunction::
  
  // getPersistentSecret
  
@@ -36,9 +36,9 @@
  
  EnterpriseReportingPrivateGetPersistentSecretFunction::
      EnterpriseReportingPrivateGetPersistentSecretFunction() = default;
-@@ -629,7 +629,7 @@ void EnterpriseReportingPrivateEnqueueRecordFunction::
+@@ -674,7 +674,7 @@ void EnterpriseReportingPrivateGetCertificateFunction:
+   Respond(WithArguments(ret.ToValue()));
  }
- #endif
  
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)

@@ -1,6 +1,7 @@
 PORTNAME=	sameboy
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.2
+DISTVERSION=	1.0.3
+PORTREVISION=	1
 CATEGORIES=	emulators games
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -11,8 +12,10 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	rgbds>0:devel/rgbds
+LIB_DEPENDS=	libpng16.so:graphics/png
 
-USES=		desktop-file-utils gl gmake gnome pkgconfig sdl
+USES=		desktop-file-utils gl gmake gnome pkgconfig sdl \
+		shared-mime-info
 USE_GITHUB=	yes
 GH_ACCOUNT=	LIJI32
 GH_PROJECT=	SameBoy
@@ -20,8 +23,8 @@ USE_GL=		gl
 USE_GNOME=	gdkpixbuf
 USE_SDL=	sdl2
 
-MAKE_ARGS=	FREEDESKTOP=true \
-		WARNINGS="-Wno-error"
+MAKE_ARGS=	CONF=release \
+		FREEDESKTOP=true
 ALL_TARGET=	sdl
 
 PORTSCOUT=	limit:^d\.d+\.

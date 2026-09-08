@@ -1,9 +1,14 @@
 PORTNAME=	mongodb
 DISTVERSIONPREFIX=	r
 DISTVERSION=	8.0.12
-PORTREVISION=	5
+PORTREVISION=	10
 CATEGORIES=	databases net
 PKGNAMESUFFIX=	${DISTVERSION:R:S/.//}
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+# https://github.com/mongodb/mongo/pull/1619/
+# "Modernize dynamic module loading to work with Python3.12"
+PATCHFILES+=	0877732109589e441cbf234dce17ec0e7b614902.patch:-p1
 
 MAINTAINER=	ronald@FreeBSD.org
 COMMENT=	MongoDB Community Edition (8.0.x Branch)
@@ -14,6 +19,8 @@ LICENSE_COMB=	multi
 LICENSE_NAME_SSPLv1=	Server Side Public License Version 1
 LICENSE_FILE_SSPLv1=	${WRKSRC}/LICENSE-Community.txt
 LICENSE_PERMS_SSPLv1=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+
+BROKEN_FreeBSD_16=	integral_wrapper.hpp:62:51: error: in-class initializer for static data member is not a constant expression
 
 ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64le
 ONLY_FOR_ARCHS_REASON=	only ported to amd64, aarch64, and powerpc64le on FreeBSD; upstream supports arm64, ppc64le, s390x, and x86-64
@@ -63,7 +70,7 @@ python_OLD_CMD=	@python_interpreter@
 
 HAS_CONFIGURE=		yes
 CONFIGURE_SCRIPT=	gen-config.sh
-CONFIGURE_ARGS+=	${MOZJS_ARCH} \
+CONFIGURE_ARGS=		${MOZJS_ARCH} \
 			freebsd
 CONFIGURE_ENV+=		PYTHON3="${PYTHON_CMD}"
 

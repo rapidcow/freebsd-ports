@@ -26,6 +26,6 @@ lib/rsyslog/omstdout.so
 lib/rsyslog/omtesting.so
 lib/rsyslog/omuxsock.so
 lib/rsyslog/pmciscoios.so
+sbin/rsyslogd
 share/man/man5/rsyslog.conf.5.gz
 share/man/man8/rsyslogd.8.gz
-sbin/rsyslogd

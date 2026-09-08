@@ -1,5 +1,5 @@
 PORTNAME=	php85
-DISTVERSION=	8.5.1
+DISTVERSION=	8.5.9
 PORTREVISION?=	0
 CATEGORIES?=	lang devel www
 MASTER_SITES=	PHP/distributions
@@ -18,8 +18,7 @@ PHP_VER=	85
 CONFLICTS_INSTALL?=	php[0-9][0-9]${PKGNAMESUFFIX}
 
 .if !defined(PKGNAMESUFFIX)
-LIB_DEPENDS=	libcapstone.so:devel/capstone \
-		libpcre2-8.so:devel/pcre2
+LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	\
@@ -38,7 +37,7 @@ LDFLAGS+=	-L${OPENSSLLIB} -lcrypto -lssl
 LDFLAGS_i386=	-Wl,-z,notext
 
 OPTIONS_DEFINE+=CGI CLI DEBUG DTRACE EMBED FPM IPV6 LINKTHR \
-				MYSQLND NOASLR PCRE PHPDBG ZTS
+				MYSQLND NOASLR PCRE PHPDBG ZTS JIT
 OPTIONS_DEFAULT=	CGI CLI DTRACE EMBED FPM LINKTHR MYSQLND PCRE
 OPTIONS_EXCLUDE_DragonFly=	DTRACE
 # ld(1) fails to link probes: Relocations in generic ELF (EM: 0)
@@ -46,9 +45,6 @@ OPTIONS_EXCLUDE_aarch64=	DTRACE
 # dt_modtext:opensolaris/ib/libdtrace/common/dt_link.c: arm not impemented
 OPTIONS_EXCLUDE_armv6=	DTRACE
 OPTIONS_EXCLUDE_armv7=	DTRACE
-# Bug 197128:  No ASM code for MIPS/MIPS64, disable FPM
-OPTIONS_EXCLUDE_mips=	DTRACE FPM
-OPTIONS_EXCLUDE_mips64=	DTRACE FPM
 OPTIONS_EXCLUDE_riscv64=	DTRACE
 NO_OPTIONS_SORT=	yes
 OPTIONS_SUB=			yes
@@ -57,6 +53,7 @@ CGI_DESC=	Build CGI version
 CLI_DESC=	Build CLI version
 EMBED_DESC=	Build embedded library
 FPM_DESC=	Build FPM version
+JIT_DESC=		Enable JIT support for opcache
 LINKTHR_DESC=	Link thread lib (for threaded extensions)
 MYSQLND_DESC=	Build with MySQL Native Driver
 PCRE_DESC=	Use system pcre instead of bundled one
@@ -77,6 +74,8 @@ FPM_CONFIGURE_ON=	--enable-fpm \
 FPM_VARS=		PHP_SAPI+=fpm \
 			USE_RC_SUBR+=php_fpm
 IPV6_CONFIGURE_OFF=	--disable-ipv6
+JIT_LIB_DEPENDS=	libcapstone.so:devel/capstone
+JIT_CONFIGURE_ON=	--with-capstone --enable-opcache-jit=yes
 LINKTHR_LIBS=		-lpthread
 MYSQLND_CONFIGURE_ON=	--enable-mysqlnd
 NOASLR_USES=	elfctl
@@ -205,7 +204,7 @@ COMMENT=	The ${PHP_MODNAME} shared extension for php
 USES+=		php:ext,noflavors
 PHP_MODNAME=	${PKGNAMESUFFIX:S/-//}
 PHP_VER=	85
-IGNORE_WITH_PHP=	82 83 84
+IGNORE_WITH_PHP=	82 83 84 86
 
 EXTSUBDIR=	${DISTNAME}/ext/${PHP_MODNAME}
 WRKSRC=		${WRKDIR}/${EXTSUBDIR}
@@ -264,7 +263,7 @@ FLATFILE_CONFIGURE_ON=	--disable-flatfile
 GDBM_LIB_DEPENDS=	libgdbm.so:databases/gdbm
 GDBM_CONFIGURE_ARGS=	--with-gdbm=${LOCALBASE}
 INIFILE_CONFIGURE_OFF=	--disable-inifile
-LMDB_LIB_DEPENDS=	liblmdb.so:databases/lmdb
+LMDB_LIB_DEPENDS=	liblmdb.so:databases/lmdb0
 LMDB_CONFIGURE_ARGS=	--with-lmdb=${LOCALBASE}
 QDBM_LIB_DEPENDS=	libqdbm.so:databases/qdbm
 QDBM_CONFIGURE_ARGS=	--with-qdbm=${LOCALBASE}

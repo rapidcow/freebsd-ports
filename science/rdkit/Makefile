@@ -1,6 +1,7 @@
 PORTNAME=	rdkit
 DISTVERSIONPREFIX=	Release_
 DISTVERSION=	2025_09_2
+PORTREVISION=	2
 CATEGORIES=	science
 MASTER_SITES=	https://github.com/schrodinger/maeparser/archive/:maeparser \
 		https://github.com/schrodinger/coordgenlibs/archive/:coordgen \
@@ -24,6 +25,7 @@ LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/license.txt
 
 BROKEN_FreeBSD_16_amd64=	clang crashes, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=272652
+BROKEN_FreeBSD_16_aarch64=	clang crashes, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=272652
 
 BUILD_DEPENDS=	catch>0:devel/catch \
 		flex:textproc/flex
@@ -78,9 +80,9 @@ PGSQL_DESC=		Build the PostgreSQL cartridge
 PGSQL_CMAKE_BOOL=	RDK_BUILD_PGSQL
 
 PYTHON_CMAKE_BOOL=	RDK_BUILD_PYTHON_WRAPPERS
-PYTHON_BUILD_DEPENDS=	${PYNUMPY}
+PYTHON_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=1.16:math/py-numpy@${PY_FLAVOR}
 PYTHON_LIB_DEPENDS=	${PY_BOOST}
-PYTHON_RUN_DEPENDS=	${PYNUMPY} \
+PYTHON_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=1.16:math/py-numpy@${PY_FLAVOR} \
 			${PY_PILLOW} \
 			${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}reportlab>0:print/py-reportlab@${PY_FLAVOR}

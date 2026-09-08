@@ -1,6 +1,6 @@
---- components/embedder_support/user_agent_utils.cc.orig	2026-01-16 13:40:34 UTC
+--- components/embedder_support/user_agent_utils.cc.orig	2026-08-13 07:41:05 UTC
 +++ components/embedder_support/user_agent_utils.cc
-@@ -321,7 +321,7 @@ std::string GetUserAgentPlatform() {
+@@ -285,7 +285,7 @@ std::string GetUserAgentPlatform() {
    return "";
  #elif BUILDFLAG(IS_MAC)
    return "Macintosh; ";
@@ -9,34 +9,25 @@
    return "X11; ";  // strange, but that's what Firefox uses
  #elif BUILDFLAG(IS_ANDROID)
    return "Linux; ";
-@@ -337,7 +337,7 @@ std::string GetUserAgentPlatform() {
- }
- 
- std::string GetUnifiedPlatform() {
--#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_LINUX)
-+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD) 
-   // This constant is only used on Android (desktop) and Linux.
-   constexpr char kUnifiedPlatformLinuxX64[] = "X11; Linux x86_64";
- #endif
-@@ -357,7 +357,7 @@ std::string GetUnifiedPlatform() {
+@@ -325,7 +325,7 @@ std::string GetUnifiedPlatform() {
    return "Windows NT 10.0; Win64; x64";
  #elif BUILDFLAG(IS_FUCHSIA)
    return "Fuchsia";
 -#elif BUILDFLAG(IS_LINUX)
-+#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD) 
-   return kUnifiedPlatformLinuxX64;
++#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+   return "X11; Linux x86_64";
  #elif BUILDFLAG(IS_IOS)
    if (ui::GetDeviceFormFactor() == ui::DEVICE_FORM_FACTOR_TABLET) {
-@@ -619,7 +619,7 @@ bool GetMobileBitForUAMetadata() {
- }
+@@ -594,7 +594,7 @@ std::string GetPlatformVersion() {
  
- std::string GetPlatformVersion() {
--#if BUILDFLAG(IS_LINUX)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD) 
-   // TODO(crbug.com/40245146): Remove this Blink feature
-   if (base::FeatureList::IsEnabled(
-           blink::features::kReduceUserAgentDataLinuxPlatformVersion)) {
-@@ -667,6 +667,9 @@ std::string GetPlatformForUAMetadata() {
+ #if BUILDFLAG(IS_WIN)
+   return GetWindowsPlatformVersion();
+-#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_FUCHSIA)
++#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
+   return std::string();
+ #else
+ 
+@@ -631,6 +631,9 @@ std::string GetPlatformForUAMetadata() {
  #else
    return "Chromium OS";
  #endif
@@ -46,7 +37,7 @@
  #else
    return std::string(version_info::GetOSType());
  #endif
-@@ -876,6 +879,16 @@ std::string BuildOSCpuInfoFromOSVersionAndCpuType(cons
+@@ -815,6 +818,16 @@ std::string BuildOSCpuInfoFromOSVersionAndCpuType(cons
                        "Android %s", os_version.c_str()
  #elif BUILDFLAG(IS_FUCHSIA)
                        "Fuchsia"

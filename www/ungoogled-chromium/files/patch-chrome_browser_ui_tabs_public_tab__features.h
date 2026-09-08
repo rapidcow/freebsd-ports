@@ -1,6 +1,6 @@
---- chrome/browser/ui/tabs/public/tab_features.h.orig	2026-01-16 13:40:34 UTC
+--- chrome/browser/ui/tabs/public/tab_features.h.orig	2026-08-13 07:41:05 UTC
 +++ chrome/browser/ui/tabs/public/tab_features.h
-@@ -125,7 +125,7 @@ class TabContextualizationController;
+@@ -153,7 +153,7 @@ class TabContextualizationController;
  }  // namespace lens
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
@@ -9,12 +9,20 @@
  namespace wallet {
  class ChromeWalletablePassClient;
  }  // namespace wallet
-@@ -502,7 +502,7 @@ class TabFeatures {
-       new_tab_page_preload_pipeline_manager_;
+@@ -568,14 +568,14 @@ class TabFeatures {
+       page_context_eligibility_helper_;
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
 -    BUILDFLAG(IS_CHROMEOS)
 +    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
    std::unique_ptr<wallet::ChromeWalletablePassClient> walletable_pass_client_;
  #endif
-   // Must be the last member.
+ 
+   std::unique_ptr<contextual_tasks::ContextualTasksTabVisitTracker>
+       contextual_tasks_tab_visit_tracker_;
+ 
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
+   std::unique_ptr<enterprise_reporting::SaasUsageNavigationObserver>
+       saas_usage_navigation_observer_;
+ #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)

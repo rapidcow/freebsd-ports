@@ -1,6 +1,5 @@
 PORTNAME=	python
 DISTVERSION=	${PYTHON_DISTVERSION}
-PORTREVISION=	1
 CATEGORIES=	lang python
 MASTER_SITES=	PYTHON/ftp/python/${DISTVERSION:C/[a-z].*//}
 PKGNAMESUFFIX=	${PYTHON_SUFFIX}
@@ -8,8 +7,6 @@ DISTNAME=	Python-${DISTVERSION}
 DIST_SUBDIR=	python
 
 PATCH_SITES=	https://github.com/python/cpython/commit/
-PATCHFILES=	c97e87593063d84a2bd9fe7068b30eb44de23dc0.patch:-p1 \
-		5dc101675fd22918facbbe0fecdc821502beaaf0.patch:-p1
 
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Interpreted object-oriented programming language
@@ -20,7 +17,8 @@ EXPIRATION_DATE=2026-09-30
 
 LICENSE=	PSFL
 
-LIB_DEPENDS=	libffi.so:devel/libffi
+LIB_DEPENDS=	libexpat.so:textproc/expat2 \
+		libffi.so:devel/libffi
 
 USES=		compiler:c11 cpe ncurses pathfix pkgconfig \
 		python:${PYTHON_DISTVERSION:R},env readline shebangfix ssl tar:xz
@@ -34,7 +32,7 @@ SHEBANG_FILES+=	Lib/test/ziptestdata/exe_with_z64 \
 		Lib/test/ziptestdata/header.sh
 
 DISABLED_EXTENSIONS=	_sqlite3 _tkinter _gdbm
-CONFIGURE_ARGS+=	--enable-shared --without-ensurepip \
+CONFIGURE_ARGS+=	--enable-shared --without-ensurepip --with-system-expat \
 			--with-system-ffi
 CONFIGURE_ENV+=		OPT="" # Null out OPT to respect user CFLAGS and remove optimizations
 
@@ -81,7 +79,7 @@ LTO_CONFIGURE_ON=	--with-lto
 # Use CPPFLAGS over CFLAGS due to -I ordering, causing elementtree and pyexpat
 # to break in Python 2.7, or preprocessor complaints in Python >= 3.3
 # Upstream Issue: https://bugs.python.org/issue6299
-NLS_USES=		gettext
+NLS_USES=		gettext-runtime
 NLS_CPPFLAGS=		-I${LOCALBASE}/include
 NLS_LIBS=		-L${LOCALBASE}/lib -lintl
 NLS_CONFIGURE_ENV_OFF=	ac_cv_lib_intl_textdomain=no ac_cv_header_libintl_h=no

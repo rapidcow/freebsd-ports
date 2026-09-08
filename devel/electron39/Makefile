@@ -1,10 +1,11 @@
 PORTNAME=	electron
 DISTVERSIONPREFIX=	v
 DISTVERSION=	${ELECTRON_VER}
+PORTREVISION=	2
 PULSEMV=	16
 PULSEV=		${PULSEMV}.1
 CATEGORIES=	devel
-MASTER_SITES=	https://github.com/tagattie/FreeBSD-Electron/releases/download/v39.2.7/:chromium \
+MASTER_SITES=	https://github.com/tagattie/FreeBSD-Electron/releases/download/v39.3.0/:chromium \
 		https://freedesktop.org/software/pulseaudio/releases/:pulseaudio
 PKGNAMESUFFIX=	${ELECTRON_VER_MAJOR}
 DISTFILES=	chromium-${CHROMIUM_VER}${EXTRACT_SUFX}.0:chromium \
@@ -22,6 +23,9 @@ LICENSE=	BSD3CLAUSE LGPL21 MPL11 MIT
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/electron/LICENSE
 
+DEPRECATED=	EOLed upstream, switch to newer version
+EXPIRATION_DATE=2026-06-30
+
 BROKEN_i386=	fetch fails: node process stalls during fetch phase and eats up all CPUs
 ONLY_FOR_ARCHS=	aarch64 amd64 i386
 
@@ -32,7 +36,7 @@ PATCH_DEPENDS=	git:devel/git \
 BUILD_DEPENDS=	gperf:devel/gperf \
 		bindgen:devel/rust-bindgen-cli \
 		yasm:devel/yasm \
-		${LOCALBASE}/libdata/pkgconfig/dri.pc:graphics/mesa-dri \
+		${LOCALBASE}/libdata/pkgconfig/dri.pc:graphics/mesa-libs \
 		rustc:lang/rust \
 		${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat \
 		node${NODEJS_VERSION}>0:www/node${NODEJS_VERSION} \
@@ -68,10 +72,10 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils
 TEST_DEPENDS=	git:devel/git \
 		${PYTHON_PKGNAMEPREFIX}python-dbusmock>0:devel/py-python-dbusmock@${PY_FLAVOR}
 
-USES=		bison compiler:c++17-lang cpe display:test electron:env \
-		gettext-tools gl gmake gnome iconv:wchar_t jpeg \
-		localbase:ldflags ninja nodejs:22,build pkgconfig \
-		python:build,test qt:5 shebangfix tar:xz xorg
+USES=		bison compiler:c++17-lang cpe display:test gettext-tools gl \
+		gmake gnome iconv:wchar_t jpeg localbase:ldflags ninja \
+		nodejs:22,build npm:yarn4 pkgconfig python:build,test qt:5 \
+		shebangfix tar:xz xorg
 
 CPE_VENDOR=	electronjs
 USE_GITHUB=	yes
@@ -86,7 +90,6 @@ USE_GNOME=	atk cairo gdkpixbuf gtk30 libxml2 libxslt pango
 USE_XORG=	x11 xcb xcomposite xcursor xdamage xext xfixes xi xrandr \
 		xrender xscrnsaver xtst
 USE_QT=		buildtools:build core:build widgets:build
-USE_ELECTRON=	npm:yarn4 prefetch extract
 NPM_EXTRACT_WRKSRC=	${WRKSRC:H}/${PORTNAME}-${ELECTRON_VER}
 
 SHEBANG_FILES=	chrome/tools/build/linux/chrome-wrapper buildtools/linux64/clang-format
@@ -223,9 +226,9 @@ SNDIO_VARS=		GN_ARGS+=use_sndio=true
 SNDIO_VARS_OFF=		GN_ARGS+=use_sndio=false
 
 # See ${WRKSRC}/electron/DEPS for CHROMIUM_VER
-CHROMIUM_VER=			142.0.7444.235
+CHROMIUM_VER=			142.0.7444.265
 # See ${WRKSRC}/electron/DEPS for NODE_VER
-NODE_VER=			22.21.1
+NODE_VER=			22.22.1
 # See ${WRKSRC}/electron/DEPS for NAN_VER
 NAN_VER=			e14bdcd1f72d62bca1d541b66da43130384ec213
 # See ${WRKSRC}/electron/DEPS for SQUIRREL_MAC_VER
@@ -309,7 +312,7 @@ pre-extract:
 	@${CAT} ${DISTDIR}/${DIST_SUBDIR}/chromium-${CHROMIUM_VER}${EXTRACT_SUFX}.? > \
 		${WRKSRC:H}/chromium-${CHROMIUM_VER}${EXTRACT_SUFX}
 	@cd ${WRKSRC:H} && \
-	${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} \
+	${SETENV} ${EXTRACT_ENV} ${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} \
 		chromium-${CHROMIUM_VER}${EXTRACT_SUFX} ${EXTRACT_AFTER_ARGS}
 
 post-extract:
@@ -330,6 +333,8 @@ post-extract:
 		${WRKSRC}/third_party/engflow-reclient-configs
 
 pre-patch:
+	${REINPLACE_CMD} -e 's|src/third_party/angle/src|src/third_party/angle|' \
+		${WRKSRC}/electron/patches/config.json
 	${SH} ${FILESDIR}/apply-electron-patches.sh ${WRKSRC}
 	# ${FIND} ${WRKSRC} -type f -name '*.orig' -print -delete
 	# ${FIND} ${WRKSRC} -type f -name '*~' -print -delete

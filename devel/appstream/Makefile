@@ -2,7 +2,8 @@
 # being overriden by devel/appstream-qt slave port
 
 PORTNAME?=	AppStream
-DISTVERSION=	1.1.1
+DISTVERSION=	1.1.2
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://www.freedesktop.org/software/${PORTNAME:tl}/releases/
 
@@ -13,10 +14,11 @@ WWW=		https://www.freedesktop.org/wiki/Distributions/AppStream/
 LICENSE=	GPLv2+ LGPL21+
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	docbook-xsl>=0:textproc/docbook-xsl \
+BUILD_DEPENDS=	bash-completion>0:shells/bash-completion \
+		docbook-xsl>=0:textproc/docbook-xsl \
 		gperf>0:devel/gperf \
 		itstool:textproc/itstool \
-		lmdb>0:databases/lmdb
+		lmdb0>0:databases/lmdb0
 LIB_DEPENDS?=	libcurl.so:ftp/curl \
 		libstemmer.so:textproc/snowballstemmer \
 		libxmlb.so:textproc/libxmlb \

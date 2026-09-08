@@ -1,18 +1,19 @@
 PORTNAME=	mattermost
-PORTVERSION=	10.11.8
-PORTREVISION=	2
+PORTVERSION=	11.7.3
+PORTREVISION=	3
 CATEGORIES=	www
 MASTER_SITES=	LOCAL/decke
 PKGNAMESUFFIX=	-server
 
 MAINTAINER=	decke@FreeBSD.org
-COMMENT=	Open source Slack-alternative in Golang and React
-WWW=		https://mattermost.org/
+COMMENT=	Open core, self-hosted collaboration platform in Golang and React
+WWW=		https://mattermost.com/
 
-LICENSE=	MIT
+LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/../LICENSE.txt
 
-ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7
+ONLY_FOR_ARCHS=	aarch64 amd64
+ONLY_FOR_ARCHS_REASON=	module modernc.org/sqlite only supported on aarch64 and amd64
 
 RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss \
 		mattermost-webapp>=${PORTVERSION}:www/mattermost-webapp
@@ -26,8 +27,8 @@ GO_BUILDFLAGS=	-ldflags=" \
 		-X github.com/mattermost/mattermost/server/public/model.BuildHashEnterprise=none \
 		-X github.com/mattermost/mattermost/server/public/model.BuildEnterpriseReady=false"
 
-WRKSRC_SUBDIR=	server
 WWWDIR=		${PREFIX}/www/mattermost
+WRKSRC_SUBDIR=	server
 
 MATTERMOSTD_USER=	mattermost
 MATTERMOSTD_GROUP=	mattermost

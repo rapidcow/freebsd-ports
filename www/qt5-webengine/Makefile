@@ -19,12 +19,16 @@
 
 PORTNAME=	webengine
 PORTVERSION=	${QT5_VERSION}${QT5_KDE_PATCH}
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	www
 PKGNAMEPREFIX=	qt5-
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt 5 library to render web content
+
+# Do not remove without approval from kde@
+DEPRECATED=	Based on outdated Chromium with security fixes up to 135.0.7049.95
+EXPIRATION_DATE=	2026-09-30
 
 BUILD_DEPENDS=	bison:devel/bison \
 		${LOCALBASE}/include/linux/input.h:devel/evdev-proto \
@@ -125,7 +129,7 @@ USES+=		nodejs:build,20
 USES+=		nodejs:build,lts
 .endif
 
-.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*}
+.if ${ARCH:Mpowerpc*}
 PLIST_SUB+=	BE="" LE="@comment "
 .else
 PLIST_SUB+=	BE="@comment " LE=""
@@ -153,7 +157,7 @@ post-patch:
 	@${REINPLACE_CMD} -E -e 's|^(MODULE_VERSION = ).*|\1${QT5_VERSION}|' \
 		${WRKSRC}/.qmake.conf
 
-.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*}
+.if ${ARCH:Mpowerpc*}
 	@${REINPLACE_CMD} -e 's/icudtl.dat/icudtb.dat/' \
 		${WRKSRC}/src/core/core_module.pro
 .endif

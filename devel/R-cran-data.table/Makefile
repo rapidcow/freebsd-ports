@@ -1,5 +1,5 @@
 PORTNAME=	data.table
-DISTVERSION=	1.17.8
+DISTVERSION=	1.18.4
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
@@ -15,10 +15,6 @@ TEST_DEPENDS=	R-cran-bit64>0:devel/R-cran-bit64 \
 		R-cran-R.utils>0:devel/R-cran-R.utils
 
 USES=		cran:auto-plist,compiles pkgconfig
-
-# Tests	needs /etc/locatime symlink defined to succeed
-# and C.UTF-8 env set:
-MAKE_ENV=	LC_ALL=C.UTF-8
 
 NO_ARCH_IGNORE=	data_table.so
 

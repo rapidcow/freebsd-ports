@@ -1,6 +1,7 @@
 PORTNAME=	mutt
-DISTVERSION=	2.2.16
-CATEGORIES+=	mail
+DISTVERSION=	2.4.1
+PORTREVISION=	1
+CATEGORIES=	mail
 MASTER_SITES=	ftp://ftp.mutt.org/pub/mutt/ \
 		https://bitbucket.org/mutt/mutt/downloads/
 DIST_SUBDIR=	mutt
@@ -123,7 +124,7 @@ HCACHE_GDBM_LIB_DEPENDS=		libgdbm.so:databases/gdbm
 HCACHE_GDBM_CONFIGURE_WITH=		gdbm=${LOCALBASE}
 HCACHE_KYOTOCABINET_LIB_DEPENDS=	libkyotocabinet.so:databases/kyotocabinet
 HCACHE_KYOTOCABINET_CONFIGURE_WITH=	kyotocabinet=${LOCALBASE}
-HCACHE_LMDB_LIB_DEPENDS=		liblmdb.so:databases/lmdb
+HCACHE_LMDB_LIB_DEPENDS=		liblmdb.so:databases/lmdb0
 HCACHE_LMDB_CONFIGURE_WITH=		lmdb=${LOCALBASE}
 HCACHE_NONE_CONFIGURE_ON=		--disable-hcache
 HCACHE_NONE_CONFIGURE_OFF=		--enable-hcache
@@ -182,8 +183,8 @@ post-install:
 
 # Undo some dist. installed files
 post-stage:
-	@${MV} ${STAGEDIR}/${LOCALBASE}/etc/Muttrc.dist \
-		${STAGEDIR}/${LOCALBASE}/etc/Muttrc.sample
-	@${RM} ${STAGEDIR}/${LOCALBASE}/etc/mime.types*
+	@${MV}  ${STAGEDIR}/${PREFIX}/etc/Muttrc.dist \
+		${STAGEDIR}/${PREFIX}/etc/Muttrc.sample
+	@${RM}  ${STAGEDIR}/${PREFIX}/etc/mime.types*
 
 .include <bsd.port.mk>

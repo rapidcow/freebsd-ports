@@ -1,6 +1,7 @@
 PORTNAME=	ripgrep-all
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.10.10
+PORTREVISION=	4
 CATEGORIES=	textproc
 
 MAINTAINER=	eduardo@freebsd.org

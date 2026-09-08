@@ -1,5 +1,5 @@
 PORTNAME=	redmine
-PORTVERSION=	6.0.7
+PORTVERSION=	6.0.9
 PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	https://www.redmine.org/releases/
@@ -16,6 +16,7 @@ LICENSE_FILE=	${WRKSRC}/doc/COPYING
 RUN_DEPENDS=	rubygem-actionpack-xml_parser-rails72>=0:textproc/rubygem-actionpack-xml_parser-rails72 \
 		rubygem-addressable>0:www/rubygem-addressable \
 		rubygem-bundler>=1.12.0:sysutils/rubygem-bundler \
+		rubygem-cgi>=0:www/rubygem-cgi \
 		rubygem-csv>=3.2.6:devel/rubygem-csv \
 		rubygem-debug>=0:devel/rubygem-debug \
 		rubygem-erb>0:devel/rubygem-erb \
@@ -36,7 +37,7 @@ RUN_DEPENDS=	rubygem-actionpack-xml_parser-rails72>=0:textproc/rubygem-actionpac
 		rubygem-request_store15>=1.5.1:devel/rubygem-request_store15 \
 		rubygem-roadie-rails-rails72>=3.2.0:mail/rubygem-roadie-rails-rails72 \
 		rubygem-rotp>=5.0.0:devel/rubygem-rotp \
-		rubygem-rouge>=4.5.0:textproc/rubygem-rouge \
+		rubygem-rouge4>=4.5.0:textproc/rubygem-rouge4 \
 		rubygem-rqrcode>0:www/rubygem-rqrcode \
 		rubygem-rubocop-performance>=0:devel/rubygem-rubocop-performance \
 		rubygem-rubocop-rails>0:devel/rubygem-rubocop-rails \
@@ -85,7 +86,7 @@ PUMA_RUN_DEPENDS=	rubygem-puma>=6.5.0:www/rubygem-puma \
 			rubygem-rb-kqueue>=0.2:devel/rubygem-rb-kqueue
 PUMA_SUB_LIST=		WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
 PUMA_VARS=		USE_RC_SUBR=redmine
-RMAGIC_RUN_DEPENDS=	rubygem-mini_magick4>=4.11.0:graphics/rubygem-mini_magick4
+RMAGIC_RUN_DEPENDS=	rubygem-mini_magick>=5.0.1:graphics/rubygem-mini_magick
 SQLITE_RUN_DEPENDS=	rubygem-sqlite3>=1.7.0:databases/rubygem-sqlite3
 
 .include <bsd.port.options.mk>
@@ -96,7 +97,7 @@ post-extract:
 	@${MV} ${WRKSRC}/config/settings.yml ${WRKSRC}/config/settings.yml.sample
 	@${MV} ${WRKSRC}/config/database.yml.example ${WRKSRC}/config/database.yml.sample
 
-post-patch:
+Xpost-patch:
 	@${RM} ${WRKSRC}/Gemfile.orig
 
 do-install:

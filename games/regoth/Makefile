@@ -10,7 +10,6 @@ WWW=		https://github.com/REGoth-project/REGoth
 
 LICENSE=	GPLv3
 
-BROKEN_FreeBSD_13_powerpc64=	fails to build: mmintrin.h:33:5: error: use of undeclared identifier '__builtin_ia32_emms'; did you mean '__builtin_isless'?
 BROKEN_riscv64=			fails to build: mmintrin.h:33:5: error: use of undeclared identifier '__builtin_ia32_emms'; did you mean '__builtin_isless'?
 
 LIB_DEPENDS=	libsndfile.so:audio/libsndfile
@@ -42,6 +41,14 @@ CMAKE_ARGS+=	-DREGOTH_BUILD_WITH_SYSTEM_OPENAL:BOOL=YES
 CXXFLAGS_powerpc64le=	-DNO_WARN_X86_INTRINSICS
 LDFLAGS_i386=	-Wl,-znotext
 
+.include <bsd.port.pre.mk>
+
+.if ${ARCH} == "i386" || ${ARCH} == "amd64"
+CMAKE_ARGS+=	-DBUILD_SQUISH_WITH_SSE2:BOOL=YES
+.else
+CMAKE_ARGS+=	-DBUILD_SQUISH_WITH_SSE2:BOOL=NO
+.endif
+
 post-extract:
 	${MV} ${WRKSRC_bgfx}/* ${WRKSRC}/lib/bgfx-cmake/bgfx
 	${MV} ${WRKSRC_bimg}/* ${WRKSRC}/lib/bgfx-cmake/bimg
@@ -62,4 +69,4 @@ do-install:
 	${CAT} ${FILESDIR}/launcher.sh | ${SED} -e "s|%%DATADIR%%|${DATADIR}|" > \
 		${STAGEDIR}${PREFIX}/bin/REGoth
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

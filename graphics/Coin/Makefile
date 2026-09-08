@@ -1,5 +1,5 @@
 PORTNAME=	Coin
-PORTVERSION=	4.0.6
+DISTVERSION=	4.0.10
 DISTVERSIONPREFIX=	v
 CATEGORIES=	graphics
 
@@ -9,7 +9,6 @@ WWW=		https://github.com/coin3d
 
 LICENSE=	BSD3CLAUSE
 
-BUILD_DEPENDS=	boost-libs>0:devel/boost-libs
 LIB_DEPENDS=	libsimage.so:graphics/simage
 
 USES=		cmake gl openal:al pathfix xorg
@@ -17,6 +16,7 @@ USES=		cmake gl openal:al pathfix xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	coin3d
 GH_PROJECT=	coin
+# GH_TAGNAME= ${DISTVERSIONPREFIX}{PORTVERSION}
 
 USE_GL=		gl glu
 USE_XORG=	ice sm x11 xext xt
@@ -31,8 +31,6 @@ USE_LDCONFIG=	yes
 PLIST_SUB=	VERSION=${PORTVERSION}
 
 pre-configure:
-	@${REINPLACE_CMD} -e 's|DATA install-data-local|DATA|g' \
-		${WRKSRC}/Makefile.in
 	@${FIND} ${WRKSRC} \( -name \*.cpp -o -name \*.h -a \! \
 		-name expat.h \) -a -print0 | ${XARGS} -0 \
 		${REINPLACE_CMD} 's/<stdlib.h>/<cstdlib>/g'

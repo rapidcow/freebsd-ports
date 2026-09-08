@@ -1,7 +1,6 @@
 PORTNAME=	notes
-PORTVERSION=	4.12.4
+PORTVERSION=	6.0.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	4
 CATEGORIES=	www editors
 
 MAINTAINER=	brnrd@FreeBSD.org
@@ -10,8 +9,10 @@ WWW=		https://apps.nextcloud.com/apps/notes
 
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-NEXTCLOUD_RUN_DEPENDS=	28
+NEXTCLOUD_RUN_DEPENDS=	33
 
-USES=		nextcloud php:flavors
+USES=		cpe nextcloud php:flavors
+
+CPE_VENDOR=	nextcloud
 
 .include <bsd.port.mk>

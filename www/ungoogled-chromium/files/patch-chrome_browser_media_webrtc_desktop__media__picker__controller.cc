@@ -1,4 +1,4 @@
---- chrome/browser/media/webrtc/desktop_media_picker_controller.cc.orig	2025-09-10 13:22:16 UTC
+--- chrome/browser/media/webrtc/desktop_media_picker_controller.cc.orig	2026-08-13 07:41:05 UTC
 +++ chrome/browser/media/webrtc/desktop_media_picker_controller.cc
 @@ -99,7 +99,7 @@ bool DesktopMediaPickerController::IsSystemAudioCaptur
              base::FeatureList::IsEnabled(

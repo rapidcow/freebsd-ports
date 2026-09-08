@@ -1,6 +1,6 @@
 PORTNAME=	ldb
 PORTVERSION=	2.5.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	databases
 MASTER_SITES=	SAMBA
 PKGNAMESUFFIX?=	25
@@ -15,9 +15,10 @@ IGNORE_NONTHREAD_PYTHON=	needs port lang/python${PYTHON_SUFFIX} to be \
 				build with THREADS support
 
 LDB_DEPENDS=	talloc>=2.2.0:devel/talloc tevent>=0.10.0:devel/tevent \
-		tdb>=1.4.0:databases/tdb lmdb>=0.9.23:databases/lmdb \
+		tdb>=1.4.0:databases/tdb lmdb0>=0.9.23:databases/lmdb0 \
 		popt>=0:devel/popt
 BUILD_DEPENDS=	${LDB_DEPENDS} \
+		${PY_SETUPTOOLS} \
 		cmocka>=1.1.3:sysutils/cmocka
 TEST_DEPENDS=	${LDB_DEPENDS} \
 		cmocka>=1.1.3:sysutils/cmocka
@@ -68,7 +69,7 @@ LDB_LIBS=	lib/libldb.so lib/libldb.so.2 lib/ldb/libldb-tdb-int.so \
 		lib/shared-modules/ldb/ldb.so lib/shared-modules/ldb/ldap.so \
 		lib/shared-modules/ldb/asq.so lib/shared-modules/ldb/tdb.so
 # Only for 64-bit architectures
-.if ${ARCH} != armv6 && ${ARCH} != armv7 && ${ARCH} != i386 && ${ARCH} != mips && \
+.if ${ARCH} != armv6 && ${ARCH} != armv7 && ${ARCH} != i386 && \
 	${ARCH} != powerpc && ${ARCH} != powerpcspe
 LDB_LIBS+=	lib/ldb/libldb-mdb-int.so lib/shared-modules/ldb/mdb.so
 .endif

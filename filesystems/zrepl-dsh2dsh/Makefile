@@ -1,6 +1,6 @@
 PORTNAME=	zrepl
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.1.0
+DISTVERSION=	1.3.0
 PORTREVISION=	3
 CATEGORIES=	filesystems sysutils
 PKGNAMESUFFIX=	-${GH_ACCOUNT}
@@ -11,7 +11,7 @@ COMMENT=	ZFS dataset replication tool (fork with more features)
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:1.25+,modules ncurses
+USES=		go:1.26+,modules ncurses
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	dsh2dsh
@@ -19,7 +19,7 @@ GH_ACCOUNT=	dsh2dsh
 GO_MOD_DIST=	github
 GO_MODULE=	github.com/${GH_ACCOUNT}/${PORTNAME}
 _BUILD_XFLAGS=	version.${PORTNAME}Version=${DISTVERSIONFULL}
-GO_BUILDFLAGS=	-ldflags "${STRIP} ${_BUILD_XFLAGS:S!^!-X ${GO_MODULE}/internal/!}"
+GO_LDFLAGS=	${_BUILD_XFLAGS:S!^!-X ${GO_MODULE}/internal/!}
 
 CONFLICTS_INSTALL=	${PORTNAME}
 

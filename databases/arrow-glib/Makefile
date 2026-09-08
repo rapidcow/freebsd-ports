@@ -1,5 +1,5 @@
 PORTNAME=	arrow
-PORTVERSION=	21.0.0
+PORTVERSION=	24.0.0
 CATEGORIES=	databases
 MASTER_SITES=	APACHE/arrow/arrow-${PORTVERSION}/
 PKGNAMESUFFIX=	-glib
@@ -8,7 +8,7 @@ DISTNAME=	apache-arrow-${PORTVERSION}
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	C API wrapper library for Arrow C++
 WWW=		https://arrow.apache.org/ \
-		https://github.com/apache/arrow/tree/master/c_glib
+		https://github.com/apache/arrow/tree/main/c_glib
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/../LICENSE.txt
@@ -16,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/../LICENSE.txt
 BUILD_DEPENDS=	arrow>=${PORTVERSION}<${PORTVERSION}_99:databases/arrow
 LIB_DEPENDS=	libarrow.so:databases/arrow
 
-USES=		compiler:c++17-lang gnome meson pkgconfig python:build
+USES=		compiler:c++17-lang cpe gnome meson pkgconfig python:build
 USE_GNOME=	introspection
 
 BINARY_ALIAS=	python3=${PYTHON_CMD}
@@ -31,5 +31,7 @@ WRKSRC_SUBDIR=	c_glib
 
 PLIST_SUB=	SHLIB_MAJOR=${PORTVERSION:R:R}0${PORTVERSION:R:E} \
 		SHLIB_MINOR=${PORTVERSION:E}
+
+CPE_VENDOR=	apache
 
 .include <bsd.port.mk>

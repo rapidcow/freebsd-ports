@@ -1,14 +1,14 @@
---- content/browser/child_thread_type_switcher_linux.cc.orig	2025-09-10 13:22:16 UTC
+--- content/browser/child_thread_type_switcher_linux.cc.orig	2026-08-13 07:41:05 UTC
 +++ content/browser/child_thread_type_switcher_linux.cc
 @@ -6,6 +6,7 @@
  
  #include "base/linux_util.h"
  #include "base/logging.h"
 +#include "base/notimplemented.h"
+ #include "base/metrics/histogram_macros.h"
  #include "base/process/process_handle.h"
  #include "base/task/single_thread_task_runner.h"
- #include "base/threading/platform_thread.h"
-@@ -20,6 +21,9 @@ void SetThreadTypeOnLauncherThread(base::ProcessId pee
+@@ -21,6 +22,9 @@ void SetThreadTypeOnLauncherThread(base::ProcessId pee
                                     base::ThreadType thread_type) {
    DCHECK(CurrentlyOnProcessLauncherTaskRunner());
  
@@ -19,19 +19,10 @@
    pid_t peer_tid =
        base::FindThreadID(peer_pid, ns_tid.raw(), &ns_pid_supported);
 @@ -42,6 +46,7 @@ void SetThreadTypeOnLauncherThread(base::ProcessId pee
-   base::PlatformThread::SetThreadType(peer_pid,
-                                       base::PlatformThreadId(peer_tid),
-                                       thread_type, base::IsViaIPC(true));
+ 
+   base::PlatformThread::SetThreadType(
+       peer_pid, base::PlatformThreadId(peer_tid), thread_type);
 +#endif
  }
  
- }  // namespace
-@@ -70,7 +75,7 @@ void ChildThreadTypeSwitcher::SetPid(base::ProcessId c
-   }
- }
- 
--void ChildThreadTypeSwitcher::SetThreadType(int32_t ns_tid,
-+void ChildThreadTypeSwitcher::SetThreadType(uint64_t ns_tid,
-                                             base::ThreadType thread_type) {
-   // This function is only used on platforms with 32-bit thread ids.
-   static_assert(sizeof(ns_tid) == sizeof(base::PlatformThreadId));
+ void SetThreadTypesOnLauncherThread(

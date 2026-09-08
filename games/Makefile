@@ -11,6 +11,7 @@
     SUBDIR += 90secondportraits
     SUBDIR += Bugdom
     SUBDIR += Bugdom2
+    SUBDIR += CWR-CE
     SUBDIR += CaribbeanStud
     SUBDIR += DDNet
     SUBDIR += Doom64EX
@@ -144,7 +145,6 @@
     SUBDIR += cave9
     SUBDIR += cavezofphear
     SUBDIR += cdogs-sdl
-    SUBDIR += cgoban
     SUBDIR += chapping
     SUBDIR += chessx
     SUBDIR += chocolate-doom
@@ -161,7 +161,6 @@
     SUBDIR += connectagram
     SUBDIR += connectfive
     SUBDIR += construo
-    SUBDIR += coronapoker
     SUBDIR += corsix-th
     SUBDIR += cosmosmash
     SUBDIR += cowsay
@@ -188,6 +187,7 @@
     SUBDIR += dangen
     SUBDIR += darkplaces
     SUBDIR += defendguin
+    SUBDIR += dethrace
     SUBDIR += devd-controller-rules
     SUBDIR += devilutionX
     SUBDIR += dhewm3
@@ -270,7 +270,6 @@
     SUBDIR += flightgear
     SUBDIR += flightgear-aircraft
     SUBDIR += flightgear-data
-    SUBDIR += flightgear-mb339-pan
     SUBDIR += flobopuyo
     SUBDIR += flyhard
     SUBDIR += flying
@@ -294,8 +293,6 @@
     SUBDIR += freedoko
     SUBDIR += freedroid
     SUBDIR += freedroidrpg
-    SUBDIR += freeminer
-    SUBDIR += freeminer-default
     SUBDIR += freeorion
     SUBDIR += freesweep
     SUBDIR += freesynd
@@ -303,6 +300,7 @@
     SUBDIR += fretsonfire
     SUBDIR += fretsonfire-data
     SUBDIR += frikqcc
+    SUBDIR += frobtads
     SUBDIR += frogatto
     SUBDIR += frotz
     SUBDIR += frozen-bubble
@@ -483,6 +481,7 @@
     SUBDIR += ldmud
     SUBDIR += leela-zero
     SUBDIR += legend-of-edgar
+    SUBDIR += legendary
     SUBDIR += legesmotus
     SUBDIR += lexter
     SUBDIR += lgeneral
@@ -588,7 +587,6 @@
     SUBDIR += linux-unrealgold
     SUBDIR += linux-ut
     SUBDIR += linux-virtual-jay-peak
-    SUBDIR += linwarrior
     SUBDIR += lizzie
     SUBDIR += lm-solve
     SUBDIR += lmarbles
@@ -675,6 +673,7 @@
     SUBDIR += nextgo
     SUBDIR += nexuiz
     SUBDIR += nighthawk
+    SUBDIR += nile
     SUBDIR += nimuh
     SUBDIR += ninix-aya
     SUBDIR += njam
@@ -814,6 +813,7 @@
     SUBDIR += qonk
     SUBDIR += qqwing
     SUBDIR += qstat
+    SUBDIR += qtads
     SUBDIR += qtv
     SUBDIR += quackle
     SUBDIR += quadra
@@ -850,6 +850,7 @@
     SUBDIR += qwfwd
     SUBDIR += r1q2
     SUBDIR += railroad-rampage
+    SUBDIR += rare
     SUBDIR += rawgl
     SUBDIR += re3
     SUBDIR += redeclipse
@@ -942,6 +943,7 @@
     SUBDIR += stormbaancoureur
     SUBDIR += stratagus
     SUBDIR += sudsol
+    SUBDIR += suika3
     SUBDIR += sulis
     SUBDIR += supertux
     SUBDIR += supertux2
@@ -1017,7 +1019,6 @@
     SUBDIR += untahris
     SUBDIR += uqm
     SUBDIR += urbanterror-data
-    SUBDIR += valyriatear
     SUBDIR += vamos
     SUBDIR += vanilla-conquer
     SUBDIR += vavoom
@@ -1076,12 +1077,10 @@
     SUBDIR += xchomp
     SUBDIR += xconq
     SUBDIR += xcowsay
-    SUBDIR += xcubes
     SUBDIR += xdeblock
     SUBDIR += xdemineur
     SUBDIR += xdesktopwaves
     SUBDIR += xdigger
-    SUBDIR += xdino
     SUBDIR += xemeraldia
     SUBDIR += xeyesplus
     SUBDIR += xfce4-eyes-plugin
@@ -1091,7 +1090,6 @@
     SUBDIR += xgalaga++
     SUBDIR += xgalaga-sdl
     SUBDIR += xglk
-    SUBDIR += xhexagons
     SUBDIR += xhime
     SUBDIR += xinfocom
     SUBDIR += xinvaders
@@ -1107,32 +1105,29 @@
     SUBDIR += xlogical
     SUBDIR += xmahjongg
     SUBDIR += xmastermind
-    SUBDIR += xmball
     SUBDIR += xmemory
     SUBDIR += xmille
     SUBDIR += xmine
     SUBDIR += xminehunter
     SUBDIR += xmines
-    SUBDIR += xmlink
     SUBDIR += xmoto
     SUBDIR += xmris
     SUBDIR += xmulti
     SUBDIR += xneko
     SUBDIR += xnethack
-    SUBDIR += xoct
     SUBDIR += xoids
     SUBDIR += xoj
+    SUBDIR += xonix
     SUBDIR += xonotic
     SUBDIR += xorgramana
     SUBDIR += xosmulti
-    SUBDIR += xpanex
     SUBDIR += xpat2
     SUBDIR += xpilot
     SUBDIR += xpilot-ng-server
     SUBDIR += xpipeman
     SUBDIR += xpired
+    SUBDIR += xpuzzles
     SUBDIR += xpuzzletama
-    SUBDIR += xpyraminx
     SUBDIR += xrally
     SUBDIR += xray-16
     SUBDIR += xray_re-tools
@@ -1141,14 +1136,12 @@
     SUBDIR += xroach
     SUBDIR += xrobots
     SUBDIR += xrot
-    SUBDIR += xrubik
     SUBDIR += xsc
     SUBDIR += xscavenger
     SUBDIR += xscrabble
     SUBDIR += xshisen
     SUBDIR += xshogi
     SUBDIR += xskat
-    SUBDIR += xskewb
     SUBDIR += xsokoban
     SUBDIR += xsoldier
     SUBDIR += xspacewarp
@@ -1157,7 +1150,6 @@
     SUBDIR += xtet42
     SUBDIR += xtgyoretsu
     SUBDIR += xtic
-    SUBDIR += xtriangles
     SUBDIR += xtrojka
     SUBDIR += xtron
     SUBDIR += xtruco

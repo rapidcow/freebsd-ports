@@ -1,6 +1,6 @@
 PORTNAME=	postgis
 DISTVERSION=	3.4.4
-PORTREVISION=	6
+PORTREVISION=	10
 CATEGORIES=	databases geography
 MASTER_SITES=	https://download.osgeo.org/postgis/source/
 PKGNAMESUFFIX=	34
@@ -68,6 +68,10 @@ PLIST_SUB=	PORTVERSION=${PORTVERSION}${DISTVERSIONSUFFIX} \
 		VER=${VER}
 
 .include <bsd.port.pre.mk>
+
+.if ${PGSQL_VER} > 17
+IGNORE=		Only supported up to pgsql 17
+.endif
 
 .if ${CHOSEN_COMPILER_TYPE} == gcc
 post-patch:

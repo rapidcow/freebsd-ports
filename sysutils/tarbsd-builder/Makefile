@@ -1,5 +1,5 @@
 PORTNAME=	tarbsd-builder
-DISTVERSION=	26.01.25
+DISTVERSION=	26.06.28
 CATEGORIES=	sysutils
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 DIST_SUBDIR=	${DISTNAME}-${DISTVERSION}
@@ -11,16 +11,13 @@ WWW=		https://github.com/pavetheway91/tarbsd
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	aarch64 amd64 i386
-ONLY_FOR_ARCHS_REASON=	Generated images are amd64 only at the moment, aarch64 planned but no others
-
 RUN_DEPENDS=	${LOCALBASE}/sbin/pkg:${PKG_ORIGIN}
 
 USES=		php:flavors,build
 USE_GITHUB=	yes
 GH_ACCOUNT=	pavetheway91
 GH_PROJECT=	tarbsd
-USE_PHP=	ctype filter mbstring pcntl phar zlib
+USE_PHP=	ctype filter intl mbstring pcntl phar zlib
 
 NO_ARCH=	yes
 
@@ -36,6 +33,7 @@ OPTIONS_DEFAULT=	EXAMPLES PIGZ
 PIGZ_DESC=		Better kernel compression
 QEMU_TOOLS_DESC=	Export image to hypervisor formats
 
+PIGZ_BUILD_DEPENDS=	pigz:archivers/pigz
 PIGZ_RUN_DEPENDS=	pigz:archivers/pigz
 QEMU_TOOLS_RUN_DEPENDS=	qemu-img:emulators/qemu@tools
 
@@ -48,7 +46,6 @@ do-install:
 		${STAGEDIR}${PREFIX}/bin/
 
 post-install-EXAMPLES-on:
-	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	cd ${WRKSRC}/examples && \
 		${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR}
 

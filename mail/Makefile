@@ -12,7 +12,6 @@
     SUBDIR += antivirus-milter
     SUBDIR += anubis
     SUBDIR += archiveopteryx
-    SUBDIR += archiveopteryx-devel
     SUBDIR += archivesmtp
     SUBDIR += archmbox
     SUBDIR += ask
@@ -30,6 +29,7 @@
     SUBDIR += bmf
     SUBDIR += bogofilter
     SUBDIR += bogofilter-kc
+    SUBDIR += bogofilter-lmdb1
     SUBDIR += bogofilter-sqlite
     SUBDIR += bsd-vacation
     SUBDIR += bsfilter
@@ -76,6 +76,7 @@
     SUBDIR += couriergraph
     SUBDIR += crm114
     SUBDIR += cvsmail
+    SUBDIR += cyrus-imapd
     SUBDIR += cyrus-imapd25
     SUBDIR += cyrus-imapd30
     SUBDIR += cyrus-imapd310
@@ -148,6 +149,7 @@
     SUBDIR += gnarwl
     SUBDIR += gnubiff
     SUBDIR += gnumail
+    SUBDIR += goimapnotify
     SUBDIR += gotmail
     SUBDIR += grepmail
     SUBDIR += greyfix
@@ -240,11 +242,9 @@
     SUBDIR += milter-regex
     SUBDIR += milter-skem
     SUBDIR += mime-construct
-    SUBDIR += mime4j
     SUBDIR += mimedefang
     SUBDIR += mini_sendmail
     SUBDIR += minimalist
-    SUBDIR += missey
     SUBDIR += mlmmj
     SUBDIR += mlmmj-archive-mid
     SUBDIR += mlmmj-archiver
@@ -534,7 +534,7 @@
     SUBDIR += py-managesieve3
     SUBDIR += py-notmuch
     SUBDIR += py-notmuch2
-    SUBDIR += py-offlineimap3
+    SUBDIR += py-offlineimap
     SUBDIR += py-postfix-mta-sts-resolver
     SUBDIR += py-premailer
     SUBDIR += py-pyisemail
@@ -621,6 +621,7 @@
     SUBDIR += rubygem-actionmailer72
     SUBDIR += rubygem-actionmailer80
     SUBDIR += rubygem-actionmailer81
+    SUBDIR += rubygem-aws-actionmailer-ses-gitlab
     SUBDIR += rubygem-email_reply_parser
     SUBDIR += rubygem-email_reply_parser-discourse
     SUBDIR += rubygem-email_reply_trimmer
@@ -635,6 +636,7 @@
     SUBDIR += rubygem-mailfactory
     SUBDIR += rubygem-mini_mime
     SUBDIR += rubygem-net-imap
+    SUBDIR += rubygem-net-imap-gitlab
     SUBDIR += rubygem-net-pop
     SUBDIR += rubygem-net-smtp
     SUBDIR += rubygem-pony
@@ -698,6 +700,7 @@
     SUBDIR += spampd
     SUBDIR += spamprobe
     SUBDIR += spamstats
+    SUBDIR += spf-tools
     SUBDIR += spfmilter
     SUBDIR += spfval
     SUBDIR += spmfilter
@@ -739,6 +742,7 @@
     SUBDIR += squirrelmail-wetteronline-plugin
     SUBDIR += sqwebmail
     SUBDIR += ssmtp
+    SUBDIR += stalwart
     SUBDIR += surblhost
     SUBDIR += swaks
     SUBDIR += sylpheed

@@ -1,7 +1,7 @@
 PORTNAME=	swww
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.11.2
-PORTREVISION=	3
+PORTREVISION=	7
 CATEGORIES=	x11
 
 MAINTAINER=	nivit@FreeBSD.org
@@ -10,6 +10,8 @@ WWW=		https://github.com/LGFae/swww
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=		unrecognized attribute in interface: frozen
 
 BUILD_DEPENDS=	scdoc:textproc/scdoc \
 		wayland-protocols>=1.44:graphics/wayland-protocols \

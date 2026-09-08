@@ -1,5 +1,5 @@
 PORTNAME=	imagecodecs
-PORTVERSION=	2025.11.11
+PORTVERSION=	2026.6.6
 CATEGORIES=	graphics python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,7 +11,7 @@ WWW=		https://github.com/cgohlke/imagecodecs
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=0,1:math/py-numpy@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=2,1:math/py-numpy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 LIB_DEPENDS=	libaec.so:science/libaec \
@@ -42,10 +42,10 @@ LIB_DEPENDS=	libaec.so:science/libaec \
 		libzfp.so:devel/zfp \
 		libzopfli.so:archivers/zopfli \
 		libzstd.so:archivers/zstd
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=0,1:math/py-numpy@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=2.1,1:math/py-numpy@${PY_FLAVOR}
 
-USES=		jpeg localbase python:3.11+
-USE_PYTHON=	autoplist concurrent cython3 pep517
+USES=		jpeg localbase python:3.12+
+USE_PYTHON=	autoplist concurrent cython pep517
 
 CPPFLAGS+=	-I${LOCALBASE}/include/jxrlib \
 		-I${LOCALBASE}/include/openjpeg-2.5

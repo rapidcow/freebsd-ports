@@ -1,7 +1,7 @@
 PORTNAME=	connect
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.76.1
-PORTREVISION=	2
+DISTVERSION=	4.99.0
+PORTREVISION=	3
 CATEGORIES=	net
 PKGNAMEPREFIX=	redpanda-
 
@@ -27,12 +27,14 @@ GO_TARGET=	./cmd/redpanda-connect
 
 ETCDIR=		${PREFIX}/etc/${PKGNAMEPREFIX}${PORTNAME}
 
+PORTSCOUT=	limit:^[0-9\.]*$$ # otherwise it picks up -rc prerelease tags
+
 # Redpanda Connect was formerly known as Benthos
 USERS=		benthos
 GROUPS=		benthos
 
-PLIST_FILES=	"@dir(,,755) %%ETCDIR%%" \
-		"@sample %%ETCDIR%%/config.yaml.sample" \
+PLIST_FILES=	"@dir(,,755) ${ETCDIR}" \
+		"@sample ${ETCDIR}/config.yaml.sample" \
 		bin/redpanda-connect
 
 OPTIONS_DEFINE=		ENTERPRISE

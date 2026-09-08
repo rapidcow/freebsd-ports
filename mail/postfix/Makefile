@@ -1,6 +1,6 @@
 PORTNAME=	postfix
-DISTVERSION=	3.10.6
-PORTREVISION?=	0
+DISTVERSION=	3.11.6
+PORTREVISION?=	1
 PORTEPOCH=	1
 CATEGORIES=	mail
 MASTER_SITES=	https://postfix-mirror.horus-it.com/postfix-release/ \
@@ -95,9 +95,9 @@ CONFLICTS_INSTALL=	courier-0.* opensmtpd opensmtpd-devel \
 USERS=		postfix
 GROUPS=		mail maildrop postfix
 
-OPTIONS_DEFINE=		BDB BLACKLISTD CDB DOCS EAI INST_BASE LDAP LMDB MONGO \
+OPTIONS_DEFINE=		BDB BLOCKLISTD CDB DOCS EAI INST_BASE LDAP LMDB MONGO \
 			MYSQL NIS PCRE2 PGSQL SASL SQLITE TEST TLS TLSRPT
-OPTIONS_DEFAULT?=	BLACKLISTD EAI PCRE2 TLS
+OPTIONS_DEFAULT?=	BLOCKLISTD CDB EAI LMDB PCRE2 TLS TLSRPT
 OPTIONS_RADIO=		RG1
 OPTIONS_RADIO_RG1=	SASLKMIT SASLKRB5
 .if ${FLAVOR:U} == ldap
@@ -110,13 +110,15 @@ OPTIONS_SLAVE=		PGSQL
 OPTIONS_SLAVE=		SASL
 .elif ${FLAVOR:U} == sqlite
 OPTIONS_SLAVE=		SQLITE
+.elif ${FLAVOR:U} == mongo
+OPTIONS_SLAVE=		MONGO
 .endif
 .if !empty(FLAVOR) && ${FLAVOR:U} != default
 OPTIONS_FILE=	${PORT_DBDIR}/${OPTIONS_NAME}/${FLAVOR}-options
 .endif
 OPTIONS_SUB=		yes
 
-BLACKLISTD_DESC=	Enable blacklistd support
+BLOCKLISTD_DESC=	Enable blocklistd support
 CDB_DESC=		CDB maps lookups
 EAI_DESC=		Email Address Internationalization (SMTPUTF8) support
 INST_BASE_DESC=		Install into /usr and /etc/postfix
@@ -131,11 +133,10 @@ TEST_DESC=		SMTP/LMTP test server and generator
 TLSRPT_DESC=		Enable sending RFC 8460 TLS reports
 
 BDB_USES=			bdb
-BLACKLISTD_EXTRA_PATCHES=	${FILESDIR}/extra-patch-blacklistd
 CDB_LIB_DEPENDS=		libcdb.so:databases/tinycdb
 EAI_LIB_DEPENDS=		libicuuc.so:devel/icu
 LDAP_USES=			ldap
-LMDB_LIB_DEPENDS=		liblmdb.so:databases/lmdb
+LMDB_LIB_DEPENDS=		liblmdb.so:databases/lmdb0
 MONGO_LIB_DEPENDS=		libbson-1.0.so:devel/libbson \
 				libmongoc-1.0.so:devel/mongo-c-driver
 MYSQL_USES?=			mysql
@@ -150,12 +151,20 @@ ALL_TARGET=		default
 
 .include <bsd.port.options.mk>
 
+.if ${PORT_OPTIONS:MBLOCKLISTD}
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1500000
+EXTRA_PATCHES=	${FILESDIR}/extra-patch-blacklistd
+.else
+EXTRA_PATCHES=	${FILESDIR}/extra-patch-blocklistd
+.endif
+.endif
+
 HTML1=		body_checks.5.html bounce.5.html postfix-power.png \
 		scache.8.html tlsmgr.8.html
 
 STRIP_LIBEXEC=	anvil bounce cleanup discard dnsblog error flush lmtp local \
-		master nqmgr oqmgr pickup pipe postlogd postscreen proxymap \
-		qmgr qmqpd scache showq smtp smtpd spawn tlsmgr tlsproxy \
+		master nbdb_reindexd nqmgr oqmgr pickup pipe postlogd postscreen \
+		proxymap qmgr qmqpd scache showq smtp smtpd spawn tlsmgr tlsproxy \
 		trivial-rewrite verify virtual
 
 .if !defined(DEBUG)
@@ -179,6 +188,8 @@ PKGNAMESUFFIX=	-base-pgsql
 PKGNAMESUFFIX=	-base-sasl
 .elif ${FLAVOR:U} == sqlite
 PKGNAMESUFFIX=	-base-sqlite
+.elif ${FLAVOR:U} == mongo
+PKGNAMESUFFIX=	-base-mongo
 .else
 PKGNAMESUFFIX=	-base
 .endif
@@ -291,19 +302,23 @@ POSTFIX_CCARGS+=	-I${BDB_INCLUDE_DIR}
 POSTFIX_AUXLIBS+=	-L${BDB_LIB_DIR} -l${BDB_LIB_NAME}
 .endif
 
-.if ${PORT_OPTIONS:MBLACKLISTD}
+.if ${PORT_OPTIONS:MBLOCKLISTD}
 . if ${OPSYS} == FreeBSD
+.  if ${OSVERSION} < 1500000
 POSTFIX_AUXLIBS+=	-lblacklist
+.  else
+POSTFIX_AUXLIBS+=	-lblocklist
+.  endif
 . else
-IGNORE=		blacklistd is only supported on FreeBSD
+IGNORE=		blocklistd is only supported on FreeBSD
 . endif
 .endif
 
 .if ${PORT_OPTIONS:MMONGO}
 DYN_EXT+=		mongodb
-POSTFIX_CCARGS+=	-DHAS_MONGODB -I${LOCALBASE}/include/libmongoc-1.0 \
-			-I${LOCALBASE}/include/libbson-1.0
-POSTFIX_DYN_AUXLIBS+=	"AUXLIBS_MONGODB=-L${LOCALBASE}/lib -lmongoc-1.0 -lbson-1.0"
+POSTFIX_CCARGS+=	-DHAS_MONGODB -I${LOCALBASE}/include/libbson-1.0 \
+			-I${LOCALBASE}/include/libmongoc-1.0
+POSTFIX_DYN_AUXLIBS+=	"AUXLIBS_MONGODB=-L${LOCALBASE}/lib -lbson-1.0 -lmongoc-1.0"
 .endif
 
 .if ${PORT_OPTIONS:MMYSQL}

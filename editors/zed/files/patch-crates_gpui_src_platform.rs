@@ -1,20 +1,29 @@
---- crates/gpui/src/platform.rs.orig	2026-01-08 00:39:18 UTC
+--- crates/gpui/src/platform.rs.orig	2026-06-17 14:36:18 UTC
 +++ crates/gpui/src/platform.rs
-@@ -82,7 +82,7 @@ pub(crate) use windows::*;
- #[cfg(target_os = "windows")]
- pub(crate) use windows::*;
+@@ -2,7 +2,7 @@ mod keystroke;
+ mod keyboard;
+ mod keystroke;
  
 -#[cfg(all(target_os = "linux", feature = "wayland"))]
 +#[cfg(all(any(target_os = "linux", target_os = "freebsd"), feature = "wayland"))]
- pub use linux::layer_shell;
+ #[expect(missing_docs)]
+ pub mod layer_shell;
  
- #[cfg(any(test, feature = "test-support"))]
-@@ -1346,7 +1346,7 @@ pub enum WindowKind {
+@@ -22,7 +22,7 @@ pub mod scap_screen_capture;
+ pub mod scap_screen_capture;
+ 
+ #[cfg(all(
+-    any(target_os = "windows", target_os = "linux"),
++    any(target_os = "windows", target_os = "linux", target_os = "freebsd"),
+     feature = "screen-capture"
+ ))]
+ pub(crate) type PlatformScreenCaptureFrame = scap::frame::Frame;
+@@ -1671,7 +1671,7 @@ pub enum WindowKind {
  
      /// A Wayland LayerShell window, used to draw overlays or backgrounds for applications such as
      /// docks, notifications or wallpapers.
 -    #[cfg(all(target_os = "linux", feature = "wayland"))]
 +    #[cfg(all(any(target_os = "linux", target_os = "freebsd"), feature = "wayland"))]
      LayerShell(layer_shell::LayerShellOptions),
- }
  
+     /// A window that appears on top of its parent window and blocks interaction with it

@@ -1,5 +1,6 @@
 PORTNAME=	reposilite
-DISTVERSION=	3.5.26
+DISTVERSION=	3.5.28
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-all
 CATEGORIES=	devel www java
 MASTER_SITES=	https://maven.reposilite.com/releases/com/reposilite/reposilite/${DISTVERSION}/
@@ -12,7 +13,8 @@ WWW=		https://reposilite.com
 
 LICENSE=	APACHE20
 
-USES=		java
+USES=		cpe java
+CPE_VENDOR=	dzikoysk
 JAVA_VERSION=	11+
 
 NO_BUILD=	yes

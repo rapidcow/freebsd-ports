@@ -1,5 +1,5 @@
 PORTNAME=	jij-cimod
-DISTVERSION=	1.7.3
+DISTVERSION=	1.7.5
 CATEGORIES=	math
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -13,7 +13,7 @@ WWW=		https://www.openjij.org/ \
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${PYNUMPY} \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=1.16:math/py-numpy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pybind11>0:devel/py-pybind11@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}scikit-build-core>=0.10:devel/py-scikit-build-core@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}setuptools-scm>0:devel/py-setuptools-scm@${PY_FLAVOR} \
@@ -22,6 +22,9 @@ BUILD_DEPENDS=	${PYNUMPY} \
 LIB_DEPENDS=	libcblas.so:math/cblas \
 		liblapack.so:math/lapack \
 		libopenblas.so:math/openblas
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dimod>=0.12.21:science/py-dimod@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}numpy>0:math/py-numpy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}scipy>=1.16:science/py-scipy@${PY_FLAVOR}
 
 USES=		cmake:indirect compiler:c++17-lang eigen:3 localbase:ldflags python
 USE_PYTHON=	pep517 cython autoplist pytest
@@ -29,6 +32,6 @@ USE_PYTHON=	pep517 cython autoplist pytest
 TEST_WRKSRC=	${WRKSRC}/tests
 TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
-# tests as of 1.7.3: 49 passed, 10 warnings in 19.01s
+# tests as of 1.7.5: 49 passed, 6 warnings in 3.89s
 
 .include <bsd.port.mk>

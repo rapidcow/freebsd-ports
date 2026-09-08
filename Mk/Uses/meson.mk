@@ -25,12 +25,16 @@ _INCLUDE_USES_MESON_MK=	yes
 
 _valid_ARGS=		muon
 
-# Sanity check
+# Sanity checks
 .  for _arg in ${meson_ARGS}
 .    if empty(_valid_ARGS:M${_arg})
 IGNORE=	'USES+= meson:${meson_ARGS}' usage: argument [${_arg}] is not recognized
 .    endif
 .  endfor
+
+.  if defined(CONFIGURE_ARGS)
+IGNORE=	Please use MESON_ARGS instead of CONFIGURE_ARGS for Meson based ports
+.  endif
 
 .  if !empty(meson_ARGS:Mmuon)
 BUILD_DEPENDS+=	muon:devel/muon
@@ -41,15 +45,13 @@ BUILD_DEPENDS+=	meson:devel/meson
 # meson uses ninja
 .include "${USESDIR}/ninja.mk"
 
-# meson might have issues with non-unicode locales
-USE_LOCALE?=	en_US.UTF-8
-
 # Enable muon's meson compatibility mode
 .  if !empty(meson_ARGS:Mmuon)
 CONFIGURE_ARGS+=	meson
 .  endif
 
-CONFIGURE_ARGS+=	--prefix ${PREFIX} \
+CONFIGURE_ARGS+=	setup \
+			--prefix ${PREFIX} \
 			--localstatedir /var \
 			--infodir ${INFO_PATH}
 

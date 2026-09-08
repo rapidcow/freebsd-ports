@@ -1,6 +1,6 @@
 PORTNAME=	bareos
 DISTVERSIONPREFIX=	Release/
-DISTVERSION=	24.0.8
+DISTVERSION=	24.0.10
 PORTREVISION?=	0
 CATEGORIES?=	sysutils
 PKGNAMEPREFIX?=	#
@@ -13,7 +13,7 @@ WWW=		https://www.bareos.org/
 LICENSE=	AGPLv3 LGPL3
 LICENSE_COMB=	multi
 
-CONFLICTS?=	bareos22-server bareos23-server bareos-server
+CONFLICTS?=	bareos23-server bareos-server
 
 BUILD_DEPENDS+=	utf8cpp>0:devel/utf8cpp \
 		microsoft-gsl>0:devel/microsoft-gsl \
@@ -53,6 +53,8 @@ NDMP_DESC=		Enable build of NDMP support
 SCSICRYPTO_DESC=	Build LTO AME crypto plugin
 
 .if ${PKGNAMESUFFIX} == "24-server"
+ONLY_FOR_ARCHS=		aarch64 amd64
+
 OPTIONS_DEFINE=		MTX PYTHON LMDB NDMP NLS SCSICRYPTO
 OPTIONS_DEFAULT+=	LMDB PGSQL SCSICRYPTO
 OPTIONS_SINGLE_DATABASE=	PGSQL

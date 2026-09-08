@@ -1,22 +1,22 @@
---- crates/zed/src/reliability.rs.orig	2026-01-08 00:39:18 UTC
+--- crates/zed/src/reliability.rs.orig	2026-07-01 15:07:44 UTC
 +++ crates/zed/src/reliability.rs
-@@ -16,6 +16,7 @@ use crate::STARTUP_TIME;
+@@ -23,6 +23,7 @@ mod hang_detection;
  
- use crate::STARTUP_TIME;
+ mod hang_detection;
  
 +#[cfg(not(target_os = "freebsd"))]
  pub fn init(client: Arc<Client>, cx: &mut App) {
-     monitor_hangs(cx);
- 
-@@ -154,6 +155,7 @@ fn save_hang_trace(
-     );
+     hang_detection::start(client.clone(), cx);
+     start_memory_usage_logging(cx);
+@@ -144,6 +145,7 @@ fn start_memory_usage_logging(cx: &App) {
+     .detach();
  }
  
 +#[cfg(not(target_os = "freebsd"))]
  pub async fn upload_previous_minidumps(client: Arc<Client>) -> anyhow::Result<()> {
      let Some(minidump_endpoint) = MINIDUMP_ENDPOINT.as_ref() else {
          log::warn!("Minidump endpoint not set");
-@@ -195,6 +197,7 @@ pub async fn upload_previous_minidumps(client: Arc<Cli
+@@ -185,6 +187,7 @@ pub async fn upload_previous_minidumps(client: Arc<Cli
      Ok(())
  }
  

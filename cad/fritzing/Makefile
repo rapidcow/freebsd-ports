@@ -1,8 +1,8 @@
 PORTNAME=	fritzing
-PORTVERSION=	1.0.6
+PORTVERSION=	1.0.8
 CATEGORIES=	cad
 
-MAINTAINER=	kenrap@kennethraplee.com
+MAINTAINER=	kenrap@FreeBSD.org
 COMMENT=	CAD for printed circuit boards
 WWW=		https://fritzing.org/
 
@@ -22,8 +22,8 @@ USES=		compiler:c++17-lang desktop-file-utils gl gmake pkgconfig \
 USE_GITHUB=	yes
 GH_PROJECT=	fritzing-app \
 		fritzing-parts:parts
-GH_TAGNAME=	04e5bb0241e8f1de24d0fce9be070041c6d5b68e \
-		12761296fc8bcc53ed481b78e3a99c907d85b18d:parts
+GH_TAGNAME=	5aa56a510183c23084990a6b4481708cad24c15b \
+		27535f2fd02097be9bed229b75aa8e9be282a4a0:parts
 
 USE_CXXSTD=	c++17
 USE_GL=		egl gl opengl
@@ -37,7 +37,7 @@ post-extract:
 post-patch:
 	${REINPLACE_CMD} -e '/CONFIG += debug_and_release/d' ${WRKSRC}/phoenix.pro
 	${REINPLACE_CMD} -e 's|QT_MOST=.*|QT_MOST=${QT6_VERSION}|' ${WRKSRC}/phoenix.pro
-	${SED} -e 's|%%LOCALBASE%%|${LOCALBASE}|' ${FILESDIR}/pri_quazipdetect.pri > ${WRKSRC}/pri/quazipdetect.pri
+	${CP} ${FILESDIR}/pri_quazipdetect.pri ${WRKSRC}/pri/quazipdetect.pri
 	${SED} -e 's|%%LOCALBASE%%|${LOCALBASE}|' ${FILESDIR}/pri_spicedetect.pri > ${WRKSRC}/pri/spicedetect.pri
 	${SED} -e 's|%%LOCALBASE%%|${LOCALBASE}|' ${FILESDIR}/pri_clipper1detect.pri > ${WRKSRC}/pri/clipper1detect.pri
 
@@ -50,10 +50,4 @@ post-install:
 		-f  ${STAGEDIR}${DATADIR} \
 		-platform offscreen
 
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1400000 && ${SSL_DEFAULT} == "base"
-IGNORE=		Requires OpenSSL >= 3
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

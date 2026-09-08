@@ -1,6 +1,6 @@
 PORTNAME=	kefir
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.5.0
+DISTVERSION=	0.5.1
 CATEGORIES=	lang devel
 MASTER_SITES=	https://git.sr.ht/~jprotopopov/kefir/archive/${DISTVERSIONFULL}.tar.gz?dummy=/
 
@@ -27,7 +27,6 @@ MAKE_ARGS=	prefix=${PREFIX}
 MAKE_ARGS+=	PROFILE=debug
 .endif
 
-TEST_ENV=	LC_ALL=C.UTF-8
 TEST_TARGET= 	test
 
 .include <bsd.port.mk>

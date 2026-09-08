@@ -1,5 +1,5 @@
 PORTNAME=	libfido2
-PORTVERSION=	1.16.0
+PORTVERSION=	1.17.0
 CATEGORIES=	security
 MASTER_SITES=	https://developers.yubico.com/libfido2/Releases/
 
@@ -32,8 +32,5 @@ CMAKE_TESTING_ON=	BUILD_TESTS
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 OPTIONS_DEFINE=	DOCS
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|-D_POSIX_C_SOURCE=200809L|-D_POSIX_C_SOURCE=202405L|' ${WRKSRC}/CMakeLists.txt
 
 .include <bsd.port.mk>

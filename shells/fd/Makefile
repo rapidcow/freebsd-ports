@@ -6,7 +6,7 @@ MASTER_SITES=	http://www.unixusers.net/authors/VA012337/soft/fd/ \
 		ftp://ftp.unixusers.net/src/fdclone/
 DISTNAME=	FD-${PORTVERSION}
 
-MAINTAINER=	mew14930xvi@inbox.lv
+MAINTAINER=	mce@FreeBSD.org
 COMMENT=	CUI-based file and directory management tool
 WWW=		http://www.unixusers.net/authors/VA012337/soft/fd/index.html
 
@@ -15,11 +15,12 @@ LICENSE_NAME=	unknown
 LICENSE_FILE=	${WRKSRC}/LICENSES
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USE_LOCALE=	ja
+DESTDIRNAME=	BUILD
 MAKE_ARGS=	CC="${CC}" CFLAGS="${CFLAGS}" \
-		CONFDIR="\$$(DESTDIR)${PREFIX}/etc" \
-		MANTOP="\$$(DESTDIR)${PREFIX}/share/man" \
-		PREFIX="\$$(DESTDIR)${PREFIX}"
+		CONFDIR="${PREFIX}/etc" \
+		MANTOP="${PREFIX}/share/man" \
+		LANG=ja \
+		PREFIX="${PREFIX}"
 
 CONFLICTS_INSTALL=	fd-find # bin/fd
 

@@ -1,9 +1,10 @@
 PORTNAME=	vulkan-headers
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.4.336
+DISTVERSION=	1.4.356
 CATEGORIES=	graphics
 
-MAINTAINER=	atanubiswas484@gmail.com
+MAINTAINER=	olivier@FreeBSD.org
 COMMENT=	Headers for the Vulkan graphics API
 WWW=		https://github.com/KhronosGroup/Vulkan-Headers
 

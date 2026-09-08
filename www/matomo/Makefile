@@ -1,5 +1,5 @@
 PORTNAME=	matomo
-PORTVERSION=	5.6.2
+PORTVERSION=	5.11.2
 CATEGORIES=	www
 MASTER_SITES=	http://builds.matomo.org/
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
@@ -11,26 +11,27 @@ WWW=		https://www.matomo.org/
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cpe shebangfix php:flavors
-USE_PHP=	ctype curl dom fileinfo filter gd iconv intl \
-		mbstring mcrypt memcache mysqli opcache pdo \
-		pdo_mysql posix readline session simplexml soap sockets \
-		sqlite3 tidy tokenizer xml zlib
+USES=		cpe php:flavors shebangfix
+USE_PHP=	ctype curl dom fileinfo filter gd iconv intl mbstring mcrypt \
+		memcache mysqli opcache pdo pdo_mysql posix readline session \
+		simplexml soap sockets sqlite3 tidy tokenizer xml zlib
+IGNORE_WITH_PHP=	86
 
+SHEBANG_FILES=	misc/log-analytics/import_logs.py
 NO_ARCH=	yes
 NO_BUILD=	yes
-SHEBANG_FILES=	misc/log-analytics/import_logs.py
 SUB_FILES=	pkg-message
-PLIST_SUB+=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-OPTIONS_DEFINE=	PHPPDOMYSQL PHPMYSQLI
+PLIST_SUB=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
+
+OPTIONS_DEFINE=		PHPMYSQLI PHPPDOMYSQL
 OPTIONS_DEFAULT=	PHPPDOMYSQL
+PHPMYSQLI_DESC=		Use mysqli php module
 PHPPDOMYSQL_DESC=	Use pdo_mysql php module
+PHPMYSQLI_USE=		PHP=mysqli
 PHPPDOMYSQL_USE=	PHP=pdo_mysql
-PHPMYSQLI_DESC=	Use mysqli php module
-PHPMYSQLI_USE=	PHP=mysqli
 
 pre-install:
 	@if [ ! -f ${LOCALBASE}/bin/php ]; then \

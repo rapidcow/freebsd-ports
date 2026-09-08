@@ -1,4 +1,4 @@
---- chrome/common/chrome_content_client.cc.orig	2026-01-16 13:40:34 UTC
+--- chrome/common/chrome_content_client.cc.orig	2026-08-13 07:41:05 UTC
 +++ chrome/common/chrome_content_client.cc
 @@ -61,12 +61,12 @@
  #include "url/url_constants.h"
@@ -15,7 +15,7 @@
  #include <fcntl.h>
  #include "sandbox/linux/services/credentials.h"
  #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
-@@ -189,7 +189,7 @@ static const char* const kChromeStandardURLSchemes[] =
+@@ -188,7 +188,7 @@ static const char* const kChromeStandardURLSchemes[] =
      extensions::kExtensionScheme,
  #endif
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \

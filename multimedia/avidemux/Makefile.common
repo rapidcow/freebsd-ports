@@ -12,6 +12,9 @@ LIB_DEPENDS+=	libmad.so:audio/libmad \
 
 LICENSE=	GPLv2
 
+DEPRECATED=	Obsolete version with various bugs and issues
+EXPIRATION_DATE=2026-08-31
+
 USE_GNOME=	libxml2
 
 OPTIONS_FILE=	${PORT_DBDIR}/${OPTIONS_NAME:C/-.*//}/options
@@ -296,7 +299,7 @@ LDFLAGS+=	-lc++
 
 USE_GCC=	yes
 
-NOT_FOR_ARCHS=		powerpc powerpc64 powerpcspe sparc64
+NOT_FOR_ARCHS=		powerpc powerpc64 powerpcspe
 NOT_FOR_ARCHS_REASON=	cmake/admDetermineSystem.cmake:78: CPU not supported
 
 post-extract:

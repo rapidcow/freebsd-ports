@@ -1,6 +1,6 @@
 PORTNAME=	nfstrace
 DISTVERSION=	0.4.3.2
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	net
 
 MAINTAINER=	ehaupt@FreeBSD.org
@@ -17,6 +17,12 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	epam
 
 CMAKE_ARGS+=	-DJSON_INCLUDE_DIR="${LOCALBASE}/include/json-c"
-CFLAGS+=	-Wno-deprecated-copy -Wno-format
+CFLAGS+=	-Wno-deprecated-copy -Wno-format -Wno-unused-function
+
+.include <bsd.port.options.mk>
+
+.if ${OSVERSION} >= 1600000
+EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src_protocols_nfs_nfs__procedure.h
+.endif
 
 .include <bsd.port.mk>

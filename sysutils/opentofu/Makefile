@@ -1,7 +1,7 @@
 PORTNAME=	opentofu
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.11.2
-PORTREVISION=	2
+DISTVERSION=	1.12.3
+PORTREVISION=	3
 CATEGORIES=	sysutils
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -11,7 +11,7 @@ WWW=		https://opentofu.org/
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:modules
+USES=		go:1.26+,modules
 GO_MODULE=	github.com/opentofu/opentofu
 GO_TARGET=	./cmd/tofu
 GO_BUILDFLAGS=	-o bin/

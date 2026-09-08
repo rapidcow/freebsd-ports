@@ -14,14 +14,14 @@
 PORTNAME?=	nvidia-driver
 DISTVERSION?=	${NVIDIA_DISTVERSION}
 # Always try to set PORTREVISION as it can be overridden by the slave ports
-PORTREVISION?=	1
+PORTREVISION?=	0
 CATEGORIES=	x11
 MASTER_SITES=	NVIDIA/XFree86/FreeBSD-${ARCH_SUFX}/${DISTVERSION}
 DISTNAME=	NVIDIA-FreeBSD-${ARCH_SUFX}-${DISTVERSION}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER?=	x11@FreeBSD.org
-COMMENT?=	NVidia graphics card binary drivers for hardware OpenGL rendering
+COMMENT?=	NVIDIA graphics driver userland
 WWW=		https://www.nvidia.com/object/unix.html
 
 LICENSE_FILE=	${WRKSRC}/doc/license.txt
@@ -58,12 +58,16 @@ LIB_DEPENDS+=	libnvidia-egl-wayland.so:graphics/egl-wayland
 
 .if ${NVVERSION} >= 580.00000
 LIB_DEPENDS+=	libnvidia-egl-xcb.so:graphics/egl-x11
+LIB_DEPENDS+=	libnvidia-egl-wayland2.so:graphics/egl-wayland2
 .endif
 
-USES=		uidfix xorg
+USES=		cpe uidfix xorg
 .if ${NVVERSION} >= 470.04201
 USES+=		tar:xz
 .endif
+
+CPE_PRODUCT=	gpu_driver
+CPE_VENDOR=	nvidia
 
 USE_XORG=	x11 xext
 .if ${FLAVOR} == xlibre

@@ -1,6 +1,6 @@
 PORTNAME=			${SAMBA4_BASENAME}416
 PORTVERSION=			${SAMBA4_VERSION}
-PORTREVISION=			10
+PORTREVISION=			12
 CATEGORIES?=			net
 MASTER_SITES=			SAMBA/samba/stable SAMBA/samba/rc
 DISTNAME=			${SAMBA4_DISTNAME}
@@ -97,6 +97,7 @@ CONFIGURE_ARGS=			--mandir="${PREFIX}/share/man" \
 				--with-logfilebase="${SAMBA4_LOGDIR}"
 # XXX: Flags
 CONFIGURE_ENV=			PTHREAD_LDFLAGS="-lpthread"
+FORTIFY_UNSAFE=			yes
 MAKE_ENV=			PYTHONHASHSEED=1
 
 USES=				compiler:c++11-lang iconv localbase:ldflags \
@@ -462,10 +463,10 @@ SAMBA4_MODULES+=		auth_skel pdb_test gpext_security gpext_registry \
 # Python bindings
 BUILD_DEPENDS+=			${PY_SETUPTOOLS}
 .if ! ${PORT_OPTIONS:MPYTHON3} || defined(NO_PYTHON)
-USES+=				python:build,test,3.11-3.12
+USES+=				python:build,test,3.11-3.14
 CONFIGURE_ARGS+=		--disable-python
 .else
-USES+=				python:3.11-3.12
+USES+=				python:3.11-3.14
 PLIST+=				${PKGDIR}/pkg-plist.python
 # Don't cache Python modules
 CONFIGURE_ARGS+=		--nopycache
@@ -535,10 +536,10 @@ CONFIGURE_ARGS+=		--accel-aes=none
 .endif
 
 # Only for 64-bit architectures
-.if ${ARCH} != armv6 && ${ARCH} != armv7 && ${ARCH} != i386 && ${ARCH} != mips && ${ARCH} != powerpc && ${ARCH} != powerpcspe
+.if ${ARCH} != armv6 && ${ARCH} != armv7 && ${ARCH} != i386 && ${ARCH} != powerpc && ${ARCH} != powerpcspe
 .	if defined(SAMBA4_BUNDLED_LDB) && ${SAMBA4_BUNDLED_LDB} == yes && (${PORT_OPTIONS:MAD_DC} || ${PORT_OPTIONS:MDEVELOPER})
 # LMDB
-SAMBA4_LMDB_DEPENDS=		lmdb>=0.9.16:databases/lmdb
+SAMBA4_LMDB_DEPENDS=		lmdb0>=0.9.16:databases/lmdb0
 PLIST_FILES+=			${SAMBA4_LIBDIR}/private/libldb-mdb-int-samba4.so \
 				${SAMBA4_MODULEDIR}/ldb/mdb.so
 .	endif

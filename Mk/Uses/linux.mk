@@ -2,8 +2,8 @@
 #
 # Feature:	linux:args
 # Usage:	USES=linux or USES=linux:args
-# Valid args:	c7	Depend on CentOS 7 packages (default)
-#		rl9	Depend on Rocky Linux 9 packages
+# Valid args:	c7	Depend on CentOS 7 packages (default on i386)
+#		rl9	Depend on Rocky Linux 9 packages (default on all other arches)
 # Additional variables:
 # USE_LINUX	List of Linux packages to depend on.
 # USE_LINUX_RPM	When defined, additional variables and targets useful to Linux
@@ -306,7 +306,9 @@ DISTFILES_aarch64?=	${LIB_DISTNAMES:S/$/${EXTRACT_SUFX_aarch64}:aarch64/} \
 .    if !(defined(ONLY_FOR_ARCHS) && empty(ONLY_FOR_ARCHS:Mamd64)) \
  && empty(NOT_FOR_ARCHS:Mamd64)
 .      ifndef DISTFILES_amd64
-.        if ${linux_ARGS} == c7
+.        if ${linux_ARGS} == c7 \
+   && !(defined(ONLY_FOR_ARCHS) && empty(ONLY_FOR_ARCHS:Mi386)) \
+   && empty(NOT_FOR_ARCHS:Mi386)
 DISTFILES_amd64=	${LIB_DISTNAMES:S/$/${EXTRACT_SUFX_i386}:amd64,i386/} \
 			${LIB_DISTNAMES_i386:S/$/${EXTRACT_SUFX_i386}:amd64,i386/}
 .        endif

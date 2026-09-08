@@ -1,5 +1,5 @@
 PORTNAME=	glassfish
-DISTVERSION=	7.1.0
+DISTVERSION=	8.0.3
 CATEGORIES=	www java
 MASTER_SITES=	ECLIPSE/ee4j/${PORTNAME}
 PKGNAMEPREFIX=	eclipse-
@@ -11,7 +11,7 @@ WWW=		https://projects.eclipse.org/projects/ee4j.glassfish
 LICENSE=	EPL
 
 USES=		java zip
-JAVA_VERSION=	17+
+JAVA_VERSION=	21+
 USE_RC_SUBR=	${PORTNAME}
 
 CONFLICTS_INSTALL=	${PORTNAME}4
@@ -28,6 +28,8 @@ SUB_LIST=	GLASSFISHVERSION=${DISTVERSION} \
 		JAVA_HOME=${JAVA_HOME}
 
 WRKSRC=		${WRKDIR}/${PORTNAME}${DISTVERSION:R:R}
+
+PLIST_SUB=	VER=${DISTVERSION}
 
 post-patch:
 	${SED} -i '' 's|#!/bin/bash|#!/bin/sh|' \

@@ -1,6 +1,6 @@
 PORTNAME=	ispc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.28.2
+DISTVERSION=	1.31.0
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -19,7 +19,7 @@ BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex \
 LIB_DEPENDS=	libLLVM.so:devel/llvm${LLVM_VERSION} \
 		libtbb.so:devel/onetbb
 
-USES=		bison cmake compiler:c++17-lang llvm:lib,min=19,max=19 python:build,test shebangfix
+USES=		bison cmake compiler:c++17-lang llvm:lib,min=20,max=20 python:build,test shebangfix
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
@@ -71,7 +71,7 @@ test-check-all: # the upstream claims that some of these checks are broken witho
 	@cd ${BUILD_WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} check-all
 
 run-examples: build
-	@[ -f ${LOCALBASE}/lib/libtbb.so ] || ! echo "ERROR run-examples target requires devel/tbb package installed"
+	@[ -f ${LOCALBASE}/lib/libtbb.so ] || ! echo "ERROR run-examples target requires devel/onetbb package installed"
 .for e in simple sort mandelbrot stencil
 	@cd ${WRKSRC}/examples/${e} && \
 	${ECHO} "===> Running example ${e}" && \
@@ -79,6 +79,10 @@ run-examples: build
 	./${e}
 .endfor
 
-# tests as of 1.28.2: PASSRATE (1568/1568) = 100%
+# tests as of 1.31.0:
+# 752 / 757 tests PASSED
+# 0 / 757 tests FAILED compilation
+# 0 / 757 tests FAILED execution
+# 5 / 757 tests SKIPPED
 
 .include <bsd.port.mk>

@@ -1,5 +1,5 @@
 PORTNAME=	uv
-DISTVERSION=	0.9.24
+DISTVERSION=	0.11.28
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -12,9 +12,6 @@ LICENSE=	APACHE20 MIT
 LICENSE_COMB=	dual
 LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE-APACHE
 LICENSE_FILE_MIT=	${WRKSRC}/LICENSE-MIT
-
-BROKEN_armv7=	compilation fails: rustc-LLVM ERROR: out of memory
-BROKEN_i386=	compilation of the libopenssl_sys-abc7d27a34743709 crate fails: ld: error: undefined symbol: __atomic_is_lock_free, etc
 
 LIB_DEPENDS=	libgit2.so:devel/libgit2 \
 		libssh2.so:security/libssh2 \
@@ -30,6 +27,7 @@ OPENSSLINC=	/usr/include
 OPENSSLLIB=	/usr/lib
 
 RUSTFLAGS+=	-C link-args=-Wl,-rpath=${LOCALBASE}/lib
+CARGO_INSTALL=	no
 
 PROGS=		uv \
 		uvx \
@@ -39,6 +37,13 @@ PROGS=		uv \
 PLIST_FILES=	${PROGS:S/^/bin\//}
 
 PORTSCOUT=	limit:.*\..*$$ # prevent tags like perma-39
+
+.include <bsd.port.pre.mk>
+
+.if ${ARCH:Marmv?}
+LTO_UNSAFE=	yes
+CARGO_ENV+=	CARGO_PROFILE_RELEASE_LTO=false
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/etc/uv|${PREFIX}/etc/uv|g' \
@@ -54,4 +59,4 @@ do-install:
 		${STAGEDIR}${PREFIX}/bin
 .endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

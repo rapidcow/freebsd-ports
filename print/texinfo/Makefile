@@ -1,6 +1,6 @@
 PORTNAME=	texinfo
-PORTVERSION=	7.2
-PORTREVISION=	3
+PORTVERSION=	7.3
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	print
 MASTER_SITES=	GNU \
@@ -22,6 +22,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	help2man:misc/help2man \
 		${RUN_DEPENDS}
+LIB_DEPENDS=	libunistring.so:devel/libunistring
 RUN_DEPENDS=	p5-Locale-libintl>=0:devel/p5-Locale-libintl \
 		p5-Text-Unidecode>=0:converters/p5-Text-Unidecode \
 		p5-Unicode-EastAsianWidth>=0:textproc/p5-Unicode-EastAsianWidth
@@ -33,7 +34,8 @@ CONFIGURE_ARGS=	--enable-perl-api-texi-build \
 		--enable-xs-perl-libintl \
 		--with-external-libintl-perl \
 		--with-external-Text-Unidecode \
-		--with-external-Unicode-EastAsianWidth
+		--with-external-Unicode-EastAsianWidth \
+		--without-swig
 CONFIGURE_ENV=	PERL_EXT_CC="${CC}"
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip install-tex
@@ -46,9 +48,9 @@ CPE_VENDOR=	gnu
 
 # Use the date on https://ftp.gnu.org/gnu/texinfo/
 HTMLXREF_CNF_RELDATE=	20250626
-TEXI2DVI_RELDATE=	20241223
-TEXI2PDF_RELDATE=	20241223
-TEXINFO_TEX_RELDATE=	20251206
+TEXI2DVI_RELDATE=	20260302
+TEXI2PDF_RELDATE=	20260302
+TEXINFO_TEX_RELDATE=	20260601
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes

@@ -1,6 +1,6 @@
 PORTNAME=	onnxruntime
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.23.2
+DISTVERSION=	1.27.0
 CATEGORIES=	misc # machine-learning
 DIST_SUBDIR=	${PORTNAME}
 
@@ -12,8 +12,6 @@ WWW=		https://onnxruntime.ai/ \
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_armv7=	compilation fails: error: no member named 'linux_id' in 'cpuinfo_processor', see https://github.com/microsoft/onnxruntime/issues/23181
-BROKEN_aarch64=	compilation fails: error: no member named 'linux_id' in 'cpuinfo_processor', see https://github.com/microsoft/onnxruntime/issues/23181
 BROKEN_i386=	compilation fails: error: requested alignment is less than minimum alignment of 8 for type 'google::protobuf::internal::ThreadSafeArena::CacheAlignedLifecycleIdGenerator'
 
 BUILD_DEPENDS=	gpatch:devel/patch
@@ -53,6 +51,8 @@ dev-update-deps-in-makefiles: extract # this should be run when the port is upda
 
 pre-configure:
 	@${REINPLACE_CMD} -E 's|;(https://.*)/([^/]+\.zip);|;file://${DISTDIR}/${DIST_SUBDIR}/\2;|' ${DEPS_FILE}
+	# correct one mismatching hash
+	#@${REINPLACE_CMD} -E 's|1094e3bb7a8af763dcb136ccd676e6e75e614eec|5d2b21b10478556c5e209dd7229e298a5c9f0b02|' ${DEPS_FILE}
 
 # NOTE there should be an EXTRACT_ONLY statement
 # NOTE shared libs can't be enabled because the build would fail, see discussion in this issue: https://github.com/microsoft/onnxruntime/issues/22331

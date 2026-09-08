@@ -1,5 +1,6 @@
 PORTNAME=	jalview
 DISTVERSION=	2.11.2.5
+PORTREVISION=	2
 CATEGORIES=	biology java
 MASTER_SITES=	https://www.jalview.org/source/
 DISTNAME=	${PORTNAME}_${DISTVERSION:S/./_/g}
@@ -19,8 +20,6 @@ USES=		java
 JAVA_VERSION=	11
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
-
-USE_LOCALE=	en_US.UTF-8
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 SUB_FILES=	jalview.sh

@@ -14,14 +14,14 @@
 PORTNAME?=	nvidia-kmod
 DISTVERSION?=	${NVIDIA_DISTVERSION}
 # Always try to set PORTREVISION as it can be overridden by the slave ports
-PORTREVISION?=	1
+PORTREVISION?=	0
 CATEGORIES=	x11
 MASTER_SITES=	NVIDIA/XFree86/FreeBSD-${ARCH_SUFX}/${DISTVERSION}
 DISTNAME=	NVIDIA-FreeBSD-${ARCH_SUFX}-${DISTVERSION}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER?=	x11@FreeBSD.org
-COMMENT?=	kmod part of NVidia graphics card binary drivers for hardware OpenGL rendering
+COMMENT?=	NVIDIA graphics driver kernel module
 WWW=		https://www.nvidia.com/object/unix.html
 
 LICENSE_FILE=	${WRKSRC}/doc/license.txt
@@ -187,18 +187,23 @@ post-patch: .SILENT
 		${WRKSRC}/src/${NVSRC}/nvidia_dev.c
 .endif
 # After src 2a99dd30dfaa, DRIVER_MODULE should not include nvidia_devclass
-.if ${OSVERSION} >= 1400058
 	${REINPLACE_CMD} -e '/^DRIVER_MODULE/s/, nvidia_devclass//' \
 		${WRKSRC}/src/${NVSRC}/nvidia_pci.c
-.endif
 # Catch up with pmap_unmapdev() and kmem_*() changes in 14-CURRENT
-.if ${OSVERSION} >= 1400070 && (${NVVERSION} < 470.25602  || ${NVVERSION} >= 480.00000 && ${NVVERSION} < 530.03002)
+.if ${NVVERSION} < 470.25602  || ${NVVERSION} >= 480.00000 && ${NVVERSION} < 530.03002
 	${REINPLACE_CMD} -e '/pmap_unmapdev/s,(vm_offset_t),,' \
 		${WRKSRC}/src/${NVSRC}/nvidia_os.c
 	${REINPLACE_CMD} -e '/vm_offset_t virtual_address/s,vm_offset_t ,char *,' \
 		${WRKSRC}/src/${NVSRC}/nv-freebsd.h
 	${REINPLACE_CMD} -e '/vm_offset_t address;/s,vm_offset_t ,void *,' \
 		${WRKSRC}/src/${NVSRC}/nvidia_subr.c
+.endif
+# Fix build with clang 21 for nvidia-modeset.ko
+.if ${NVVERSION:R} >= 390
+	${REINPLACE_CMD} -e 's/format (printf, 3, 4)/format (__printf__, 3, 4)/' \
+		${WRKSRC}/src/nvidia-modeset/nvidia-modeset-os-interface.h
+	${REINPLACE_CMD} -e 's/va_list ap);/va_list ap); __attribute__((format (__printf__, 3, 0)));/' \
+		${WRKSRC}/src/nvidia-modeset/nvidia-modeset-os-interface.h
 .endif
 # Fix a K&R prototype
 .if ${NVVERSION:R} >= 390

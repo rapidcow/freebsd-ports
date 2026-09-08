@@ -7,6 +7,9 @@ COMMENT=	Python module for libdnet
 BUILD_DEPENDS=	${PY_SETUPTOOLS}
 LIB_DEPENDS=	libdnet.so:net/libdnet
 
+DEPRECATED=	Depends on expired lang/cython0
+EXPIRATION_DATE=2026-09-15
+
 USES=		autoreconf libtool localbase:ldflags python
 
 MASTERDIR=	${.CURDIR}/../libdnet
@@ -21,7 +24,7 @@ PLIST_FILES=	${PYTHON_SITELIBDIR}/dnet${PYTHON_TAG}.so \
 
 LIBDNET_SLAVE=	yes
 
-USE_PYTHON=	cython flavors
+USE_PYTHON=	cython0 flavors
 CONFIGURE_ARGS=	--with-python=${PYTHON_CMD}
 
 .if defined(MAINTAINER_MODE)

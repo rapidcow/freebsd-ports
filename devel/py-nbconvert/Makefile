@@ -1,6 +1,5 @@
 PORTNAME=	nbconvert
-PORTVERSION=	7.16.6
-PORTREVISION=	1
+PORTVERSION=	7.17.1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI \
 		https://github.com/jupyter/nbconvert/releases/download/v${PORTVERSION}/
@@ -30,7 +29,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>=0:www/py-beautifulsoup@${PY_F
 		${PYTHON_PKGNAMEPREFIX}pygments>=2.4.1:textproc/py-pygments@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}traitlets>=5.1:devel/py-traitlets@${PY_FLAVOR}
 
-USES=		python shebangfix
+USES=		cpe python shebangfix
+CPE_VENDOR=	jupyter
 USE_PYTHON=	autoplist concurrent pep517
 
 NO_ARCH=	yes

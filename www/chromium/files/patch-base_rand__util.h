@@ -1,7 +1,7 @@
---- base/rand_util.h.orig	2025-09-06 10:01:20 UTC
+--- base/rand_util.h.orig	2026-07-01 06:24:19 UTC
 +++ base/rand_util.h
-@@ -213,7 +213,7 @@ void RandomShuffle(Itr first, Itr last) {
-   std::shuffle(first, last, RandomBitGenerator());
+@@ -219,7 +219,7 @@ decltype(auto) RandomChoice(Range&& r) {
+   return r[base::RandGenerator(r.size())];
  }
  
 -#if BUILDFLAG(IS_POSIX)

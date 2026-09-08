@@ -1,5 +1,5 @@
 PORTNAME=	pyogrio
-PORTVERSION=	0.12.1
+PORTVERSION=	0.13.0
 CATEGORIES=	graphics python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -22,13 +22,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}certifi>=0:security/py-certifi@${PY_FLAVOR} 
 		${PYTHON_PKGNAMEPREFIX}packaging>=0:devel/py-packaging@${PY_FLAVOR}
 
 USES=		python
-USE_PYTHON=	autoplist concurrent cython3 pep517
-
-OPTIONS_DEFINE=	GEOPANDAS
-OPTIONS_DEFAULT=GEOPANDAS
-GEOPANDAS_DESC=	GeoPandas support
-
-GEOPANDAS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}geopandas>=0:graphics/py-geopandas@${PY_FLAVOR}
+USE_PYTHON=	autoplist concurrent cython pep517
 
 post-install:
 	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +

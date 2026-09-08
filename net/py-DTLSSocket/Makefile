@@ -12,9 +12,12 @@ WWW=		https://git.fslab.de/jkonra2m/tinydtls-cython
 LICENSE=	EPL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+DEPRECATED=	Depends on expired lang/cython0
+EXPIRATION_DATE=2026-09-15
+
 BUILD_DEPENDS=	autoconf>0:devel/autoconf
 
 USES=		python
-USE_PYTHON=	autoplist cython distutils
+USE_PYTHON=	autoplist cython0 distutils
 
 .include <bsd.port.mk>

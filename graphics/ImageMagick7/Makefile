@@ -1,5 +1,6 @@
 PORTNAME=	ImageMagick
-DISTVERSION=	7.1.2-11
+DISTVERSION=	7.1.2-25
+PORTREVISION=	1
 CATEGORIES=	graphics perl5
 MASTER_SITES=	https://ftp.acc.umu.se/mirror/imagemagick.org/ftp/releases/ \
 		https://mirror.dogado.de/imagemagick/releases/ \
@@ -288,8 +289,13 @@ RUN_DEPENDS+=	gsfonts>=0:print/gsfonts
 .endif
 
 .if ${PORT_OPTIONS:MFFMPEG}
+. if ${FLAVOR:U} == x11
 BUILD_DEPENDS+=		ffmpeg:multimedia/ffmpeg
 RUN_DEPENDS+=		ffmpeg:multimedia/ffmpeg
+. else
+BUILD_DEPENDS+=		ffmpeg:multimedia/ffmpeg@nox11
+RUN_DEPENDS+=		ffmpeg:multimedia/ffmpeg@nox11
+. endif
 .endif
 
 .if ${PORT_OPTIONS:MDOCS}

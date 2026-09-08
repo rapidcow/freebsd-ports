@@ -1,4 +1,4 @@
---- src/App/ApplicationDirectories.cpp.orig	2025-09-10 20:44:18 UTC
+--- src/App/ApplicationDirectories.cpp.orig	2026-06-22 10:15:48 UTC
 +++ src/App/ApplicationDirectories.cpp
 @@ -33,6 +33,7 @@
  

@@ -1,5 +1,5 @@
 PORTNAME=	ptvsd
-PORTVERSION=	3.1.0
+DISTVERSION=	3.2.1
 PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
@@ -11,7 +11,10 @@ WWW=		https://pypi.org/project/ptvsd/
 
 LICENSE=	APACHE20
 
-USES=		python zip
+DEPRECATED=	No longer maintained upstream, use py-debugpy instead
+EXPIRATION_DATE=2026-08-25
+
+USES=		python
 USE_PYTHON=	autoplist concurrent distutils
 NO_ARCH=	yes
 

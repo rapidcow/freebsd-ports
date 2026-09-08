@@ -1,7 +1,7 @@
 PORTNAME=	freenginx
 PORTVERSION=	${NGINX_VERSION}
 .include "version.mk"
-PORTREVISION=	8
+PORTREVISION=	2
 CATEGORIES=	www
 MASTER_SITES=	https://freenginx.org/download/ \
 		LOCAL/osa
@@ -17,9 +17,9 @@ LICENSE_FILE?=	${WRKSRC}/LICENSE
 
 CONFLICTS_INSTALL=	nginx
 
-PORTSCOUT=	limit:^1\.29\.[0-9]*
+PORTSCOUT=	limit:^1\.31\.[0-9]*
 
-USES=		cpe compiler:env
+USES=		cpe compiler:env localbase:ldflags
 
 CPE_VENDOR=	freenginx
 CPE_PRODUCT=	freenginx
@@ -48,8 +48,8 @@ SUB_LIST+=	WWWOWN=${WWWOWN} \
 
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS+=--prefix=${ETCDIR} \
-		--with-cc-opt="-I ${LOCALBASE}/include" \
-		--with-ld-opt="-L ${LOCALBASE}/lib" \
+		--with-cc-opt="${CFLAGS}" \
+		--with-ld-opt="${LDFLAGS}" \
 		--conf-path=${ETCDIR}/nginx.conf \
 		--sbin-path=${PREFIX}/sbin/nginx \
 		--pid-path=${NGINX_RUNDIR}/nginx.pid \
@@ -243,30 +243,8 @@ IGNORE=		required at least GSSAPI_HEIMDAL or \
 		'make config' again
 .endif
 
-.include "Makefile.ignore"
-
 .if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 191
 CFLAGS+=	-Wno-error=cast-function-type-mismatch
-.endif
-
-.if ${PORT_OPTIONS:MPASSENGER} && empty(PORT_OPTIONS:MDEBUG)
-CONFIGURE_ENV+=	OPTIMIZE="yes"
-CFLAGS+=	-DNDEBUG
-.endif
-
-.if ${PORT_OPTIONS:MPASSENGER}
-CONFIGURE_ENV+=	EXTRA_PRE_CXXFLAGS="-std=c++14"
-.endif
-
-.if (PORT_OPTIONS:MMODSECURITY3)
-CONFIGURE_ARGS+=	--with-ld-opt="-L ${LOCALBASE}/lib -lpcre"
-LIB_DEPENDS+=		libpcre.so:devel/pcre
-.endif
-
-.if ${PORT_OPTIONS:MNJS}
-NJS_CONFIGURE_ARGS=	--cc-opt="${CFLAGS} -I${LOCALBASE}/include/quickjs" \
-			--ld-opt="-L${LOCALBASE}/lib" \
-			--with-quickjs
 .endif
 
 pre-everything::
@@ -278,6 +256,11 @@ pre-everything::
 	@${ECHO_MSG} "This port install Passenger module only"
 .endif
 	@${ECHO_MSG}
+
+post-extract-AUTH_JWT-on:
+	@${RMDIR} ${WRKSRC_auth_jwt}/nxe-json ${WRKSRC_auth_jwt}/nxe-jwx
+	@${LN} -s ${WRKSRC_nxe_json} ${WRKSRC_auth_jwt}/nxe-json
+	@${LN} -s ${WRKSRC_nxe_jwx} ${WRKSRC_auth_jwt}/nxe-jwx
 
 post-extract-NAXSI-on:
 	@${RMDIR} ${WRKSRC_naxsi}/naxsi_src/libinjection
@@ -314,10 +297,6 @@ post-patch-HTTP_TARANTOOL-on:
 
 post-patch-ICONV-on:
 	@${REINPLACE_CMD} 's!%%PREFIX%%!${LOCALBASE}!g' ${WRKSRC_iconv}/config
-
-post-patch-NJS_QJS-on:
-	@${REINPLACE_CMD} 's!%%LOCALBASE%%!${LOCALBASE}!g' ${WRKSRC_njs}/auto/quickjs \
-		${WRKSRC_njs}/nginx/config
 
 post-patch-PASSENGER-on:
 	@${REINPLACE_CMD} \

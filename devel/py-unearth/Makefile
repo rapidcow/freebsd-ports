@@ -1,5 +1,5 @@
 PORTNAME=	unearth
-PORTVERSION=	0.18.1
+PORTVERSION=	0.18.2
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -20,10 +20,12 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}flask>=2.1.2:www/py-flask@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-mock>=3.10.0:devel/py-pytest-mock@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests-wsgi-adapter>=0.4.1:www/py-requests-wsgi-adapter@${PY_FLAVOR}
 
-USES=		python
+USES=		cpe python
 USE_PYTHON=	autoplist concurrent pep517 pytest
 
 NO_ARCH=	yes
+
+CPE_VENDOR=	frostming
 
 .include <bsd.port.pre.mk>
 

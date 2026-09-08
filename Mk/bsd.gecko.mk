@@ -76,8 +76,8 @@ ELF_FEATURES+=	+wxneeded:dist/bin/${MOZILLA} +wxneeded:dist/bin/${MOZILLA}-bin
 
 BUNDLE_LIBS=	yes
 
-BUILD_DEPENDS+=	rust-cbindgen>=0.29.1:devel/rust-cbindgen \
-				${RUST_DEFAULT}>=1.92.0:lang/${RUST_DEFAULT}
+BUILD_DEPENDS+=	rust-cbindgen>=0.29.4:devel/rust-cbindgen \
+				${RUST_DEFAULT}>=1.96.0:lang/${RUST_DEFAULT}
 LIB_DEPENDS+=	libdrm.so:graphics/libdrm
 RUN_DEPENDS+=	${LOCALBASE}/lib/libpci.so:devel/libpci
 LIB_DEPENDS+=	libepoll-shim.so:devel/libepoll-shim
@@ -116,15 +116,9 @@ RUSTFLAGS+=	${CFLAGS:M-mcpu=*:S/-mcpu=/-C target-cpu=/}
 
 # Standard depends
 _ALL_DEPENDS=	av1 event ffi graphite harfbuzz jpeg nspr nss png pixman sqlite vpx webp
-# from 147 on, gecko needs ICU 78, but ports only has ICU 76 (2025-12-28)
-.    if ${MOZILLA_VER:R:R} < 147
-_ALL_DEPENDS+=	icu
-.    endif
 
-.    if exists(${FILESDIR}/patch-bug1559213)
 av1_LIB_DEPENDS=	libaom.so:multimedia/aom libdav1d.so:multimedia/dav1d
 av1_MOZ_OPTIONS=	--with-system-av1
-.    endif
 
 event_LIB_DEPENDS=	libevent.so:devel/libevent
 event_MOZ_OPTIONS=	--with-system-libevent
@@ -207,11 +201,6 @@ MOZ_EXPORT+=	MOZ_OPTIMIZE_FLAGS="${CFLAGS:M-O*}"
 MOZ_OPTIONS+=	--enable-optimize
 .    else
 MOZ_OPTIONS+=	--disable-optimize
-.      if ${/usr/bin/ld:L:tA} != /usr/bin/ld.lld
-# ld 2.17 barfs on Stylo built with -C opt-level=0
-USE_BINUTILS=	yes
-LDFLAGS+=		-B${LOCALBASE}/bin
-.      endif
 .    endif
 
 .    if ${PORT_OPTIONS:MCANBERRA}
@@ -368,6 +357,11 @@ gecko-post-patch:
 # Disable vendor checksums like lang/rust
 	@${REINPLACE_CMD} 's,"files":{[^}]*},"files":{},' \
 		${MOZSRC}/third_party/rust/*/.cargo-checksum.json
+# Thunderbird has rust crates in the comm dir
+	@if [ -d ${MOZSRC}/comm/third_party/rust ] ; then \
+		${REINPLACE_CMD} 's,"files":{[^}]*},"files":{},' \
+			${MOZSRC}/comm/third_party/rust/*/.cargo-checksum.json; \
+	fi
 
 pre-configure-script:
 # Check that the running kernel has COMPAT_FREEBSD11 required by lang/rust post-ino64

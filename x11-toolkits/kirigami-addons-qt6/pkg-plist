@@ -4,6 +4,10 @@ include/KirigamiAddons/App/kirigamiapp.h
 include/KirigamiAddons/App/kirigamiapp_export.h
 include/KirigamiAddons/App/kirigamiapp_version.h
 include/KirigamiAddons/App/kirigamiappdefaults.h
+include/KirigamiAddons/Components/NameUtils
+include/KirigamiAddons/Components/kirigamiaddonscomponents_export.h
+include/KirigamiAddons/Components/kirigamiaddonscomponents_version.h
+include/KirigamiAddons/Components/nameutils.h
 include/KirigamiAddonsStatefulApp/AbstractKirigamiApplication
 include/KirigamiAddonsStatefulApp/KirigamiActionCollection
 include/KirigamiAddonsStatefulApp/abstractkirigamiapplication.h
@@ -14,6 +18,9 @@ lib/cmake/KF6KirigamiAddons/KF6KirigamiAddonsConfigVersion.cmake
 lib/cmake/KF6KirigamiAddons/KirigamiAddonsMacros.cmake
 lib/cmake/KF6KirigamiAddons/KirigamiAddonsTargets-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/KF6KirigamiAddons/KirigamiAddonsTargets.cmake
+lib/libKirigamiAddonsComponents.so
+lib/libKirigamiAddonsComponents.so.%%SHLIB_VER%%
+lib/libKirigamiAddonsComponents.so.6
 lib/libKirigamiAddonsStatefulApp.so
 lib/libKirigamiAddonsStatefulApp.so.%%SHLIB_VER%%
 lib/libKirigamiAddonsStatefulApp.so.6
@@ -113,6 +120,13 @@ lib/libKirigamiApp.so.6
 %%QT_QMLDIR%%/org/kde/kirigamiaddons/labs/components/kde-qmlmodule.version
 %%QT_QMLDIR%%/org/kde/kirigamiaddons/labs/components/libcomponentslabsplugin.so
 %%QT_QMLDIR%%/org/kde/kirigamiaddons/labs/components/qmldir
+%%QT_QMLDIR%%/org/kde/kirigamiaddons/onboarding/OnboardToolTip.qml
+%%QT_QMLDIR%%/org/kde/kirigamiaddons/onboarding/kde-qmlmodule.version
+%%QT_QMLDIR%%/org/kde/kirigamiaddons/onboarding/libonboardingplugin.so
+%%QT_QMLDIR%%/org/kde/kirigamiaddons/onboarding/onboardingplugin.qmltypes
+%%QT_QMLDIR%%/org/kde/kirigamiaddons/onboarding/private/OnboardingEffect.qml
+%%QT_QMLDIR%%/org/kde/kirigamiaddons/onboarding/private/OnboardingOverlay.qml
+%%QT_QMLDIR%%/org/kde/kirigamiaddons/onboarding/qmldir
 %%QT_QMLDIR%%/org/kde/kirigamiaddons/settings/CategorizedSettings.qml
 %%QT_QMLDIR%%/org/kde/kirigamiaddons/settings/ConfigurationModule.qml
 %%QT_QMLDIR%%/org/kde/kirigamiaddons/settings/ConfigurationView.qml
@@ -216,6 +230,7 @@ share/locale/sl/LC_MESSAGES/kirigami-addons6.mo
 share/locale/sv/LC_MESSAGES/kirigami-addons6.mo
 share/locale/ta/LC_MESSAGES/kirigami-addons6.mo
 share/locale/tr/LC_MESSAGES/kirigami-addons6.mo
+share/locale/ug/LC_MESSAGES/kirigami-addons6.mo
 share/locale/uk/LC_MESSAGES/kirigami-addons6.mo
 share/locale/zh_CN/LC_MESSAGES/kirigami-addons6.mo
 share/locale/zh_TW/LC_MESSAGES/kirigami-addons6.mo

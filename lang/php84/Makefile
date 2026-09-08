@@ -1,5 +1,5 @@
 PORTNAME=	php84
-DISTVERSION=	8.4.16
+DISTVERSION=	8.4.24
 PORTREVISION?=	0
 CATEGORIES?=	lang devel www
 MASTER_SITES=	PHP/distributions
@@ -45,9 +45,6 @@ OPTIONS_EXCLUDE_aarch64=	DTRACE
 # dt_modtext:opensolaris/ib/libdtrace/common/dt_link.c: arm not impemented
 OPTIONS_EXCLUDE_armv6=	DTRACE
 OPTIONS_EXCLUDE_armv7=	DTRACE
-# Bug 197128:  No ASM code for MIPS/MIPS64, disable FPM
-OPTIONS_EXCLUDE_mips=	DTRACE FPM
-OPTIONS_EXCLUDE_mips64=	DTRACE FPM
 OPTIONS_EXCLUDE_riscv64=	DTRACE
 NO_OPTIONS_SORT=	yes
 OPTIONS_SUB=			yes
@@ -140,6 +137,10 @@ LIB_DEPENDS+=		libargon2.so:security/libargon2
 CONFIGURE_ARGS+=	--with-password-argon2=${LOCALBASE}
 .  endif
 
+.  if ${SSL_DEFAULT:Mlibressl*}
+EXTRA_PATCHES+=	${PATCHDIR}/libressl-patch-ext_openssl_openssl.c
+.  endif
+
 CONFIGURE_ENV+=	ac_cv_decimal_fp_supported="no" \
 		lt_cv_path_SED="sed" \
 		OPENSSL_CFLAGS="-I${OPENSSLINC}" \
@@ -202,7 +203,7 @@ COMMENT=	The ${PHP_MODNAME} shared extension for php
 USES+=		php:ext,noflavors
 PHP_MODNAME=	${PKGNAMESUFFIX:S/-//}
 PHP_VER=	84
-IGNORE_WITH_PHP=	82 83 85
+IGNORE_WITH_PHP=	82 83 85 86
 
 EXTSUBDIR=	${DISTNAME}/ext/${PHP_MODNAME}
 WRKSRC=		${WRKDIR}/${EXTSUBDIR}
@@ -261,7 +262,7 @@ FLATFILE_CONFIGURE_ON=	--disable-flatfile
 GDBM_LIB_DEPENDS=	libgdbm.so:databases/gdbm
 GDBM_CONFIGURE_ARGS=	--with-gdbm=${LOCALBASE}
 INIFILE_CONFIGURE_OFF=	--disable-inifile
-LMDB_LIB_DEPENDS=	liblmdb.so:databases/lmdb
+LMDB_LIB_DEPENDS=	liblmdb.so:databases/lmdb0
 LMDB_CONFIGURE_ARGS=	--with-lmdb=${LOCALBASE}
 QDBM_LIB_DEPENDS=	libqdbm.so:databases/qdbm
 QDBM_CONFIGURE_ARGS=	--with-qdbm=${LOCALBASE}
@@ -394,10 +395,16 @@ CONFIGURE_ARGS+= --with-unixODBC=${LOCALBASE}
 .  endif
 
 .  if ${PHP_MODNAME} == "opcache"
-LIB_DEPENDS+=	libcapstone.so:devel/capstone
 # This is needed by Zend extensions, keep before everything.
 PHP_MOD_PRIO=		10
-CONFIGURE_ARGS+=        --enable-opcache --with-capstone
+CONFIGURE_ARGS+=        --enable-opcache
+
+OPTIONS_DEFINE=	JIT
+
+JIT_DESC=		Enable JIT support for opcache
+
+JIT_LIB_DEPENDS=	libcapstone.so:devel/capstone
+JIT_CONFIGURE_ON=	--with-capstone --enable-opcache-jit=yes
 .  endif
 
 .  if ${PHP_MODNAME} == "pcntl"

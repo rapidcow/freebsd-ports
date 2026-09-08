@@ -1,6 +1,6 @@
 PORTNAME=	czkawka
-DISTVERSION=	10.0.0
-PORTREVISION=	4
+DISTVERSION=	11.0.1
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	uzsolt@FreeBSD.org
@@ -25,14 +25,20 @@ CARGO_INSTALL_PATH=	${PLIST_FILES:Mbin/*:T}
 PLIST_FILES=	bin/${PORTNAME}_cli \
 		bin/${PORTNAME}_gui \
 		share/applications/com.github.qarmin.czkawka.desktop \
+		share/applications/io.github.qarmin.krokiet.desktop \
 		share/icons/hicolor/scalable/apps/com.github.qarmin.czkawka-symbolic.svg \
 		share/icons/hicolor/scalable/apps/com.github.qarmin.czkawka.Devel.svg \
 		share/icons/hicolor/scalable/apps/com.github.qarmin.czkawka.svg \
-		share/metainfo/com.github.qarmin.czkawka.metainfo.xml
+		share/icons/hicolor/scalable/apps/io.github.qarmin.krokiet.svg \
+		share/metainfo/com.github.qarmin.czkawka.metainfo.xml \
+		share/metainfo/io.github.qarmin.krokiet.metainfo.xml
 
-post-patch:
-# XXX Skip the new GUI until runtime is tested
-	@${REINPLACE_CMD} '/krokiet/d' ${WRKSRC}/Cargo.toml
+.include <bsd.port.pre.mk>
+
+.if ${ARCH:Marmv?}
+LTO_UNSAFE=	yes
+CARGO_ENV+=	CARGO_PROFILE_RELEASE_LTO=false
+.endif
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/data/*.desktop \
@@ -44,4 +50,4 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/data/*.metainfo.xml \
 		${STAGEDIR}${PREFIX}/share/metainfo
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

@@ -1,6 +1,6 @@
 PORTNAME=	calibre
 PORTVERSION=	8.16.2
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	deskutils python
 MASTER_SITES=	https://download.calibre-ebook.com/${PORTVERSION}/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -56,6 +56,7 @@ RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}apsw>=3.50.4.0:databases/py-apsw@${PY_FLAVO
 			${PYTHON_PKGNAMEPREFIX}pillow>=10.3.0:graphics/py-pillow@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}pycryptodome>=3.19.1:security/py-pycryptodome@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}regex>=2023.8.8:textproc/py-regex@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}xxhash>=3.3.0:devel/py-xxhash@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}zeroconf>0.115.0:net/py-zeroconf@${PY_FLAVOR} \
 			liberation-fonts-ttf>=2.1.3:x11-fonts/liberation-fonts-ttf \
@@ -63,7 +64,7 @@ RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}apsw>=3.50.4.0:databases/py-apsw@${PY_FLAVO
 			pdftohtml:graphics/poppler-utils \
 			xdg-open:devel/xdg-utils
 
-USES=		desktop-file-utils gettext-runtime:build gl localbase:ldflags \
+USES=		cpe desktop-file-utils gettext-runtime:build gl localbase:ldflags \
 		pkgconfig pyqt:6 python:3.11+ qt:6 shared-mime-info shebangfix sqlite ssl \
 		tar:xz xorg
 USE_GITHUB=	nodefault
@@ -95,6 +96,8 @@ MAKE_ENV=	CALIBRE_CONFIG_DIRECTORY=${WRKDIR}/calibre-config \
 SUB_LIST=	PYTHON_VERSION=${PYTHON_VERSION}
 
 ISOCODESWRKSRC_CMD=	${BSDMAKE} -C ${.CURDIR}/../../misc/iso-codes -V WRKSRC
+
+CPE_VENDOR=	calibre-ebook
 
 post-extract:
 	@${CP} ${FILESDIR}/user-agent-data.json ${WRKSRC}/resources

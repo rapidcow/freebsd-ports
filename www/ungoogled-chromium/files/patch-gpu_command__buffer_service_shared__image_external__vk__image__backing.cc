@@ -1,6 +1,6 @@
---- gpu/command_buffer/service/shared_image/external_vk_image_backing.cc.orig	2026-01-16 13:40:34 UTC
+--- gpu/command_buffer/service/shared_image/external_vk_image_backing.cc.orig	2026-08-13 07:41:05 UTC
 +++ gpu/command_buffer/service/shared_image/external_vk_image_backing.cc
-@@ -53,7 +53,7 @@
+@@ -56,7 +56,7 @@
  #include "ui/gl/gl_version_info.h"
  #include "ui/gl/scoped_binders.h"
  

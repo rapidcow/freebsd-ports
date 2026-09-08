@@ -1,7 +1,9 @@
 PORTNAME=	fotocx
-PORTVERSION=	25.5
+PORTVERSION=	26.6.1
 CATEGORIES=	graphics
-MASTER_SITES=	https://kornelix.net/downloads/downloads/
+MASTER_SITES=	https://kornelix.net/downloads/downloads/ \
+		https://fossies.org/linux/misc/ \
+		https://fossies.org/linux/misc/legacy/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-source
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -12,6 +14,7 @@ LICENSE=	GPLv3+
 
 LIB_DEPENDS=	libchamplain-gtk-0.12.so:graphics/libchamplain \
 		libclutter-gtk-1.0.so:graphics/clutter-gtk3 \
+		libjxl.so:graphics/libjxl \
 		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
 RUN_DEPENDS=	xdg-open:devel/xdg-utils \

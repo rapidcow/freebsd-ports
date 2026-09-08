@@ -1,7 +1,7 @@
 PORTNAME=	qats
 DISTVERSIONPREFIX=	v
 DISTVERSION=	5.2.1
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	math
 #MASTER_SITES=	PYPI # no tests
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -21,16 +21,15 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}QtPy>=1.9.0:devel/py-QtPy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}matplotlib>=3.3.3:math/py-matplotlib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}myst-parser>=0.18.1:textproc/py-myst-parser@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}npTDMS>=1.1.0:misc/py-npTDMS@${PY_FLAVOR} \
-		${PYNUMPY} \
+		${PYTHON_PKGNAMEPREFIX}numpy>=1.16:math/py-numpy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}openpyxl>=3.0.5:textproc/py-openpyxl@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pandas>0:math/py-pandas@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pymatreader>=0.0.24:misc/py-pymatreader@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pyside2>=5.15.2:devel/pyside2@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyside6>0:devel/pyside6@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}scipy>=1.7.2:science/py-scipy@${PY_FLAVOR}
 
-USES=		pyqt:5 python
+USES=		python
 USE_PYTHON=	pep517 concurrent autoplist pytest
-USE_PYQT=	pyqt5
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	dnvgl

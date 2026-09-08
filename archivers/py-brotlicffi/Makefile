@@ -1,12 +1,13 @@
 PORTNAME=	brotlicffi
-PORTVERSION=	1.2.0.0
+PORTVERSION=	1.2.0.1
 CATEGORIES=	archivers python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Python CFFI bindings to the Brotli library
-WWW=		https://github.com/python-hyper/brotlicffi
+WWW=		https://python-hyper.org/projects/brotlipy/en/stable/ \
+		https://github.com/python-hyper/brotlicffi
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

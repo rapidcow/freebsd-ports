@@ -1,6 +1,5 @@
 PORTNAME=	anki
-DISTVERSION=	25.09.2
-PORTREVISION=	3
+DISTVERSION=	26.05
 # Don't forget to update ${_MY_BUILDHASH} if DISTVERSION changes
 CATEGORIES=	games education python
 MASTER_SITES=	LOCAL/kai/:yarncache
@@ -13,7 +12,7 @@ WWW=		https://apps.ankiweb.net/
 LICENSE=	AGPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-NOT_FOR_ARCHS=	armv6 armv7 i386 mips powerpc
+NOT_FOR_ARCHS=	armv6 armv7 i386 powerpc
 NOT_FOR_ARCHS_REASON=	the provided build system written in Rust (= runner) accepts only 64-bit systems.
 
 BUILD_DEPENDS=	protoc:devel/protobuf \
@@ -22,8 +21,6 @@ BUILD_DEPENDS=	protoc:devel/protobuf \
 		yarn:www/yarn \
 		${PYTHON_PKGNAMEPREFIX}black>0:devel/py-black@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}hatchling>0:devel/py-hatchling@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}mypy-protobuf>=1.21:devel/py-mypy-protobuf@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}ruff>0:devel/py-ruff@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
 LIB_DEPENDS=	libzstd.so:archivers/zstd
 RUN_DEPENDS=	lame:audio/lame \
@@ -38,8 +35,9 @@ RUN_DEPENDS=	lame:audio/lame \
 		${PYTHON_PKGNAMEPREFIX}beautifulsoup>0:www/py-beautifulsoup@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}flask>0:www/py-flask@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}Flask-Cors>0:www/py-flask-cors@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}protobuf>=4.21:devel/py-protobuf@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}packaging>0:devel/py-packaging@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}protobuf>=6.0,1<8.0,1:devel/py-protobuf@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}truststore>=0.10.4:security/py-truststore@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}typing-extensions>0:devel/py-typing-extensions@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}waitress>=2.0.0:www/py-waitress@${PY_FLAVOR}
 
@@ -49,8 +47,8 @@ USES=		cargo desktop-file-utils ninja nodejs:build pyqt:6 python \
 USE_GITHUB=	yes
 GH_ACCOUNT=	ankitects
 # Translation files
-GH_TUPLE=	ankitects:anki-core-i18n:480ef0d:ftlrslib \
-		ankitects:anki-desktop-ftl:fd5f984:ftlextra
+GH_TUPLE=	ankitects:anki-core-i18n:af7c60d:ftlrslib \
+		ankitects:anki-desktop-ftl:3a35d0a:ftlextra
 
 USE_PYQT=	pyqt6 sip:build webengine
 
@@ -65,6 +63,7 @@ CARGO_TARGET_DIR=	${WRKSRC}/out/rust
 
 # Variables used by the "runner" build system
 MAKE_ENV+=	NODE_BINARY=${LOCALBASE}/bin/node \
+		NODE_OPTIONS=--max-old-space-size=1024 \
 		OFFLINE_BUILD=1 \
 		PROTOC_BINARY=${LOCALBASE}/bin/protoc \
 		PYTHON_BINARY=${PYTHON_CMD} \
@@ -93,7 +92,7 @@ MPV_RUN_DEPENDS=	mpv:multimedia/mpv
 # Should contain the most recent commit that reflects ${DISTVERSION} and must
 # be exactly 8 digits otherwise the check for newer versions won't work as
 # expected.
-_MY_BUILDHASH=	3890e12c
+_MY_BUILDHASH=	e64c6b1a
 # Remove ${CARGO_BUILD_TARGET} from ${CARGO_ENV} to avoid problems with
 # hardcoded paths as the "runner" build system expects its components
 # in ${WRKSRC}/out/rust/debug
@@ -117,7 +116,6 @@ pre-configure:
 	# Create paths for the Python pseudo venv and link some binaries to it.
 	${MKDIR} ${WRKSRC}/out/pyenv/bin
 	${LN} -s ${PYTHON_CMD} ${WRKSRC}/out/pyenv/bin/python
-	${LN} -s ${LOCALBASE}/bin/protoc-gen-mypy ${WRKSRC}/out/pyenv/bin/protoc-gen-mypy
 
 # Overview of the build process
 #

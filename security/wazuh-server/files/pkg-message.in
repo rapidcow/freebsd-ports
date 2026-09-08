@@ -34,30 +34,34 @@ Wazuh server components were installed
 7) Install logstash-output-opensearch plugin. Fetch it from rubygems site or opensearch github
 
    # cd %%PREFIX%%/logstash/bin
-   # sh -c "JAVA_HOME=%%PREFIX%%/openjdk21 ./logstash-plugin install /tmp/logstash-output-opensearch"
+   # sh -c "JAVA_HOME=%%PREFIX%%/openjdk21 ./logstash-plugin install logstash-output-opensearch"
 
-   There are some issues installing this plugin on latest version of sysutils/logstash8.
-   Try installing gem file directly
+   If there are some issues installing this plugin, try installing gem file directly:
 
    # fetch https://rubygems.org/downloads/logstash-output-opensearch-2.0.3-java.gem -o \
      /tmp/logstash-output-opensearch-2.0.3-java.gem
-   # sh -c "JAVA_HOME=%%PREFIX%%/openjdk17 ./logstash-plugin install /tmp/logstash-output-opensearch-2.0.3-java.gem"
+   # sh -c "JAVA_HOME=%%PREFIX%%/openjdk21 ./logstash-plugin install /tmp/logstash-output-opensearch-2.0.3-java.gem"
 
 8) Check if logstash-output-opensearch plugin was installed
 
-   # sh -c "JAVA_HOME=%%PREFIX%%/openjdk17 ./logstash-plugin list | grep logstash-output-opensearch"
+   # sh -c "JAVA_HOME=%%PREFIX%%/openjdk21 ./logstash-plugin list | grep logstash-output-opensearch"
 
 9) Add Filebeat and Logstash to /etc/rc.conf
 
    # sysrc filebeat_enable="YES"
    # sysrc logstash_enable="YES"
 
-10) Start Filebeat and Logstash services
+10) Current version of logstash8 uses openjdk24 by default, but it doesn't work with logstash-output-opensearch.
+    Change it to openjdk21 adding the following:
+
+   # sysrc logstash_java_home="%%PREFIX%%/openjdk21"
+
+11) Start Filebeat and Logstash services
    
    # service filebeat start
    # service logstash start
 
-11) You can look more useful information at the following link:
+12) You can look more useful information at the following link:
 
     https://documentation.wazuh.com/current/installation-guide/wazuh-server/step-by-step.html
 
@@ -65,7 +69,7 @@ Wazuh server components were installed
     you can read at wazuh guide. Some times you could decided configure logstash
     on another host. If it is your case you must adapt some points in this guide.
 
-12) Enjoy it
+13) Enjoy it
 EOM
 }
 ]

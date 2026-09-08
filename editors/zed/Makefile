@@ -1,6 +1,6 @@
 PORTNAME=	zed
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.218.6
+DISTVERSION=	1.9.0
 CATEGORIES=	editors
 PKGNAMESUFFIX=	-editor
 
@@ -8,11 +8,10 @@ MAINTAINER=	tagattie@FreeBSD.org
 COMMENT=	Code at the speed of thought
 WWW=		https://zed.dev/
 
-LICENSE=	AGPLv3 APACHE20 GPLv3
+LICENSE=	APACHE20 GPLv3+
 LICENSE_COMB=	multi
-LICENSE_FILE_AGPLv3=	${WRKSRC}/LICENSE-AGPL
 LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE-APACHE
-LICENSE_FILE_GPLv3=	${WRKSRC}/LICENSE-GPL
+LICENSE_FILE_GPLv3+ =	${WRKSRC}/LICENSE-GPL
 
 ONLY_FOR_ARCHS=	aarch64 amd64
 ONLY_FOR_ARCHS_REASON=	Some of dependent crates only support these architectures
@@ -66,8 +65,7 @@ OPTIONS_DEFINE=	DOCS
 post-patch:
 # https://github.com/RazrFalcon/fontdb/issues/61
 	@${REINPLACE_CMD} -e 's|/etc|${LOCALBASE}&|g' \
-		${WRKSRC_crate_fontdb-0.16.2}/src/lib.rs \
-		${WRKSRC_crate_fontdb-0.23.0}/src/lib.rs
+		${WRKSRC_crate_fontdb}/src/lib.rs
 
 post-build:
 	${SETENV} ${MAKE_ENV} envsubst < \

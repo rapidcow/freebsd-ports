@@ -1,4 +1,4 @@
---- services/tracing/public/cpp/perfetto/track_name_recorder.cc.orig	2025-10-21 16:57:35 UTC
+--- services/tracing/public/cpp/perfetto/track_name_recorder.cc.orig	2026-08-13 07:41:05 UTC
 +++ services/tracing/public/cpp/perfetto/track_name_recorder.cc
 @@ -53,7 +53,7 @@ void FillThreadTrack(const perfetto::ThreadTrack& trac
      desc.mutable_chrome_thread()->set_thread_type(
@@ -6,6 +6,6 @@
    }
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_AIX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_AIX) || BUILDFLAG(IS_BSD)
-   if (base::GetCurrentProcId() !=
-       base::trace_event::TraceLog::GetInstance()->process_id()) {
+   if (base::GetCurrentProcId() != perfetto::Platform::GetCurrentProcessId()) {
      desc.mutable_chrome_thread()->set_is_sandboxed_tid(true);
+   }

@@ -1,7 +1,7 @@
-TIMESTAMP = 1767718905
-SHA256 (go/finance_homebox/sysadminsmedia-homebox-v0.22.3_GH0/homebox-v0.22.3.frontend.tar.gz) = e984909ba389123d34ee49ff49ba6b561353160f776269354cd8ee02209958bc
-SIZE (go/finance_homebox/sysadminsmedia-homebox-v0.22.3_GH0/homebox-v0.22.3.frontend.tar.gz) = 1015583
-SHA256 (go/finance_homebox/sysadminsmedia-homebox-v0.22.3_GH0/go.mod) = 9bd564f67075381de376d528aebcc7bad1a4c121d0753a62b341c7bedb672038
-SIZE (go/finance_homebox/sysadminsmedia-homebox-v0.22.3_GH0/go.mod) = 10558
-SHA256 (go/finance_homebox/sysadminsmedia-homebox-v0.22.3_GH0/sysadminsmedia-homebox-v0.22.3_GH0.tar.gz) = dc15c649142d1484958740d8451b8b84085c5cd263bb74572c526884665c86ac
-SIZE (go/finance_homebox/sysadminsmedia-homebox-v0.22.3_GH0/sysadminsmedia-homebox-v0.22.3_GH0.tar.gz) = 7520112
+TIMESTAMP = 1781887570
+SHA256 (go/finance_homebox/sysadminsmedia-homebox-v0.26.2_GH0/homebox-v0.26.2.frontend.tar.gz) = 87e857bb1e7707041e2f12f2eb89d8d00fd9bc61817fd397f1cbaf7ee18ed23f
+SIZE (go/finance_homebox/sysadminsmedia-homebox-v0.26.2_GH0/homebox-v0.26.2.frontend.tar.gz) = 1261460
+SHA256 (go/finance_homebox/sysadminsmedia-homebox-v0.26.2_GH0/go.mod) = db28158e67a8aab2ccd5bfd68e2b2b2170ee4c3479e020dbaa1015bed0d5d67b
+SIZE (go/finance_homebox/sysadminsmedia-homebox-v0.26.2_GH0/go.mod) = 11434
+SHA256 (go/finance_homebox/sysadminsmedia-homebox-v0.26.2_GH0/sysadminsmedia-homebox-v0.26.2_GH0.tar.gz) = 55f0fd83f9c6528c62b0850d152eba5636e8ca67e358f0d0e6bb06f4e7584619
+SIZE (go/finance_homebox/sysadminsmedia-homebox-v0.26.2_GH0/sysadminsmedia-homebox-v0.26.2_GH0.tar.gz) = 8515552

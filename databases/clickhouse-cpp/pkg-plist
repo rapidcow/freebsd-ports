@@ -15,6 +15,7 @@ include/clickhouse/base/wire_format.h
 include/clickhouse/block.h
 include/clickhouse/client.h
 include/clickhouse/columns/array.h
+include/clickhouse/columns/bool.h
 include/clickhouse/columns/column.h
 include/clickhouse/columns/date.h
 include/clickhouse/columns/decimal.h
@@ -24,12 +25,14 @@ include/clickhouse/columns/geo.h
 include/clickhouse/columns/ip4.h
 include/clickhouse/columns/ip6.h
 include/clickhouse/columns/itemview.h
+include/clickhouse/columns/json.h
 include/clickhouse/columns/lowcardinality.h
 include/clickhouse/columns/map.h
 include/clickhouse/columns/nothing.h
 include/clickhouse/columns/nullable.h
 include/clickhouse/columns/numeric.h
 include/clickhouse/columns/string.h
+include/clickhouse/columns/time.h
 include/clickhouse/columns/tuple.h
 include/clickhouse/columns/utils.h
 include/clickhouse/columns/uuid.h

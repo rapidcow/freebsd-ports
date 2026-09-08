@@ -1,6 +1,6 @@
 PORTNAME=	contour
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.6.2.8008
+DISTVERSION=	0.6.3.8249
 CATEGORIES=	x11
 
 MAINTAINER=	tagattie@FreeBSD.org
@@ -13,7 +13,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 BUILD_DEPENDS=	${LOCALBASE}/lib/cmake/boxed-cpp/boxed-cpp-config.cmake:devel/boxed-cpp \
 		${LOCALBASE}/lib/cmake/reflection-cpp/reflection-cpp-config.cmake:devel/reflection-cpp \
 		${LOCALBASE}/share/cmake/Microsoft.GSL/Microsoft.GSLConfig.cmake:devel/microsoft-gsl \
-		${LOCALBASE}/lib/cmake/range-v3/range-v3-config.cmake:devel/range-v3
+		${LOCALBASE}/lib/cmake/range-v3/range-v3-config.cmake:devel/range-v3 \
+		vulkan-headers>0:graphics/vulkan-headers
 LIB_DEPENDS=	libunicode.so:devel/libunicode-contour \
 		libyaml-cpp.so:devel/yaml-cpp \
 		libfreetype.so:print/freetype2 \
@@ -22,7 +23,8 @@ LIB_DEPENDS=	libunicode.so:devel/libunicode-contour \
 		libfontconfig.so:x11-fonts/fontconfig
 TEST_DEPENDS=	${LOCALBASE}/lib/cmake/Catch2/Catch2Config.cmake:devel/catch2
 
-USES=		cmake:testing desktop-file-utils gl gnome pkgconfig qt:6 xorg
+USES=		cmake:testing compiler desktop-file-utils gl gnome pkgconfig \
+		qt:6 xorg
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	contour-terminal
@@ -33,6 +35,7 @@ USE_GNOME=	cairo
 USE_QT=		base declarative multimedia tools:build
 
 CMAKE_ON=		CONTOUR_INSTALL_TOOLS
+CMAKE_OFF=		CONTOUR_USE_CPM
 CMAKE_TESTING_ON=	CONTOUR_TESTING
 
 PORTDOCS=	README.md SECURITY.md
@@ -43,11 +46,6 @@ OPTIONS_DEFINE=	DOCS
 
 .if ${OPSYS} == FreeBSD && ${ARCH} == i386
 EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src_crispy_read__selector.h
-.endif
-
-# FreeBSD 13 does not have tic in base, so we need one from ports
-.if ${OPSYS} == FreeBSD && ${OSREL:R} == 13
-BUILD_DEPENDS+=	tic:devel/ncurses
 .endif
 
 .if ${ARCH:Mpowerpc*}
@@ -71,3 +69,9 @@ post-install-DOCS-on:
 	${INSTALL_MAN} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>
+
+# XXX COMPILER_TYPE is defined after USES was already parsed
+.if ${CHOSEN_COMPILER_TYPE} == clang && ${_CCVERSION:M+assertions}
+llvm_ARGS=	build
+.include "${USESDIR}/llvm.mk"
+.endif

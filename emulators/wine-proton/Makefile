@@ -1,9 +1,9 @@
 PORTNAME=	wine-proton
 DISTVERSION=	9.0-3
-PORTREVISION=	0
+PORTREVISION=	1
 CATEGORIES=	emulators
 
-MAINTAINER=	iwtcex@gmail.com
+MAINTAINER=	monwarez@mailoo.org
 COMMENT=	Wine with a bit of extra spice
 WWW=		https://github.com/ValveSoftware/wine
 
@@ -31,6 +31,7 @@ LIB_DEPENDS+=	libwayland-client.so:graphics/wayland \
 		libxkbregistry.so:x11/libxkbcommon
 
 USES=		autoreconf bison desktop-file-utils gl gmake gnome gstreamer llvm:${_LLVM_VERSION},build localbase perl5 pkgconfig python:build sdl shebangfix tar:xz xorg
+USE_CSTD=	gnu11
 USE_GCC=	yes
 
 USE_GITHUB=	yes

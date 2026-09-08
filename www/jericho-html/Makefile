@@ -1,5 +1,6 @@
 PORTNAME=	jericho-html
 PORTVERSION=	3.4
+PORTREVISION=	2
 CATEGORIES=	www java
 MASTER_SITES=	SF/jerichohtml/${PORTNAME}/${PORTVERSION}
 
@@ -22,8 +23,7 @@ PLIST_FILES+=	${JAVAJARDIR}/${PORTNAME}.jar
 OPTIONS_DEFINE=	DOCS
 
 do-build:
-	(cd ${WRKSRC} && ${RM} -r classes/* && ${SETENV}         \
-		LANG=en_US.ISO8859-1 LC_ALL=en_US.ISO8859-1 ${JAVAC} \
+	(cd ${WRKSRC} && ${RM} -r classes/* && ${JAVAC}           \
 		-classpath ${INTERFACES:S, ,,g}                   \
 		-encoding Windows-1252 \
 		-d classes src/java/net/htmlparser/jericho/*.java \

@@ -1,7 +1,7 @@
---- base/allocator/partition_allocator/src/partition_alloc/partition_alloc_base/rand_util_posix.cc.orig	2025-09-10 13:22:16 UTC
+--- base/allocator/partition_allocator/src/partition_alloc/partition_alloc_base/rand_util_posix.cc.orig	2026-08-13 07:41:05 UTC
 +++ base/allocator/partition_allocator/src/partition_alloc/partition_alloc_base/rand_util_posix.cc
-@@ -107,6 +107,10 @@ void RandBytes(void* output, size_t output_length) {
-   if (getentropy(output, output_length) == 0) {
+@@ -104,6 +104,10 @@ void RandBytes(void* output, size_t output_length) {
+   if (CCRandomGenerateBytes(output, output_length) == kCCSuccess) {
      return;
    }
 +#elif PA_BUILDFLAG(IS_BSD)

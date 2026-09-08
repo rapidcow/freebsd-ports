@@ -1,9 +1,8 @@
 PORTNAME=	wazuh
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.14.1
-PORTREVISION=	6
+DISTVERSION=	4.14.6
 CATEGORIES=	security
-MASTER_SITES=	https://packages.wazuh.com/deps/47/libraries/sources/:wazuh_sources \
+MASTER_SITES=	https://packages.wazuh.com/deps/53/libraries/sources/:wazuh_sources \
 		LOCAL/acm/${PORTNAME}/:wazuh_cache
 PKGNAMESUFFIX=	-manager
 DISTFILES=	${EXTERNAL_DISTFILES} \
@@ -33,10 +32,12 @@ LIB_DEPENDS+=	libarrow.so:databases/arrow \
 		libopenblas.so:math/openblas
 RUN_DEPENDS=	bash>0:shells/bash
 
-USES=		cpe dos2unix gmake perl5 python:3.11 readline shebangfix sqlite:3 uidfix
+USES=		cpe dos2unix gmake perl5 python:3.11 readline shebangfix uidfix
 
 USE_GITHUB=	yes
-GH_TUPLE=	alonsobsd:wazuh-freebsd:${WAZUH_EXTRAFILE_TAGNAME}:wazuh
+GH_ACCOUNT=	alonsobsd
+GH_PROJECT=	wazuh-freebsd
+GH_TAGNAME=	b8c8db1e97f8a64a3904007640caae33a7a42085
 
 USE_RC_SUBR=	${PORTNAME}${PKGNAMESUFFIX}
 
@@ -48,15 +49,13 @@ DOS2UNIX_FILES=	${WRKSRC}/api/api/configuration/api.yaml
 #CCACHE_DIR=		/zdata/ccache
 
 WAZUH_CACHEFILE=	${PORTNAME}-cache-any-${DISTVERSION}${EXTRACT_SUFX}
-WAZUH_EXTRAFILE=	alonsobsd-${PORTNAME}-freebsd-${WAZUH_EXTRAFILE_TAGNAME}_GH0${EXTRACT_SUFX}
-WAZUH_EXTRAFILE_TAGNAME=830a911
 
 EXTERNAL_DISTFILES=	audit-userspace.tar.gz:wazuh_sources \
 			benchmark.tar.gz:wazuh_sources \
 			bzip2.tar.gz:wazuh_sources \
 			cJSON.tar.gz:wazuh_sources \
 			cpp-httplib.tar.gz:wazuh_sources \
-			cpython-3.11.14.tar.gz:wazuh_cache \
+			cpython-3.11.15.tar.gz:wazuh_cache \
 			curl.tar.gz:wazuh_sources \
 			flatbuffers.tar.gz:wazuh_sources \
 			googletest.tar.gz:wazuh_sources \
@@ -80,22 +79,19 @@ EXTERNAL_DISTFILES=	audit-userspace.tar.gz:wazuh_sources \
 			sqlite.tar.gz:wazuh_sources \
 			zlib.tar.gz:wazuh_sources
 
-OPTIONS_DEFINE=	INOTIFY PRELUDE ZEROMQ
+OPTIONS_DEFINE=	INOTIFY ZEROMQ
 OPTIONS_GROUP_DATABASE=	MYSQL PGSQL
 OPTIONS_GROUP=		DATABASE
 
-INOTIFY_LIB_DEPENDS=	libinotify.so:devel/libinotify
-PRELUDE_LIB_DEPENDS=	libprelude.so:security/libprelude
 ZEROMQ_LIB_DEPENDS=	libczmq.so:net/czmq
 
 INOTIFY_DESC=	Kevent based real time monitoring
-PRELUDE_DESC=	Sensor support from Prelude SIEM
 ZEROMQ_DESC=	ZeroMQ support
 
 ZEROMQ_MAKE_ENV=	USE_ZEROMQ=yes
-PRELUDE_MAKE_ENV=	USE_PRELUDE=yes
-INOTIFY_MAKE_ENV=	USE_INOTIFY=yes
-INOTIFY_USES=	pkgconfig
+INOTIFY_MAKE_ENV=	USE_INOTIFY=yes \
+			INOTIFY_LIB=${INOTIFY_LIB}
+INOTIFY_USES=	pkgconfig inotify
 PGSQL_MAKE_ARGS=DATABASE=pgsql
 PGSQL_USES=	pgsql
 MYSQL_MAKE_ARGS=DATABASE=mysql
@@ -118,11 +114,11 @@ WZARBIN_FILES=	default-firewall-drop pf npf ipfw firewalld-drop disable-account 
 		host-deny ip-customblock restart-wazuh route-null kaspersky wazuh-slack
 
 WZSHEBANG_FILES=chardetect connexion cygdb cython cythonize f2py fixup_pubsub_v1_keywords.py \
-		httpx jp.py jsonschema normalizer openapi-spec-validator \
+		httpx jp.py jsonschema normalizer openapi-spec-validator pip pip3 pip3.11\
 		pyrsa-decrypt pyrsa-encrypt pyrsa-keygen pyrsa-priv2pub pyrsa-sign \
 		pyrsa-verify rstpep2html.py rst2s5.py rst2xetex.py rst2man.py rst2odt.py \
 		rst2latex.py rst2pseudoxml.py rst2odt_prepstyles.py rst2html.py rst2html5.py \
-		rst2html4.py rst2xml.py tabulate uvicorn wsdump.py
+		rst2html4.py rst2xml.py tabulate uvicorn wheel wsdump.py
 
 WAZUHMOD660=	/queue/indexer /queue/vd
 WAZUHMOD750=	/ /logs/wazuh /logs/archives /logs/alerts /logs/firewall \
@@ -146,19 +142,18 @@ WAZUHMOD770=	/etc/decoders /etc/lists /etc/lists/amazon /etc/lists/malicious-ioc
 
 WAZUHPREFIX=	/var/ossec
 
-WZPYTHONWHEELS=	cffi-1.15.1-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
-		cryptography-44.0.1-cp37-abi3-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
-		greenlet-2.0.2-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
-		grpcio-1.69.0-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
+WZPYTHONWHEELS=	cffi-2.0.0-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
+		cryptography-46.0.7-cp311-abi3-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
+		greenlet-3.0.3-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
+		grpcio-1.76.0-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
 		lazy_object_proxy-1.10.0-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
-		markupsafe-2.1.2-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
-		multidict-5.2.0-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
+		markupsafe-2.1.5-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
 		numpy-1.26.4-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
-		psutil-5.9.0-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
-		pyarrow-21.0.0-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
-		pyyaml-6.0.1-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
+		psutil-6.1.1-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
+		pyarrow-24.0.0-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
+		pyyaml-6.0.3-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
 		rpds_py-0.15.2-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl \
-		uvloop-0.17.0-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl
+		uvloop-0.19.0-cp311-cp311-${FBSD_VERSION_BASE}_${ARCH_BASE}.whl
 
 ARCH_BASE=	${ARCH:S/aarch64/arm64/g}
 UNAME_r=	${_OSRELEASE:tl}
@@ -166,31 +161,23 @@ FBSD_RELEASE=	freebsd_${UNAME_r:S/./_/g:S/-/_/g}
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "aarch64" && ${OSVERSION} < 1400000
-IGNORE=		FreeBSD ${OSVERSION} ${ARCH} is not supported
-.endif
-
 .if ${ARCH} == "aarch64"
-FBSD14_PATCH_LEVEL=	_p5
+FBSD14_PATCH_LEVEL=	_p7
+FBSD15_PATCH_LEVEL=	_p1
 .endif
 
 .if ${ARCH} != "aarch64"
-FBSD13_PATCH_LEVEL=	_p6
-FBSD14_PATCH_LEVEL=	_p5
+FBSD14_PATCH_LEVEL=	_p7
+FBSD15_PATCH_LEVEL=	_p1
 .endif
 
-.if ${OSVERSION} >= 1300139 && ${OSVERSION} < 1400000
-FBSD_VERSION_BASE=freebsd_13_5_release${FBSD13_PATCH_LEVEL}
-FBSD_MAJOR_VERSION=13
-WAZUH_CACHENAME=${PORTNAME}-cache-fbsd13-${ARCH}-${DISTVERSION}
-DISTFILES+=	${WAZUH_CACHENAME}${EXTRACT_SUFX}:wazuh_cache
-.elif ${OSVERSION} >= 1400000 && ${OSVERSION} < 1500000
-FBSD_VERSION_BASE=freebsd_14_3_release${FBSD14_PATCH_LEVEL}
+.if ${OSVERSION} >= 1400000 && ${OSVERSION} < 1500000
+FBSD_VERSION_BASE=freebsd_14_4_release${FBSD14_PATCH_LEVEL}
 FBSD_MAJOR_VERSION=14
 WAZUH_CACHENAME=${PORTNAME}-cache-fbsd14-${ARCH}-${DISTVERSION}
 DISTFILES+=	${WAZUH_CACHENAME}${EXTRACT_SUFX}:wazuh_cache
 .elif ${OSVERSION} >= 1500000 && ${OSVERSION} < 1600000
-FBSD_VERSION_BASE=freebsd_15_0_release
+FBSD_VERSION_BASE=freebsd_15_1_release${FBSD15_PATCH_LEVEL}
 FBSD_MAJOR_VERSION=15
 WAZUH_CACHENAME=${PORTNAME}-cache-fbsd15-${ARCH}-${DISTVERSION}
 DISTFILES+=     ${WAZUH_CACHENAME}${EXTRACT_SUFX}:wazuh_cache
@@ -211,8 +198,6 @@ post-extract:
 	@cd ${WRKSRC}/src/external && ${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} ${_DISTDIR}/${FILE:S/:wazuh_sources//:S/:wazuh_cache//} ${EXTRACT_AFTER_ARGS}
 .endif
 .endfor
-	@cd ${WRKDIR} && ${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} ${_DISTDIR}/${WAZUH_EXTRAFILE} ${EXTRACT_AFTER_ARGS}
-	@${MV} ${WRKDIR}/${PORTNAME}-freebsd-${WAZUH_EXTRAFILE_TAGNAME} ${WRKDIR}/wazuh-freebsd
 
 	@cd ${WRKSRC}/src && ${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} ${_DISTDIR}/${WAZUH_CACHEFILE} ${EXTRACT_AFTER_ARGS}
 	@cd ${WRKSRC}/src && ${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} ${_DISTDIR}/${WAZUH_CACHENAME}${EXTRACT_SUFX} ${EXTRACT_AFTER_ARGS}
@@ -223,21 +208,15 @@ post-extract:
 .	endfor
 	@${RM} ${WRKSRC}/src/external/cpython/python ${WRKSRC}/src/external/cpython/libpython* ${WRKSRC}/src/external/cpython/Modules/*.o
 
-	@${MKDIR} ${WRKSRC}/ruleset/sca/freebsd
-	@cd ${WRKDIR}/wazuh-freebsd/var/ossec/ruleset/sca && ${CP} *.yml ${WRKSRC}/ruleset/sca/freebsd/
 	${FIND} ${WRKSRC}/ruleset/sca -type f -name "*.yml" -exec ${MV} "{}" "{}.disabled" \;
-
-	${CP} ${FILESDIR}/pthreads_portable.c ${WRKSRC}/src/shared/
-	${CP} ${FILESDIR}/pthreads_portable.h ${WRKSRC}/src/headers/
 
 post-patch:
 	${REINPLACE_CMD} -e 's|CC=|CC?=|g' -e 's|AR=|AR?=|g' ${WRKSRC}/src/external/bzip2/Makefile
 	${REINPLACE_CMD} -e 's|^\( *MULTIARCH=\).*--print-multiarch.*|\1|' ${WRKSRC}/src/external/cpython/configure
-	${REINPLACE_CMD} -e 's|coroutine|coroutines|g' ${WRKSRC}/framework/wazuh/core/cluster/client.py \
-		${WRKSRC}/framework/wazuh/rbac/decorators.py
+	${REINPLACE_CMD} -e 's|coroutine|coroutines|g' ${WRKSRC}/framework/wazuh/core/cluster/client.py
 
 do-build:
-	cd ${WRKSRC} && ${CC} ${CFLAGS} -o check_pid ${FILESDIR}/check_pid.c
+	cd ${WRKSRC} && ${CC} ${CFLAGS} -o check_pid ${WRKSRC}/libexec/check_pid.c
 	cd ${WRKSRC}/src/ && ${SETENV} ${MAKE_ENV} STAGEDIR=${STAGEDIR} \
 		${MAKE_CMD} ${MAKE_ARGS}
 
@@ -295,11 +274,9 @@ do-install:
 
 # Install rules files
 	${INSTALL_DATA} ${WRKSRC}/ruleset/rules/*.xml ${STAGEDIR}${WAZUHPREFIX}/ruleset/rules
-	${INSTALL_DATA} ${WRKDIR}/wazuh-freebsd/var/ossec/ruleset/rules/*.xml ${STAGEDIR}${WAZUHPREFIX}/ruleset/rules
 
 # Install decoders files
 	${INSTALL_DATA} ${WRKSRC}/ruleset/decoders/*.xml ${STAGEDIR}${WAZUHPREFIX}/ruleset/decoders
-	${INSTALL_DATA} ${WRKDIR}/wazuh-freebsd/var/ossec/ruleset/decoders/*.xml ${STAGEDIR}${WAZUHPREFIX}/ruleset/decoders
 
 	${INSTALL_DATA} ${WRKSRC}/ruleset/rootcheck/db/*.txt ${STAGEDIR}${WAZUHPREFIX}/etc/rootcheck
 

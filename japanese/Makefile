@@ -52,6 +52,7 @@
     SUBDIR += fcitx-skk
     SUBDIR += fcitx5-anthy
     SUBDIR += fcitx5-cskk
+    SUBDIR += fcitx5-hazkey
     SUBDIR += fcitx5-skk
     SUBDIR += flower-fpw
     SUBDIR += foldoc-fpw
@@ -162,7 +163,6 @@
     SUBDIR += lynx
     SUBDIR += lynx-current
     SUBDIR += man
-    SUBDIR += man-doc
     SUBDIR += mecab
     SUBDIR += mecab-ipadic
     SUBDIR += mecab-ipadic-eucjp
@@ -189,7 +189,6 @@
     SUBDIR += ngraph-fonts
     SUBDIR += nkf
     SUBDIR += open_jtalk
-    SUBDIR += p5-2chproxy
     SUBDIR += p5-Date-Japanese-Era
     SUBDIR += p5-Date-Japanese-Holiday
     SUBDIR += p5-DateTime-Calendar-Japanese-Era
@@ -221,10 +220,12 @@
     SUBDIR += plain2
     SUBDIR += plan
     SUBDIR += prn-ps
+    SUBDIR += proxy2ch
     SUBDIR += py-SudachiPy
     SUBDIR += py-fugashi
     SUBDIR += py-ipadic
     SUBDIR += py-jaconv
+    SUBDIR += py-mojimoji
     SUBDIR += py-unidic
     SUBDIR += qkc
     SUBDIR += qolibri
@@ -279,6 +280,7 @@
     SUBDIR += uim-anthy-unicode
     SUBDIR += uim-mozc
     SUBDIR += uim-tomoe-gtk
+    SUBDIR += unidic-to-mozc
     SUBDIR += vera-fpw
     SUBDIR += vftool
     SUBDIR += w3m
@@ -287,7 +289,6 @@
     SUBDIR += wdic-fpw
     SUBDIR += web1913-fpw
     SUBDIR += webalizer
-    SUBDIR += wnn7egg
     SUBDIR += wordnet-fpw
     SUBDIR += wordpress
     SUBDIR += wwasw-fpw

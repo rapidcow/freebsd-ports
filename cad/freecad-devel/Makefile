@@ -1,6 +1,6 @@
 PORTNAME=	FreeCAD
 DISTVERSION=	r${GIT_SRC_DATE}
-PORTREVISION=	1
+#PORTREVISION=	1
 CATEGORIES=	cad
 PKGNAMESUFFIX=  -devel
 
@@ -14,11 +14,13 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 CONFLICTS_INSTALL=      freecad # bin/FreeCAD
 
 BUILD_DEPENDS=	doxygen:devel/doxygen \
+		googletest>0:devel/googletest \
 		pybind11-config:devel/py-pybind11@${PY_FLAVOR} \
 		pybind11>0:devel/pybind11 \
 		${PYTHON_PKGNAMEPREFIX}pyside6-tools>0:devel/pyside6-tools@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pivy>0:graphics/py-pivy@${PY_FLAVOR} \
 		${PYTHON_SITELIBDIR}/matplotlib/__init__.py:math/py-matplotlib@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}lark>0:devel/py-lark@${PY_FLAVOR} \
 		swig:devel/swig
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2 \
@@ -44,17 +46,18 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libhdf5.so:science/hdf5 \
 		libicui18n.so:devel/icu
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pivy>0:graphics/py-pivy@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}defusedxml>=0.7.1<0.8:devel/py-defusedxml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pivy>0:graphics/py-pivy@${PY_FLAVOR} \
 		${PYTHON_SITELIBDIR}/matplotlib/__init__.py:math/py-matplotlib@${PY_FLAVOR}
 
 USES=		dos2unix compiler:c++20-lang cmake cpe gl eigen:3 fortran gmake jpeg \
 		localbase:ldflags mpi:openmpi pkgconfig python localbase qt:6 xorg \
 		desktop-file-utils shared-mime-info shebangfix
 USE_GITHUB=	yes
-GH_ACCOUNT=	FreeCAD:ondsel google:gtest microsoft:gsl FreeCAD:addonmgr
-GH_PROJECT=	OndselSolver:ondsel googletest:gtest GSL:gsl AddonManager:addonmgr
-GH_TAGNAME=	${GIT_SRC_HASH} ${GIT_ONDSEL_HASH}:ondsel ${GIT_GTEST_HASH}:gtest ${GIT_GSL_HASH}:gsl ${GIT_ADDONMGR_HASH}:addonmgr
-GH_SUBDIR=	src/3rdParty/OndselSolver:ondsel tests/lib:gtest src/3rdParty/GSL:gsl src/Mod/AddonManager:addonmgr
+GH_ACCOUNT=	FreeCAD:ondsel microsoft:gsl FreeCAD:addonmgr
+GH_PROJECT=	OndselSolver:ondsel GSL:gsl AddonManager:addonmgr
+GH_TAGNAME=	${GIT_SRC_HASH} ${GIT_ONDSEL_HASH}:ondsel ${GIT_GSL_HASH}:gsl ${GIT_ADDONMGR_HASH}:addonmgr
+GH_SUBDIR=	src/3rdParty/OndselSolver:ondsel src/3rdParty/GSL:gsl src/Mod/AddonManager:addonmgr
 USE_XORG=	ice sm x11 xext xt
 USE_GL=		gl glu
 USE_QT=		base svg tools
@@ -64,8 +67,6 @@ USE_QT=		base svg tools
 USE_LDCONFIG=	yes
 
 CPE_VENDOR=	freecad_project
-
-VTK_VER=	9.5
 
 DOS2UNIX_GLOB=	*.txt *.h *.cpp *.py *.qss *.csv *.pov *.stp *.ui *.wrl *.WRL
 SHEBANG_FILES=	src/Tools/freecad-thumbnailer.in
@@ -83,6 +84,8 @@ CMAKE_ARGS+=	-DOCC_INCLUDE_DIR="${LOCALBASE}/include/OpenCASCADE" \
 		-DBUILD_ASSEMBLY="ON" \
 		-DBUILD_DESIGNER_PLUGIN="ON" \
 		-DBUILD_FLAT_MESH="ON" \
+		-DBUILD_TEST="OFF" \
+		-DENABLE_DEVELOPER_TESTS="OFF" \
 		-DBUILD_VR="OFF" \
 		-DFREECAD_USE_EXTERNAL_FMT="ON" \
 		-DFREECAD_CREATE_MAC_APP="OFF" \
@@ -144,4 +147,5 @@ post-install:
 	# ${INSTALL_SCRIPT} ${WRKSRC}/src/Tools/freecad-thumbnailer \
 	# 	${STAGEDIR}${PREFIX}/bin/freecad-thumbnailer
 
+.include <../../math/vtk9/Makefile.version>
 .include <bsd.port.mk>

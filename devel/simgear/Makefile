@@ -1,6 +1,5 @@
 PORTNAME=	simgear
-PORTVERSION=	2024.1.1
-PORTREVISION=	1
+PORTVERSION=	2024.1.6
 CATEGORIES=	devel games
 
 MAINTAINER=	martymac@FreeBSD.org
@@ -13,7 +12,13 @@ LICENSE_FILE_LGPL20+ =	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib
 RUN_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib
-LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
+LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \
+		libavdevice.so:multimedia/ffmpeg \
+		libavformat.so:multimedia/ffmpeg \
+		libavutil.so:multimedia/ffmpeg \
+		libswscale.so:multimedia/ffmpeg \
+		libswresample.so:multimedia/ffmpeg \
+		libboost_thread.so:devel/boost-libs \
 		libosg.so:graphics/osg \
 		libexpat.so:textproc/expat2 \
 		libcurl.so:ftp/curl
@@ -23,7 +28,6 @@ USES=		cmake compiler:c++17-lang cpe gl jpeg openal:al,alut \
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	flightgear
-GL_TAGNAME=	v${PORTVERSION}
 
 USE_XORG=	ice sm x11 xext xi xmu xt
 USE_GL=		gl glu glut

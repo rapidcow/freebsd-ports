@@ -1,6 +1,6 @@
---- chrome/browser/ui/browser_command_controller.cc.orig	2026-01-14 08:33:23 UTC
+--- chrome/browser/ui/browser_command_controller.cc.orig	2026-08-12 09:02:10 UTC
 +++ chrome/browser/ui/browser_command_controller.cc
-@@ -134,7 +134,7 @@
+@@ -171,7 +171,7 @@
  #include "components/user_manager/user_manager.h"
  #endif
  
@@ -9,7 +9,7 @@
  #include "ui/base/ime/text_edit_commands.h"
  #include "ui/base/ime/text_input_flags.h"
  #include "ui/linux/linux_ui.h"
-@@ -144,7 +144,7 @@
+@@ -181,7 +181,7 @@
  #include "ui/ozone/public/ozone_platform.h"
  #endif
  
@@ -18,7 +18,7 @@
  #include "chrome/browser/ui/shortcuts/desktop_shortcuts_utils.h"
  #endif  // BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
  
-@@ -391,7 +391,7 @@ bool BrowserCommandController::IsReservedCommandOrKey(
+@@ -485,7 +485,7 @@ bool BrowserCommandController::IsReservedCommandOrKey(
  #endif
    }
  
@@ -27,16 +27,25 @@
    // If this key was registered by the user as a content editing hotkey, then
    // it is not reserved.
    auto* linux_ui = ui::LinuxUi::instance();
-@@ -694,7 +694,7 @@ bool BrowserCommandController::ExecuteCommandWithDispo
+@@ -818,7 +818,7 @@ void BrowserCommandController::HandleCommandWithDispos
        break;
  #endif
  
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
+     case IDC_MINIMIZE_WINDOW:
+       browser_->GetWindow()->Minimize();
+       break;
+@@ -831,7 +831,7 @@ void BrowserCommandController::HandleCommandWithDispos
+ 
+ #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
+ 
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-     case IDC_MINIMIZE_WINDOW:
-       browser_->window()->Minimize();
-       break;
-@@ -933,7 +933,7 @@ bool BrowserCommandController::ExecuteCommandWithDispo
+     case IDC_USE_SYSTEM_TITLE_BAR: {
+       PrefService* prefs = profile()->GetPrefs();
+       prefs->SetBoolean(prefs::kUseCustomChromeFrame,
+@@ -1092,7 +1092,7 @@ void BrowserCommandController::HandleCommandWithDispos
        break;
      case IDC_CREATE_SHORTCUT:
        base::RecordAction(base::UserMetricsAction("CreateShortcut"));
@@ -45,7 +54,7 @@
        chrome::CreateDesktopShortcutForActiveWebContents(browser_);
  #else
        web_app::CreateWebAppFromCurrentWebContents(
-@@ -1113,7 +1113,7 @@ bool BrowserCommandController::ExecuteCommandWithDispo
+@@ -1307,7 +1307,7 @@ void BrowserCommandController::HandleCommandWithDispos
  #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
      case IDC_CHROME_WHATS_NEW:
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING) && \
@@ -54,21 +63,28 @@
        ShowChromeWhatsNew(browser_);
        break;
  #else
-@@ -1502,7 +1502,7 @@ void BrowserCommandController::InitCommandState() {
-   command_updater_.UpdateCommandEnabled(IDC_VISIT_DESKTOP_OF_LRU_USER_4, true);
-   command_updater_.UpdateCommandEnabled(IDC_VISIT_DESKTOP_OF_LRU_USER_5, true);
+@@ -1737,13 +1737,13 @@ void BrowserCommandController::InitCommandState() {
+   command_updater_->UpdateCommandEnabled(IDC_VISIT_DESKTOP_OF_LRU_USER_4, true);
+   command_updater_->UpdateCommandEnabled(IDC_VISIT_DESKTOP_OF_LRU_USER_5, true);
  #endif
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
+   command_updater_->UpdateCommandEnabled(IDC_MINIMIZE_WINDOW, true);
+   command_updater_->UpdateCommandEnabled(IDC_MAXIMIZE_WINDOW, true);
+   command_updater_->UpdateCommandEnabled(IDC_RESTORE_WINDOW, true);
+ #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
+ 
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-   command_updater_.UpdateCommandEnabled(IDC_MINIMIZE_WINDOW, true);
-   command_updater_.UpdateCommandEnabled(IDC_MAXIMIZE_WINDOW, true);
-   command_updater_.UpdateCommandEnabled(IDC_RESTORE_WINDOW, true);
-@@ -1889,7 +1889,7 @@ void BrowserCommandController::UpdateCommandsForTabSta
+   bool use_system_title_bar = true;
+ #if BUILDFLAG(IS_OZONE)
+   use_system_title_bar = ui::OzonePlatform::GetInstance()
+@@ -2136,7 +2136,7 @@ void BrowserCommandController::UpdateCommandsForTabSta
    bool can_create_web_app = web_app::CanCreateWebApp(browser_);
-   command_updater_.UpdateCommandEnabled(IDC_INSTALL_PWA, can_create_web_app);
+   command_updater_->UpdateCommandEnabled(IDC_INSTALL_PWA, can_create_web_app);
  
 -#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
 +#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
-   command_updater_.UpdateCommandEnabled(
+   command_updater_->UpdateCommandEnabled(
        IDC_CREATE_SHORTCUT,
        shortcuts::CanCreateDesktopShortcut(current_web_contents));

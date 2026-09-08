@@ -1,24 +1,23 @@
 PORTNAME=	gitlogue
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.6.0 # make patch cargo-crates
-PORTREVISION=	1
+DISTVERSION=	0.10.0 # make patch cargo-crates
 CATEGORIES=	misc
 
-MAINTAINER=	nxjoseph@protonmail.com
+MAINTAINER=	nxjoseph@FreeBSD.org
 COMMENT=	Watch your git commit history in a cinematic view
 WWW=		https://github.com/unhappychoice/gitlogue
 
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libgit2.so:devel/libgit2 \
-		libssh2.so:security/libssh2
+LIB_DEPENDS=	libgit2.so:devel/libgit2
+RUN_DEPENDS=	noto-emoji>0:x11-fonts/noto-emoji
 
-USES=		cargo localbase ssl
+USES=		cargo
 USE_GITHUB=	yes
 GH_ACCOUNT=	unhappychoice
 
-CARGO_ENV=	OPENSSL_NO_VENDOR=1
+TESTING_UNSAFE=	yes
 
 PLIST_FILES=	bin/${PORTNAME}
 

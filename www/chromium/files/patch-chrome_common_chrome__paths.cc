@@ -1,4 +1,4 @@
---- chrome/common/chrome_paths.cc.orig	2025-10-30 15:44:36 UTC
+--- chrome/common/chrome_paths.cc.orig	2026-08-12 09:02:10 UTC
 +++ chrome/common/chrome_paths.cc
 @@ -31,7 +31,7 @@
  #include "base/apple/foundation_util.h"
@@ -61,7 +61,7 @@
      case chrome::DIR_STANDALONE_EXTERNAL_EXTENSIONS: {
        cur = base::FilePath(kFilepathSinglePrefExtensions);
        break;
-@@ -460,7 +460,7 @@ bool PathProvider(int key, base::FilePath* result) {
+@@ -448,7 +448,7 @@ bool PathProvider(int key, base::FilePath* result) {
  
  #if BUILDFLAG(ENABLE_EXTENSIONS_CORE) &&                                   \
      (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC) || \
@@ -70,13 +70,13 @@
      case chrome::DIR_NATIVE_MESSAGING:
  #if BUILDFLAG(IS_MAC)
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
-@@ -474,6 +474,9 @@ bool PathProvider(int key, base::FilePath* result) {
+@@ -465,6 +465,9 @@ bool PathProvider(int key, base::FilePath* result) {
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
        cur = base::FilePath(
            FILE_PATH_LITERAL("/etc/opt/chrome/native-messaging-hosts"));
 +#elif BUILDFLAG(IS_FREEBSD)
 +      cur = base::FilePath(FILE_PATH_LITERAL(
 +          "/usr/local/etc/chromium/native-messaging-hosts"));
- #else
-       cur = base::FilePath(
-           FILE_PATH_LITERAL("/etc/chromium/native-messaging-hosts"));
+ #elif BUILDFLAG(GOOGLE_CHROME_FOR_TESTING_BRANDING)
+       cur = base::FilePath(FILE_PATH_LITERAL(
+           "/etc/opt/chrome_for_testing/native-messaging-hosts"));

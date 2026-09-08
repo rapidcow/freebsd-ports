@@ -1,21 +1,25 @@
 PORTNAME=	nerdctl
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.2.0
+DISTVERSION=	2.3.4
 PORTREVISION=	3
 CATEGORIES=	sysutils
+DISTFILES+=	go.mod
 
-MAINTAINER=	laurent.chardon@gmail.com
+MAINTAINER=	laurent@FreeBSD.org
 COMMENT=	Docker-compatible CLI for containerd
 WWW=		https://github.com/containerd/nerdctl
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:modules
+USES=		go:1.26+,modules
+USE_GITHUB=	yes
+GH_ACCOUNT=	containerd
 
 GO_MODULE=	github.com/containerd/nerdctl/v2
 GO_TARGET=	./cmd/${PORTNAME}
 GO_BUILDFLAGS=	-ldflags "-s -w -X ${GO_MODULE}/pkg/version.Version=${DISTVERSIONFULL}"
+GO_TESTTARGET=	./pkg/...
 
 PLIST_FILES=	bin/containerd-rootless-setuptool.sh \
 		bin/containerd-rootless.sh \
@@ -29,7 +33,7 @@ PORTDOCS=	*
 OPTIONS_DEFINE=	DOCS
 
 pre-fetch:
-	@${MKDIR} ${DISTDIR}/${DIST_SUBDIR}/mod/tigron
+	@${MKDIR} ${DISTDIR}/${DIST_SUBDIR}
 	[ -e ${DISTDIR}/${DIST_SUBDIR}/go.mod ] || \
 		(${FETCH_CMD} ${FETCH_BEFORE_ARGS} \
 			https://raw.githubusercontent.com/containerd/nerdctl/v${DISTVERSION}/go.mod \
@@ -50,7 +54,6 @@ post-install:
 		> ${STAGEDIR}${PREFIX}/share/zsh/site-functions/_${PORTNAME}
 
 post-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} "README.md docs" ${STAGEDIR}${DOCSDIR})
 
 .include <bsd.port.mk>
