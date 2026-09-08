@@ -1,10 +1,20 @@
 PORTNAME=	python
 DISTVERSION=	${PYTHON_DISTVERSION}
+PORTREVISION=	2
 CATEGORIES=	lang python
 MASTER_SITES=	PYTHON/ftp/python/${DISTVERSION:C/[a-z].*//}
 PKGNAMESUFFIX=	${PYTHON_SUFFIX}
 DISTNAME=	Python-${DISTVERSION}
 DIST_SUBDIR=	python
+
+PATCH_SITES=	https://github.com/python/cpython/commit/
+PATCHFILES=	a46c10ec9d4050ab67b8a932e0859a2ea60c3cb8.patch:-p1 \
+		afc40bdd3dd71f343fd9016f6d8eebbacbd6587c.patch:-p1 \
+		842ce19a0c0b58d61591e8f6a708c38db1fb94e4.patch:-p1 \
+		e9970f077240c7c670e8a6fc6662f2b30d3b6ad0.patch:-p1 \
+		3f396ca9d7bbe2a50ea6b8c9b27c0082884d9f80.patch:-p1 \
+		b1869ff648bbee0717221d09e6deff46617f3e85.patch:-p1 \
+		e4846a93ac07a8ae9aa18203af0dd13d6e7a6995.patch:-p1
 
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Interpreted object-oriented programming language
@@ -28,7 +38,7 @@ SHEBANG_FILES+=	Lib/test/ziptestdata/exe_with_z64 \
 DISABLED_EXTENSIONS=	_sqlite3 _tkinter _gdbm
 CONFIGURE_ARGS+=	--enable-shared --without-ensurepip \
 			--with-system-ffi
-CONFIGURE_ENV+=		OPT="" # Null out OPT to respect user CFLAGS and remove optimizations
+CONFIGURE_ENV+=		OPT="" ac_cv_prog_cc_g=false # Null out OPT to respect user CFLAGS and remove optimizations
 
 INSTALL_TARGET=		altinstall						# Don't want cloberring of unprefixed files
 
@@ -41,9 +51,7 @@ SUB_FILES=		pkg-message
 SUB_LIST=		PYTHON_SUFFIX=${PYTHON_SUFFIX}
 
 PLIST_SUB=		ABI=${ABIFLAGS} \
-			XY=${PYTHON_SUFFIX} \
-			XYDOT=${PYTHON_VER} \
-			XYZDOT=${DISTVERSION:C/[a-z].*//} \
+			DISTVERSION=${DISTVERSION} \
 			OSMAJOR=${OSVERSION:C/([0-9]*)[0-9]{5}/\1/}		# For plat-freebsd* in pkg-plist. https://bugs.python.org/issue19554
 
 OPTIONS_DEFINE=		DEBUG IPV6 LIBMPDEC LTO NLS PYMALLOC
@@ -70,7 +78,7 @@ IPV6_CONFIGURE_ENABLE=	ipv6
 LIBMPDEC_CONFIGURE_ON=	--with-system-libmpdec
 LIBMPDEC_LIB_DEPENDS=	libmpdec.so:math/mpdecimal
 
-LTO_CONFIGURE_ON=	--with-lto=thin
+LTO_CONFIGURE_ON=	--with-lto
 
 # Use CPPFLAGS over CFLAGS due to -I ordering, causing elementtree and pyexpat
 # to break in Python 2.7, or preprocessor complaints in Python >= 3.3
@@ -96,10 +104,6 @@ PLIST_FILES+=	bin/python${PYTHON_VER}${ABIFLAGS} \
 		libdata/pkgconfig/python-${PYTHON_VER}${ABIFLAGS}-embed.pc
 .endif
 
-.if ${ARCH} == sparc64
-CFLAGS+=	-DPYTHON_DEFAULT_RECURSION_LIMIT=900
-.endif
-
 # See https://bugs.freebsd.org/115940 and https://bugs.freebsd.org/193650
 .if !exists(/usr/bin/ypcat) || defined(WITHOUT_NIS)
 PLIST_SUB+=	NO_NIS="@comment "
@@ -113,8 +117,17 @@ EXTRA_PATCHES+=	${PATCHDIR}/libressl
 CONFIGURE_ENV+=	ac_cv_working_openssl_hashlib=yes
 .endif
 
+.include <bsd.port.pre.mk>
+
+# llvm17 with -flto=thin makes Programs/_freeze_module crash on armv7; workaround
+# cf. https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=276249
+.if ${ARCH} == armv7 && ${CHOSEN_COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 170 && \
+	${COMPILER_VERSION} < 180
+CONFIGURE_ARGS:=	${CONFIGURE_ARGS:N${LTO_CONFIGURE_ON}}
+.endif
+
 post-patch:
-# disable the detection of includes and library from e2fsprogs-libuuid,
+# disable the detection of includes and library from libuuid,
 # which introduces hidden dependency and breaks build
 	@${REINPLACE_CMD} -e 's|uuid/uuid.h|ignore_&|' ${WRKSRC}/configure
 
@@ -154,4 +167,4 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/Tools/gdb/libpython.py \
 		${STAGEDIR}${PREFIX}/lib/libpython${PYTHON_VER}${ABIFLAGS}.so.1.0-gdb.py
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

@@ -1,6 +1,6 @@
 PORTNAME=	fmoo-audiotools
 PORTVERSION=	3.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	audio python
 MASTER_SITES=	SF/audiotools/audiotools
 DISTNAME=	audiotools-${PORTVERSION}
@@ -8,7 +8,7 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	ryu0@ymail.com
 COMMENT=	Collection of command line audio handling utilities
-WWW=		http://audiotools.sourceforge.net
+WWW=		https://audiotools.sourceforge.net
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

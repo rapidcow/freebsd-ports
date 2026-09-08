@@ -1,5 +1,5 @@
 PORTNAME=	cassandra-cpp-driver
-PORTVERSION=	2.17.0
+PORTVERSION=	2.17.1
 PORTREVISION=	0
 CATEGORIES=	databases
 
@@ -11,7 +11,7 @@ LICENSE=	APACHE20
 
 LIB_DEPENDS=	libuv.so:devel/libuv
 
-USES=		cmake compiler:c++11-lang pkgconfig pathfix ssl
+USES=		cmake compiler:c++11-lang pkgconfig ssl
 USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	datastax

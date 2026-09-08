@@ -1,37 +1,11 @@
---- pyproject.toml.orig	2023-07-27 13:04:20 UTC
+--- pyproject.toml.orig	2024-10-05 02:47:34 UTC
 +++ pyproject.toml
-@@ -1,12 +1,13 @@
- # Project metadata
- 
- [project]
--dynamic = ["version", "urls"]
-+dynamic = ["urls"]
- 
- name = "amaranth"
- description = "Amaranth hardware definition language"
- authors = [{name = "Amaranth HDL contributors"}]
- license = {file = "LICENSE.txt"}
-+version = "%%VERSION%%"
- 
- requires-python = "~=3.8"
- dependencies = [
-@@ -26,7 +27,7 @@ amaranth-rpc = "amaranth.rpc:main"
+@@ -44,7 +44,7 @@ amaranth-rpc = "amaranth.rpc:main"
  # Build system configuration
  
  [build-system]
--requires = ["wheel", "setuptools>=67.0", "setuptools_scm[toml]>=6.2"]
-+requires = ["wheel", "setuptools>0", "setuptools_scm[toml]>=6.2"]
- build-backend = "setuptools.build_meta"
+-requires = ["pdm-backend~=2.3.0"]
++requires = ["pdm-backend>=2.3.0"]
+ build-backend = "pdm.backend"
  
- [tool.setuptools]
-@@ -36,8 +37,8 @@ build-backend = "setuptools.build_meta"
- # Add a workaround to improve experience for people upgrading from old checkouts.
- packages = ["amaranth"]
- 
--[tool.setuptools_scm]
--local_scheme = "node-and-timestamp"
-+#[tool.setuptools_scm]
-+#local_scheme = "node-and-timestamp"
- 
- # Development workflow configuration
- 
+ [tool.pdm]

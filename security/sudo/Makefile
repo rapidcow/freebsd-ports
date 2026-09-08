@@ -1,5 +1,6 @@
 PORTNAME=	sudo
-PORTVERSION=	1.9.14p3
+PORTVERSION=	1.9.17p2
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	SUDO
 
@@ -12,11 +13,17 @@ LICENSE_NAME=	Sudo license
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		cpe libtool
+FLAVORS=	default sssd
+FLAVOR?=	${FLAVORS:[1]}
+sssd_PKGNAMESUFFIX=	-sssd
+
+USES=		cpe libtool pkgconfig
 CPE_VENDOR=	todd_miller
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc \
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
+CONFIGURE_ARGS=	--mandir=${PREFIX}/share/man \
+		--sysconfdir=${PREFIX}/etc \
 		--with-env-editor \
 		--with-ignore-dot \
 		--with-logfac=${LOGFAC} \
@@ -29,11 +36,10 @@ LDFLAGS+=	-lgcc
 PORTSCOUT=	ignore:1
 
 OPTIONS_DEFINE=		AUDIT DISABLE_AUTH DISABLE_ROOT_SUDO DOCS EXAMPLES \
-			INSULTS LDAP NLS NOARGS_SHELL OPIE PAM PYTHON
-OPTIONS_DEFAULT=	AUDIT PAM
-OPTIONS_RADIO=		KERBEROS SSSD
+			INSULTS LDAP NLS NOARGS_SHELL OPIE PAM PYTHON SSL
+OPTIONS_DEFAULT=	AUDIT PAM SSL
+OPTIONS_RADIO=		KERBEROS
 OPTIONS_RADIO_KERBEROS=	GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT
-OPTIONS_RADIO_SSSD=	SSSD SSSD_DEVEL
 OPTIONS_SUB=		yes
 
 AUDIT_DESC=		Enable BSM audit support
@@ -44,8 +50,7 @@ KERBEROS_DESC=		Enable Kerberos 5 authentication (no PAM support)
 NOARGS_SHELL_DESC=	Run a shell if no arguments are given
 OPIE_DESC=		Enable one-time passwords (no PAM support)
 PYTHON_DESC=		Enable python plugin support
-SSSD_DESC=		Enable SSSD backend support.
-SSSD_DEVEL_DESC=	Enable SSSD-devel backend support.
+SSL_DESC=		Use OpenSSL TLS and SHA2 functions
 
 AUDIT_CONFIGURE_WITH=	bsm-audit
 
@@ -81,11 +86,14 @@ PAM_CONFIGURE_ON=	--with-pam
 PYTHON_USES=		python
 PYTHON_CONFIGURE_ENABLE=python
 
-SSSD_RUN_DEPENDS=	sssd:security/sssd
-SSSD_CONFIGURE_ON=	--with-sssd
+SSL_USES=		ssl
+SSL_CONFIGURE_ON=	--enable-openssl=${OPENSSLBASE}
 
-SSSD_DEVEL_RUN_DEPENDS=	sssd:security/sssd-devel
-SSSD_DEVEL_CONFIGURE_ON=	--with-sssd
+.if ${FLAVOR:U} == sssd
+RUN_DEPENDS+=		sssd:security/sssd2
+CONFIGURE_ARGS+=	--with-sssd \
+			--with-sssd-conf=${LOCALBASE}/etc/sssd/sssd.conf
+.endif
 
 LOGFAC?=		authpriv
 SUDO_LDAP_CONF?=	ldap.conf
@@ -107,6 +115,13 @@ CONFIGURE_ARGS+=	--enable-kerb5-instance="${SUDO_KERB5_INSTANCE}"
 
 .include <bsd.port.options.mk>
 
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1400072
+. if ${PORT_OPTIONS:MOPIE}
+BUILD_DEPENDS+=	opie>0:security/opie
+RUN_DEPENDS+=	opie>0:security/opie
+. endif
+.endif
+
 .if ${ARCH} == "arm"
 CONFIGURE_ARGS+=	--disable-pie
 .endif
@@ -115,8 +130,6 @@ post-patch:
 	@${REINPLACE_CMD} -E '/install-(binaries|noexec):/,/^$$/ \
 		s/\$$\(INSTALL\)/& ${STRIP}/;s/-b\~/-b ~/' \
 		${WRKSRC}/src/Makefile.in
-	@${REINPLACE_CMD} -e 's,$$(srcdir)/sudoers2ldif $$(DESTDIR)$$(docdir),$$(srcdir)/sudoers2ldif $$(DESTDIR)$$(bindir),' \
-		${WRKSRC}/plugins/sudoers/Makefile.in
 
 post-install:
 	${INSTALL_DATA} ${FILESDIR}/pam.conf ${STAGEDIR}${PREFIX}/etc/pam.d/sudo.default
@@ -125,6 +138,7 @@ post-install:
 	${RM} ${STAGEDIR}${PREFIX}/etc/sudoers
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/cvtsudoers
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/sudoreplay
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/libexec/sudo/sudo_intercept.so
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/sudo_logsrvd
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/sudo_sendlog
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/visudo

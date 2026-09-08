@@ -1,4 +1,4 @@
---- src/3rdparty/chromium/base/tracing/trace_time.h.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/base/tracing/trace_time.h.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/base/tracing/trace_time.h
 @@ -12,7 +12,7 @@ namespace tracing {
  namespace tracing {

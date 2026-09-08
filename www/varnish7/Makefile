@@ -1,6 +1,5 @@
 PORTNAME=	varnish
-DISTVERSION=	7.3.0
-PORTREVISION=	1
+DISTVERSION=	7.7.3
 CATEGORIES=	www
 MASTER_SITES=	https://varnish-cache.org/downloads/
 PKGNAMESUFFIX=	7
@@ -21,6 +20,7 @@ USES=		cpe libedit libtool localbase ncurses pathfix \
 CPE_VENDOR=	varnish-cache
 CPE_PRODUCT=	varnish_cache
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 SHEBANG_FILES=	lib/libvcc/*.py lib/libvsc/*.py
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	varnishd varnishlog varnishncsa

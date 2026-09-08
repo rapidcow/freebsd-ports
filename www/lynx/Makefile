@@ -1,11 +1,12 @@
 PORTNAME=	lynx
-PORTVERSION=	2.8.9.1
-PORTREVISION=	1
+DISTVERSION=	2.8.9.1
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	www
-MASTER_SITES=	http://invisible-mirror.net/archives/lynx/tarballs/ \
+MASTER_SITES=	https://invisible-mirror.net/archives/lynx/tarballs/ \
+		https://invisible-island.net/archives/lynx/tarballs/ \
 		http://bitrote.org/distfiles/
-DISTNAME=	${PORTNAME}${PORTVERSION:R}rel.${PORTVERSION:E}
+DISTNAME=	${PORTNAME}${DISTVERSION:R}rel.${DISTVERSION:E}
 
 MAINTAINER=	jharris@widomaker.com
 COMMENT=	Non-graphical, text-based World-Wide Web client
@@ -24,8 +25,8 @@ CONFIGURE_ARGS+=--with-zlib --libdir="${PREFIX}/etc" \
 		--enable-nsl-fork --enable-persistent-cookies \
 		--enable-nested-tables --enable-gzip-help \
 		--with-screen=ncursesw
-CPE_VERSION=	${PORTVERSION:R}
-CPE_UPDATE=	rel.${PORTVERSION:E}
+CPE_VERSION=	${DISTVERSION:R}
+CPE_UPDATE=	rel.${DISTVERSION:E}
 
 MAKEFILE=	makefile
 L_HELP=		${PREFIX}/share/lynx_help

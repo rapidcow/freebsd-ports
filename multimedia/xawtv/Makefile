@@ -1,6 +1,6 @@
 PORTNAME=	xawtv
 PORTVERSION=	3.107
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	multimedia
 MASTER_SITES=	http://linuxtv.org/downloads/xawtv/
 
@@ -21,20 +21,15 @@ USES=		cpe gmake iconv jpeg motif ncurses perl5 tar:bzip2 pkgconfig xorg
 
 CPE_VENDOR=	linuxtv
 
-OPTIONS_DEFINE=		AALIB BKTR DV ZVBI
+OPTIONS_DEFINE=		AALIB DV ZVBI
 OPTIONS_DEFINE_i386=	MMX
-OPTIONS_DEFAULT=	AALIB BKTR
-.if !exists(/usr/include/dev/bktr/ioctl_bt848.h)
-OPTIONS_EXCLUDE=	BKTR
-.endif
+OPTIONS_DEFAULT=	AALIB
 OPTIONS_SUB=		yes
 
-BKTR_DESC=	bktr(4) support
 ZVBI_DESC=	Enable libzvbi support
 
-BKTR_MAKE_ARGS=	HAVE_BKTR=yes
-
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 USE_XORG=	x11 xaw
 CPPFLAGS+=	-I${WRKSRC}/common
 LIBS+=		-L${LOCALBASE}/lib
@@ -79,7 +74,7 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/X11R6|${LOCALBASE}|g; \
 		s|/usr/local|${LOCALBASE}|g; \
 		s|LIBV4L="yes"|LIBV4L="no"|g; \
-		s|-lunicode|-liconv &|g' \
+		s|-lunicode|${ICONV_LIB} &|g' \
 		${WRKSRC}/configure
 
 	@${REINPLACE_CMD} -e 's|-ldl||g' \

@@ -1,17 +1,17 @@
 PORTNAME?=	mariadb
-PORTVERSION=	10.6.14
+PORTVERSION=	10.6.24
 PORTREVISION?=	0
 CATEGORIES=	databases
-MASTER_SITES=	https://mirror.nodesdirect.com/${SITESDIR}/ \
-		https://mirror.one.com/${SITESDIR}/ \
+MASTER_SITES=	\
 		https://ftp.nluug.nl/db/${SITESDIR}/ \
+		https://mirror.nodesdirect.com/${SITESDIR}/ \
+		https://mirror.one.com/${SITESDIR}/ \
 		https://ftp.icm.edu.pl/pub/unix/database/${SITESDIR}/ \
 		https://mirror.truenetwork.ru/${SITESDIR}/ \
 		https://mirrors.aliyun.com/${SITESDIR}/ \
 		https://ftp.ubuntu-tw.org/mirror/${SITESDIR}/ \
 		https://mirror.kku.ac.th/${SITESDIR}/ \
 		https://espejito.fder.edu.uy/${SITESDIR}/ \
-		https://mirror1.cl.netactuate.com/${SITESDIR}/ \
 		https://ftp.osuosl.org/pub/${SITESDIR}/ \
 		https://downloads.mariadb.org/rest-api/mariadb/${PORTVERSION}/
 PKGNAMESUFFIX?=	106-server
@@ -22,6 +22,9 @@ WWW=		https://mariadb.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=		End-of-Life approaching, please switch to 11.8 (or 11.4)
+EXPIRATION_DATE=	2026-06-30
 
 LIB_DEPENDS+=	libpcre2-8.so:devel/pcre2 \
 		libzstd.so:archivers/zstd
@@ -103,6 +106,7 @@ CMAKE_ARGS+=	-DCMAKE_PREFIX_PATH=${PREFIX} \
 		-DINSTALL_SYSCONF2DIR="${ETCDIR}/conf.d" \
 		-DINSTALL_UNIX_ADDRDIR="${MARIADB_RUNDIR}/${MARIADB_SOCK}" \
 		-DWITH_PCRE=system \
+		-DPCRE_LIBRARY_DIRS=${PREFIX}/lib \
 		-DWITH_SSL="${OPENSSLBASE}" \
 		-DCURSES_CURSES_LIBRARY="/usr/lib/libcurses.so" \
 		-DCURSES_FORM_LIBRARY="/usr/lib/libform.so" \
@@ -123,7 +127,8 @@ CONFLICTS_INSTALL=	mariadb10[0-57-9]-${PKGNAMESUFFIX:C/^[0-9]*-//}-* \
 			mariadb1011-${PKGNAMESUFFIX:C/^[0-9]*-//}-* \
 			mysql[0-9]*-${PKGNAMESUFFIX:C/^[0-9]*-//}-* \
 			mysqlwsrep* \
-			percona[0-9]*-${PKGNAMESUFFIX:C/^[0-9]*-//}-*
+			percona[0-9]*-${PKGNAMESUFFIX:C/^[0-9]*-//}-* \
+			mytop
 
 FASTMTX_CMAKE_BOOL=	WITH_FAST_MUTEXES
 GSSAPI_BASE_USES=	gssapi
@@ -164,7 +169,7 @@ ${ENGINE}_CMAKE_OFF=	-DPLUGIN_${ENGINE}=NO
 ${ENGINE}_CMAKE_ON=	-DPLUGIN_${ENGINE}=DYNAMIC
 .endfor
 INNOBASE_VARS_OFF=	disabled_plugins+=INNOBASE
-COLUMNSTORE_BROKEN=	error: __float128 is not supported on this target
+#COLUMNSTORE_BROKEN=	error: __float128 is not supported on this target
 CONNECT_EXTRA_LIB_DEPENDS=	libodbc.so:databases/unixODBC
 CONNECT_EXTRA_USE=		gnome=libxml2
 CONNECT_EXTRA_USES=		gnome
@@ -178,7 +183,7 @@ LZO_CMAKE_OFF=		-DWITH_INNODB_LZO=OFF
 LZO_LIB_DEPENDS=	liblzo2.so:archivers/lzo2
 MROONGA_IMPLIES=	LZ4
 MSGPACK_LIB_DEPENDS=	libmsgpackc.so:devel/msgpack-c
-OQGRAPH_LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
+OQGRAPH_LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 			libJudy.so:devel/judy
 ROCKSDB_USES=		python
 ROCKSDB_CMAKE_ON=	-DPYTHON_SHEBANG=${PYTHON_CMD} -DWITH_ROCKSDB_zstd=ON
@@ -192,7 +197,6 @@ WSREP_RUN_DEPENDS=	bash:shells/bash \
 			#stunnel:security/stunnel
 WSREP_SHEBANG_FILES=	bin/wsrep_sst_rsync
 ZMQ_LIB_DEPENDS=	libzmq.so:net/libzmq4
-ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd
 
 .for PLUGIN in ${DISABLED_PLUGINS}
 CMAKE_ARGS+=		-DPLUGIN_${PLUGIN}=NO
@@ -212,15 +216,13 @@ SUB_LIST+=	LEGACY_LIMITS="" MODERN_LIMITS="@comment "
 GSSAPI_BASE_IGNORE=	GSSAPI_BASE is not compatible with OpenSSL from ports. Use other GSSAPI options or OpenSSL from base system
 .endif
 
+.if ${SSL_DEFAULT:Mlibressl*}
+CFLAGS+=        -Wno-incompatible-function-pointer-types
+.endif
+
 .if ${ARCH} != amd64 && ${ARCH} != aarch64
 PLIST_SUB+=	WSREP="@comment "
 .endif
-
-#.if ${ARCH} == i386
-#USE_GCC=	9
-#CFLAGS+=	-DHAVE_GCC_C11_ATOMICS -latomic -DUSE_NEW_READLINE_INTERFACE
-#CXXFLAGS+=	-fpermissive
-#.endif
 
 post-patch:
 .if ${OPSYS} == DragonFly

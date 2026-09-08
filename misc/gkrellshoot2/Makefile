@@ -1,13 +1,13 @@
 PORTNAME=	gkrellshoot
 PORTVERSION=	0.4.4
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	misc
 MASTER_SITES=	SF/${PORTNAME}/GkrellM2.0%20Port/${PORTVERSION}
 PKGNAMESUFFIX=	2
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Screen locking and screen capture plugin for GKrellM 2
-WWW=		http://gkrellshoot.sourceforge.net/
+WWW=		https://gkrellshoot.sourceforge.net/
 
 BUILD_DEPENDS=	${LOCALBASE}/include/gkrellm2/gkrellm.h:sysutils/gkrellm2
 RUN_DEPENDS=	gkrellm:sysutils/gkrellm2

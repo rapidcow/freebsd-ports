@@ -1,62 +1,58 @@
 PORTNAME=	polkit
-DISTVERSION=	123
-PORTREVISION=	1
+DISTVERSION=	127
 CATEGORIES=	sysutils gnome
 
 MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	Framework for controlling access to system-wide components
-WWW=		https://gitlab.freedesktop.org/polkit/polkit
+WWW=		https://github.com/${GH_ACCOUNT}/${GH_PROJECT}
 
 LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2 \
-		libdbus-1.so:devel/dbus
+		libdbus-1.so:devel/dbus \
+		libduktape.so:lang/duktape-lib
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dbus>=0:devel/py-dbus@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}python-dbusmock>0:devel/py-python-dbusmock@${PY_FLAVOR} \
+		${LOCALBASE}/sbin/console-kit-daemon:sysutils/consolekit2
 
 USERS=		polkitd
 GROUPS=		polkitd
 
-USES=		compiler:c++17-lang cpe gettext gnome libtool localbase meson \
-		pathfix pkgconfig shebangfix tar:bz2
-USE_GNOME=	glib20 intltool introspection:build
-SHEBANG_FILES=	${WRKSRC}/src/polkitbackend/toarray.pl
+USES=		compiler:c++17-lang cpe dbus-testing gettext-tools gnome \
+		localbase meson pathfix perl5 pkgconfig python:test shebangfix
+USE_GNOME=	glib20 introspection:build
+SHEBANG_FILES=	src/polkitbackend/toarray.pl \
+		test/wrapper.py
 USE_LDCONFIG=	yes
+USE_PERL5=	build
 CPE_VENDOR=	polkit_project
 
-USE_GITLAB=	yes
-GL_SITE=	https://gitlab.freedesktop.org
+USE_GITHUB=	yes
+GH_ACCOUNT=	polkit-org
 
 MESON_ARGS=	-Dpam_include=system \
+		-Dpam_prefix='etc/pam.d' \
 		-Dpolkitd_user=${USERS} \
 		-Dexamples=false \
 		-Dsession_tracking=ConsoleKit \
-		-Dtests=false \
+		-Dtests=true \
 		-Dintrospection=true \
-		-Dlocalstatedir=/var \
-		-Dgtk_doc=false
+		-Dgtk_doc=false \
+		-Dgettext=true
 
 OPTIONS_DEFINE=		MANPAGES
-OPTIONS_DEFAULT=	DUKTAPE
 
-OPTIONS_SINGLE=		JS
-OPTIONS_SINGLE_JS=	DUKTAPE SPIDERMONKEY
+OPTIONS_SUB=		yes
 
-JS_DESC=		JavaScript engines
-DUKTAPE_DESC=		Duktape JavaScript backend
-SPIDERMONKEY_DESC=	SpiderMonkey JavaScript backend
-
-DUKTAPE_LIB_DEPENDS=	libduktape.so:lang/duktape-lib
-DUKTAPE_MESON_ON=	-Djs_engine='duktape'
-
-SPIDERMONKEY_LIB_DEPENDS=	libmozjs-102.so:lang/spidermonkey102
-SPIDERMONKEY_MESON_ON=		-Djs_engine='mozjs'
-
-MANPAGES_BUILD_DEPENDS=	docbook-sgml>=4.5:textproc/docbook-sgml \
-			docbook-xsl>=1.76:textproc/docbook-xsl
+MANPAGES_BUILD_DEPENDS=	docbook-sgml>0:textproc/docbook-sgml \
+			docbook-xsl>0:textproc/docbook-xsl
 MANPAGES_USE=		gnome=libxslt:build
 MANPAGES_MESON_TRUE=	man
 
-OPTIONS_SUB=		yes
+.ifdef ALLOW_SYSTEM_AFFECTING_TESTS
+TEST_ENV+=		ALLOW_SYSTEM_AFFECTING_TESTS=1
+.endif
 
 .include <bsd.port.pre.mk>
 
@@ -68,11 +64,24 @@ post-patch:
 		${WRKSRC}/docs/man/polkit.xml
 
 post-install:
+	${RM} -r ${STAGEDIR}/usr/lib/systemd
+	${RM} -r ${STAGEDIR}/usr/lib/sysusers.d
+	${RM} -r ${STAGEDIR}/usr/lib/tmpfiles.d
+
 	@${MKDIR} ${STAGEDIR}/var/lib/polkit-1 \
 		  ${STAGEDIR}${PREFIX}/share/polkit-1/rules.d
 .for i in 10-vendor.d 20-org.d 30-site.d 50-local.d 90-mandatory.d
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/polkit-1/localauthority/${i}
 	${MKDIR} ${STAGEDIR}/var/lib/polkit-1/localauthority/${i}
 .endfor
+
+.if !defined(ALLOW_SYSTEM_AFFECTING_TESTS)
+post-test:
+	@${ECHO_CMD}
+	@${ECHO_CMD} "===> Polkit tests were skipped, because they create system users and groups"
+	@${ECHO_CMD} "and are only safe to run inside a discardable jail. If that's the case, run"
+	@${ECHO_CMD} "make test ALLOW_SYSTEM_AFFECTING_TESTS=yes"
+	@${ECHO_CMD}
+.endif
 
 .include <bsd.port.post.mk>

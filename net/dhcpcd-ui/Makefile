@@ -1,6 +1,7 @@
 PORTNAME=		dhcpcd-ui
 DISTVERSIONPREFIX=	v
 DISTVERSION=		0.7.9
+PORTREVISION=	1
 CATEGORIES=		net
 
 MAINTAINER=	driesm@FreeBSD.org
@@ -19,7 +20,7 @@ GH_ACCOUNT=	NetworkConfiguration
 GNU_CONFIGURE=	yes
 
 CONFIGURE_ARGS=	--enable-notification \
-		--mandir=${MANPREFIX}/man \
+		--mandir=${PREFIX}/share/man \
 		--with-dhcpcd-online \
 		--with-icons
 
@@ -28,7 +29,7 @@ OPTIONS_DEFAULT=	GTK3
 OPTIONS_SUB=		yes
 
 GTK3_USES=		gnome
-GTK3_USE=		gnome=gdkpixbuf2,gtk30
+GTK3_USE=		gnome=gdkpixbuf,gtk30
 GTK3_CONFIGURE_WITH=	gtk
 
 post-install:

@@ -1,12 +1,10 @@
 PORTNAME=	mrtg
-PORTVERSION=	2.17.10
-PORTREVISION=	1
+DISTVERSION=	2.17.10
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	net-mgmt
-MASTER_SITES=	http://oss.oetiker.ch/mrtg/pub/ \
-		ftp://ftp.idilis.ro/mirrors/mrtg/ \
-		ftp://ftp.nstu.ru/pub/sources/nettools/monitoring/ \
-		ftp://ftp.chg.ru/pub/networking/monitoring/mrtg/
+MASTER_SITES=	https://github.com/oetiker/${PORTNAME}/releases/download/v${DISTVERSION}/ \
+		https://oss.oetiker.ch/${PORTNAME}/pub/
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Multi-router traffic grapher
@@ -16,7 +14,9 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libgd.so:${GD_PORT} \
 		libpng16.so:graphics/png
-RUN_DEPENDS=	p5-SNMP_Session>=0:net-mgmt/p5-SNMP_Session
+RUN_DEPENDS=	p5-SNMP_Session>=0:net-mgmt/p5-SNMP_Session \
+		p5-Pod-Parser>=0:textproc/p5-Pod-Parser \
+		p5-Module-CoreList>=0:devel/p5-Module-CoreList
 
 USES=		perl5 shebangfix
 
@@ -31,7 +31,8 @@ GROUPS=		mrtg
 
 MAKE_ENV+=	PERL=${PERL}
 MRTG_RUNDIR?=	/var/run/mrtg
-SHEBANG_FILES=	bin/mrtg-traffic-sum
+SHEBANG_FILES=	bin/cfgmaker bin/indexmaker bin/mrtg bin/mrtg-traffic-sum
+perl_OLD_CMD=	/home/oetiker/.plenv/shims/perl
 
 USE_RC_SUBR=	mrtg_daemon
 SUB_FILES=	pkg-deinstall pkg-install pkg-message
@@ -95,13 +96,13 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/contrib/mrtgmk/cfg/mrtg.cfg \
 		${STAGEDIR}${ETCDIR}/mrtg.cfg.sample
 	${INSTALL_DATA} ${MANPAGE:S,^,${WRKSRC}/doc/,} \
-		${STAGEDIR}${PREFIX}/man/man1
+		${STAGEDIR}${PREFIX}/share/man/man1/
 	${INSTALL_DATA} ${MANPAGE3:S,^,${WRKSRC}/doc/,} \
-		${STAGEDIR}${PREFIX}/man/man3
+		${STAGEDIR}${PREFIX}/share/man/man3/
 	cd ${WRKSRC}/lib/mrtg2 && \
 		${COPYTREE_SHARE} "*.pm" ${STAGEDIR}${PREFIX}/${SITE_PERL_REL}
-	${INSTALL_PROGRAM} ${WRKSRC}/bin/rateup ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_PROGRAM} ${WRKSRC}/bin/rateup ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_SCRIPT} ${SCRIPTS:S,^,${WRKSRC}/bin/,} \
-		${STAGEDIR}${PREFIX}/bin
+		${STAGEDIR}${PREFIX}/bin/
 
 .include <bsd.port.mk>

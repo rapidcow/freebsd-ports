@@ -20,6 +20,7 @@ USES=		python shebangfix tar:xz
 USE_PYTHON=	py3kplist
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	PKG_CONFIG=:
 ALL_TARGET=	fetchmailconf
 INSTALL_TARGET=	install-data-am install-nodist_binSCRIPTS install-man
@@ -39,7 +40,7 @@ post-install:
 		${PYTHON_CMD} ${WRKSRC}/fetchmailconf.py -V
 # then install:
 		${INSTALL_SCRIPT} ${WRKDIR}/fetchmailconf ${STAGEDIR}${PREFIX}/bin
-		${RM} ${STAGEDIR}${PREFIX}/man/man1/fetchmail.1*
+		${RM} ${STAGEDIR}${PREFIX}/share/man/man1/fetchmail.1*
 
 MASTERDIR=	${.CURDIR}/../fetchmail
 

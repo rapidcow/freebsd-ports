@@ -1,17 +1,18 @@
 PORTNAME=	the
 PORTVERSION=	3.3.r4
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	editors
 MASTER_SITES=	http://downloads.sourceforge.net/hessling-editor/
 DISTNAME=	THE-${PORTVERSION:S/.r/RC/}
 
 MAINTAINER=	comet.berkeley@gmail.com
 COMMENT=	The Hessling Editor, like the VM/CMS xedit editor
-WWW=		http://hessling-editor.sourceforge.net/
+WWW=		https://hessling-editor.sourceforge.net/
 
 LICENSE=	GPLv2
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-rexxincdir=${LOCALBASE}/include \
 		--with-rexxlibdir=${LOCALBASE}/lib
 ALL_TARGET=	all html
@@ -31,7 +32,7 @@ REXX_IMC_DESC=		Use Rexx/imc interpreter
 REGINA_DESC=		Use Regina Rexx interpreter
 
 XAW3D_CONFIGURE_WITH=	xaw3d
-XAW3D_BUILD_DEPENDS=	${LOCALBASE}/lib/libXaw3d.a:x11-toolkits/Xaw3d
+XAW3D_BUILD_DEPENDS=	${LOCALBASE}/lib/libXaw3d.a:x11-toolkits/libXaw3d
 
 NCURSES_USES=		ncurses
 NCURSES_CONFIGURE_ON=	--with-ncurses \

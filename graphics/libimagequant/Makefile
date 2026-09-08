@@ -1,8 +1,9 @@
 PORTNAME=	libimagequant
-PORTVERSION=	4.2.1
+PORTVERSION=	4.4.1
+PORTREVISION=	1
 CATEGORIES=	graphics
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	tagattie@FreeBSD.org
 COMMENT=	Image Quantization Library
 WWW=		https://pngquant.org/lib/
 
@@ -12,17 +13,23 @@ LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 BUILD_DEPENDS=	cargo-cbuild:devel/cargo-c
 
 USES=		cargo
+
 USE_GITHUB=	yes
-USE_LDCONFIG=	yes
 GH_ACCOUNT=	ImageOptim
+
+USE_LDCONFIG=	yes
+
 CARGO_BUILD_ARGS=	--package imagequant-sys
 CARGO_INSTALL_ARGS:=	${CARGO_BUILD_ARGS}
+
 PLIST_FILES=	include/libimagequant.h \
 		lib/libimagequant.a \
 		lib/libimagequant.so \
-		lib/libimagequant.so.0 \
-		lib/libimagequant.so.0.0.0 \
+		lib/libimagequant.so.${SOVERSION:R} \
+		lib/libimagequant.so.${SOVERSION} \
 		libdata/pkgconfig/imagequant.pc
+
+SOVERSION=	0.4.1
 
 do-build:
 	@${CARGO_CARGO_RUN} cbuild \
@@ -37,6 +44,5 @@ do-install:
 		--destdir "${STAGEDIR}" \
 		--prefix "${PREFIX}" \
 		${CARGO_INSTALL_ARGS}
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so
 
 .include <bsd.port.mk>

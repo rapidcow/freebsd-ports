@@ -1,6 +1,5 @@
 PORTNAME=	rubberband
-DISTVERSION=	3.2.1
-PORTREVISION=	1
+DISTVERSION=	4.0.0
 CATEGORIES=	audio
 MASTER_SITES=	https://breakfastquay.com/files/releases/
 

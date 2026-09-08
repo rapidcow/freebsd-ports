@@ -1,11 +1,11 @@
 PORTNAME=	variety
-PORTVERSION=	0.8.5
-PORTREVISION=	2
+PORTVERSION=	0.8.13
+PORTREVISION=	3
 CATEGORIES=	graphics
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Wallpaper changer
-WWW=		https://peterlevi.com/variety/
+WWW=		https://github.com/varietywalls/variety
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -27,14 +27,17 @@ RUN_DEPENDS=	${PY_PILLOW} \
 		coreutils>=8.23:sysutils/coreutils \
 		yelp>=3.14.1:x11/yelp
 
-USES=		desktop-file-utils gettext-tools gnome magick:6,run python shebangfix
+USES=		desktop-file-utils gettext-tools gnome magick:run python \
+		shebangfix
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	varietywalls
-USE_GNOME=	gdkpixbuf2 gtk30 intltool pygobject3:run
+USE_GNOME=	gdkpixbuf gtk30 intltool pygobject3:run
 USE_PYTHON=	autoplist distutils noflavors
 
 SHEBANG_FILES=	bin/variety data/scripts/*
+
+PLIST_FILES=	share/variety/config/quotes.txt
 
 post-patch:
 	@(cd ${WRKSRC} && ${REINPLACE_CMD} \
@@ -46,6 +49,10 @@ post-patch:
 		data/ui/PreferencesVarietyDialog.ui \
 		variety/Options.py variety/ThumbsWindow.py \
 		variety/__init__.py variety/VarietyWindow.py)
+
+post-install:
+	${INSTALL_DATA} ${WRKSRC}/variety/plugins/builtin/quotes/quotes.txt \
+		${STAGEDIR}/${DATADIR}/config/quotes.txt
 
 .include <bsd.port.pre.mk>
 

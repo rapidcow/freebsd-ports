@@ -1,17 +1,18 @@
 PORTNAME=	seqkit
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.5.1
-PORTREVISION=	1
+DISTVERSION=	2.11.0
+PORTREVISION=	3
 CATEGORIES=	biology
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Cross-platform and ultrafast toolkit for FASTA/Q file manipulation
-WWW=		https://bioinf.shenwei.me/seqkit/
+WWW=		https://bioinf.shenwei.me/seqkit \
+		https://github.com/shenwei356/seqkit
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:modules
+USES=		go:1.24+,modules
 USE_GITHUB=	nodefault
 GH_TUPLE=	golang:sys:v0.6.0:sys
 

@@ -1,14 +1,16 @@
 PORTNAME=	wapanel
 DISTVERSION=	1.1.0
-PORTREVISION=	3
+PORTREVISION=	7
 CATEGORIES=	x11 wayland
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Desktop bar for Wayfire and other wlroots compositors
 WWW=		https://firstbober.github.io/wapanel/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	https://github.com/Firstbober/wapanel/issues/39
 
 BUILD_DEPENDS=	toml11>0:devel/toml11 \
 		wayland-protocols>0:graphics/wayland-protocols
@@ -17,7 +19,7 @@ LIB_DEPENDS=	libwayland-client.so:graphics/wayland \
 
 USES=		compiler:c++17-lang gnome meson pkgconfig
 USE_GITHUB=	yes
-USE_GNOME=	gdkpixbuf2 gtk30
+USE_GNOME=	gdkpixbuf gtk30
 GH_ACCOUNT=	Firstbober
 MESON_ARGS=	-Dsystem_toml11=true
 

@@ -1,5 +1,6 @@
 PORTNAME=	librespeed
-DISTVERSION=	5.2.5
+DISTVERSIONPREFIX=	v
+DISTVERSION=	5.5.1
 CATEGORIES=	www net
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
@@ -12,10 +13,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		php:flavors,web
 
-USE_PHP=	ctype pdo session
-
 USE_GITHUB=	YES
 GH_PROJECT=	speedtest
+
+USE_PHP=	ctype pdo session
 
 NO_ARCH=	YES
 NO_BUILD=	YES
@@ -35,6 +36,7 @@ SQLITE_USE=	PHP=pdo_sqlite
 do-install:
 	@${MKDIR} ${STAGEDIR}${WWWDIR}
 	${CP} -a ${WRKSRC}/*.js ${WRKSRC}/favicon.ico ${STAGEDIR}${WWWDIR}
+	${CP} -a ${WRKSRC}/index.html ${STAGEDIR}${WWWDIR}/index.html.sample
 	@${MKDIR} ${STAGEDIR}${WWWDIR}/backend
 	cd ${WRKSRC}/backend && ${COPYTREE_SHARE} . ${STAGEDIR}${WWWDIR}/backend
 	@${MKDIR} ${STAGEDIR}${WWWDIR}/results
@@ -50,6 +52,6 @@ post-install-DOCS-on:
 
 post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	${CP} -a ${WRKSRC}/*.html ${STAGEDIR}${EXAMPLESDIR}
+	${CP} -a ${WRKSRC}/examples/*.html ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

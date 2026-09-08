@@ -1,6 +1,6 @@
 PORTNAME=	gpicker
 DISTVERSION=	2.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	deskutils
 MASTER_SITES=	SAVANNAH
 
@@ -15,9 +15,10 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
 USES=		gettext-runtime gmake gnome pkgconfig
-USE_GNOME=	gtk20 cairo gdkpixbuf2
+USE_GNOME=	gtk20 cairo gdkpixbuf
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
-PLIST_FILES=	bin/gpicker bin/gpicker-simple man/man1/gpicker-simple.1.gz man/man1/gpicker.1.gz
+PLIST_FILES=	bin/gpicker bin/gpicker-simple share/man/man1/gpicker-simple.1.gz share/man/man1/gpicker.1.gz
 
 .include <bsd.port.mk>

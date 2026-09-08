@@ -1,5 +1,6 @@
 PORTNAME=	pwhois
 PORTVERSION=	2.2.1.0
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	http://pwhois.org/get/ \
 		ZI
@@ -9,20 +10,22 @@ COMMENT=	Whois-compatible framework for disclosing routing data
 WWW=		https://pwhois.org/
 
 RUN_DEPENDS=	p5-DBI>0:databases/p5-DBI \
+		p5-File-Temp>0:devel/p5-File-Temp \
 		p5-Time-Format>0:devel/p5-Time-Format \
 		p5-Log-Dispatch>0:devel/p5-Log-Dispatch \
 		p5-Net-DNS>0:dns/p5-Net-DNS \
 		p5-Net-Telnet>0:net/p5-Net-Telnet \
 		p5-Net-CIDR>0:net-mgmt/p5-Net-CIDR \
 		p5-RPSL-Parser>0:devel/p5-RPSL-Parser \
-		p5-DBD-mysql>=0:databases/p5-DBD-mysql
+		${DBD_MYSQL}
+
+USES=		mysql shebangfix tar:tgz
 
 FETCH_ARGS=	-p
 
 USERS=		${PORTNAME}
 GROUPS=		${PORTNAME}
 
-USES=		mysql shebangfix tar:tgz
 SHEBANG_FILES=	pwhois-updatedb
 USE_RC_SUBR=	${PORTNAME}d
 SUB_FILES=	pkg-message 512.pwhois-updatedb

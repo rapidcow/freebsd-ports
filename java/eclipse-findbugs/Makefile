@@ -1,5 +1,6 @@
 PORTNAME=	findbugs
 DISTVERSION=	3.0.1.20150306-5afe4d1
+PORTREVISION=	1
 CATEGORIES=	java devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}%20eclipse%20plugin/3.0.1
 PKGNAMEPREFIX=	eclipse-
@@ -8,13 +9,12 @@ DIST_SUBDIR=	eclipse
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Eclipse plug-in that provides FindBugs support
-WWW=		http://findbugs.sourceforge.net/manual/eclipse.html
+WWW=		https://findbugs.sourceforge.net/manual/eclipse.html
 
 RUN_DEPENDS=	eclipse:java/eclipse
 
-USES=		zip
+USES=		java zip
 NO_BUILD=	yes
-USE_JAVA=	yes
 JAVA_OS=	native
 
 PLIST_SUB=	\

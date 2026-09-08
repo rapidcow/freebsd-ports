@@ -1,5 +1,6 @@
 PORTNAME=	vile
-PORTVERSION=	9.8y
+PORTVERSION=	9.8z
+PORTREVISION=	1
 CATEGORIES=	editors
 MASTER_SITES=	https://invisible-island.net/archives/vile/current/ \
 		https://invisible-mirror.net/archives/vile/current/
@@ -21,6 +22,7 @@ USES=		pkgconfig shebangfix tar:tgz xorg
 SHEBANG_FILES=	macros/lxvile macros/lxvile-fonts perl/vileget
 USE_XORG=	x11 xext xpm xt
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ENV=	cf_cv_crypt_works=yes
 CONFIGURE_ARGS=	--disable-imake \
 		--disable-desktop \
@@ -56,7 +58,7 @@ XAW_DESC=		X Athena Widgets
 XAW_USE=		XORG=xaw
 XAW_CONFIGURE_ON=	--with-screen=athena
 XAW3D_DESC=		X Athena Widgets with 3D effect
-XAW3D_LIB_DEPENDS=	libXaw3d.so:x11-toolkits/Xaw3d
+XAW3D_LIB_DEPENDS=	libXaw3d.so:x11-toolkits/libXaw3d
 XAW3D_CONFIGURE_ON=	--enable-colored-menus \
 			--with-Xaw3d \
 			--with-screen=xaw3d

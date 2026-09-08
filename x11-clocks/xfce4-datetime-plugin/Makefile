@@ -1,6 +1,6 @@
 PORTNAME=	xfce4-datetime-plugin
 PORTVERSION=	0.8.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11-clocks xfce
 MASTER_SITES=	XFCE/panel-plugins
 DIST_SUBDIR=	xfce4
@@ -15,7 +15,7 @@ LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
 
 USES=		compiler:c11 gettext-tools gmake gnome libtool pkgconfig \
 		tar:bzip2 xfce
-USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool
+USE_GNOME=	cairo gdkpixbuf gtk30 intltool
 USE_XFCE=	libmenu panel
 
 GNU_CONFIGURE=	yes

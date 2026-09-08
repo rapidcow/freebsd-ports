@@ -1,6 +1,6 @@
 PORTNAME=	fcitx
-PORTVERSION=	4.2.9.8
-PORTREVISION=	1
+PORTVERSION=	4.2.9.9
+PORTREVISION=	2
 CATEGORIES=	chinese x11
 MASTER_SITES=	http://download.fcitx-im.org/fcitx/:fcitx \
 		http://download.fcitx-im.org/data/:data
@@ -19,7 +19,7 @@ WWW=		https://fcitx-im.org/wiki/Fcitx
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes \
+BUILD_DEPENDS=	iso-codes>=0:misc/iso-codes \
 		bash:shells/bash \
 		${LOCALBASE}/libdata/pkgconfig/xkeyboard-config.pc:x11/xkeyboard-config
 LIB_DEPENDS=	libcairo.so:graphics/cairo \
@@ -30,7 +30,7 @@ LIB_DEPENDS=	libcairo.so:graphics/cairo \
 		libXinerama.so:x11/libXinerama \
 		libXrender.so:x11/libXrender \
 		libxkbcommon.so:x11/libxkbcommon \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 		xkeyboard-config>=0:x11/xkeyboard-config
 
@@ -64,13 +64,13 @@ TPUNC_DESC=	Use traditional quotation marks
 
 .include <bsd.port.options.mk>
 
+KDE_MAN_PREFIX=	${PREFIX}/share/man
 CMAKE_ARGS+=	-DENABLE_XDGAUTOSTART=OFF -DFORCE_ENCHANT=ON \
 		-DLIBICONV_LIBC_HAS_ICONV_OPEN=OFF \
 		-DDATADIR=${DATADIR} \
 		-DDOCSDIR=${DOCSDIR} \
 		-DGOBJECT_INTROSPECTION_GIRDIR=${PREFIX}/share/gir-1.0 \
 		-DGOBJECT_INTROSPECTION_TYPELIBDIR=${PREFIX}/lib/girepository-1.0 \
-		-DMANPREFIX=${MANPREFIX} \
 		-DPREFIX=${PREFIX} \
 		-DENABLE_QT=OFF -DENABLE_QT_IM_MODULE=OFF -DENABLE_QT_GUI=OFF
 

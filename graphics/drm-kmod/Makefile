@@ -1,10 +1,9 @@
 PORTNAME=	drm-kmod
-PORTVERSION=	20220907
-PORTREVISION=	1
+PORTVERSION=	20250428
 CATEGORIES=	graphics
 
 MAINTAINER=	x11@FreeBSD.org
-COMMENT=	Metaport of DRM modules for the linuxkpi-based KMS components
+COMMENT=	Direct Rendering Manager GPU drivers metaport
 WWW=		https://github.com/freebsd/drm-kmod
 
 USES=		metaport
@@ -16,12 +15,18 @@ RUN_DEPENDS=	gpu-firmware-kmod>=20220511:graphics/gpu-firmware-kmod
 .if ${OPSYS} != FreeBSD
 IGNORE=		not supported on anything but FreeBSD (missing linuxkpi functionality)
 .else
-.  if ${OSVERSION} < 1300000
-RUN_DEPENDS+=	${KMODDIR}/drm.ko:graphics/drm-fbsd12.0-kmod
-_DRM_ARCHS=	amd64 i386
-.  elif ${OSVERSION} >= 1301000
+.  if ${OSVERSION} >= 1302000 && ${OSVERSION} < 1400097
 RUN_DEPENDS+=	${KMODDIR}/drm.ko:graphics/drm-510-kmod
 _DRM_ARCHS=	aarch64 amd64 i386 powerpc64 powerpc64le
+.  elif ${OSVERSION} >= 1400097 && (${ARCH} == i386 || ${ARCH} == aarch64)
+RUN_DEPENDS+=	${KMODDIR}/drm.ko:graphics/drm-510-kmod
+_DRM_ARCHS=	aarch64 i386
+.  elif ${OSVERSION} >= 1500031 && ${ARCH} == amd64
+RUN_DEPENDS+=	${KMODDIR}/drm.ko:graphics/drm-66-kmod
+_DRM_ARCHS=	amd64
+.  elif ${OSVERSION} >= 1400508
+RUN_DEPENDS+=	${KMODDIR}/drm.ko:graphics/drm-61-kmod
+_DRM_ARCHS=	amd64 powerpc64 powerpc64le
 .  else
 _DRM_ARCHS=
 .  endif

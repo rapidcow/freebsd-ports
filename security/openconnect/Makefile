@@ -1,5 +1,6 @@
 PORTNAME=	openconnect
 PORTVERSION=	9.12
+PORTREVISION=	2
 CATEGORIES=	security net-vpn
 MASTER_SITES=	ftp://ftp.infradead.org/pub/openconnect/ \
 		ZI
@@ -11,15 +12,16 @@ WWW=		https://www.infradead.org/openconnect/
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING.LGPL
 
-LIB_DEPENDS=	libxml2.so:textproc/libxml2
 RUN_DEPENDS=	vpnc-script:sysutils/vpnc-scripts
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--disable-nls --with-vpnc-script=${LOCALBASE}/sbin/vpnc-script \
 		--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig \
 		--without-openssl-version-check --without-libpcsclite \
 		--without-libpskc
-USES=		cpe gmake iconv libtool pkgconfig python:build ssl shebangfix
+USES=		cpe gmake gnome iconv libtool localbase pkgconfig python:build ssl \
+		shebangfix
 CPE_VENDOR=	infradead
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
@@ -28,6 +30,7 @@ SH_OLD_CMD+=	/system/bin/sh
 SHEBANG_FILES=	trojans/csd-post.sh trojans/csd-wrapper.sh \
 		trojans/tncc-emulate.py \
 		trojans/hipreport-android.sh trojans/tncc-wrapper.py
+USE_GNOME=	libxml2
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS PROXY GNUTLS GSSAPI LZ4 P11 STOKEN

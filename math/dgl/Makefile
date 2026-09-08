@@ -1,5 +1,5 @@
 PORTNAME=	dgl
-DISTVERSION=	1.1.1
+DISTVERSION=	1.1.2
 CATEGORIES=	math # machine-learning
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,7 +13,7 @@ BUILD_DEPENDS=	${BACKEND_DEPENDS} \
 		bash:shells/bash \
 		gmake:devel/gmake
 
-USES=		cmake:testing compiler:c++14-lang localbase:ldflags python:build shebangfix
+USES=		cmake:testing compiler:c++17-lang localbase:ldflags python:build shebangfix
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
@@ -45,7 +45,7 @@ BINARY_ALIAS=	make=${GMAKE} python3=${PYTHON_CMD}
 PLIST_FILES=	lib/libdgl_metis.so # workaround for https://github.com/dmlc/dgl/issues/5666
 
 OPTIONS_RADIO=			BACKEND
-OPTIONS_RADIO_BACKEND=		PYTORCH TENSORFLOW MXNET
+OPTIONS_RADIO_BACKEND=		PYTORCH TENSORFLOW
 OPTIONS_DEFAULT=		PYTORCH
 
 PYTORCH_DESC=			Use PyTorch backend
@@ -56,10 +56,6 @@ TENSORFLOW_DESC=		Use TensorFlow backend
 TENSORFLOW_VARS=		BACKEND_DEPENDS=${PYTHON_PKGNAMEPREFIX}tensorflow>0:science/py-tensorflow@${PY_FLAVOR}
 TENSORFLOW_MAKE_ENV=		DGLBACKEND=tensorflow
 TENSORFLOW_CMAKE_ON=		-DBUILD_SPARSE=OFF
-
-MXNET_DESC=			Use MXNET backend
-MXNET_VARS=			BACKEND_DEPENDS=${PYTHON_PKGNAMEPREFIX}mxnet>0:misc/py-mxnet@${PY_FLAVOR}
-MXNET_MAKE_ENV=			DGLBACKEND=mxnet
 
 post-install: # workaround for https://github.com/dmlc/dgl/issues/5666
 	${INSTALL_LIB} ${BUILD_WRKSRC}/third_party/METIS/libmetis/libdgl_metis.so ${STAGEDIR}${PREFIX}/lib

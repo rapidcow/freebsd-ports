@@ -1,8 +1,8 @@
 PORTNAME=	thirtybees
-PORTVERSION=	1.3.0
+PORTVERSION=	1.6.0
 CATEGORIES=	www finance
-MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/${PORTVERSION}/
-DISTNAME=	${PORTNAME}-v${PORTVERSION}
+MASTER_SITES=	https://thirtybees.com/versions/
+DISTNAME=	${PORTNAME}-v${PORTVERSION}-php8.2
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Mature e-commerce solution
@@ -13,7 +13,6 @@ LICENSE_FILE=	${WRKSRC}/LICENSES
 USES=		php:web zip
 USE_PHP=	bcmath curl gd imap mbstring opcache pdo_mysql \
 		soap xml zip
-IGNORE_WITH_PHP=80
 
 NO_BUILD=	yes
 NO_ARCH=	yes

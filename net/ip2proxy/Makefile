@@ -1,5 +1,5 @@
 PORTNAME=	ip2proxy
-PORTVERSION=	20211122
+PORTVERSION=	20251118
 CATEGORIES=	net
 
 MAINTAINER=	zi@FreeBSD.org
@@ -8,12 +8,13 @@ WWW=		https://ip2location.com/development-libraries/ip2proxy/c
 
 LICENSE=	MIT
 
+USES=		autoreconf libtool
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	ip2location
 GH_PROJECT=	${PORTNAME}-c
-GH_TAGNAME=	00154dc
+GH_TAGNAME=	7966220
 
-USES=		autoreconf libtool
 HAS_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip

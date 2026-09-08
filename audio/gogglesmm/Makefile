@@ -1,14 +1,11 @@
 PORTNAME=	gogglesmm
-PORTVERSION=	1.2.4
-PORTREVISION=	3
+PORTVERSION=	1.2.5
+PORTREVISION=	7
 CATEGORIES=	audio
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Music collection manager and player
 WWW=		https://gogglesmm.github.io/
-
-PATCH_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/commit/
-PATCHFILES=	96cca4557d34227d9e18a9c30019d13533830094.patch:-p1 # FOX >= 1.7.83 compat
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -74,7 +71,7 @@ OGG_CMAKE_BOOL=		WITH_OGG
 
 OPENGL_LIB_DEPENDS=	libepoxy.so:graphics/libepoxy
 OPENGL_USES=		gl
-OPENGL_USE=		GL=gl,glu
+OPENGL_USE=		GL=opengl,glu
 OPENGL_CMAKE_BOOL=	WITH_OPENGL
 
 OPENSSL_USES=		ssl

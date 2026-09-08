@@ -1,6 +1,6 @@
---- aten/src/ATen/native/sparse/ValidateCompressedIndicesCommon.h.orig	2023-05-07 08:51:40 UTC
+--- aten/src/ATen/native/sparse/ValidateCompressedIndicesCommon.h.orig	2024-07-24 18:41:35 UTC
 +++ aten/src/ATen/native/sparse/ValidateCompressedIndicesCommon.h
-@@ -39,7 +39,7 @@ namespace {
+@@ -39,7 +39,7 @@ INVARIANT_CHECK_FUNC_API
  // use `cidx/idx` to refer to `compressed_indices/plain_indices` respectively.
  
  INVARIANT_CHECK_FUNC_API
@@ -60,8 +60,8 @@
  }
  
 @@ -128,14 +128,14 @@ INVARIANT_CHECK_FUNC_API _check_idx_sorted_distinct_va
-   for (auto* RESTRICT curr = slice_begin + 1; curr < slice_end; ++curr) {
-     const auto invariant = *(curr - 1) < *curr;
+   for (auto* RESTRICT curr = slice_begin; (slice_begin < slice_end) && (curr + 1 < slice_end); ++curr) {
+     const auto invariant = *curr < *(curr + 1);
      if (cdim_name == CDimName::CRow) {
 -      _assert(
 +      __assert(

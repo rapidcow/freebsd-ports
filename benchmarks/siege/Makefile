@@ -1,5 +1,5 @@
 PORTNAME=	siege
-PORTVERSION=	4.1.6
+DISTVERSION=	4.1.7
 CATEGORIES=	benchmarks www
 MASTER_SITES=	http://download.joedog.org/siege/ \
 		http://fossies.org/linux/www/
@@ -20,7 +20,7 @@ CONFIGURE_ENV=	PERL="${PERL}"
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
 .endif
 

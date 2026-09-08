@@ -6,7 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Software for creating plots of points, lines, etc
-WWW=		http://mapyrus.sourceforge.net
+WWW=		https://mapyrus.sourceforge.net
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/userdoc/COPYING
@@ -24,8 +24,7 @@ OPTIONS_DEFINE=	DOCS EXAMPLES
 SUB_FILES=	${PORTNAME} pkg-message
 SUB_LIST=	MAPYRUSJAR=${MAPYRUSJAR}
 
-USES=		zip
-USE_JAVA=	yes
+USES=		java zip
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}

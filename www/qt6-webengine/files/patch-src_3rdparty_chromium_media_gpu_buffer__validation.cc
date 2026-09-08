@@ -1,4 +1,4 @@
---- src/3rdparty/chromium/media/gpu/buffer_validation.cc.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/media/gpu/buffer_validation.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/media/gpu/buffer_validation.cc
 @@ -15,7 +15,7 @@
  #include "ui/gfx/geometry/size.h"
@@ -18,7 +18,7 @@
    if (fd < 0) {
      VLOG(1) << "Invalid file descriptor";
      return false;
-@@ -73,7 +73,7 @@ bool VerifyGpuMemoryBufferHandle(
+@@ -77,7 +77,7 @@ bool VerifyGpuMemoryBufferHandle(
      VLOG(1) << "Unsupported: " << pixel_format;
      return false;
    }

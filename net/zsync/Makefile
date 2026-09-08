@@ -1,6 +1,5 @@
 PORTNAME=	zsync
-PORTVERSION=	0.6.2
-PORTREVISION=	2
+DISTVERSION=	0.6.3
 CATEGORIES=	net
 MASTER_SITES=	http://zsync.moria.org.uk/download/
 
@@ -28,7 +27,7 @@ OPTIONS_DEFINE=	DOCS
 do-install:
 	${INSTALL_PROGRAM} ${_BINS:S,^,${WRKSRC}/,} ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_MAN} ${_MANPAGE:S,^,${WRKSRC}/doc/,} \
-		${STAGEDIR}${MANPREFIX}/share/man/man1
+		${STAGEDIR}${PREFIX}/share/man/man1
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

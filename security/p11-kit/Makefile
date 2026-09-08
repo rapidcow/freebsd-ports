@@ -1,8 +1,7 @@
 PORTNAME=	p11-kit
-DISTVERSION=	0.24.1
-PORTREVISION=	2
+DISTVERSION=	0.26.2
 CATEGORIES=	security devel
-MASTER_SITES=	https://github.com/p11-glue/p11-kit/releases/download/${DISTVERSION}/
+MASTER_SITES=	https://github.com/p11-glue/${PORTNAME}/releases/download/${DISTVERSION}/
 
 MAINTAINER=	novel@FreeBSD.org
 COMMENT=	Library for loading and enumerating of PKCS\#11 modules
@@ -22,6 +21,7 @@ CPE_VENDOR=	p11-kit_project
 
 MESON_ARGS=	-Dnls=false \
 		-Dsystemd=disabled \
+		-Dzsh_completion=disabled \
 		-Dtrust_paths=${DATADIR}/certs
 
 OPTIONS_DEFINE=		DOCS MANPAGES TEST
@@ -30,8 +30,6 @@ MANPAGES_IMPLIES=	DOCS
 OPTIONS_DEFAULT=	MANPAGES
 
 DOCS_BUILD_DEPENDS=	gtkdoc-scan:textproc/gtk-doc
-DOCS_USES=		gnome
-DOCS_USE=		GNOME=glib20
 DOCS_MESON_TRUE=	gtk_doc
 
 MANPAGES_BUILD_DEPENDS=	xsltproc:textproc/libxslt
@@ -40,6 +38,10 @@ MANPAGES_MESON_TRUE=	man
 TEST_MESON_TRUE=	test
 
 .include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MDOCS}
+MESON_ARGS+=		-Dglib_prefix=${LOCALBASE}
+.endif
 
 post-install:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

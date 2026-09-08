@@ -1,6 +1,6 @@
 PORTNAME=	bb
 DISTVERSION=	1.3rc1
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	misc
 MASTER_SITES=	SF/aa-project/${PORTNAME}/${DISTVERSION}
 
@@ -14,26 +14,16 @@ LIB_DEPENDS=	libaa.so:graphics/aalib \
 		libmikmod.so:audio/libmikmod
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 WRKSRC=		${WRKDIR}/bb-1.3.0
 PORTDOCS=	README
-PLIST_FILES=	bin/bb man/man1/bb.1.gz share/bb/bb.s3m share/bb/bb2.s3m \
+PLIST_FILES=	bin/bb share/man/man1/bb.1.gz share/bb/bb.s3m share/bb/bb2.s3m \
 		share/bb/bb3.s3m
+CFLAGS+=	-Wno-error=implicit-int -Wno-pointer-sign
 
 OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
-
-.if ${ARCH} != amd64 && ${ARCH} != i386
-USES+=		compiler:gcc-c++11-lib
-.endif
-
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
-CFLAGS+=	-Wno-error=incompatible-function-pointer-types
-.endif
-
-pre-patch:
-	@${FIND} ${WRKSRC} -type f | ${XARGS} ${REINPLACE_CMD} -E -e "s@#include +<malloc.h>@#include <stdlib.h>@g" \
-		-e 's, REGISTERS \(3\),,g'
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

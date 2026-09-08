@@ -1,5 +1,5 @@
 PORTNAME=	7-zip
-DISTVERSION=	23.01
+DISTVERSION=	25.01
 CATEGORIES=	archivers
 MASTER_SITES=	https://www.7-zip.org/a/
 DISTNAME=	7z${DISTVERSION:S/.//}-src
@@ -7,8 +7,6 @@ DISTNAME=	7z${DISTVERSION:S/.//}-src
 MAINTAINER=	makc@FreeBSD.org
 COMMENT=	Console version of the 7-Zip file archiver
 WWW=		https://www.7-zip.org/
-
-CONFLICTS_INSTALL=	p7zip
 
 LICENSE=	BSD3CLAUSE LGPL21+ UNRAR
 LICENSE_COMB=	multi
@@ -32,6 +30,7 @@ CFLAGS_aarch64?=	-march=armv8-a+crc+crypto
 NO_WRKSUBDIR=	yes
 BUILD_WRKSRC=	${WRKSRC}/CPP/7zip/Bundles/Alone2
 DOS2UNIX_FILES=	C/CpuArch.c \
+		C/CpuArch.h \
 		C/7zCrc.c \
 		C/Aes.c \
 		C/AesOpt.c \

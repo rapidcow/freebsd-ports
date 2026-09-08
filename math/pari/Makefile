@@ -1,17 +1,17 @@
 PORTNAME=	pari
-DISTVERSION=	2.15.4
+DISTVERSION=	2.17.3
 PORTEPOCH=	2
 CATEGORIES=	math
 MASTER_SITES=	https://pari.math.u-bordeaux.fr/pub/pari/unix/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Mathematics library and advanced calculator package
-WWW=		https://pari.math.u-bordeaux.fr/
+WWW=		https://pari.math.u-bordeaux.fr
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_mips64=		fails to link: mpker.c:(.text+0x33bc): relocation truncated to fit: R_MIPS_TLS_GD against 'PARI_SIGINT_block'
+BROKEN_mips64=	fails to link: mpker.c:(.text+0x33bc): relocation truncated to fit: R_MIPS_TLS_GD against 'PARI_SIGINT_block'
 
 LIB_DEPENDS=	libgmp.so:math/gmp
 
@@ -20,7 +20,7 @@ USE_LDCONFIG=	yes
 USE_PERL5=	build run
 HAS_CONFIGURE=	yes
 CONFIGURE_SCRIPT=	Configure
-CONFIGURE_ARGS=	--mandir=${MANPREFIX}/man/man1 \
+CONFIGURE_ARGS=	--mandir=${PREFIX}/share/man/man1 \
 		--prefix=${PREFIX} \
 		--with-readline
 ALL_TARGET=	gp
@@ -54,12 +54,6 @@ PORTDATA=	*
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
-.include <bsd.port.pre.mk>
-
-.if defined(PPC_ABI) && ${PPC_ABI} == ELFv1
-CFLAGS+=	-mminimal-toc
-.endif
-
 post-patch:
 	@${REINPLACE_CMD} -E '/libpari_base\=/s/-tls|-gmp//' \
 		${WRKSRC}/Configure
@@ -79,4 +73,8 @@ do-test-PTHREADS-on:
 do-test-MPI-on:
 	@cd ${WRKSRC} && ${MAKE_CMD} test-parallel RUNTEST="mpirun -np 3"
 
-.include <bsd.port.post.mk>
+# tests as of 2.17.2:
+# +++ Total bench for gp-sta is 39565
+# +++ Total bench for gp-dyn is 47771
+
+.include <bsd.port.mk>

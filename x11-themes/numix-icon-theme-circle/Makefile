@@ -1,10 +1,10 @@
 PORTNAME=	numix-icon-theme-circle
-DISTVERSION=	22.04.06
+DISTVERSION=	25.01.31
 CATEGORIES=	x11-themes
 
 MAINTAINER=	Alexander88207@protonmail.com
 COMMENT=	Icon theme from the Numix project
-WWW=		https://github.com/numixproject/numix-icon-theme-circle
+WWW=		https://numixproject.github.io
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -14,7 +14,11 @@ GH_ACCOUNT=	numixproject
 NO_ARCH=	yes
 NO_BUILD=	yes
 
+ICONSDIR=	${PREFIX}/share/icons
+
 do-install:
-	cd ${WRKSRC} && ${COPYTREE_SHARE} Numix-Circle ${STAGEDIR}${PREFIX}/share/icons
+	${MKDIR} ${STAGEDIR}${ICONSDIR}
+	${FIND} ${WRKSRC} -mindepth 1 -maxdepth 1 -type d -exec ${CP} -R {} \
+		${STAGEDIR}${ICONSDIR}/ ';'
 
 .include <bsd.port.mk>

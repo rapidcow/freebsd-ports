@@ -1,7 +1,6 @@
 PORTNAME=	amp
-DISTVERSION=	0.6.2-27
-DISTVERSIONSUFFIX=	-g71df483
-PORTREVISION=	5
+DISTVERSION=	0.7.1
+PORTREVISION=	15
 CATEGORIES=	editors
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -11,17 +10,16 @@ WWW=		https://amp.rs/
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cargo localbase:ldflags python:build xorg
+LIB_DEPENDS=	libgit2.so:devel/libgit2 \
+		libonig.so:devel/oniguruma
+
+USES=		cargo
 USE_GITHUB=	yes
 GH_ACCOUNT=	jmacdonald
-USE_XORG=	xcb
+
+_GIT_HEAD=	dae913c
+CARGO_ENV=	BUILD_REVISION=${_GIT_HEAD}
 
 PLIST_FILES=	bin/${PORTNAME}
-
-post-patch:
-	@${REINPLACE_CMD} 's|python3|python${PYTHON_VER}|' ${WRKSRC}/cargo-crates/xcb-0.8.2/build.rs
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

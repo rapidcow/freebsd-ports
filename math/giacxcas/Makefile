@@ -1,7 +1,8 @@
 PORTNAME=	giacxcas
-DISTVERSION=	1.9.0-55
+DISTVERSION=	1.9.0-85
+PORTREVISION=	7
 CATEGORIES=	math
-MASTER_SITES=	http://www-fourier.ujf-grenoble.fr/~parisse/debian/dists/stable/main/source/:giac \
+MASTER_SITES=	http://www-fourier.univ-grenoble-alpes.fr/~parisse/debian/dists/stable/main/source/:giac \
 		http://cocoa.dima.unige.it/cocoa/cocoalib/tgz/:cocoa \
 		http://www-fourier.ujf-grenoble.fr/~parisse/giac/freebsd/
 DISTFILES=	giac_${DISTVERSION}${EXTRACT_SUFX}:giac \
@@ -11,15 +12,19 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Computer algebra system
-WWW=		https://www-fourier.ujf-grenoble.fr/~parisse/giac.html
+WWW=		https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac.html
 
-LICENSE=	GPLv3 DOC
-LICENSE_COMB=	multi
+LICENSE=		GPLv3 DOC
+LICENSE_COMB=		multi
 LICENSE_NAME_DOC=	French documentation
 LICENSE_TEXT_DOC=	French documentation is for non-commercial use only
 LICENSE_FILE_GPLv3=	${WRKSRC}/COPYING
 LICENSE_PERMS_DOC=	dist-mirror pkg-mirror auto-accept
 LICENSE_DISTFILES_DOC=	giac_${DISTVERSION}${EXTRACT_SUFX}
+
+BROKEN_armv7=	compilation fails: constant expression evaluates to 61171872541 which cannot be narrowed to type 'long' [-Wc++11-narrowing]
+BROKEN_i386=	compilation fails: constant expression evaluates to 61171872541 which cannot be narrowed to type 'long' [-Wc++11-narrowing]
+BROKEN_powerpc=	compilation fails: constant expression evaluates to 61171872541 which cannot be narrowed to type 'long' [-Wc++11-narrowing]
 
 BUILD_DEPENDS=	bash:shells/bash \
 		hevea:textproc/hevea
@@ -40,7 +45,7 @@ LIB_DEPENDS=	libao.so:audio/libao \
 		libsamplerate.so:audio/libsamplerate
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
-USES=		blaslapack compiler:c++14-lang desktop-file-utils fortran \
+USES=		autoreconf blaslapack compiler:c++14-lang desktop-file-utils fortran \
 		gettext gl gmake gnome jpeg libtool localbase ncurses perl5 \
 		python readline shebangfix tex xorg
 GNU_CONFIGURE=	yes
@@ -68,7 +73,8 @@ CPPFLAGS+=	-I${COCOALIB-GIAC}/include \
 		-I${FLTKDEV-GIAC} \
 		-Wno-narrowing
 LDFLAGS+=	-L${COCOALIB-GIAC}/lib \
-		-L${FLTKDEV-GIAC}/lib
+		-L${FLTKDEV-GIAC}/lib \
+		-lintl
 
 WRKSRC=		${WRKDIR}/giac-${DISTVERSION:C/-[0-9]*//}
 FLTKDEV-GIAC=	${WRKDIR}/fltk-1.3.0
@@ -115,6 +121,8 @@ post-patch:
 	${SED} -i ".orig" -Ee 's|char \*last = style \+ strlen\(style\) - 2|char *last = pretty|' \
 		-Ee 's|\*style = 0|last = style + strnlen(style, ENDOFBUFFER) - 2; *style = 0|' \
 		${FLTKDEV-GIAC}/src/fl_set_fonts_xft.cxx
+	@${REINPLACE_CMD} -e 's/"filesystem  system"/"filesystem "/' \
+		${WRKDIR}/CoCoALib-${COCOA_LIB_VERSION}/configuration/boost-find-lib.sh
 
 pre-configure:
 	${REINPLACE_CMD} -e 's|^protected:|public:|' ${FLTKDEV-GIAC}/FL/Fl_Widget.H
@@ -144,6 +152,7 @@ pre-build:
 	@cd ${COCOALIB-GIAC} && ${DO_MAKE_BUILD} \
 		CXXFLAGS_SPECIFIC="${CXXFLAGS}" library
 	@cd ${FLTKDEV-GIAC}/src && ${DO_MAKE_BUILD}
+	@cd ${WRKSRC}/src && ${CXX} -o mkjs mkjs.cc
 
 post-install-EXAMPLES-on:
 	cd ${WRKSRC}/examples && ${COPYTREE_SHARE} "Exemples [a-z]*" \

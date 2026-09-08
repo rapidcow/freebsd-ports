@@ -1,5 +1,6 @@
 PORTNAME=	fop
 DISTVERSION=	2.8
+PORTREVISION=	1
 CATEGORIES=	textproc java
 MASTER_SITES=	APACHE/xmlgraphics/fop/source/:fop \
 		SF/offo/offo-hyphenation/2.2:hyph \
@@ -8,7 +9,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 DISTFILES=	${DISTNAME}.tar.gz:fop offo-hyphenation.zip:hyph
 EXTRACT_ONLY=	${DISTNAME}.tar.gz
 
-MAINTAINER=	makc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Print formatter driven by XSL formatting
 WWW=		https://xmlgraphics.apache.org/fop/
 
@@ -17,8 +18,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 EXTRACT_DEPENDS=	${UNZIP_CMD}:archivers/unzip
 
-USE_JAVA=	yes
-USE_ANT=	yes
+USES=		java:ant,run
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 PORTDOCS=	*

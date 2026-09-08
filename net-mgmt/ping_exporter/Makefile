@@ -1,24 +1,25 @@
 PORTNAME=	ping_exporter
-DISTVERSION=	1.0.1
-PORTREVISION=	8
+DISTVERSION=	1.1.4
+PORTREVISION=	7
 CATEGORIES=	net-mgmt
-MASTER_SITES=	https://raw.githubusercontent.com/czerwonk/ping_exporter/${DISTVERSIONFULL}/:gomod
-DISTFILES=	go.mod:gomod
 
-MAINTAINER=	jp+ports@supplntr.io
+MAINTAINER=	ivy@FreeBSD.org
 COMMENT=	Prometheus exporter for ICMP echo requests
 WWW=		https://github.com/czerwonk/ping_exporter
 
-LICENSE=	APACHE20
+LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		go:modules
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	czerwonk
 
 USE_RC_SUBR=	ping_exporter
 
+GO_MOD_DIST=	github
 GO_MODULE=	github.com/czerwonk/ping_exporter
+GO_TARGET=	.:ping_exporter
 
 SUB_FILES=	pkg-message
 

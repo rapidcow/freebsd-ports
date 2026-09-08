@@ -1,7 +1,7 @@
 PORTNAME=	${GH_PROJECT:tl}
 PORTVERSION=	0.0.16
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics
 
 MAINTAINER=	danfe@FreeBSD.org
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libgee-0.8.so:devel/libgee \
 
 USES=		desktop-file-utils gettext gnome libarchive meson pkgconfig \
 		python:build shared-mime-info shebangfix vala:build
-USE_GNOME=	cairo gdkpixbuf2 gtk30
+USE_GNOME=	cairo gdkpixbuf gtk30
 USE_GITHUB=	yes
 GH_ACCOUNT=	akiraux
 GH_PROJECT=	Akira

@@ -1,6 +1,5 @@
 PORTNAME=	e16
-PORTVERSION=	1.0.28
-PORTREVISION=	0
+PORTVERSION=	1.0.31
 CATEGORIES=	x11-wm enlightenment
 MASTER_SITES=	SF/enlightenment/${PORTNAME}/${PORTVERSION}/
 
@@ -14,9 +13,10 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libImlib2.so:graphics/imlib2 \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
-		libharfbuzz.so:print/harfbuzz
+		libharfbuzz.so:print/harfbuzz \
+		libdbus-1.so:devel/dbus
 
-USES=		autoreconf desktop-file-utils gettext-tools gmake iconv \
+USES=		desktop-file-utils gettext-tools gmake iconv \
 		libtool gnome perl5 pkgconfig python:run shebangfix xorg
 
 INSTALL_TARGET=	install-strip
@@ -67,12 +67,5 @@ CONFIGURE_ARGS+=--disable-dependency-tracking  --disable-rpath \
 .if empty(E16_SOUND) && empty(E16_SNDLDR)
 CONFIGURE_ARGS+=--enable-sound=no --with-sndldr=none
 .endif
-
-post-patch:
-	${REINPLACE_CMD} -e '/dl, dlopen/d' ${WRKSRC}/configure.ac
-
-post-patch-DOCS-off:
-	${REINPLACE_CMD} -e '/^SUBDIRS/s|docs ||' \
-	    ${WRKSRC}/Makefile.am ${WRKSRC}/Makefile.in
 
 .include <bsd.port.mk>

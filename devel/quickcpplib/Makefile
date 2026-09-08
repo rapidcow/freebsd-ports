@@ -1,5 +1,6 @@
 PORTNAME=	quickcpplib
 DISTVERSION=	g20230614
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -9,7 +10,9 @@ WWW=		https://github.com/ned14/quickcpplib
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/Licence.txt
 
-BROKEN_i386=	complation fails: __int128 is not supported on this target
+BROKEN_powerpc=	clang crashes, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=276824
+NOT_FOR_ARCHS=		powerpc64 powerpc64le
+NOT_FOR_ARCHS_REASON=	test/timing.h:113:2: error: Unsupported platform
 
 USES=		cmake:testing
 

@@ -10,7 +10,7 @@
 
 PORTNAME=	ast-ksh
 PORTVERSION=	${KSHVERSION:S/-//g}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	shells
 DIST_SUBDIR=	ksh93
 
@@ -20,11 +20,11 @@ WWW=		http://www.kornshell.com/
 
 LICENSE=	EPL
 
-BROKEN_aarch64=		Fails to compile: needs sbrk
 BROKEN_riscv64=		Fails to compile: ast-ksh93v/src/lib/libast/hash/hashalloc.c:162:4: non-const lvalue reference to type '__builtin_va_list' cannot bind to a temporary of type 'va_list'
-BROKEN_FreeBSD_14=	Fails to compilt: error: incompatible function pointer types assigning to 'int (*)(wchar_t *, const char *, size_t)' (aka 'int (*)(int *, const char *, unsigned long)') from 'size_t (wchar_t *, const char *, size_t)' (aka 'unsigned long (int *, const char *, unsigned long)') [-Wincompatible-function-pointer-types]
+BROKEN_FreeBSD_14=	Fails to compile: error: incompatible function pointer types assigning to 'int (*)(wchar_t *, const char *, size_t)' (aka 'int (*)(int *, const char *, unsigned long)') from 'size_t (wchar_t *, const char *, size_t)' (aka 'unsigned long (int *, const char *, unsigned long)') [-Wincompatible-function-pointer-types]
+BROKEN_FreeBSD_15=	${BROKEN_FreeBSD_14}
 
-USES=		compiler:c11
+USES=		compiler:c11 sbrk
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	att
@@ -47,7 +47,7 @@ STATIC_MAKE_ENV=	LDFLAGS+=-static
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
 .endif
 
@@ -59,7 +59,7 @@ do-build:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/ksh ${STAGEDIR}${PREFIX}/bin/ksh93
-	${INSTALL_MAN} ${WRKSRC}/man/man1/sh.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/ksh93.1
+	${INSTALL_MAN} ${WRKSRC}/man/man1/sh.1 ${STAGEDIR}${PREFIX}/share/man/man1/ksh93.1
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/
 	cd ${WRKSRC}/fun/ && ${INSTALL_SCRIPT} dirs popd pushd ${STAGEDIR}${EXAMPLESDIR}/
 

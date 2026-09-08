@@ -2,13 +2,12 @@ PORTNAME=	npush
 PORTVERSION=	0.7
 CATEGORIES=	games
 MASTER_SITES=	SF
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Curses-based logic game similar to Sokoban and Boulder Dash
-WWW=		http://npush.sourceforge.net/
+WWW=		https://npush.sourceforge.net/
 
-USES=		ncurses
+USES=		ncurses tar:tgz
 PORTDOCS=	*
 PORTDATA=	*
 

@@ -1,4 +1,5 @@
 LLVM_COMMANDS=	\
+		amdgpu-arch \
 		bugpoint \
 		dsymutil \
 		llc \
@@ -13,12 +14,17 @@ LLVM_COMMANDS=	\
 		llvm-config \
 		llvm-cov \
 		llvm-cvtres \
+		llvm-cxxdump \
+		llvm-cxxfilt \
 		llvm-cxxmap \
+		llvm-debuginfo-analyzer \
+		llvm-debuginfod \
 		llvm-debuginfod-find \
 		llvm-diff \
 		llvm-dis \
 		llvm-dlltool \
 		llvm-dwarfdump \
+		llvm-dwarfutil \
 		llvm-dwp \
 		llvm-exegesis \
 		llvm-extract \
@@ -47,6 +53,8 @@ LLVM_COMMANDS=	\
 		llvm-readelf \
 		llvm-readobj \
 		llvm-reduce \
+		llvm-remark-size-diff \
+		llvm-remarkutil \
 		llvm-rtdyld \
 		llvm-sim \
 		llvm-size \
@@ -61,9 +69,9 @@ LLVM_COMMANDS=	\
 		llvm-undname \
 		llvm-windres \
 		llvm-xray \
+		nvptx-arch \
 		opt \
-		sancov \
-		split-file
+		sancov
 
 CLANG_COMMANDS=	\
 		analyze-build \
@@ -74,19 +82,36 @@ CLANG_COMMANDS=	\
 		clang-cpp \
 		clang-extdef-mapping \
 		clang-format \
+		clang-include-cleaner \
 		clang-linker-wrapper \
-		clang-nvlink-wrapper \
 		clang-offload-bundler \
-		clang-offload-wrapper \
+		clang-offload-packager \
 		clang-rename \
 		clang-repl \
 		clang-scan-deps \
+		clang-tblgen \
 		diagtool \
 		hmaptool \
 		intercept-build \
 		scan-build \
 		scan-build-py \
 		scan-view
+
+EXTRAS_COMMANDS= \
+		clangd \
+		clang-apply-replacements \
+		clang-change-namespace \
+		clang-doc \
+		clang-include-fixer \
+		clang-move \
+		clang-pseudo \
+		clang-query \
+		clang-reorder-fields \
+		clang-tidy \
+		find-all-symbols \
+		modularize \
+		pp-trace \
+		run-clang-tidy
 
 LIT_COMMANDS=	\
 		FileCheck \

@@ -1,6 +1,6 @@
 PORTNAME=	paperless
 PORTVERSION=	2.7.0
-PORTREVISION=	14
+PORTREVISION=	21
 CATEGORIES=	deskutils python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -14,6 +14,9 @@ WWW=		https://paperless.readthedocs.io
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Upstream repository archived since 2021 and no compatibility for Django 5+. Please migrate to deskutils/py-paperless-ngx
+EXPIRATION_DATE=2026-03-31
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dateparser>=1.1.0:devel/py-dateparser@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}django-cors-headers>=2.4.0:www/py-django-cors-headers@${PY_FLAVOR} \
@@ -43,6 +46,8 @@ USE_RC_SUBR=	paperless-consumer
 
 SHEBANG_FILES=	${WRKSRC}/src/manage.py
 
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}*paperless-ngx
+
 SUB_FILES=	README nginx.conf paperless.7 pkg-message sshd_config uwsgi.ini
 SUB_LIST=	PKGBASE=${PKGBASE} PYTHON_CMD=${PYTHON_CMD} \
 		PYTHONPREFIX_SITELIBDIR=${PYTHONPREFIX_SITELIBDIR} \
@@ -57,7 +62,7 @@ GROUPS=		paperless
 OPTIONS_DEFINE=		DOCS EXAMPLES
 OPTIONS_SINGLE=		IMAGICK
 OPTIONS_SINGLE_IMAGICK=	IMAGICK6_NOX11 IMAGICK6_X11 IMAGICK7_NOX11 IMAGICK7_X11
-OPTIONS_DEFAULT=	IMAGICK6_X11
+OPTIONS_DEFAULT=	IMAGICK7_X11
 
 IMAGICK_DESC=		${IMAGEMAGICK_DESC}
 IMAGICK6_NOX11_DESC=	ImageMagick6 without X11 support
@@ -115,7 +120,7 @@ do-install:
 	@${MKDIR} ${STAGEDIR}/var/db/paperless/consume/input \
 		${STAGEDIR}/var/db/paperless/media \
 		${STAGEDIR}/var/db/paperless/sqlite
-	${INSTALL_MAN} ${WRKDIR}/paperless.7 ${STAGEDIR}${MANPREFIX}/man/man7
+	${INSTALL_MAN} ${WRKDIR}/paperless.7 ${STAGEDIR}${PREFIX}/share/man/man7
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}/presentation

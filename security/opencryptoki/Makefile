@@ -1,6 +1,7 @@
 PORTNAME=	opencryptoki
 PORTVERSION=	3.19.0
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	security
 
 MAINTAINER=	hrs@FreeBSD.org
@@ -15,10 +16,11 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LIB_DEPENDS=	libtspi.so:security/trousers \
 		libepoll-shim.so:devel/libepoll-shim
 
-USES=		alias autoreconf bison gmake ldap libtool localbase ssl tar:tgz
+USES=		autoreconf bison gmake ldap libtool localbase ssl tar:tgz
 USE_LDCONFIG=	${PREFIX}/lib/opencryptoki
 USE_GITHUB=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ENV=	LOCALBASE=${LOCALBASE}
 CONFIGURE_ARGS=	--enable-swtok \
 		--enable-tpmtok \
@@ -45,7 +47,7 @@ GROUPS=		_pkcs11
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
 .endif
 

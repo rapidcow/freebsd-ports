@@ -1,5 +1,6 @@
 PORTNAME=	tripwire
 PORTVERSION=	2.4.3.8
+PORTREVISION=	2
 CATEGORIES=	security
 
 MAINTAINER=	cy@FreeBSD.org
@@ -17,6 +18,7 @@ NO_LICENSES_INSTALL=	yes
 MAKE_JOBS_UNSAFE=	yes
 USES=		cpe gmake ssl
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX= ${PREFIX}/share
 MAKE_ARGS=	SYSPRE=${ARCH}-unknown-freebsd \
 		DESTDIR=${STAGEDIR}
 M4=		/usr/bin/m4
@@ -178,7 +180,11 @@ create-database:
 .endif
 .endif
 
-post-install:	install-config-files create-database make-pkg-install
+install-twtest:
+	@ cd ${WRKSRC}/src/twtest && DESTDIR=${STAGEDIR} ${MAKE_CMD} install
+
+post-install:	install-twtest install-config-files create-database make-pkg-install
 	${INSTALL_DATA} ${WRKSRC}/COPYING ${STAGEDIR}${DOCSDIR}
+	@ ${RMDIR} ${STAGEDIR}${PREFIX}/man || ${TRUE}
 
 .include <bsd.port.post.mk>

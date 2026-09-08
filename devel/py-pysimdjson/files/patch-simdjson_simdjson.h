@@ -1,20 +1,21 @@
---- simdjson/simdjson.h.orig	2022-04-21 05:39:10 UTC
+--- simdjson/simdjson.h.orig	2024-02-06 03:49:45 UTC
 +++ simdjson/simdjson.h
-@@ -17200,7 +17200,7 @@ simdjson_unused simdjson_warn_unused simdjson_really_i
- #ifndef SIMDJSON_PPC64_NUMBERPARSING_H
- #define SIMDJSON_PPC64_NUMBERPARSING_H
+@@ -6223,15 +6223,15 @@ class base_formatter { (public)
+   simdjson_inline void one_char(char c);
  
--#include <byteswap.h>
-+#include <sys/endian.h>
+   simdjson_inline void call_print_newline() {
+-      this->print_newline();
++      static_cast<formatter*>(this)->print_newline();
+   }
  
- namespace simdjson {
- namespace ppc64 {
-@@ -17213,7 +17213,7 @@ parse_eight_digits_unrolled(const uint8_t *chars) {
-   uint64_t val;
-   std::memcpy(&val, chars, sizeof(uint64_t));
- #ifdef __BIG_ENDIAN__
--  val = bswap_64(val);
-+  val = bswap64(val);
- #endif
-   val = (val & 0x0F0F0F0F0F0F0F0F) * 2561 >> 8;
-   val = (val & 0x00FF00FF00FF00FF) * 6553601 >> 16;
+   simdjson_inline void call_print_indents(size_t depth) {
+-      this->print_indents(depth);
++      static_cast<formatter*>(this)->print_indents(depth);
+   }
+ 
+   simdjson_inline void call_print_space() {
+-      this->print_space();
++      static_cast<formatter*>(this)->print_space();
+   }
+ 
+ protected:

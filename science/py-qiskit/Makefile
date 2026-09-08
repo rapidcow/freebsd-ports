@@ -1,34 +1,35 @@
 PORTNAME=	qiskit
-DISTVERSION=	0.44.0
-CATEGORIES=	science python # quantum-computing
+DISTVERSION=	2.2.1
+PORTREVISION=	2
+CATEGORIES=	science python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
-COMMENT=	Qiskit meta-package: SDK for working with quantum computers
-WWW=		https://qiskit.org/
+COMMENT=	Open-source SDK for working with quantum computers
+WWW=		https://github.com/Qiskit/qiskit
 
-LICENSE=	BSD2CLAUSE
+LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-# required submodules
-PY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}qiskit-terra>0:science/py-qiskit-terra@${PY_FLAVOR}
-# optional submodules (list: https://github.com/Qiskit/qiskit#optional-components)
-OPT_DEPENDS=	${PYTHON_PKGNAMEPREFIX}qiskit-finance>0:science/py-qiskit-finance@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}qiskit-optimization>0:science/py-qiskit-optimization@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}qiskit-machine-learning>0:misc/py-qiskit-machine-learning@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}qiskit-nature>0:science/py-qiskit-nature@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}qiskit-experiments>0:science/py-qiskit-experiments@${PY_FLAVOR}
-BUILD_DEPENDS=	${PY_DEPENDS}
-RUN_DEPENDS=	${PY_DEPENDS} \
-		${OPT_DEPENDS}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools-rust>0:devel/py-setuptools-rust@${PY_FLAVOR}
+RUN_DEPENDS=	${PYNUMPY} \
+		${PYTHON_PKGNAMEPREFIX}symengine>0.11:math/py-symengine@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}scipy>=0:science/py-scipy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}rustworkx>=0.15.0:math/py-rustworkx@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dill>=0.3:devel/py-dill@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}stevedore>=0:devel/py-stevedore@${PY_FLAVOR}
 
-USES=		python
-USE_PYTHON=	distutils autoplist pytest
+USES=		cargo python
+USE_PYTHON=	autoplist distutils pytest
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Qiskit
 
-WRKSRC=		${WRKDIR}/qiskit-metapackage-${PORTVERSION}
+BINARY_ALIAS=	python3=${PYTHON_CMD}
 
-NO_ARCH=	yes
+PLIST_FILES+=	${PYTHON_SITELIBDIR}/qiskit/_accelerate.cpython-${PYTHON_SUFFIX}.so
+
+CARGO_BUILD=	no
+CARGO_INSTALL=	no
 
 .include <bsd.port.mk>

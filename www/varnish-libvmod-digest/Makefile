@@ -1,7 +1,5 @@
 PORTNAME=	libvmod-digest
-DISTVERSION=	1.0.2-6
-DISTVERSIONSUFFIX=	-g1793bea
-PORTREVISION=	1
+PORTVERSION=	1.0.3
 CATEGORIES=	www
 PKGNAMEPREFIX=	varnish-
 
@@ -18,9 +16,11 @@ LIB_DEPENDS=	libmhash.so:security/mhash
 USES=		autoreconf gmake libtool pkgconfig python:build varnish:7
 USE_GITHUB=	yes
 GH_ACCOUNT=	varnish
+GH_TAGNAME=	e745761
 USE_LDCONFIG=	${PREFIX}/lib/varnach/vmods
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-static
 
 INSTALL_TARGET=	install-strip

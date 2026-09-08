@@ -6,7 +6,7 @@ PKGNAMESUFFIX=	-qt5
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Library to manage JSON objects with Qt
-WWW=		http://qjson.sourceforge.net/
+WWW=		https://qjson.sourceforge.net/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING.lib
@@ -40,7 +40,7 @@ post-install-DOXYGEN-on:
 
 # Clang 16 defaults to building in C++17, and throws an error when the
 # `register' keyword is used. Make clang just ignore the keyword instead.
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
+.if ${COMPILER_TYPE} == clang
 CXXFLAGS+=	-Wno-register
 .endif
 

@@ -1,17 +1,18 @@
 PORTNAME=	gutenprint
 PORTVERSION=	5.3.4
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES=	print
 MASTER_SITES=	SF/gimp-print/gutenprint-5.3/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT?=	Gutenprint Printer Drivers
-WWW=		http://gimp-print.sourceforge.net/
+WWW=		https://gimp-print.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-static --enable-cups-ppds \
 		--enable-cups-1_2-enhancements \
 		--enable-simplified-cups-ppds \
@@ -41,7 +42,7 @@ LIB_DEPENDS+=	libgutenprint.so:print/gutenprint
 MAKE_ARGS+=	GUTENPRINT_LIBS='`$$(PKG_CONFIG) --libs gutenprint`'
 .if ${GUT_SLAVE} == "gimp"
 USES+=		gnome
-USE_GNOME+=	cairo gdkpixbuf2
+USE_GNOME+=	cairo gdkpixbuf
 LIB_DEPENDS+=	libbabl-0.1.so:x11/babl \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \

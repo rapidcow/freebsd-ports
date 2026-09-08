@@ -1,9 +1,9 @@
 PORTNAME=	lua-resty-lrucache
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.13
+DISTVERSION=	0.15
 CATEGORIES=	www
 
-MAINTAINER=	dmitry.wagin@ya.ru
+MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Lua-land LRU cache based on the LuaJIT FFI
 WWW=		https://github.com/openresty/lua-resty-lrucache
 

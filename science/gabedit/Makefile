@@ -7,7 +7,7 @@ DISTNAME=	GabeditSrc${DISTVERSION:C/([0-9])\.([0-9])\.([0-9])-([0-9])/\1\2\3_\4/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Graphical user interface for several chemistry software packages
-WWW=		http://gabedit.sourceforge.net/
+WWW=		https://gabedit.sourceforge.net/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/License
@@ -20,7 +20,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 
 USES=		compiler:c++11-lang gettext-runtime gl gmake gnome pkgconfig \
 		xorg
-USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk20 pango pangox-compat
+USE_GNOME=	atk cairo gdkpixbuf glib20 gtk20 pango pangox-compat
 USE_GL=		gl glu
 USE_XORG=	ice sm x11 xmu xt
 

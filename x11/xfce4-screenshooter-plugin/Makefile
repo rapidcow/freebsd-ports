@@ -1,6 +1,5 @@
 PORTNAME=	xfce4-screenshooter-plugin
-PORTVERSION=	1.10.4
-PORTREVISION=	1
+PORTVERSION=	1.11.3
 CATEGORIES=	x11 xfce
 MASTER_SITES=	XFCE/apps
 DISTNAME=	xfce4-screenshooter-${DISTVERSIONFULL}
@@ -13,23 +12,27 @@ WWW=		https://goodies.xfce.org/projects/applications/xfce4-screenshooter
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libsoup-3.0.so:devel/libsoup3 \
-		libharfbuzz.so:print/harfbuzz
-
-USES=		compiler:c11 gettext-tools gmake gnome libtool pkgconfig \
-		tar:bzip2 xfce xorg
+USES=		compiler:c11 gettext-tools gnome meson pkgconfig tar:xz xfce \
+		xorg
 USE_CSTD=	c99
-USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30 intltool libxml2
+USE_GNOME=	glib20 gtk30
 USE_XFCE=	libexo libmenu panel xfconf
-USE_XORG=	ice sm x11 xfixes xext
+USE_XORG=	ice sm x11 xext xfixes
 
-GNU_CONFIGURE=	yes
-INSTALL_TARGET=	install-strip
+MESON_ARGS=	-Dx11=enabled \
+		-Dxfixes=enabled
 
-OPTIONS_DEFINE=		NLS
+OPTIONS_DEFINE=		NLS WAYLAND
+OPTIONS_DEFAULT=	WAYLAND
 OPTIONS_SUB=		yes
 
-NLS_CONFIGURE_ENABLE=	nls
-NLS_USES=		gettext-runtime
+NLS_USES=	gettext-runtime
+
+WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland
+WAYLAND_BUILD_DEPENDS=	wayland-protocols>0:graphics/wayland-protocols
+WAYLAND_MESON_ENABLED=	wayland
+
+post-patch-NLS-off:
+	@${REINPLACE_CMD} -e "/^subdir('po')/d" ${WRKSRC}/meson.build
 
 .include <bsd.port.mk>

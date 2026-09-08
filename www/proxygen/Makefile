@@ -1,6 +1,6 @@
 PORTNAME=	proxygen
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2023.09.25.00
+DISTVERSION=	2026.01.05.00
 PORTREVISION=	1
 CATEGORIES=	www
 
@@ -11,9 +11,12 @@ WWW=		https://github.com/facebook/proxygen
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BROKEN_armv7=	compilation fails, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=283484
+
 BUILD_DEPENDS=	bash:shells/bash \
 		gperf>0:devel/gperf
-LIB_DEPENDS=	libboost_iostreams.so:devel/boost-libs \
+LIB_DEPENDS=	libcares.so:dns/c-ares \
+		libboost_iostreams.so:devel/boost-libs \
 		libbzip2.so:misc/vxl \
 		libdouble-conversion.so:devel/double-conversion \
 		libevent.so:devel/libevent \
@@ -38,6 +41,7 @@ GH_ACCOUNT=	facebook
 USE_LDCONFIG=	yes
 
 CXXFLAGS+=	-fPIC
+CXXFLAGS+=	-DGLOG_USE_GLOG_EXPORT
 LDFLAGS+=	-lexecinfo
 
 CMAKE_ON=	BUILD_SHARED_LIBS

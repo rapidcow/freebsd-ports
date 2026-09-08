@@ -1,6 +1,6 @@
 PORTNAME=	kapp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.56.0
+DISTVERSION=	0.65.0
 PORTREVISION=	2
 CATEGORIES=	sysutils
 
@@ -11,9 +11,11 @@ WWW=		https://github.com/carvel-dev/kapp
 LICENSE=	APACHE20
 
 USES=		go:modules
-GO_MODULE=	github.com/carvel-dev/${PORTNAME}
-GO_BUILDFLAGS=	-ldflags="-X github.com/vmware-tanzu/carvel-kapp/pkg/kapp/version.Version=v${PORTVERSION}"
+USE_GITHUB=	yes
+GH_ACCOUNT=	carvel-dev
+
 GO_TARGET=	./cmd/${PORTNAME}
+GO_BUILDFLAGS=	-ldflags="-X carvel.dev/kapp/pkg/kapp/version.Version=v${DISTVERSION}"
 
 PLIST_FILES=	bin/${PORTNAME}
 

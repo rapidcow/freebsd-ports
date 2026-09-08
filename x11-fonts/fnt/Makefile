@@ -1,9 +1,9 @@
 PORTNAME=	fnt
-PORTVERSION=	1.4.1
+PORTVERSION=	1.9
 PORTREVISION=	1
 CATEGORIES=	x11-fonts sysutils
 
-MAINTAINER=	ehaupt@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Missing font manager for UNIX
 WWW=		https://github.com/alexmyczko/fnt
 
@@ -35,7 +35,7 @@ ZSH_PLIST_FILES=	share/zsh/site-functions/_fnt
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 \
-		${STAGEDIR}${MANPREFIX}/share/man/man1
+		${STAGEDIR}${PREFIX}/share/man/man1
 
 do-install-ZSH-on:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/zsh/site-functions/

@@ -1,16 +1,15 @@
 PORTNAME=	compat6x
 PORTVERSION=	6.4.604000.200810
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	misc
-MASTER_SITES=	LOCAL/mnag/compat6x \
-		http://people.freebsd.org/~mnag/compat6x/
+MASTER_SITES=	LOCAL/bapt
 PKGNAMESUFFIX=	-${ARCH}
 DISTNAME=	${PORTNAME}-${ARCH}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Convenience package to install the compat6x libraries
 
-ONLY_FOR_ARCHS=		amd64 i386 sparc64
+ONLY_FOR_ARCHS=		amd64 i386
 
 USES=		tar:bzip2
 NO_BUILD=	yes

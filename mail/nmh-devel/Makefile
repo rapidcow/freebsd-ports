@@ -1,5 +1,6 @@
 PORTNAME=	nmh
 PORTVERSION=	${NMH_COMMIT_DATE}
+PORTREVISION=	1
 MASTER_SITES=	#
 CATEGORIES=	mail
 PKGNAMESUFFIX=	-devel
@@ -9,8 +10,8 @@ MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Cleaned up MH mailer suite
 WWW=		https://savannah.nongnu.org/projects/nmh/
 
-GIT_TAGNAME=	542cb12
-NMH_COMMIT_DATE=	2023.09.18
+GIT_TAGNAME=	a58964e
+NMH_COMMIT_DATE=	2025.08.24
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${GIT_TAGNAME}
 
@@ -22,6 +23,7 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--libdir=${PREFIX}/libexec/nmh \
 		--sysconfdir=${PREFIX}/etc \
 		--docdir=${DOCSDIR}
+GNU_CONFIGURE_MANPREFIX= ${PREFIX}/share
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		liblockfile.so:devel/liblockfile
 

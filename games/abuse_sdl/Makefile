@@ -1,9 +1,8 @@
 PORTNAME=	abuse_sdl
 PORTVERSION=	0.8
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	games
-MASTER_SITES=	GENTOO \
-		http://abuse.zoy.org/raw-attachment/wiki/download/
+MASTER_SITES=	http://abuse.zoy.org/raw-attachment/wiki/download/
 DISTNAME=	abuse-${DISTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org

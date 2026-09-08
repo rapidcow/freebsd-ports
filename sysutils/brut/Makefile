@@ -1,6 +1,6 @@
 PORTNAME=	brut
 DISTVERSION=	1.55
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 
 MAINTAINER=	georg.lastname@web.de
@@ -10,9 +10,7 @@ WWW=		https://github.com/random532/brut
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	sudo>0:security/sudo
-
-USES=		gnome
+USES=		gnome sudo
 USE_GITHUB=	yes
 GH_ACCOUNT=	random532
 USE_GNOME=	gtk30

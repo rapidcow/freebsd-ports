@@ -1,5 +1,6 @@
 PORTNAME=	libsixel
 PORTVERSION=	1.8.6
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	graphics
 MASTER_SITES=	https://github.com/saitoha/libsixel/releases/download/v${PORTVERSION}/
@@ -14,6 +15,7 @@ USES=		cpe libtool pkgconfig
 CPE_VENDOR=	${PORTNAME}_project
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-pkgconfigdir=${LOCALBASE}/libdata/pkgconfig
 INSTALL_TARGET=	install-strip
 
@@ -37,7 +39,7 @@ JPEG_LDFLAGS=		-L${LOCALBASE}/lib
 
 PIXBUF_CONFIGURE_WITH=	gdk-pixbuf2
 PIXBUF_USES=		gettext gnome
-PIXBUF_USE=		gnome=glib20,gdkpixbuf2
+PIXBUF_USE=		gnome=glib20,gdkpixbuf
 
 PNG_LIB_DEPENDS=	libpng.so:graphics/png
 PNG_CONFIGURE_WITH=	png

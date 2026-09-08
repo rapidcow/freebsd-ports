@@ -1,5 +1,5 @@
 PORTNAME=	gnuplot
-PORTVERSION=	5.4.1
+PORTVERSION=	5.4.10
 PORTREVISION=	3
 CATEGORIES=	math graphics
 MASTER_SITES=	SF
@@ -18,6 +18,7 @@ CONFLICTS_INSTALL?=	gnuplot-lite
 USES+=		compiler:c++11-lang cpe groff iconv pkgconfig readline
 CPE_VENDOR=	gnuplot_project
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 LDFLAGS+=	-L${LOCALBASE}/lib ${ICONV_LIB}
 CONFIGURE_ARGS+=--with-readline=gnu \
 		--without-linux-vga \
@@ -45,7 +46,7 @@ PLIST_SUB+=	X11="@comment "
 .else
 USES+=		gnome jpeg lua:53 ncurses tex xorg
 USE_TEX=	kpathsea
-USE_GNOME+=	atk cairo gtk30 gdkpixbuf2
+USE_GNOME+=	atk cairo gtk30 gdkpixbuf
 USE_WX=		3.0+
 USE_XORG+=	x11
 LIB_DEPENDS+=	libfontconfig.so:x11-fonts/fontconfig \

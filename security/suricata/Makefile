@@ -1,9 +1,10 @@
 PORTNAME=	suricata
-DISTVERSION=	7.0.0
+DISTVERSION=	8.0.2
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://www.openinfosecfoundation.org/download/
 
-MAINTAINER=	franco@opnsense.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	High Performance Network IDS, IPS and Security Monitoring engine
 WWW=		https://suricata.io
 
@@ -18,8 +19,7 @@ LIB_DEPENDS=	libjansson.so:devel/jansson \
 		libyaml.so:textproc/libyaml
 
 USES=		autoreconf cpe gmake iconv:translit libtool localbase pathfix \
-		pkgconfig shebangfix
-SHEBANG_FILES=	python/suricata/sc/suricatasc.py
+		pkgconfig
 
 CPE_VENDOR=	openinfosecfoundation
 
@@ -34,8 +34,6 @@ MAKE_ENV=		RUSTFLAGS="${RUSTFLAGS} -C linker=${CC:Q} ${LDFLAGS:C/.+/-C link-arg=
 
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
-
-CONFLICTS_INSTALL=	libhtp
 
 SUB_FILES=	pkg-message
 
@@ -84,7 +82,7 @@ NSS_CONFIGURE_OFF=	--disable-nspr \
 PORTS_PCAP_LIB_DEPENDS=	libpcap.so.1:net/libpcap
 
 PYTHON_BUILD_DEPENDS=		${PYTHON_RUN_DEPENDS}
-PYTHON_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR}
+PYTHON_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}pyyaml>=0:devel/py-pyyaml@${PY_FLAVOR}
 PYTHON_USES=			python
 PYTHON_CONFIGURE_ENABLE=	python
 

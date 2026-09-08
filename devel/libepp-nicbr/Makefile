@@ -1,22 +1,25 @@
 PORTNAME=	libepp-nicbr
-PORTVERSION=	1.18
+DISTVERSION=	1.20
 CATEGORIES=	devel
-MASTER_SITES=	ftp://ftp.registro.br/pub/libepp-nicbr/
+MASTER_SITES=	https://ftp.registro.br/pub/libepp-nicbr/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Partial Extensible Provisioning Protocol to .br domains
-WWW=		https://registro.br/epp/
+WWW=		https://registro.br/epp/ \
+		https://registro.br/epp/rfc-EN.html
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libxerces-c.so:textproc/xerces-c3
 
-USES=		autoreconf libtool ssl
+USES=		libtool pkgconfig ssl
+
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	ac_cv_header_cppunit_TestRunner_h=no
 CONFIGURE_ARGS=	--with-xerces-c=${LOCALBASE} \
-		--with-openssl=${OPENSSLBASE}
+		--with-openssl=${OPENSSLBASE} \
+		--with-readline-includes=${LOCALBASE}/include
+CONFIGURE_ENV=	ac_cv_header_cppunit_TestRunner_h=no
 
 DATADIR=	${PREFIX}/share/${PORTNAME:S/-/_/}
 
@@ -29,11 +32,5 @@ OPTIONS_SUB=		yes
 READLINE_USES=		ncurses readline
 READLINE_CONFIGURE_ENV_OFF=\
 			ac_cv_lib_readline_readline=no
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MREADLINE} && !exists(/usr/lib/libreadline.so)
-CONFIGURE_ARGS+=--with-readline-includes=${LOCALBASE}/include
-.endif
 
 .include <bsd.port.mk>

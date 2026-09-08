@@ -1,5 +1,5 @@
 PORTNAME=	lttoolbox
-DISTVERSION=	3.7.1
+DISTVERSION=	3.8.0
 PORTREVISION=	1
 CATEGORIES=	textproc
 MASTER_SITES=	https://github.com/apertium/${PORTNAME}/releases/download/v${DISTVERSION}/
@@ -11,24 +11,15 @@ WWW=		https://wiki.apertium.org/wiki/Lttoolbox
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	utf8cpp>0:devel/utf8cpp
-LIB_DEPENDS=	libicuio.so:devel/icu \
-		libxml2.so:textproc/libxml2
+BUILD_DEPENDS=	utf8cpp>=4.0.3:devel/utf8cpp
+LIB_DEPENDS=	libicuio.so:devel/icu
 
-USES=		autoreconf compiler:c++14-lang libtool pathfix pkgconfig tar:bz2
+USES=		cmake compiler:c++14-lang gnome localbase pathfix pkgconfig \
+		tar:bz2
+USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 
-GNU_CONFIGURE=	yes
-
-INSTALL_TARGET=	install-strip
-
-CFLAGS+=	-I${LOCALBASE}/include/utf8cpp
+CFLAGS+=	-I${LOCALBASE}/include/utf8cpp -D_XOPEN_SOURCE=600
 LDFLAGS+=	-lpthread
 
-.include <bsd.port.pre.mk>
-
-.if ${COMPILER_TYPE} == clang && ${COMPILER_VERSION} >= 160
-EXTRA_PATCHES=	${FILESDIR}/extra-patch-llvm16
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

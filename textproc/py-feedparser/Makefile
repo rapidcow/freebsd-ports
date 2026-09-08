@@ -1,9 +1,10 @@
 PORTNAME=	feedparser
-PORTVERSION=	6.0.10
+PORTVERSION=	6.0.12
+DISTVERSIONPREFIX=	v
 CATEGORIES=	textproc python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	sbz@FreeBSD.org
+MAINTAINER=	jadawin@FreeBSD.org
 COMMENT=	Universal feed parser written in Python
 WWW=		https://github.com/kurtmckee/feedparser
 

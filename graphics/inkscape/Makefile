@@ -1,12 +1,13 @@
 PORTNAME=	inkscape
-DISTVERSION=	1.3
-PORTREVISION=	1
+DISTVERSION=	1.4.2
+PORTREVISION=	4
 CATEGORIES=	graphics gnome
 MASTER_SITES=	https://media.inkscape.org/dl/resources/file/
 
-PATCH_SITES=	https://gitlab.com/${PORTNAME}/${PORTNAME}/-/commit/
-PATCHFILES+=	3db96bfbac475022a32b70473b767b21a8d70c7f.patch:-p1 # https://gitlab.com/inkscape/inkscape/-/issues/4427
-PATCHFILES+=	5183d14d331e4f2022b9ab0f83d45e4e17951013.patch:-p1 # https://gitlab.com/inkscape/inkscape/-/merge_requests/5650
+PATCH_SITES=	https://gitlab.com/${PORTNAME}/${PORTNAME}/-/merge_requests/
+PATCHFILES=		7261.patch:-p1
+PATCHFILES+=	7449.patch:-p1
+PATCHFILES+=	7502.patch:-p1
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Full featured open source SVG editor
@@ -25,43 +26,39 @@ LICENSE_FILE_MPL11  =	${WRKSRC}/LICENSES/MPL-1.1.txt
 
 BUILD_DEPENDS=	ragel:devel/ragel
 LIB_DEPENDS=	libboost_filesystem.so:devel/boost-libs \
-		libpopt.so:devel/popt \
 		libgc.so:devel/boehm-gc \
 		libgsl.so:math/gsl \
 		liblcms2.so:graphics/lcms2 \
-		libfribidi.so:converters/fribidi \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz \
 		libpotrace.so:graphics/libpotrace \
 		libpng.so:graphics/png \
-		libsoup-2.4.so:devel/libsoup \
-		libyaml.so:textproc/libyaml \
-		libdouble-conversion.so:devel/double-conversion \
 		libenchant-2.so:textproc/enchant2 \
 		libepoxy.so:graphics/libepoxy \
 		lib2geom.so:math/lib2geom
-RUN_DEPENDS=	${PYNUMPY} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>0:math/py-numpy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}appdirs>0:devel/py-appdirs@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}filelock>=3.7.1:sysutils/py-filelock@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}scour>0:textproc/py-scour@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cachecontrol>0:www/py-cachecontrol@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cssselect>0:www/py-cssselect@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}filelock>=3.7.1:sysutils/py-filelock@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}lxml>0:devel/py-lxml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}scour>0:textproc/py-scour@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}tinycss2>0:textproc/py-tinycss2@${PY_FLAVOR} \
 		fig2dev:print/fig2dev
 TEST_DEPENDS=	googletest>0:devel/googletest \
 		bash:shells/bash
 
-USES=		compiler:c++17-lang cmake:testing cpe desktop-file-utils ghostscript:run \
-		gnome iconv:wchar_t jpeg pathfix pkgconfig python \
+USES=		compiler:c++20-lang cmake:testing cpe desktop-file-utils ghostscript:run \
+		gnome jpeg pathfix pkgconfig python \
 		readline shebangfix tar:xz xorg
-USE_GNOME=	cairo gdkpixbuf2 gtkmm30 gtksourceview4 libxml2 libxslt
-USE_PYTHON=	cython
+USE_GNOME=	cairo gdkpixbuf glibmm gtkmm30 gtksourceview4 libxml2 libxslt
+USE_PYTHON=	cython3
 USE_XORG=	sm ice x11 xext
 USE_LDCONFIG=	yes
 
-DATETAG=	2023-07-21_0e150ed6c4
+DATETAG=	2025-05-08_ebf0e940d0
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}_${DATETAG}
 
 BINARY_ALIAS=	python3=${PYTHON_CMD}
@@ -92,7 +89,7 @@ POPPLER_LIB_DEPENDS=	libpoppler.so:graphics/poppler \
 			libpoppler-glib.so:graphics/poppler-glib
 
 SCRIBUS_DESC=		Support color-managed PDF export using Scribus (experimental)
-SCRIBUS_RUN_DEPENDS=	scribus:print/scribus-devel
+SCRIBUS_RUN_DEPENDS=	scribus:print/scribus
 
 VISIO_DESC=		Support for Microsoft Visio diagrams
 VISIO_CMAKE_BOOL=	WITH_LIBVISIO

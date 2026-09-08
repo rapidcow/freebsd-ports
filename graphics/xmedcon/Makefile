@@ -1,5 +1,6 @@
 PORTNAME=	xmedcon
 PORTVERSION=	0.23.0
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-gtk2
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/XMedCon-Source/${PORTVERSION}
@@ -17,6 +18,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 USES=		gnome libtool pkgconfig tar:bzip2
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--includedir=${PREFIX}/include/xmedcon \
 		--enable-llcheck
 INSTALL_TARGET=	install-strip
@@ -30,7 +32,7 @@ OPTIONS_DEFAULT=X11 GLIB ACR_NEMA ANALYZE CONCORDE DICOM DICOM_LJPEG ECAT GIF \
 OPTIONS_SUB=	yes
 
 X11_CONFIGURE_ENABLE=	gui
-X11_USE=		GNOME=cairo,gdkpixbuf2,gtk20
+X11_USE=		GNOME=cairo,gdkpixbuf,gtk20
 X11_DESKTOP_ENTRIES=	"XMedCon" \
 			"" \
 			"${PREFIX}/etc/xmedcon.png" \
@@ -91,6 +93,6 @@ post-install-X11-on:
 .for file in xmedcon.png xmedconrc xmedconrc.linux
 	${INSTALL_DATA} ${WRKSRC}/etc/${file} ${STAGEDIR}${PREFIX}/etc
 .endfor
-	${INSTALL_MAN} ${WRKSRC}/man/xmedcon.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/man/xmedcon.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

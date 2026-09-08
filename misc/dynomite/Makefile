@@ -1,6 +1,6 @@
 PORTNAME=	dynomite
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.6.22
+DISTVERSION=	0.7.0
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -17,6 +17,7 @@ BROKEN_riscv64=		fails to configure: configure: error: /bin/sh config/config.sub
 
 USES=		autoreconf gmake libtool ssl
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Netflix
@@ -24,14 +25,16 @@ GH_ACCOUNT=	Netflix
 CFLAGS+=	-fcommon
 LDFLAGS+=	-lexecinfo
 
+TEST_TARGET=	check
+
 PLIST_FILES=	bin/dynomite-hash-tool \
-		man/man8/dynomite.8.gz \
 		sbin/dynomite \
-		sbin/dynomite-test
+		sbin/dynomite-test \
+		share/man/man8/dynomite.8.gz
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=       -Wno-error=int-conversion
 .endif
 

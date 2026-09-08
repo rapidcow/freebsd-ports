@@ -1,5 +1,5 @@
 PORTNAME=	ngspice_rework
-PORTVERSION=	41
+PORTVERSION=	44.2
 CATEGORIES=	cad
 MASTER_SITES=	SF/ngspice/ng-spice-rework/${PORTVERSION}
 DISTNAME=	ngspice-${PORTVERSION}
@@ -21,8 +21,10 @@ shlib_PLIST=			${MASTERDIR}/pkg-plist-shlib
 USES=		compiler:c11 gmake libtool ncurses readline autoreconf pkgconfig
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-cider --enable-xspice --with-readline=yes
-
+CONFIGURE_ARGS_armv7=	--disable-openmp
+# xspice, readline, osdi are now standard
+CONFIGURE_ARGS=	--enable-cider \
+		${CONFIGURE_ARGS_${ARCH}}
 OPTIONS_DEFINE=	DEBUG
 
 .if ${FLAVOR:U} ==	shlib
@@ -32,10 +34,10 @@ CONFIGURE_ARGS+=	--with-ngshared --enable-shared
 USES+=			xorg
 USE_XORG=		ice sm x11 xaw xext xmu xt xft
 CONFIGURE_ARGS+=	--with-x
-PLIST_FILES=		bin/ngspice man/man1/ngspice.1.gz
+PLIST_FILES=		bin/ngspice share/man/man1/ngspice.1.gz
 post-install:
 	@cd ${STAGEDIR}${PREFIX} && \
-		${RM} -r include lib share && \
+		${RM} -r include lib share/ngspice && \
 		${RM} bin/cmpp man/man1/cmpp.1
 .endif
 

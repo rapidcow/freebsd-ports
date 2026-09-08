@@ -1,7 +1,7 @@
 PORTNAME=	dbus-glib
-PORTVERSION=	0.112
+PORTVERSION=	0.114
 CATEGORIES=	devel gnome
-MASTER_SITES=	http://dbus.freedesktop.org/releases/dbus-glib/
+MASTER_SITES=	https://dbus.freedesktop.org/releases/dbus-glib/
 
 MAINTAINER=	desktop@FreeBSD.org
 COMMENT=	GLib bindings for the D-BUS messaging system

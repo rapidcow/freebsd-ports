@@ -4,7 +4,7 @@ PORTREVISION=	2
 CATEGORIES=	devel java
 MASTER_SITES=	https://www.antlr2.org/download/
 
-MAINTAINER=	makc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	ANother Tool for Language Recognition
 WWW=		https://www.antlr2.org/
 
@@ -13,9 +13,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 CONFLICTS=	pccts
 
-USES=		compiler:c++11-lang gmake
+USES=		compiler:c++11-lang gmake java
 USE_CXXSTD=	c++14
-USE_JAVA=	yes
 
 HAS_CONFIGURE=	yes
 CONFIGURE_ENV=	JAVAC="${JAVAC}" JAR="${JAR}" JAVA="${JAVA}" CLASSPATH="${PORT_CLASSPATH}"

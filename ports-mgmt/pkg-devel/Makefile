@@ -1,5 +1,5 @@
 PORTNAME=	pkg
-DISTVERSION=	1.20.99.6
+DISTVERSION=	2.5.99.0
 _PKG_VERSION=	${DISTVERSION}
 CATEGORIES=	ports-mgmt
 PKGNAMESUFFIX=	-devel
@@ -12,14 +12,13 @@ LICENSE=	BSD2CLAUSE
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
-GH_TAGNAME=	674eeece
+GH_TAGNAME=	c642c9442
 
-CFLAGS+=	-O0 -g -Wno-error
 USE_LDCONFIG=	${PREFIX}/lib/compat/pkg
 HAS_CONFIGURE=	yes
 PORTDOCS=	NEWS
 PORTSCOUT=	ignore:1
-CONFIGURE_ARGS=	--mandir=${PREFIX}/man --prefix="${PREFIX}"
+CONFIGURE_ARGS=	--prefix="${PREFIX}"
 CONFIGURE_ENV=	CC_FOR_BUILD="${CC}"
 
 # Use a submake as 'deinstall install' needs to reevaluate PKG_REGISTER

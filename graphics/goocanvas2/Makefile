@@ -1,6 +1,6 @@
 PORTNAME=	goocanvas
 PORTVERSION=	2.0.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX=	2
@@ -13,7 +13,7 @@ WWW=		https://sourceforge.net/projects/goocanvas/
 LICENSE=	LGPL20
 
 USES=		gmake gnome libtool pathfix pkgconfig python:build tar:xz
-USE_GNOME=	cairo gdkpixbuf2 gtk30 introspection:build
+USE_GNOME=	cairo gdkpixbuf gtk30 introspection:build
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-python=no

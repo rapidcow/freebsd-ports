@@ -1,11 +1,11 @@
---- components/viz/service/frame_sinks/root_compositor_frame_sink_impl.h.orig	2023-07-24 14:27:53 UTC
+--- components/viz/service/frame_sinks/root_compositor_frame_sink_impl.h.orig	2025-12-10 15:04:57 UTC
 +++ components/viz/service/frame_sinks/root_compositor_frame_sink_impl.h
-@@ -204,7 +204,7 @@ class VIZ_SERVICE_EXPORT RootCompositorFrameSinkImpl
+@@ -222,7 +222,7 @@ class VIZ_SERVICE_EXPORT RootCompositorFrameSinkImpl
+   base::TimeDelta display_frame_interval_ = BeginFrameArgs::DefaultInterval();
+   base::TimeDelta preferred_frame_interval_;
  
- // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
- // of lacros-chrome is complete.
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX) && BUILDFLAG(IS_OZONE_X11)
++#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)) && BUILDFLAG(IS_OZONE_X11)
    gfx::Size last_swap_pixel_size_;
- #endif
+ #endif  // BUILDFLAG(IS_LINUX) && BUILDFLAG(IS_OZONE_X11)
  

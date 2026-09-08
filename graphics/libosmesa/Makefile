@@ -8,10 +8,9 @@ WWW=		https://www.mesa3d.org/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/docs/license.rst
 
-LIB_DEPENDS+=	libLLVM-${LLVM_DEFAULT}.so:devel/llvm${LLVM_DEFAULT} \
-		libglapi.so:graphics/mesa-libs
+LIB_DEPENDS+=	libglapi.so:graphics/mesa-libs
 
-USES=		xorg
+USES=		llvm:lib,noexport xorg
 USE_XORG=	xorgproto
 USE_LDCONFIG=	yes
 
@@ -19,10 +18,10 @@ USE_LDCONFIG=	yes
 .include "${.CURDIR:H:H}/graphics/mesa-dri/Makefile.common"
 
 # Disable some options
-MESON_ARGS+=	-Ddri-drivers="" \
-		-Dgallium-drivers="swrast" \
+MESON_ARGS+=	-Dgallium-drivers="swrast" \
 		-Dvulkan-drivers="" \
 		-Dplatforms="" \
+		-Dandroid-libbacktrace=disabled \
 		-Dgallium-vdpau=disabled \
 		-Dgallium-omx=disabled \
 		-Dgallium-va=disabled \
@@ -31,18 +30,24 @@ MESON_ARGS+=	-Ddri-drivers="" \
 		-Dgallium-nine=false \
 		-Dgles1=disabled \
 		-Dgles2=disabled \
+		-Dglvnd=disabled \
+		-Dlmsensors=disabled \
 		-Dmicrosoft-clc=disabled \
 		-Dopengl=true \
 		-Dglx=disabled \
 		-Degl=disabled \
 		-Dgbm=disabled \
 		-Dtools="" \
+		-Dvalgrind=disabled \
+		-Dxlib-lease=disabled \
 		-Dzstd=disabled
 LDFLAGS_i386=		-Wl,-znotext
 
 MESON_ARGS+=	-Dosmesa=true
 
-.include "${MASTERDIR}/Makefile.targets"
+.if ${ARCH} != amd64
+MESON_ARGS+=	-Dintel-rt=disabled # https://gitlab.freedesktop.org/mesa/mesa/-/issues/10629
+.endif
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/include/GL

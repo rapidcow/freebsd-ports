@@ -1,7 +1,5 @@
-TIMESTAMP = 1679323295
-SHA256 (go/www_amfora/amfora-v1.9.2/v1.9.2.mod) = 29117dea2f1459cec179cf38a07abb60dc03eea2c011cc65f93ffacce113c6c0
-SIZE (go/www_amfora/amfora-v1.9.2/v1.9.2.mod) = 1163
-SHA256 (go/www_amfora/amfora-v1.9.2/v1.9.2.zip) = 155467167963bc155070d4c8068c7e7934c920954f74d919519c68869dc96f2a
-SIZE (go/www_amfora/amfora-v1.9.2/v1.9.2.zip) = 2375737
-SHA256 (go/www_amfora/amfora-v1.9.2/golang-sys-v0.6.0_GH0.tar.gz) = b4f6d17c7a128f76169964b437cb66b3f2dbf9a33361928ec19dfecf7b03fc54
-SIZE (go/www_amfora/amfora-v1.9.2/golang-sys-v0.6.0_GH0.tar.gz) = 1434234
+TIMESTAMP = 1760377458
+SHA256 (go/www_amfora/amfora-v1.11.0/v1.11.0.mod) = d5bd4ee0ec40538a737785344c719d974da00dd398652e8d5da2e72473fb3102
+SIZE (go/www_amfora/amfora-v1.11.0/v1.11.0.mod) = 2509
+SHA256 (go/www_amfora/amfora-v1.11.0/v1.11.0.zip) = 68a91c7adbb9057c29980e31d4021dc3ba3f5e94fda1617e4fbd55c44f2bdd19
+SIZE (go/www_amfora/amfora-v1.11.0/v1.11.0.zip) = 2392111

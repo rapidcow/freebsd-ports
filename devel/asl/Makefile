@@ -1,5 +1,6 @@
 PORTNAME=	asl
 PORTVERSION=	1.42.183
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://john.ccac.rwth-aachen.de:8000/ftp/as/source/c_version/
 DISTNAME=	${PORTNAME}-${VERSION}
@@ -15,7 +16,7 @@ BROKEN_i386=	typedef redefinition with different types ('unsigned long' vs 'unsi
 
 ONLY_FOR_ARCHS=	amd64 i386
 
-USES=		alias gmake
+USES=		gmake
 MAKE_ARGS+=	INSTROOT=${STAGEDIR}
 WRKSRC=		${WRKDIR}/asl-current
 

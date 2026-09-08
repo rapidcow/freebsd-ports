@@ -1,13 +1,13 @@
 PORTNAME=	postgresql
 # Keep the ?=, it is used by the other pltcl ports.
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES=	databases tcl
-PKGNAMESUFFIX?=	${WANT_PGSQL_VER:S/.//}${COMPONENT}
+PKGNAMESUFFIX?=	${WANT_PGSQL_VER}${COMPONENT}
 
 MAINTAINER=	pgsql@FreeBSD.org
 COMMENT=	Module for using Tcl to write SQL functions
 
-MASTERDIR=	${.CURDIR}/../../databases/postgresql${WANT_PGSQL_VER:S/.//}-server
+MASTERDIR=	${.CURDIR}/../../databases/postgresql${WANT_PGSQL_VER}-server
 
 WANT_PGSQL_VER?=15
 

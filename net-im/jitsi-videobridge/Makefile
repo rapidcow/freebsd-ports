@@ -1,6 +1,5 @@
 PORTNAME=	jitsi
-DISTVERSION=	2.2-79
-PORTREVISION=	1
+DISTVERSION=	2.3-198
 CATEGORIES=	net-im java
 PKGNAMESUFFIX=	-videobridge
 
@@ -12,13 +11,13 @@ LICENSE=	APACHE20
 
 ONLY_FOR_ARCHS=	i386 amd64 powerpc64 powerpc64le
 
-BUILD_DEPENDS=	mvn:devel/maven
+BUILD_DEPENDS=	maven>0:devel/maven
 RUN_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash
 
+USES=		java
 USE_GITHUB=	yes
 GH_PROJECT=	${PORTNAME}${PKGNAMESUFFIX}
-GH_TAGNAME=	f6426ea
-USE_JAVA=	yes
+GH_TAGNAME=	5ff1959
 JAVA_VERSION=	11
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}${PKGNAMESUFFIX}-${PORTVERSION}
@@ -60,7 +59,7 @@ do-install:
 		${STAGEDIR}${ETCDIR}/${PORTNAME}${PKGNAMESUFFIX}.conf.sample
 	${INSTALL_DATA} ${FILESDIR}/sip-communicator.properties.sample \
 		${STAGEDIR}${ETCDIR}/sip-communicator.properties.sample
-	${INSTALL_DATA} ${WRKSRC}/jvb/target/${PORTNAME}${PKGNAMESUFFIX}-2.1-SNAPSHOT-jar-with-dependencies.jar \
+	${INSTALL_DATA} ${WRKSRC}/jvb/target/${PORTNAME}${PKGNAMESUFFIX}-2.3-SNAPSHOT-jar-with-dependencies.jar \
 		${STAGEDIR}${JAVAJARDIR}/${PORTNAME}${PKGNAMESUFFIX}.jar
 
 .include <bsd.port.mk>

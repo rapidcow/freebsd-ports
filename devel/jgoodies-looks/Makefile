@@ -5,13 +5,13 @@ MASTER_SITES=	https://repo1.maven.org/maven2/com/jgoodies/${PORTNAME}/${DISTVERS
 DISTFILES=	${JARFILE} ${JAVADOCFILE} ${JAVASRCFILE}
 EXTRACT_ONLY=	# nothing to extract
 
-MAINTAINER=	makc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Improved appearance for Java Swing applications
 WWW=		http://www.jgoodies.com
 
 LICENSE=	BSD3CLAUSE
 
-USE_JAVA=	yes
+USES=		java
 NO_ARCH=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes

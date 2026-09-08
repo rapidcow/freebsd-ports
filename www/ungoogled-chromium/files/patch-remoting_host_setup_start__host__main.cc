@@ -1,15 +1,15 @@
---- remoting/host/setup/start_host_main.cc.orig	2023-03-10 11:01:21 UTC
+--- remoting/host/setup/start_host_main.cc.orig	2026-01-16 13:40:34 UTC
 +++ remoting/host/setup/start_host_main.cc
-@@ -33,7 +33,7 @@
+@@ -41,7 +41,7 @@
  #include <unistd.h>
  #endif  // BUILDFLAG(IS_POSIX)
  
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ #include "remoting/base/crash/crash_reporting_crashpad.h"
  #include "remoting/host/setup/daemon_controller_delegate_linux.h"
  #include "remoting/host/setup/start_host_as_root.h"
- #endif  // BUILDFLAG(IS_LINUX)
-@@ -130,7 +130,7 @@ void OnDone(HostStarter::Result result) {
+@@ -370,7 +370,7 @@ bool InitializeCloudMachineParams(HostStarter::Params&
  }  // namespace
  
  int StartHostMain(int argc, char** argv) {
@@ -18,12 +18,21 @@
    // Minimize the amount of code that runs as root on Posix systems.
    if (getuid() == 0) {
      return remoting::StartHostAsRoot(argc, argv);
-@@ -173,7 +173,7 @@ int StartHostMain(int argc, char** argv) {
-   // for the account which generated |code|.
-   std::string host_owner = command_line->GetSwitchValueASCII("host-owner");
+@@ -395,7 +395,7 @@ int StartHostMain(int argc, char** argv) {
+ 
+   mojo::core::Init();
  
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
    if (command_line->HasSwitch("no-start")) {
      // On Linux, registering the host with systemd and starting it is the only
      // reason start_host requires root. The --no-start options skips that final
+@@ -446,7 +446,7 @@ int StartHostMain(int argc, char** argv) {
+   // We don't have a config file yet so we can't use IsUsageStatsAllowed(),
+   // instead we can just check the command line parameter.
+   if (params.enable_crash_reporting) {
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+     InitializeCrashpadReporting();
+ #elif BUILDFLAG(IS_WIN)
+     InitializeBreakpadReporting();

@@ -1,12 +1,14 @@
 PORTNAME=	HTSeq
-DISTVERSION=	2.0.4
+DISTVERSION=	2.0.9
+PORTREVISION=	2
 CATEGORIES=	biology python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+DISTNAME=	${PORTNAME:tl}-${DISTVERSION}
 
-MAINTAINER=	jwb@FreeBSD.org
+MAINTAINER=	alven@FreeBSD.org
 COMMENT=	Python library to facilitate programmatic analysis of sequence data
-WWW=		https://pypi.python.org/project/htseq/
+WWW=		https://github.com/htseq/htseq/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -24,7 +26,7 @@ USES=		python
 USE_PYTHON=	autoplist cython distutils pytest
 
 post-stage:
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/HTSeq/_StepVector.cpython-39.so
-	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/HTSeq/_HTSeq.cpython-39.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/HTSeq/_StepVector.cpython-${PYTHON_SUFFIX}.so
+	${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/HTSeq/_HTSeq.cpython-${PYTHON_SUFFIX}.so
 
 .include <bsd.port.mk>

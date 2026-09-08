@@ -1,7 +1,7 @@
 PORTNAME=	yume
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.0
-PORTREVISION=	26
+PORTREVISION=	46
 CATEGORIES=	net-im
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,6 +10,8 @@ WWW=		https://github.com/yamafaktory/yume
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE-MIT
+
+BROKEN_powerpc64le=	compilation failure: called `Option::unwrap()` on a `None` value in ring-0.16.20/build.rs: # see https://github.com/yamafaktory/yume/issues/4
 
 USES=		cargo
 
@@ -146,8 +148,5 @@ CARGO_CRATES=	aead-0.2.0 \
 		zeroize-1.1.0
 
 PLIST_FILES=	bin/${PORTNAME}
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

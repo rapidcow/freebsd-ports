@@ -1,7 +1,7 @@
 PORTNAME=	caffe
 DISTVERSION=	1.0-136
 DISTVERSIONSUFFIX=	-g9b891540
-PORTREVISION=	3
+PORTREVISION=	22
 CATEGORIES=	misc # machine-learning
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
@@ -20,7 +20,7 @@ BUILD_DEPENDS=	bash:shells/bash \
 LIB_DEPENDS=	libsnappy.so:archivers/snappy \
 		libleveldb.so:databases/leveldb \
 		liblmdb.so:databases/lmdb \
-		libboost_system.so:devel/boost-libs \
+		libboost_thread.so:devel/boost-libs \
 		${PY_BOOST} \
 		libgflags.so:devel/gflags \
 		libglog.so:devel/glog \
@@ -36,8 +36,8 @@ RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}scipy>0:science/py-scipy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
 
-USES=		cmake fortran pkgconfig python
-USE_CXXSTD=	c++14
+USES=		cmake compiler:c++17-lang fortran localbase:ldflags pkgconfig python
+USE_CXXSTD=	c++17
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
@@ -46,6 +46,8 @@ GH_ACCOUNT=	BVLC
 CMAKE_ARGS=	-DBLAS=Open \
 		-DPYTHON_EXECUTABLE=${PYTHON_CMD} \
 		-DFREEBSD_PYTHONPREFIX_SITELIBDIR=${PYTHONPREFIX_SITELIBDIR}
+CXXFLAGS+=	-DGLOG_USE_GLOG_EXPORT
+LDFLAGS+=	-lpython${PYTHON_VER}
 
 PORTSCOUT=	limit:^[0-9].*[0-9]$$ # should begin and end with a digit to prevent tags like rcnn-release and rc5
 

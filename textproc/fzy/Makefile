@@ -1,5 +1,5 @@
 PORTNAME=	fzy
-DISTVERSION=	1.0
+DISTVERSION=	1.1
 CATEGORIES=	textproc
 
 MAINTAINER=	o.hushchenkov@gmail.com
@@ -13,18 +13,17 @@ USES=		gmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	jhawthorn
 
-PLIST_FILES=	bin/fzy man/man1/fzy.1.gz
+PLIST_FILES=	bin/fzy share/man/man1/fzy.1.gz
+
+TEST_TARGET=	test
 
 OPTIONS_DEFINE=		TMUX DVTM
 OPTIONS_DEFAULT=	TMUX
-TMUX_DESC=	Install fzy-tmux
-DVTM_DESC=	Install fzy-dvtm
+TMUX_DESC=	Install fzy-tmux script (requires tmux)
+DVTM_DESC=	Install fzy-dvtm script (requires dvtm)
 
 TMUX_PLIST_FILES=	bin/fzy-tmux
 DVTM_PLIST_FILES=	bin/fzy-dvtm
-
-post-extract:
-	${CP} ${WRKSRC}/src/config.def.h ${WRKSRC}/config.h
 
 post-patch:
 	@${REINPLACE_CMD} \
@@ -34,7 +33,7 @@ post-patch:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/fzy ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/fzy.1 ${STAGEDIR}${MANPREFIX}/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/fzy.1 ${STAGEDIR}${PREFIX}/share/man/man1/
 
 do-install-TMUX-on:
 	${INSTALL_SCRIPT} ${WRKSRC}/contrib/fzy-tmux ${STAGEDIR}${PREFIX}/bin

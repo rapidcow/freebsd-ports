@@ -1,12 +1,12 @@
 PORTNAME=	libmp3splt
 PORTVERSION=	0.9.2
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	audio
 MASTER_SITES=	SF/mp3splt/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	citrin@citrin.ru
 COMMENT=	Library for splitting of various audio files
-WWW=		http://mp3splt.sourceforge.net/
+WWW=		https://mp3splt.sourceforge.net/
 
 LICENSE=	GPLv2
 
@@ -14,7 +14,7 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-cutter --disable-doxygen_doc
-USES=		cpe libtool pathfix pkgconfig
+USES=		cpe libtool pkgconfig
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 LDFLAGS+=	-L${LOCALBASE}/lib

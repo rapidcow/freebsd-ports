@@ -1,5 +1,5 @@
 PORTNAME=	biolibc
-DISTVERSION=	0.2.5
+DISTVERSION=	0.2.7
 CATEGORIES=	biology
 
 MAINTAINER=	jwb@FreeBSD.org
@@ -15,6 +15,8 @@ USE_GITHUB=	yes
 USE_LDCONFIG=	yes
 
 GH_ACCOUNT=	auerlab
+
+MAKE_ARGS+=	MANDIR=${PREFIX}/share/man
 
 INSTALL_TARGET=	install-strip
 

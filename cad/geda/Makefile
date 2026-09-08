@@ -1,7 +1,7 @@
 PORTNAME=	geda
 PORTVERSION=	1.8.2
 DISTVERSIONPREFIX=gaf-
-PORTREVISION=	8
+PORTREVISION=	9
 PORTEPOCH=	1
 CATEGORIES=	cad
 MASTER_SITES=	http://ftp.geda-project.org/${PORTNAME}-gaf/stable/v${PORTVERSION:R}/${PORTVERSION}/
@@ -16,7 +16,7 @@ LIB_DEPENDS=	libstroke.so:devel/libstroke
 RUN_DEPENDS=	gawk:lang/gawk
 
 USES=		desktop-file-utils gettext gmake gnome guile:1.8 libtool \
-		pathfix perl5 pkgconfig python:run shared-mime-info \
+		perl5 pkgconfig python:run shared-mime-info \
 		shebangfix
 SHEBANG_FILES=	examples/lightning_detector/bom libgeda/docs/*.dox \
 		utils/gxyrs/*.pl utils/scripts/* \
@@ -27,6 +27,7 @@ USE_GNOME=	gtk20
 USE_PERL5=	run
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-libstroke=${LOCALBASE}
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-gaf

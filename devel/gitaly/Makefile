@@ -1,8 +1,11 @@
 PORTNAME=	gitaly
-DISTVERSION=	16.3.5
 DISTVERSIONPREFIX=	v
+DISTVERSION=	${GITLAB_VERSION}
+PORTREVISION=	${GITLAB_PORTREVISION} # modify it in www/gitlab/Makefile.common
 CATEGORIES=	devel
 
+PATCH_SITES=	https://gitlab.com/gitlab-org/gitaly/-/merge_requests/
+PATCHFILES+=	8309.patch:-p1 # https://gitlab.com/gitlab-org/gitaly/-/merge_requests/8309, Fix build on i386 system
 MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	Smart reverse proxy for GitLab
 WWW=		https://gitlab.com/gitlab-org/gitaly
@@ -10,68 +13,40 @@ WWW=		https://gitlab.com/gitlab-org/gitaly
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-# Make sure the following patch is included:
-# https://gitlab.com/gitlab-org/gitaly/-/merge_requests/4108
-# it fixes segfaults reported here: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=259848
+BROKEN_i386=	Platform i386 is not supported upstream, see https://gitlab.com/gitlab-org/gitaly/-/merge_requests/8309
 
-# define dependencies that are required for build and run under MY_DEPENDS
-MY_DEPENDS=	git>=2.41.0:devel/git
 BUILD_DEPENDS=	bash>0:shells/bash \
 		${LOCALBASE}/bin/cmake:devel/cmake-core \
-		${MY_DEPENDS}
-RUN_DEPENDS=	${MY_DEPENDS} \
-		gitlab-shell>=14.17.0:devel/gitlab-shell
-LIB_DEPENDS=	libpcre2-8.so:devel/pcre2 \
-		libhttp_parser.so:www/http-parser
+		pcre2>0:devel/pcre2 \
+		http-parser>0:www/http-parser
+LIB_DEPENDS=	libcurl.so:ftp/curl \
+		libiconv.so:converters/libiconv \
+		libpcre2-8.so:devel/pcre2
 
-USES=		cpe gmake go:modules,no_targets iconv pkgconfig ssl
+USES=		cpe gmake go:modules,no_targets iconv pkgconfig
 
 CPE_VENDOR=	gitlab
+
+USE_GITLAB=	yes
+GL_ACCOUNT=	gitlab-org
+GL_TUPLE=	gitlab-org:git:v${GITLAB_GIT_VERSION}:git_dep/_build/deps/git-v${GITLAB_GIT_VERSION_SHORT} \
+		gitlab-org:git:${GITLAB_GIT_MASTER_VERSION}:git_master_dep/_build/deps/git-master \
+		gitlab-org:git:${GITLAB_GIT_PREV_VERSION}:git_prev_dep/_build/deps/git-prev
+
+GO_MOD_DIST=	gitlab
+GO_MODULE=	gitlab.com/gitlab-org/gitaly/v18
 
 MAKE_ENV=	GOFLAGS="${GO_BUILDFLAGS}"
 # make sure to pass go build options into make process
 MAKE_ENV+=	${GO_ENV}
-
-USE_GITLAB=	yes
-GL_ACCOUNT=	gitlab-org
-
-USE_GITHUB=	nodefault
-# Check used version here: https://gitlab.com/gitlab-org/gitaly/-/blob/v16.3.1/Makefile#L181
-# We use here a patched version that is including some patches already merged into 1.7 branch which fixes problems with FreeBSD 14
-# https://github.com/libgit2/libgit2/commit/251408cfd4ff8112efaa5c82ec81c9574c4bf022
-# https://github.com/libgit2/libgit2/commit/213d35ea6d69598693b7f4b5b737aa98c91ba98e
-GH_TUPLE=	mfechner:libgit2:3bd8f66803c056325d5835d1fbc0c2db2ef89d06:build_deps_libgit2_source
-
-# for go dependencies
-# Gitlab hosts there dependencies on their own platform and not on go-proxy
-# so we download the required go.mod file from gitlab
-# lines are taken from go.mk
-# ---------------------------
-FETCH_DEPENDS=	${GO_CMD}:${GO_PORT} \
-		ca_root_nss>0:security/ca_root_nss
-MASTER_SITES+=	https://gitlab.com/gitlab-org/gitaly/-/raw/v${DISTVERSION}/
-DISTFILES+=	go.mod
-DIST_SUBDIR=	go/${PKGORIGIN:S,/,_,g}/${DISTNAME}
-EXTRACT_ONLY+=	${DISTFILES:N*.mod\:*:N*.mod:C/:.*//}
-_USES_fetch+=	800:go-post-fetch
-go-post-fetch:
-	@${ECHO_MSG} "===> Fetching ${GO_MODNAME} dependencies";
-	@(cd ${DISTDIR}/${DIST_SUBDIR}; \
-		[ -e go.mod ] || ${RLN} ${GO_MODFILE} go.mod; \
-		${SETENV} ${GO_ENV} GOPROXY=${GO_GOPROXY} ${GO_CMD} mod download -x all)
-# ---------------------------
-
-post-extract:
-	${MKDIR} ${WRKSRC}/_build/deps/libgit2
-	@${RM} -r ${WORKSRC}/_build/deps/libgit2/source
-	@${RLN} ${WRKSRC_build_deps_libgit2_source} ${WRKSRC}/_build/deps/libgit2/source
+# parallel build failed in my tests, so disable it here
+MAKE_JOBS_UNSAFE=yes
 
 post-patch:
 	${REINPLACE_CMD} -e "s|%%PREFIX%%|${PREFIX}|" ${WRKSRC}/config.toml.example
 	${MV} ${WRKSRC}/config.toml.example ${WRKSRC}/config.toml.sample
 
 do-install:
-	${MKDIR} ${STAGEDIR}${DATADIR}
 	${MKDIR} ${STAGEDIR}${DATADIR}/bin
 	${FIND} ${WRKSRC} -name '*.orig' -delete
 	(cd ${WRKSRC}/_build/bin/ && ${COPYTREE_BIN} .  ${STAGEDIR}${DATADIR}/bin && \
@@ -84,4 +59,5 @@ post-install:
 		/gitlab-shell-hook$$/ s#^#@(,,755) #; \
 		s#${DATADIR_REL}/bin#@(,,555) ${DATADIR_REL}/bin#; ' >> ${TMPPLIST}
 
+.include "${.CURDIR}/../../www/gitlab/Makefile.common"
 .include <bsd.port.mk>

@@ -5,40 +5,36 @@ PKGNAMEPREFIX=	qt6-
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt declarative framework for dynamic user interfaces
-WWW=		https://qt-project.org
 
 BUILD_DEPENDS=	${LOCALBASE}/include/vulkan/vulkan.h:graphics/vulkan-headers
-LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader \
-		libdouble-conversion.so:devel/double-conversion \
-		libexpat.so:textproc/expat2 \
-		libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2 \
-		libgraphite2.so:graphics/graphite2 \
-		libharfbuzz.so:print/harfbuzz \
-		libicudata.so:devel/icu \
-		libpcre.so:devel/pcre \
-		libpcre2-16.so:devel/pcre2 \
-		libpng16.so:graphics/png \
-		libxkbcommon.so:x11/libxkbcommon \
+LIB_DEPENDS=	libxkbcommon.so:x11/libxkbcommon \
 		libzstd.so:archivers/zstd
 
-USES=		cmake compiler:c++17-lang gettext-runtime gl gnome llvm:lib python:build xorg \
-		qt-dist:6
+USES=		cmake compiler:c++17-lang gl llvm:min=17,max=21,lib,noexport \
+		python:build qt-dist:6
 USE_GL=		opengl
-USE_GNOME=	glib20
-USE_QT=		base declarative
-USE_XORG=	x11 xau xcb xdmcp
 USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
+USE_QT=		base declarative sqldriver-sqlite:run
 
-CMAKE_ARGS+=	-DClang_DIR:PATH="${LLVM_PREFIX}/lib/cmake/clang" \
+CMAKE_ARGS=	-DClang_DIR:PATH="${LLVM_PREFIX}/lib/cmake/clang" \
 		-DLLVM_DIR:PATH="${LLVM_PREFIX}/lib/cmake/llvm"
+# QDOC_USER_CLANG_VERSION is a custom CMake variable intended to override the
+# list of supported LLVM versions, i.e., QDOC_SUPPORTED_CLANG_VERSIONS in
+# src/qdoc/cmake/QDocConfiguration.cmake with the chosen version of LLVM.
+# Otherwise, the numerically greatest version found would be used. We must be
+# careful here and adjust llvm min/max in USES to align with the versions
+# of LLVM that future releases support. We also need to supply at least a
+# major.minor version of llvm for this variable. Since LLVM_VERSION only provides
+# the major version, we pass the full version via a command and let CMake process
+# it during the configure stage.
+CMAKE_ARGS+=	-DQDOC_USER_CLANG_VERSION:STRING="`${LLVM_CONFIG} --version`"
 
 post-install:
-	# Install symlinks for user-facing tools
-	${REINPLACE_CMD} -e "s#^#${STAGEDIR}#" -e "s# # ${STAGEDIR}#" \
-		${WRKDIR}/.build/user_facing_tool_links.txt
-	while read t; do \
-		${RLN} $$t; \
-	done <${WRKDIR}/.build/user_facing_tool_links.txt
+# Install symlinks for user-facing tools
+	while read line; do \
+		source="$$(${ECHO_CMD} $${line} | ${AWK} '{print $$1}')"; \
+		target="${STAGEDIR}${PREFIX}/$$(${ECHO_CMD} $${line} | ${AWK} '{print $$2}')"; \
+		${RLN} $${source} $${target}; \
+	done <${BUILD_WRKSRC}/user_facing_tool_links.txt
 
 .include <bsd.port.mk>

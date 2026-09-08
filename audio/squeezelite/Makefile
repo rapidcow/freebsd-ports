@@ -1,6 +1,6 @@
 PORTNAME=	squeezelite
-DISTVERSION=	1.9.9.1422
-PORTREVISION=	2
+DISTVERSION=	2.0.0.1541
+PORTREVISION=	1
 CATEGORIES=	audio
 
 MAINTAINER=	jockl@pianojockl.org
@@ -20,7 +20,7 @@ LIB_DEPENDS=	libfaad.so:audio/faad \
 USES=		gmake localbase:ldflags ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	ralph-irving
-GH_TAGNAME=	6394b3f
+GH_TAGNAME=	72e1fd8
 
 CPPFLAGS+=	-I${PREFIX}/include/portaudio2
 LDFLAGS+=	-lportaudio -lm
@@ -49,10 +49,10 @@ FFMPEG_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
 RESAMPLE_LIB_DEPENDS=	libsoxr.so:audio/libsoxr
 
 PLIST_FILES=		bin/${PORTNAME} \
-			man/man1/${PORTNAME}.1.gz
+			share/man/man1/${PORTNAME}.1.gz
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/doc/${PORTNAME}.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/doc/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

@@ -9,6 +9,7 @@ bin/filamesh
 bin/glslminifier
 %%SAMPLES%%bin/gltf_viewer
 bin/matc
+bin/matedit
 %%SAMPLES%%bin/material_sandbox
 bin/matinfo
 bin/mipgen
@@ -19,7 +20,9 @@ bin/specular-color
 bin/uberz
 include/backend/AcquiredImage.h
 include/backend/BufferDescriptor.h
+include/backend/BufferObjectStreamDescriptor.h
 include/backend/CallbackHandler.h
+include/backend/DescriptorSetOffsetArray.h
 include/backend/DriverApiForward.h
 include/backend/DriverEnums.h
 include/backend/Handle.h
@@ -38,9 +41,14 @@ include/backend/platforms/PlatformEGL.h
 include/backend/platforms/PlatformEGLAndroid.h
 include/backend/platforms/PlatformEGLHeadless.h
 include/backend/platforms/PlatformGLX.h
+include/backend/platforms/PlatformMetal-ObjC.h
+include/backend/platforms/PlatformMetal.h
+include/backend/platforms/PlatformOSMesa.h
 include/backend/platforms/PlatformWGL.h
 include/backend/platforms/PlatformWebGL.h
 include/backend/platforms/VulkanPlatform.h
+include/backend/platforms/VulkanPlatformAndroid.h
+include/backend/platforms/WebGPUPlatform.h
 include/camutils/Bookmark.h
 include/camutils/Manipulator.h
 include/camutils/compiler.h
@@ -48,6 +56,7 @@ include/filamat/Enums.h
 include/filamat/IncludeCallback.h
 include/filamat/MaterialBuilder.h
 include/filamat/Package.h
+include/filament-generatePrefilterMipmap/generatePrefilterMipmap.h
 include/filament-iblprefilter/IBLPrefilterContext.h
 include/filament/Box.h
 include/filament/BufferObject.h
@@ -149,6 +158,7 @@ include/utils/EntityManager.h
 include/utils/FixedCapacityVector.h
 include/utils/Invocable.h
 include/utils/Log.h
+include/utils/Logger.h
 include/utils/Mutex.h
 include/utils/NameComponentManager.h
 include/utils/Panic.h
@@ -157,8 +167,9 @@ include/utils/PrivateImplementation-impl.h
 include/utils/PrivateImplementation.h
 include/utils/SingleInstanceComponentManager.h
 include/utils/Slice.h
-include/utils/SpinLock.h
+include/utils/StaticString.h
 include/utils/StructureOfArrays.h
+include/utils/Systrace.h
 include/utils/algorithm.h
 include/utils/bitset.h
 include/utils/compiler.h
@@ -167,12 +178,14 @@ include/utils/debug.h
 include/utils/generic/Mutex.h
 include/utils/memalign.h
 include/utils/ostream.h
+include/utils/sstream.h
 include/utils/unwindows.h
 include/viewer/AutomationEngine.h
 include/viewer/AutomationSpec.h
 include/viewer/RemoteServer.h
 include/viewer/Settings.h
 include/viewer/ViewerGui.h
+lib/libabseil.a
 lib/libbackend.a
 lib/libbasis_transcoder.a
 lib/libbluegl.a
@@ -183,7 +196,7 @@ lib/libdracodec.a
 lib/libfilabridge.a
 lib/libfilaflat.a
 lib/libfilamat.a
-lib/libfilamat_lite.a
+lib/libfilament-generatePrefilterMipmap.a
 lib/libfilament-iblprefilter.a
 lib/libfilament.a
 lib/libfilameshio.a
@@ -197,6 +210,7 @@ lib/libktxreader.a
 lib/libmatdbg.a
 lib/libmeshoptimizer.a
 lib/libmikktspace.a
+lib/libperfetto.a
 lib/libshaders.a
 lib/libsmol-v.a
 lib/libstb.a

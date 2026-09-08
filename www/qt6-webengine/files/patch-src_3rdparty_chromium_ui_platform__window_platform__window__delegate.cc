@@ -1,11 +1,11 @@
---- src/3rdparty/chromium/ui/platform_window/platform_window_delegate.cc.orig	2023-03-28 19:45:02 UTC
+--- src/3rdparty/chromium/ui/platform_window/platform_window_delegate.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/ui/platform_window/platform_window_delegate.cc
-@@ -16,7 +16,7 @@ PlatformWindowDelegate::~PlatformWindowDelegate() = de
+@@ -57,7 +57,7 @@ gfx::Insets PlatformWindowDelegate::CalculateInsetsInD
+   return gfx::Insets();
+ }
  
- PlatformWindowDelegate::~PlatformWindowDelegate() = default;
- 
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  void PlatformWindowDelegate::OnWindowTiledStateChanged(
      WindowTiledEdges new_tiled_edges) {}
  #endif

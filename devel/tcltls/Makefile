@@ -1,10 +1,11 @@
 PORTNAME=	tcltls
-PORTVERSION=	1.7.18
+PORTVERSION=	1.7.22
+PORTREVISION=	1
 CATEGORIES=	devel security tcl
 MASTER_SITES=	http://core.tcl.tk/tcltls/uv/ \
 		http://tcltls.rkeene.org/uv/
 
-MAINTAINER=	mi@aldan.algebra.com
+MAINTAINER=	ports@virtual-estates.net
 COMMENT=	Dynamically loadable SSL extensions for TCL
 WWW=		https://core.tcl.tk/tcltls
 
@@ -32,12 +33,25 @@ OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=       -Wno-error=int-conversion
 .endif
 
 post-patch:
 	${MV} ${WRKSRC}/tests/ciphers.test ${WRKSRC}/tests/ciphers.test.broken
+	${REINPLACE_CMD} '/^#define CONST84/s|$$| const|' ${WRKSRC}/tlsInt.h
+
+# Newer openssl-dhparam has no "-C" option, we emulate it here :-/
+post-configure:
+	${CP} ${FILESDIR}/dh_params.h ${WRKSRC}/
+	${OPENSSLBASE}/bin/openssl dhparam -text 2048 | \
+	    ${OPENSSLBASE}/bin/openssl asn1parse | \
+	    ${SED} -E \
+		-e '/hl=4 l= 257 prim/bp' \
+		-e d -e :p \
+		-e 's/    4:d=1.*INTEGER *://' \
+		-e 's/([0-9A-H]{2})/0x\1, /g' \
+		-e 'w${WRKSRC}/generateddh.txt'
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}

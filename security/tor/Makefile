@@ -1,5 +1,5 @@
 PORTNAME=	tor
-DISTVERSION=	0.4.8.7
+DISTVERSION=	0.4.8.21
 CATEGORIES=	security net
 MASTER_SITES=	TOR
 
@@ -8,24 +8,22 @@ COMMENT=	Anonymizing overlay network for TCP
 WWW=		https://www.torproject.org/
 
 LICENSE=	BSD3CLAUSE
-LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		compiler:c11 cpe gmake pkgconfig # should be compiler:c99 or compiler:gnu99
-USE_CSTD=	gnu99 # until this bug report is closed: https://trac.torproject.org/projects/tor/ticket/27900
+USES=		compiler:c11 cpe gmake pkgconfig
 
 CPE_VENDOR=	torproject
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-openssl-dir="${OPENSSLBASE}"
 CONFIGURE_ENV=	TOR_CPPFLAGS_libevent="-I${LOCALBASE}/include" \
 		TOR_LDFLAGS_libevent="-L${LOCALBASE}/lib/" \
 		TOR_LIBEVENT_LIBS="${TOR_LIBEVENT_LIBS}"
 
-OPTIONS_DEFINE=	MANPAGES DOCS STATIC_TOR TCMALLOC
+OPTIONS_DEFINE=	DOCS MANPAGES POW STATIC_TOR TCMALLOC
 OPTIONS_GROUP=	COMPRESSION TRACING
 OPTIONS_GROUP_COMPRESSION=	ZSTD LZMA
 OPTIONS_GROUP_TRACING=	LTTNG USDT LOG_DEBUG
-OPTIONS_DEFAULT=MANPAGES ZSTD LZMA
-OPTIONS_EXCLUDE_FreeBSD_12=DOCS MANPAGES # XXX(rene) a2x somehow broken there
+OPTIONS_DEFAULT=	MANPAGES POW LZMA ZSTD
 OPTIONS_SUB=	yes
 STATIC_TOR_DESC=	Build a static tor
 COMPRESSION_DESC=	Supported compression libraries
@@ -40,6 +38,9 @@ GROUPS=		_tor
 USERS=		_tor
 
 CONFLICTS_INSTALL=	tor-devel
+
+POW_DESC=		Enable PoW (Proof of Work) module (licence changes to GPL)
+POW_CONFIGURE_ENABLE=	gpl # gpl enables POW
 
 STATIC_TOR_USES=	ssl:build
 STATIC_TOR_USES_OFF=	ssl
@@ -69,7 +70,13 @@ BUILD_DEPENDS+=	asciidoc:textproc/asciidoc
 CONFIGURE_ARGS+=	--disable-asciidoc
 .endif
 
-.if !defined(USE_GCC) && empty(CC:T:M*gcc4*) && \
+.if ${PORT_OPTIONS:MPOW}
+LICENSE=	GPLv3
+.else
+LICENSE_FILE=	${WRKSRC}/LICENSE # BSD license file
+.endif
+
+.if !defined(USE_GCC) && \
 empty(PORT_OPTIONS:MSTATIC_TOR)
 CONFIGURE_ARGS+=	--enable-gcc-hardening
 .else

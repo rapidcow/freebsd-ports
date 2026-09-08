@@ -1,23 +1,23 @@
 PORTNAME=	golangci-lint
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.54.2
-PORTREVISION=	1
+DISTVERSION=	2.8.0
+PORTREVISION=	2
 CATEGORIES=	devel
 
-MAINTAINER=	lcook@FreeBSD.org
+MAINTAINER=	dutra@FreeBSD.org
 COMMENT=	Linters Runner for Go
 WWW=		https://github.com/golangci/golangci-lint
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:modules
+USES=		gmake go:1.24+,modules
 
 _BUILD_VERSION=	${DISTVERSION}
-_BUILD_COMMIT=	411e0bb
+_BUILD_COMMIT=	e2e4002
 _BUILD_DATE=	$$(date -u "+%Y-%m-%dT%H:%M:%SZ")
 
-GO_MODULE=	github.com/${PORTNAME:S/-lint//}/${PORTNAME}
+GO_MODULE=	github.com/${PORTNAME:S/-lint//}/${PORTNAME}/v2
 GO_TARGET=	./cmd/${PORTNAME}
 GO_BUILDFLAGS=	-ldflags "\
 		-s -w \
@@ -37,9 +37,11 @@ COMPLETIONS_PLIST_FILES=	share/bash-completion/completions/${PORTNAME} \
 				share/fish/vendor_completions.d/${PORTNAME}.fish \
 				share/zsh/site-functions/_${PORTNAME}
 
+BINARY_ALIAS=	make=gmake
+
 post-install-COMPLETIONS-on:
 .for _shell in bash fish zsh
-	${SET_ENV} ${MAKE_ENV} ${GO_ENV} ${GO_WRKDIR_BIN}/${PORTNAME} completion ${_shell} \
+	${SETENV} ${MAKE_ENV} ${GO_ENV} ${GO_WRKDIR_BIN}/${PORTNAME} completion ${_shell} \
 		>${STAGEDIR}${PREFIX}/${COMPLETIONS_PLIST_FILES:M*${_shell}*}
 .endfor
 

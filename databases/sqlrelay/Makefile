@@ -1,11 +1,12 @@
 PORTNAME=	${SQLRELAY_PORTNAME}
 PORTVERSION=	${SQLRELAY_PORTVERSION}
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	SF
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Persistent DB connection pooling/proxying/load balancing system
-WWW=		http://sqlrelay.sourceforge.net/
+WWW=		https://sqlrelay.sourceforge.net/
 
 LICENSE=	LGPL20
 
@@ -14,11 +15,12 @@ LIB_DEPENDS=	librudiments.so:devel/rudiments \
 		libcurl.so:ftp/curl \
 		libiconv.so:converters/libiconv
 
-USES=		gmake iconv libedit libtool pathfix python readline ssl
+USES=		gmake iconv libedit libtool python readline ssl
 
 PATHFIX_MAKEFILEIN=	Makefile
 CPPFLAGS+=	-I${LOCALBASE}/include
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=		${SQLRELAY_CONFIGURE_ARGS} \
 			--disable-tcl \
 			--disable-java \

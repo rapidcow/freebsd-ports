@@ -1,11 +1,11 @@
 PORTNAME=	globals
-PORTVERSION=	0.16.2
+DISTVERSION=	0.18.0
 CATEGORIES=	devel
-DISTNAME=	${PORTNAME}_${PORTVERSION}
+DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Identify Global Objects in R Expressions
-WWW=		https://cran.r-project.org/web/packages/globals/
+WWW=		https://cran.r-project.org/package=globals
 
 LICENSE=	LGPL21+
 

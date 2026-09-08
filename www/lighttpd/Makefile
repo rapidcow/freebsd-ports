@@ -1,30 +1,23 @@
-PORTNAME?=	lighttpd
-PORTVERSION=	1.4.71
-CATEGORIES?=	www
-MASTER_SITES?=	https://download.lighttpd.net/lighttpd/releases-1.4.x/
+PORTNAME=	lighttpd
+PORTVERSION=	1.4.82
+CATEGORIES=	www
+MASTER_SITES=	https://download.lighttpd.net/lighttpd/releases-1.4.x/
 
 MAINTAINER=	pkubaj@FreeBSD.org
-COMMENT?=	Secure, fast, compliant, and flexible Web Server
-WWW?=		https://www.lighttpd.net/
+COMMENT=	Secure, fast, compliant, and flexible Web Server
+WWW=		https://www.lighttpd.net/
 
-.if !defined(_BUILDING_LIGHTTPD_MODULE)
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
-.endif
 
-LIB_DEPENDS+=	libpcre2-8.so:devel/pcre2
+LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 
-USES=		compiler:c11 cmake localbase:ldflags pkgconfig tar:xz
-
-.if !defined(_BUILDING_LIGHTTPD_MODULE)
-USES+=	cpe
-.endif
+USES=		compiler:c11 cmake cpe localbase:ldflags pkgconfig tar:xz
 
 GNU_CONFIGURE=	yes
 
-CONFIGURE_ARGS+=	--libdir=${PREFIX}/lib/lighttpd
+CONFIGURE_ARGS=	--libdir=${PREFIX}/lib/lighttpd
 
-.if !defined(_BUILDING_LIGHTTPD_MODULE)
 TEST_TARGET=	check
 
 PORTDOCS=	AUTHORS COPYING INSTALL NEWS README
@@ -71,7 +64,7 @@ LUA_CMAKE_ON=		-DWITH_LUA_VERSION:STRING="lua-${LUA_VER}"
 MAXMINDDB_CMAKE_BOOL=	WITH_MAXMINDDB
 MAXMINDDB_LIB_DEPENDS=	libmaxminddb.so:net/libmaxminddb
 MBEDTLS_CMAKE_BOOL=	WITH_MBEDTLS
-MBEDTLS_LIB_DEPENDS=	libmbedtls.so:security/mbedtls
+MBEDTLS_LIB_DEPENDS=	libmbedtls.so:security/mbedtls2
 NETTLE_CMAKE_BOOL=	WITH_NETTLE
 NETTLE_LIB_DEPENDS=	libnettle.so:security/nettle
 NSS_CMAKE_BOOL=		WITH_NSS
@@ -89,7 +82,7 @@ WOLFSSL_LIB_DEPENDS=	libwolfssl.so:security/wolfssl
 ZSTD_CMAKE_BOOL=	WITH_ZSTD
 ZSTD_LIB_DEPENDS=	libzstd.so:archivers/zstd
 
-LIGHTTPD_CONF_FILES=	lighttpd.conf modules.conf
+LIGHTTPD_CONF_FILES=	lighttpd.conf modules.conf lighttpd.annotated.conf
 
 LIGHTTPD_CONF_D_FILES=	access_log.conf \
 			auth.conf \
@@ -116,18 +109,14 @@ CACHEDIR=	/var/cache/${PORTNAME}
 LOGDIR=		/var/log/${PORTNAME}
 HOMEDIR=	/var/run/${PORTNAME}
 RUNDIR=		/var/run
-PLIST_SUB+=	WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"
-PLIST_SUB+=	CACHEDIR="${CACHEDIR}" HOMEDIR="${HOMEDIR}" LOGDIR="${LOGDIR}"
-
-.endif # !defined(_BUILDING_LIGHTTPD_MODULE)
-
-.include <bsd.port.options.mk>
-
-.if !defined(_BUILDING_LIGHTTPD_MODULE)
-
+PLIST_SUB=	WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}" CACHEDIR="${CACHEDIR}" \
+		HOMEDIR="${HOMEDIR}" LOGDIR="${LOGDIR}"
 SUB_LIST=	REQUIRE="${REQUIRE}"
 
 post-patch:
+	@${REINPLACE_CMD} -E \
+		-e "s|/etc/lighttpd|${ETCDIR}|g" \
+		${WRKSRC}/doc/config/lighttpd.conf
 	@${REINPLACE_CMD} -E -e \
 		's|^(server.document-root.*=).*|\1 "${PREFIX}/www" + "/data"|' \
 		-e "s|/etc/lighttpd|${ETCDIR}|g" \
@@ -140,14 +129,9 @@ post-patch:
 		-e "s|^(var.home_dir.*=).*|\1 \"${HOMEDIR}\"|" \
 		-e "s|^(var.state_dir.*=).*|\1 \"${RUNDIR}\"|" \
 		-e "s|^(var.cache_dir.*=).*|\1 \"${CACHEDIR}\"|" \
-		${WRKSRC}/doc/config/lighttpd.conf
+		${WRKSRC}/doc/config/lighttpd.annotated.conf
 	@${REINPLACE_CMD} -e "s|/usr/bin/python|${LOCALBASE}/bin/python|" \
 		${WRKSRC}/doc/config/conf.d/cgi.conf
-	@${ECHO} >> ${WRKSRC}/doc/config/lighttpd.conf
-	@${ECHO} "# IPv4 listening socket" >> \
-		${WRKSRC}/doc/config/lighttpd.conf
-	@${ECHO} "\$$SERVER[\"socket\"] == \"0.0.0.0:80\" { }" >> \
-		${WRKSRC}/doc/config/lighttpd.conf
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${ETCDIR}/conf.d ${STAGEDIR}${ETCDIR}/vhosts.d
@@ -169,7 +153,5 @@ post-install:
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
-
-.endif # !defined(_BUILDING_LIGHTTPD_MODULE)
 
 .include <bsd.port.mk>

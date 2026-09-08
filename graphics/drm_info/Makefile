@@ -1,10 +1,10 @@
 PORTNAME=	drm_info
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.5.0
+DISTVERSION=	2.9.0
 CATEGORIES=	graphics
 
 MAINTAINER=	jbeich@FreeBSD.org
-COMMENT=	Small utility to dump info about DRM devices
+COMMENT=	Dump info about DRM devices
 WWW=		https://gitlab.freedesktop.org/emersion/drm_info
 
 LICENSE=	MIT
@@ -19,12 +19,16 @@ GL_SITE=	https://gitlab.freedesktop.org
 GL_ACCOUNT=	emersion
 PLIST_FILES=	bin/${PORTNAME}
 
-OPTIONS_DEFINE=	MANPAGES PCI
-OPTIONS_DEFAULT=MANPAGES PCI
+OPTIONS_DEFINE=	EDID MANPAGES PCI
+OPTIONS_DEFAULT=EDID MANPAGES PCI
+
+EDID_DESC=		Print EDID identification via libdisplay-info
+EDID_LIB_DEPENDS=	libdisplay-info.so:sysutils/libdisplay-info
+EDID_MESON_ENABLED=	libdisplay-info
 
 MANPAGES_BUILD_DEPENDS=	scdoc:textproc/scdoc
 MANPAGES_MESON_ENABLED=	man-pages
-MANPAGES_PLIST_FILES=	man/man1/${PORTNAME}.1.gz
+MANPAGES_PLIST_FILES=	share/man/man1/${PORTNAME}.1.gz
 
 PCI_DESC=		Print PCI device names via libpci
 PCI_LIB_DEPENDS=	libpci.so:devel/libpci

@@ -1,6 +1,6 @@
 PORTNAME=	btcheck
 PORTVERSION=	2.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-p2p
 MASTER_SITES=	SF/${PORTNAME}
 
@@ -14,7 +14,7 @@ GNU_CONFIGURE=	yes
 
 CONFLICTS_INSTALL=	libbt # bin/btcheck
 
-PLIST_FILES=	bin/btcheck man/man1/btcheck.1.gz
+PLIST_FILES=	bin/btcheck share/man/man1/btcheck.1.gz
 PORTDOCS=	AUTHORS ChangeLog NEWS README
 
 OPTIONS_DEFINE=	DOCS
@@ -39,7 +39,7 @@ GNUTLS_USES=		localbase
 GNUTLS_CONFIGURE_ON=	--with-gnutls
 
 MBEDTLS_DESC=		Use SHA-1 implementation from mbedTLS/PolarSSL
-MBEDTLS_LIB_DEPENDS=	libmbedcrypto.so:security/mbedtls
+MBEDTLS_LIB_DEPENDS=	libmbedcrypto.so:security/mbedtls2
 MBEDTLS_USES=		localbase
 MBEDTLS_CONFIGURE_ON=	--with-polarssl
 

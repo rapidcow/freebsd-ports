@@ -1,40 +1,39 @@
 PORTNAME=	river
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.2.4
+DISTVERSION=	0.3.12
 CATEGORIES=	x11-wm wayland
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Dynamic tiling Wayland compositor
-WWW=		https://github.com/riverwm/river
+WWW=		https://isaacfreund.com/software/river/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
 		wayland-protocols>0:graphics/wayland-protocols \
-		wlroots>=0.16.0:x11-toolkits/wlroots \
-		zig>=0.10.0:lang/zig
+		zig>=0.15.1:lang/zig
 LIB_DEPENDS=	libevdev.so:devel/libevdev \
 		libwayland-server.so:graphics/wayland \
-		libwlroots.so:x11-toolkits/wlroots \
+		libwlroots-0.19.so:x11-toolkits/wlroots019 \
 		libinput.so:x11/libinput \
 		libxkbcommon.so:x11/libxkbcommon
 
 USES=		pkgconfig xorg
 USE_GITHUB=	yes
-USE_XORG=	pixman
 GH_ACCOUNT=	riverwm
-GH_TUPLE=	ifreund:zig-pixman:4a49ba1:zig_pixman/deps/zig-pixman \
-		ifreund:zig-wayland:ace6aee:zig_wayland/deps/zig-wayland \
-		ifreund:zig-xkbcommon:bfd1f97:zig_xkbcommon/deps/zig-xkbcommon \
-		swaywm:zig-wlroots:04bcd67:zig_wlroots/deps/zig-wlroots
-MAKE_ENV=	DESTDIR="${STAGEDIR}"
+GH_TUPLE=	ifreund:zig-pixman:v0.3.0:zig_pixman/../.cache/zig/p/pixman-0.3.0-LClMnz2VAAAs7QSCGwLimV5VUYx0JFnX5xWU6HwtMuDX \
+		ifreund:zig-wayland:v0.4.0:zig_wayland/../.cache/zig/p/wayland-0.4.0-lQa1khbMAQAsLS2eBR7M5lofyEGPIbu2iFDmoz8lPC27 \
+		ifreund:zig-xkbcommon:v0.3.0:zig_xkbcommon/../.cache/zig/p/xkbcommon-0.3.0-VDqIe3K9AQB2fG5ZeRcMC9i7kfrp5m2rWgLrmdNn9azr \
+		swaywm:zig-wlroots:v0.19.3:zig_wlroots/../.cache/zig/p/wlroots-0.19.3-jmOlcuL_AwBHhLCwpFsXbTizE3q9BugFmGX-XIxqcPMc
+USE_XORG=	pixman
 CONFIGURE_ARGS=	--prefix "${PREFIX}" \
-		${WITH_DEBUG:D:U-Drelease-fast} \
+		${WITH_DEBUG:D:U-Doptimize=ReleaseFast} \
 		${WITH_PIE:D-Dpie} \
 		${STRIP:C/.+/-Dstrip/} \
 		-Dcpu=${CPUTYPE:Ubaseline} \
 		--verbose
+MAKE_ENV=	DESTDIR="${STAGEDIR}"
 NO_INSTALL=	yes # strip(1) breaks runtime
 PLIST_FILES=	bin/${PORTNAME} \
 		bin/${PORTNAME}ctl \
@@ -45,9 +44,6 @@ PLIST_FILES=	bin/${PORTNAME} \
 		share/fish/vendor_completions.d/${PORTNAME}ctl.fish \
 		share/zsh/site-functions/_${PORTNAME}ctl \
 		${NULL}
-
-# https://github.com/ziglang/zig/issues/12170 (pixman)
-MAKE_ENV+=	PKG_CONFIG_SYSTEM_LIBRARY_PATH="${LOCALBASE}/lib"
 
 OPTIONS_DEFINE=	MANPAGES X11
 OPTIONS_DEFAULT=MANPAGES X11

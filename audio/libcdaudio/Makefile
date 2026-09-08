@@ -6,9 +6,9 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library for playing audio CDs
-WWW=		http://libcdaudio.sourceforge.net/
+WWW=		https://libcdaudio.sourceforge.net/
 
-USES=		libtool pathfix pkgconfig
+USES=		libtool pkgconfig
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 

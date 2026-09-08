@@ -1,6 +1,6 @@
 PORTNAME=		openldap
-DISTVERSION=		2.6.6
-PORTREVISION=		${OPENLDAP_PORTREVISION}
+DISTVERSION=		2.6.10
+PORTREVISION=	1
 CATEGORIES=		net databases
 MASTER_SITES=		https://www.openldap.org/software/download/OpenLDAP/%SUBDIR%/ \
 			http://gpl.savoirfairelinux.net/pub/mirrors/openldap/%SUBDIR%/ \
@@ -44,6 +44,7 @@ CONFLICTS_INSTALL=	${PORTNAME}2[0-57-9]-server ${PORTNAME}-server
 .endif
 
 GNU_CONFIGURE=		yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 PORTREVISION_CLIENT=	0
 PORTREVISION_SERVER=	0
@@ -90,6 +91,7 @@ OPTIONS_GROUP_OVLYS+=	LASTBIND
 OPTIONS_GROUP_OVLYS+=	LASTMOD
 OPTIONS_GROUP_OVLYS+=	MEMBEROF
 OPTIONS_GROUP_OVLYS+=	NOPS
+OPTIONS_GROUP_OVLYS+=	NESTGROUP
 OPTIONS_GROUP_OVLYS+=	OTP
 OPTIONS_GROUP_OVLYS+=	PROXYCACHE
 OPTIONS_GROUP_OVLYS+=	PPOLICY
@@ -113,6 +115,9 @@ OPTIONS_DEFINE+=	PBKDF2
 OPTIONS_DEFINE+=	OUTLOOK
 OPTIONS_DEFINE+=	ARGON2
 OPTIONS_DEFINE+=	LLOADD
+
+OPTIONS_EXCLUDE_FreeBSD_15=	SMBPWD	# Only works with Heimdal
+OPTIONS_EXCLUDE_FreeBSD_16=	SMBPWD	# Only works with Heimdal
 
 OPTIONS_DEFAULT+=	${BKNDS_DEFAULTS}
 OPTIONS_DEFAULT+=	${OPTIONS_GROUP_OVLYS}
@@ -149,6 +154,7 @@ DYNGROUP_DESC=		With Dynamic Group overlay
 DYNLIST_DESC=		With Dynamic List overlay
 HOMEDIR_DESC=		With Home Directory Management overlay
 MEMBEROF_DESC=		With Reverse Group Membership overlay
+NESTGROUP_DESC=		With nestgroup overlay
 NOPS_DESC=		With nops overlay
 OTP_DESC=		With OTP 2-factor authentication overlay
 PPOLICY_DESC=		With Password Policy overlay
@@ -200,6 +206,7 @@ LLOADD_CONFIGURE_ENABLE=	balancer=mod
 LLOADD_LIB_DEPENDS=		libevent.so:devel/libevent
 MDB_CONFIGURE_ENABLE=		mdb=yes
 MEMBEROF_CONFIGURE_ENABLE=	memberof=mod
+NESTGROUP_CONFIGURE_ENABLE=	nestgroup=mod
 OTP_CONFIGURE_ENABLE=		otp=mod
 PASSWD_CONFIGURE_ENABLE=	passwd=mod
 PERL_CONFIGURE_ENABLE=		perl=mod
@@ -273,8 +280,7 @@ EXTRA_PATCHES+=		${FILESDIR}/extrapatch-Makefile.in
 
 LDFLAGS+=		-L${LOCALBASE}/lib
 
-SED_MODULES=		-e 's,mandir = \$$(exec_prefix)/share/man,mandir = $$(exec_prefix)/man,' \
-			-e 's/\(moduleload[ 	]*back_[a-z]*\)\.la/\1/' \
+SED_MODULES=		-e 's/\(moduleload[ 	]*back_[a-z]*\)\.la/\1/' \
 			-e 's/\# *\(modulepath\)/\1/'
 
 CONFIGURE_ARGS+=	--enable-modules \
@@ -390,19 +396,24 @@ post-patch:
 	@${REINPLACE_CMD} -E ${CONFIGURE_SED} \
 		${CONFIGURE_WRKSRC}/${CONFIGURE_SCRIPT}
 .endif
+.if !${PORT_OPTIONS:MDEBUG}
+	@${REINPLACE_CMD} -E \
+		-e '/ldap_dump_(connection|requests_and_responses);/d' \
+		${WRKSRC}/libraries/libldap/ldap.map
+.endif
 
 pre-configure:
 	@(cd ${WRKSRC} && ${LOCALBASE}/bin/autoconf)
 
 .if !defined(CLIENT_ONLY)
 test: build
-	@(cd ${BUILD_WRKSRC} && ${SETENV} ${MAKE_ENV} \
+	@(cd ${BUILD_WRKSRC} && ${SETENVI} ${WRK_ENV} ${MAKE_ENV} \
 		${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} test)
 
 post-build:
 .for module in ${CONTRIB_MODULES}
 	@(cd ${BUILD_WRKSRC}/contrib/${module} && \
-		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} \
+		${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} \
 		${MAKE_ARGS} prefix="${PREFIX}" all)
 .endfor
 .endif
@@ -430,7 +441,7 @@ post-install:
 	${MKDIR} ${STAGEDIR}${LDAP_RUN_DIR}
 .for module in ${CONTRIB_MODULES}
 	(cd ${WRKSRC}/contrib/${module} && \
-		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} \
+		${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} \
 		${MAKE_ARGS} prefix="${PREFIX}" install)
 .endfor
 .for cleanfile in ${CONTRIB_CLEANFILES}

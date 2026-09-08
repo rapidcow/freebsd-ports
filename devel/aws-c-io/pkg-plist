@@ -9,6 +9,7 @@ include/aws/io/host_resolver.h
 include/aws/io/io.h
 include/aws/io/logging.h
 include/aws/io/message_pool.h
+include/aws/io/pem.h
 include/aws/io/pipe.h
 include/aws/io/pkcs11.h
 include/aws/io/retry_strategy.h
@@ -22,8 +23,8 @@ include/aws/io/uri.h
 include/aws/testing/async_stream_tester.h
 include/aws/testing/io_testing_channel.h
 include/aws/testing/stream_tester.h
-lib/aws-c-io/cmake/aws-c-io-config.cmake
-lib/aws-c-io/cmake/shared/aws-c-io-targets-%%CMAKE_BUILD_TYPE%%.cmake
-lib/aws-c-io/cmake/shared/aws-c-io-targets.cmake
+lib/cmake/aws-c-io/aws-c-io-config.cmake
+lib/cmake/aws-c-io/shared/aws-c-io-targets-%%CMAKE_BUILD_TYPE%%.cmake
+lib/cmake/aws-c-io/shared/aws-c-io-targets.cmake
 lib/libaws-c-io.so
 lib/libaws-c-io.so.1.0.0

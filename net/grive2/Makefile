@@ -1,7 +1,7 @@
 PORTNAME=	grive2
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.5.2-dev
-PORTREVISION=	5
+PORTREVISION=	12
 CATEGORIES=	net
 
 MAINTAINER=	samuel@andersentech.net
@@ -27,12 +27,12 @@ GH_ACCOUNT=	vitalif
 GH_TAGNAME=	ffb744a
 
 PLIST_FILES=	bin/grive \
-		man/man1/grive.1.gz
+		share/man/man1/grive.1.gz
 
 OPTIONS_DEFINE=	BACKTRACE
 
 BACKTRACE_DESC=	Enable backtrace support
-BACKTRACE_LIB_DEPENDS=	libbfd.so:devel/libbfd
+BACKTRACE_LIB_DEPENDS=	libbfd.so:devel/binutils
 BACKTRACE_LDFLAGS=	-lexecinfo
 BACKTRACE_CMAKE_OFF=	-DCMAKE_DISABLE_FIND_PACKAGE_BFD=true
 

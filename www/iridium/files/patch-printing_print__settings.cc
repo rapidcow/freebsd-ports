@@ -1,6 +1,6 @@
---- printing/print_settings.cc.orig	2023-07-24 14:27:53 UTC
+--- printing/print_settings.cc.orig	2025-12-10 15:04:57 UTC
 +++ printing/print_settings.cc
-@@ -314,7 +314,7 @@ PrintSettings& PrintSettings::operator=(const PrintSet
+@@ -319,7 +319,7 @@ PrintSettings& PrintSettings::operator=(const PrintSet
  #endif
    is_modifiable_ = settings.is_modifiable_;
    pages_per_sheet_ = settings.pages_per_sheet_;
@@ -9,25 +9,25 @@
    for (const auto& item : settings.advanced_settings_)
      advanced_settings_.emplace(item.first, item.second.Clone());
  #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
-@@ -341,7 +341,7 @@ bool PrintSettings::operator==(const PrintSettings& ot
+@@ -349,7 +349,7 @@ bool PrintSettings::operator==(const PrintSettings& ot
  #endif
-                   is_modifiable_, requested_custom_margins_in_points_,
+                   is_modifiable_, requested_custom_margins_in_microns_,
                    pages_per_sheet_
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
                    ,
                    advanced_settings_
  #endif
-@@ -366,7 +366,7 @@ bool PrintSettings::operator==(const PrintSettings& ot
+@@ -373,7 +373,7 @@ bool PrintSettings::operator==(const PrintSettings& ot
                    other.is_modifiable_,
-                   other.requested_custom_margins_in_points_,
+                   other.requested_custom_margins_in_microns_,
                    other.pages_per_sheet_
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
                    ,
                    other.advanced_settings_
  #endif
-@@ -405,7 +405,7 @@ void PrintSettings::Clear() {
+@@ -413,7 +413,7 @@ void PrintSettings::Clear() {
  #endif
    is_modifiable_ = true;
    pages_per_sheet_ = 1;

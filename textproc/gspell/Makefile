@@ -1,35 +1,27 @@
 PORTNAME=	gspell
-PORTVERSION=	1.10.0
-PORTREVISION=	3
+PORTVERSION=	1.14.0
 CATEGORIES=	textproc
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
-COMMENT=	Spell checking for GTK
-WWW=		https://wiki.gnome.org/Projects/gspell
+COMMENT=	Spell checking for GTK applications
+WWW=		https://gitlab.gnome.org/GNOME/gspell
 
-LICENSE=	LGPL21
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE=	LGPL21+
+LICENSE_FILE=	${WRKSRC}/LICENSES/LGPL-2.1-or-later.txt
 
 LIB_DEPENDS=	libenchant-2.so:textproc/enchant2 \
 		libfribidi.so:converters/fribidi \
-		libicudata.so:devel/icu
+		libicudata.so:devel/icu \
+		libharfbuzz.so:print/harfbuzz
 
-PORTSCOUT=	limitw:even
-
-USES=		gmake gnome iconv libtool pathfix pkgconfig tar:xz vala:build
-USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk30 introspection:build \
-		libxml2 pango
-GNU_CONFIGURE=	yes
+USES=		gettext gnome meson pkgconfig tar:xz vala:build
+USE_GNOME=	glib20 gtk30 introspection:build
 USE_LDCONFIG=	yes
-INSTALL_TARGET=	install-strip
 
-CONFIGURE_ARGS=	--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig
-
-OPTIONS_DEFINE=	NLS
-NLS_USES=	gettext-tools
-NLS_CONFIGURE_ENABLE=	nls
-OPTIONS_SUB=	yes
+MESON_ARGS=	-Dgtk_doc=false \
+		-Dtests=false \
+		-Dinstall_tests=false
 
 .include <bsd.port.mk>

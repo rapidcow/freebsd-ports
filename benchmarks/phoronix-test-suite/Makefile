@@ -1,7 +1,7 @@
 PORTNAME=	phoronix-test-suite
 DISTVERSIONPREFIX=	v
 DISTVERSION=	10.8.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	benchmarks
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
@@ -12,10 +12,9 @@ WWW=		https://www.phoronix-test-suite.com
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	sudo:security/sudo \
-		bash:shells/bash
+RUN_DEPENDS=	bash:shells/bash
 
-USES=		php:cli,build,flavors python shebangfix
+USES=		php:cli,build,flavors python shebangfix sudo
 USE_GITHUB=	yes
 USE_PHP=	curl dom gd pcntl posix simplexml zip zlib
 NO_BUILD=	yes

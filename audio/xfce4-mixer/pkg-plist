@@ -1,6 +1,5 @@
 bin/xfce4-mixer
 lib/xfce4/panel/plugins/libmixer.so
-man/man1/xfce4-mixer.1.gz
 share/applications/xfce4-mixer.desktop
 %%NLS%%share/locale/ar/LC_MESSAGES/xfce4-mixer.mo
 %%NLS%%share/locale/ast/LC_MESSAGES/xfce4-mixer.mo
@@ -15,6 +14,7 @@ share/applications/xfce4-mixer.desktop
 %%NLS%%share/locale/en_CA/LC_MESSAGES/xfce4-mixer.mo
 %%NLS%%share/locale/en_GB/LC_MESSAGES/xfce4-mixer.mo
 %%NLS%%share/locale/es/LC_MESSAGES/xfce4-mixer.mo
+%%NLS%%share/locale/et/LC_MESSAGES/xfce4-mixer.mo
 %%NLS%%share/locale/eu/LC_MESSAGES/xfce4-mixer.mo
 %%NLS%%share/locale/fa_IR/LC_MESSAGES/xfce4-mixer.mo
 %%NLS%%share/locale/fi/LC_MESSAGES/xfce4-mixer.mo
@@ -59,8 +59,7 @@ share/applications/xfce4-mixer.desktop
 %%NLS%%share/locale/zh_CN/LC_MESSAGES/xfce4-mixer.mo
 %%NLS%%share/locale/zh_HK/LC_MESSAGES/xfce4-mixer.mo
 %%NLS%%share/locale/zh_TW/LC_MESSAGES/xfce4-mixer.mo
-share/pixmaps/xfce4-mixer/chain-broken.png
-share/pixmaps/xfce4-mixer/chain.png
+share/man/man1/xfce4-mixer.1.gz
 share/xfce4/mixer/icons/hicolor/16x16/status/audio-input-microphone-muted.png
 share/xfce4/mixer/icons/hicolor/scalable/status/audio-input-microphone-muted.svg
 share/xfce4/panel/plugins/mixer.desktop

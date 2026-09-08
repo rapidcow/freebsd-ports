@@ -1,6 +1,6 @@
 PORTNAME=	gdome2
 PORTVERSION=	0.8.1
-PORTREVISION=	14
+PORTREVISION=	16
 CATEGORIES=	textproc
 MASTER_SITES=	http://gdome2.cs.unibo.it/tarball/
 
@@ -18,6 +18,7 @@ USE_GNOME=	glib20 libxml2
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ENV=	GLIB_CONFIG="${LOCALBASE}/bin/pkg-config glib-2.0"
 
 INSTALL_TARGET=	install-strip
@@ -32,7 +33,7 @@ OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

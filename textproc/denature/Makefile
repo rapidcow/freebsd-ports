@@ -1,12 +1,12 @@
 PORTNAME=	denature
 PORTVERSION=	0.6.5
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	textproc java
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	HTML to PDF converter
-WWW=		http://denature.sourceforge.net/
+WWW=		https://denature.sourceforge.net/
 
 LICENSE=	GPLv2
 
@@ -16,12 +16,11 @@ RUN_DEPENDS=	p5-HTML-Parser>=0:www/p5-HTML-Parser \
 		p5-CSS-Tiny>=0:textproc/p5-CSS-Tiny \
 		fop:textproc/fop
 
-USES=		perl5
-USE_JAVA=	yes
+USES=		java perl5
 POD2MAN?=	pod2man
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-PLIST_FILES=	bin/denature man/man1/denature.1.gz
+PLIST_FILES=	bin/denature share/man/man1/denature.1.gz
 
 post-patch:
 	@${REINPLACE_CMD} -i '' -e 's|%%LOCALBASE%%|${LOCALBASE}|' \
@@ -33,6 +32,6 @@ do-build:
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/denature ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/denature.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/denature.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

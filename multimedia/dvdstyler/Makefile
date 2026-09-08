@@ -1,6 +1,6 @@
 PORTNAME=	dvdstyler
-DISTVERSION=	3.3b3
-PORTREVISION=	4
+DISTVERSION=	3.3b4
+PORTREVISION=	3
 PORTEPOCH=	2
 CATEGORIES=	multimedia
 #MASTER_SITES=	SF
@@ -10,6 +10,8 @@ DISTNAME=	DVDStyler-${DISTVERSION}
 MAINTAINER=	ahicks@p-o.co.uk
 COMMENT=	WxWidgets frontend to dvd recoding and authoring programs
 WWW=		https://www.dvdstyler.org/
+
+BROKEN=		Does not build with ffmpeg > 6
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -34,7 +36,7 @@ RUN_DEPENDS=	zip:archivers/zip \
 		mkisofs:sysutils/cdrtools \
 		growisofs:sysutils/dvd+rw-tools
 
-USES=		autoreconf compiler:c++11-lib gettext gmake jpeg \
+USES=		autoreconf compiler:c++11-lib gettext-tools gmake jpeg \
 		localbase:ldflags pkgconfig tar:bzip2
 USE_CXXSTD=	c++14
 USE_WX=		3.2+

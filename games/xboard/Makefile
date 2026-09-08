@@ -1,6 +1,6 @@
 PORTNAME?=	xboard
 PORTVERSION?=	4.9.1
-PORTREVISION?=	3
+PORTREVISION?=	4
 PORTEPOCH?=	0
 CATEGORIES?=	games
 MASTER_SITES?=	GNU
@@ -44,7 +44,7 @@ FAIRYMAX_RUN_DEPENDS=	fairymax:games/fairymax
 GNUCHESS_RUN_DEPENDS=	gnuchess:games/gnuchess
 KNIGHTCAP_RUN_DEPENDS=	KnightCap:games/KnightCap
 PHALANX_RUN_DEPENDS=	phalanx:games/phalanx
-XAW3D_DEPENDS=		libXaw3d.so:x11-toolkits/Xaw3d
+XAW3D_DEPENDS=		libXaw3d.so:x11-toolkits/libXaw3d
 SOX_RUN_DEPENDS=	play:audio/sox
 ALSA_RUN_DEPENDS=	aplay:audio/alsa-utils
 NLS_USES=		gettext
@@ -69,6 +69,7 @@ USE_GNOME+=	gtk20
 SHEBANG_FILES=	texi2man
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS+=MKDIR_P="${MKDIR}" PERLPATH=${PERL}
 CFLAGS+=	-I${LOCALBASE}/include -fcommon
 LDFLAGS+=	-L${LOCALBASE}/lib

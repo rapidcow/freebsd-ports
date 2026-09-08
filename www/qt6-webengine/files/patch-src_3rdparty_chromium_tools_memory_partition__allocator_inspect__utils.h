@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/tools/memory/partition_allocator/inspect_utils.h.orig	2023-03-28 19:45:02 UTC
+--- src/3rdparty/chromium/tools/memory/partition_allocator/inspect_utils.h.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/tools/memory/partition_allocator/inspect_utils.h
-@@ -60,7 +60,7 @@ class RemoteProcessMemoryReader {
+@@ -61,7 +61,7 @@ class RemoteProcessMemoryReader {
    const pid_t pid_;
    bool is_valid_;
  

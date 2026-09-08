@@ -1,5 +1,6 @@
 PORTNAME=	l-smash-works
 DISTVERSION=	20230716
+PORTREVISION=	1
 CATEGORIES=	multimedia
 PKGNAMEPREFIX=	vapoursynth-
 
@@ -7,8 +8,12 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	L-SMASH source plugin for VapourSynth
 WWW=		https://github.com/HomeOfAviSynthPlusEvolution/L-SMASH-Works
 
+BROKEN=		Does not build with ffmpeg > 6
+
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+ONLY_FOR_ARCHS=	amd64 powerpc64le
 
 BUILD_DEPENDS=	${LOCALBASE}/include/vapoursynth/VSHelper.h:multimedia/vapoursynth
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg \

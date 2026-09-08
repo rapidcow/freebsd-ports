@@ -1,5 +1,5 @@
 PORTNAME?=		mysql
-PORTVERSION=		8.0.33
+PORTVERSION=		8.0.44
 PORTREVISION?=		0
 CATEGORIES=		databases
 MASTER_SITES=		MYSQL/MySQL-8.0
@@ -111,8 +111,7 @@ SUB_LIST=	MY_DBDIR=${MY_DBDIR} \
 
 PLIST_SUB=	MY_DBDIR=${MY_DBDIR} \
 		MY_SECDIR=${MY_SECDIR} \
-		MY_TMPDIR=${MY_TMPDIR} \
-		MYSQL80_LIBVER=${MYSQL80_LIBVER}
+		MY_TMPDIR=${MY_TMPDIR}
 
 # MySQL-Server part
 .if !defined(CLIENT_ONLY)
@@ -189,7 +188,6 @@ SSP_UNSAFE=	yes
 LDFLAGS+=	-latomic
 USES+=		compiler:gcc-c++11-lib
 .else
-CXXFLAGS+=	-malign-double
 USES+=		compiler:c++17-lang
 .endif
 
@@ -198,9 +196,9 @@ USES+=		compiler:c++17-lang
 post-extract:
 	@${RM} -rv ${WRKSRC}/sql/sql_hints.yy.cc ${WRKSRC}/sql/sql_hints.yy.h
 
-# This can be removed after FreeBSD 12.4 and 13.1 EoL
-.if defined(CLIENT_ONLY) && !exists(${OPENSSLBASE}/libdata/pkgconfig/openssl.pc)
-EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-scripts_CMakeLists.txt
+# XXX MBi alignment issue
+.if ${ARCH} == i386
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-boost-boost_1_77_0-boost-move-detail-type_traits.hpp
 .endif
 
 .if !defined(CLIENT_ONLY)

@@ -1,6 +1,6 @@
 PORTNAME=	kpLib
 DISTVERSION=	1.1.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	science python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 PY_DEPENDS=	${PYTHON_PKGNAMEPREFIX}click>=7.1.2:devel/py-click@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pymatgen>=2021.3.9:science/py-pymatgen@${PY_FLAVOR}
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pybind11>0:devel/py-pybind11@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}setuptools_scm>=0:devel/py-setuptools_scm@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}setuptools-scm>=0:devel/py-setuptools-scm@${PY_FLAVOR} \
 		${PY_DEPENDS}
 RUN_DEPENDS=	${PY_DEPENDS}
 
@@ -25,6 +25,6 @@ USE_LDCONFIG=	yes
 USE_PYTHON=	distutils concurrent autoplist
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/kpLib/lib${PYTHON_EXT_SUFFIX}.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/kpLib/lib${PYTHON_TAG}.so
 
 .include <bsd.port.mk>

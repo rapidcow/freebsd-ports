@@ -1,5 +1,5 @@
 PORTNAME=	haproxy
-DISTVERSION=	2.6.15
+DISTVERSION=	2.6.23
 CATEGORIES=	net www
 PKGNAMESUFFIX=	26
 MASTER_SITES=	http://www.haproxy.org/download/2.6/src/
@@ -21,7 +21,7 @@ default_CONFLICTS_INSTALL=	haproxy-lua
 lua_CONFLICTS_INSTALL=		haproxy
 lua_PKGNAMESUFFIX=		26-lua
 
-CONFLICTS_INSTALL=	haproxy haproxy-devel haproxy17 haproxy18 haproxy20 haproxy22 haproxy23 haproxy24 haproxy25
+CONFLICTS_INSTALL=	haproxy haproxy-devel haproxy24 haproxy28
 
 ALL_TARGET=	all admin/halog/halog
 MAKE_ARGS=	TARGET=freebsd DEFINE=-DFREEBSD_PORTS USE_GETADDRINFO=1 \
@@ -66,7 +66,7 @@ OPTIONS_DEFAULT+=	LUA
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/haproxy ${STAGEDIR}${PREFIX}/sbin/
 	${INSTALL_PROGRAM} ${WRKSRC}/admin/halog/halog ${STAGEDIR}${PREFIX}/sbin/
-	${INSTALL_MAN} ${WRKSRC}/doc/haproxy.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/doc/haproxy.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC}/doc/ && ${COPYTREE_SHARE} \* ${STAGEDIR}${DOCSDIR})
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

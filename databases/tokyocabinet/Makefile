@@ -1,5 +1,6 @@
 PORTNAME=	tokyocabinet
 PORTVERSION=	1.4.48
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	LOCAL/kuriyama \
 		https://dbmx.net/${PORTNAME}/
@@ -12,7 +13,8 @@ LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
-USES=		pathfix gmake
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
+USES=		gmake
 USE_LDCONFIG=	yes
 
 PORTDOCS=	*

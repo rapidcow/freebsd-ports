@@ -1,7 +1,7 @@
 PORTNAME=	redis_exporter
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.53.0
-PORTREVISION=	1
+DISTVERSION=	1.80.0
+PORTREVISION=	3
 CATEGORIES=	databases
 
 MAINTAINER=	arcade@b1t.name
@@ -21,6 +21,6 @@ GO_BUILDFLAGS=	-v -ldflags "${LD_FLAG_STRING}"
 PLIST_FILES=	bin/redis_exporter
 
 LD_FLAG_X_PREFIX=	-X main
-LD_FLAG_STRING=		${STRIP} ${LD_FLAG_X_PREFIX}.BuildVersion=${PORTVERSION}
+LD_FLAG_STRING=		${STRIP} ${LD_FLAG_X_PREFIX}.BuildVersion=${DISTVERSION}
 
 .include <bsd.port.mk>

@@ -1,6 +1,5 @@
 PORTNAME=	nim
-DISTVERSION=	2.0.0
-PORTREVISION=	1
+DISTVERSION=	2.2.6
 CATEGORIES=	lang
 MASTER_SITES=	https://nim-lang.org/download/
 
@@ -11,14 +10,13 @@ WWW=		https://nim-lang.org/
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/copying.txt
 
-BROKEN_sparc64=	fails to build: build.sh: clang: not found
-
 LIB_DEPENDS=	libpcre.so:devel/pcre
-TEST_DEPENDS=	node18>=0:www/node
+TEST_DEPENDS=	node>=0:www/node
 
 USES=		compiler:c11 cpe tar:xz
-
 CPE_VENDOR=	nim-lang
+
+SUB_FILES=	pkg-message
 
 OPTIONS_DEFINE=		DOCS TOOLS
 OPTIONS_DEFAULT=	TOOLS
@@ -31,22 +29,11 @@ TEST_BINARY_ALIAS=	node=nodejs
 
 .include <bsd.port.pre.mk>
 
-TLIST=		nimgrep nimpretty nimsuggest testament
-
-.if ${CHOSEN_COMPILER_TYPE} == "gcc"
-EXTRA_PATCHES=	${PATCHDIR}/elfv1-patch-build.sh
-.else
-EXTRA_PATCHES=	${PATCHDIR}/clang-patch-build.sh
-.endif
+CLIST=	nim.cfg nimdoc.cfg nimdoc.tex.cfg
+DLIST=	dochack.nim dochack.js fuzzysearch.nim
+TLIST=	nimgrep nimpretty nimsuggest testament
 
 NIMDIR=	${STAGEDIR}${PREFIX}/nim
-
-post-patch:
-.if defined(PPC_ABI) && ${PPC_ABI} == ELFv1
-	@${REINPLACE_CMD} -e '/cc =/s/clang/gcc/' ${WRKSRC}/config/nim.cfg
-	@${REINPLACE_CMD} -e s/%%GCC_DEFAULT%%/${GCC_DEFAULT}/ \
-		${WRKSRC}/build.sh ${WRKSRC}/config/nim.cfg
-.endif
 
 do-build:
 	cd ${WRKSRC} && ${SETENV} CC="${CC}" LINKER="${CC}" \
@@ -69,38 +56,30 @@ do-build-TOOLS-on:
 		-d:release --nimcache=${WRKSRC}/nimcache
 
 do-install:
-	${MKDIR} ${NIMDIR}
-	${MKDIR} ${NIMDIR}/bin
+	${MKDIR} ${NIMDIR}/bin \
+		 ${NIMDIR}/lib/compiler \
+		 ${NIMDIR}/config
 	# Install nim compiler
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/nim ${NIMDIR}/bin
 	${STRIP_CMD} ${NIMDIR}/bin/nim
 	# Install lib nim rtl
-	${MKDIR} ${NIMDIR}/lib
 	${INSTALL_LIB} ${WRKSRC}/lib/libnimrtl.so ${NIMDIR}/lib
 	# Install nim lib files
 	(cd ${WRKSRC}/lib && ${COPYTREE_SHARE} . ${NIMDIR}/lib "! -name libnimrtl.so")
-	${MKDIR} ${NIMDIR}/lib/compiler
 	(cd ${WRKSRC}/compiler && ${COPYTREE_SHARE} . ${NIMDIR}/lib/compiler "! -name nim ! -name nim1")
 	(cd ${WRKSRC}/dist/checksums && ${COPYTREE_SHARE} . ${NIMDIR}/lib/dist/checksums)
 	# Configuration files
-	${MKDIR} ${NIMDIR}/config
-.for file in nim.cfg nimdoc.cfg nimdoc.tex.cfg
-	${INSTALL_DATA} ${WRKSRC}/config/${file} ${NIMDIR}/config
-.endfor
+	${INSTALL_DATA} ${CLIST:S|^|${WRKSRC}/config/|} ${NIMDIR}/config
 
 do-install-DOCS-on:
 	${FIND} ${WRKSRC}/doc -name "*.idx" -delete
-	${MKDIR} ${NIMDIR}/doc
+	${MKDIR} ${NIMDIR}/doc \
+		 ${NIMDIR}/tools/dochack
 	(cd ${WRKSRC}/doc && ${COPYTREE_SHARE} . ${NIMDIR}/doc)
-	${MKDIR} ${NIMDIR}/tools/dochack
-	${INSTALL_SCRIPT} ${WRKSRC}/tools/dochack/dochack.nim ${NIMDIR}/tools/dochack
-	${INSTALL_SCRIPT} ${WRKSRC}/tools/dochack/dochack.js ${NIMDIR}/tools/dochack
-	${INSTALL_SCRIPT} ${WRKSRC}/tools/dochack/fuzzysearch.nim ${NIMDIR}/tools/dochack
+	${INSTALL_SCRIPT} ${DLIST:S|^|${WRKSRC}/tools/dochack/|} ${NIMDIR}/tools/dochack
 
 do-install-TOOLS-on:
-.for t in ${TLIST}
-	${INSTALL_PROGRAM} ${WRKSRC}/bin/${t} ${NIMDIR}/bin
-.endfor
+	${INSTALL_PROGRAM} ${TLIST:S|^|${WRKSRC}/bin/|} ${NIMDIR}/bin
 
 do-test:
 	cd ${WRKSRC} && ${SETENV} ./koch test all -d:release \

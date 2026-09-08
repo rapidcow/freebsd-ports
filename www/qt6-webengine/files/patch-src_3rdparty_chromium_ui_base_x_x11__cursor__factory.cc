@@ -1,6 +1,15 @@
---- src/3rdparty/chromium/ui/base/x/x11_cursor_factory.cc.orig	2023-03-28 19:45:02 UTC
+--- src/3rdparty/chromium/ui/base/x/x11_cursor_factory.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/ui/base/x/x11_cursor_factory.cc
-@@ -56,7 +56,7 @@ void X11CursorFactory::ObserveThemeChanges() {
+@@ -13,7 +13,7 @@
+ #include "ui/gfx/geometry/point.h"
+ #include "ui/gfx/x/connection.h"
+ 
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ #include "ui/linux/linux_ui.h"
+ #endif
+ 
+@@ -70,7 +70,7 @@ void X11CursorFactory::ObserveThemeChanges() {
  }
  
  void X11CursorFactory::ObserveThemeChanges() {

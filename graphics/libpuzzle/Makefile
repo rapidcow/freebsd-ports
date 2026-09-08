@@ -1,8 +1,9 @@
 PORTNAME=	libpuzzle
 PORTVERSION=	0.11
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	graphics
-MASTER_SITES=	ftp://ftp.pureftpd.org/pub/pure-ftpd/misc/libpuzzle/releases/
+MASTER_SITES=	https://ftp.pureftpd.org/pub/${PORTNAME}/releases/ \
+		ftp://ftp.pureftpd.org/pub/pure-ftpd/misc/${PORTNAME}/releases/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library to find similar pictures
@@ -15,6 +16,7 @@ LIB_DEPENDS=	libgd.so:graphics/gd
 
 USES=		autoreconf libtool tar:bzip2 localbase
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ENV=	GDLIBCONFIG=/usr/bin/true
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip

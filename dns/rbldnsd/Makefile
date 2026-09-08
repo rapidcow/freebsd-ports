@@ -1,10 +1,11 @@
 PORTNAME=	rbldnsd
 PORTVERSION=	0.998
+PORTREVISION=	1
 CATEGORIES=	dns
 MASTER_SITES=	http://www.corpit.ru/mjt/rbldnsd/ \
 		ftp://ftp.renatasystems.org/pub/FreeBSD/ports/distfiles/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Small and fast DNS daemon especially for DNSBL zones
 WWW=		https://www.corpit.ru/mjt/rbldnsd.html
 
@@ -22,7 +23,7 @@ do-install:
 	@${MKDIR} ${STAGEDIR}${ETCDIR}
 	${INSTALL_DATA} ${FILESDIR}/example ${STAGEDIR}${ETCDIR}/
 	${INSTALL_PROGRAM} ${WRKSRC}/rbldnsd ${STAGEDIR}${PREFIX}/sbin
-	${INSTALL_MAN} ${WRKSRC}/rbldnsd.8 ${STAGEDIR}${PREFIX}/man/man8
+	${INSTALL_MAN} ${WRKSRC}/rbldnsd.8 ${STAGEDIR}${PREFIX}/share/man/man8
 
 do-install-DOCS-on:
 	${INSTALL} -d ${STAGEDIR}${DOCSDIR}

@@ -1,6 +1,6 @@
 PORTNAME=	ndproxy
-PORTVERSION=	3.2
 DISTVERSIONPREFIX=	v
+DISTVERSION=	3.3
 CATEGORIES=	net
 
 MAINTAINER=	fbsd.bugzilla@fenyo.net
@@ -10,27 +10,33 @@ WWW=		http://www.fenyo.net/newweb/ndproxy.html
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_FreeBSD_14=	Requires defunct pa_func
-
 USES=		compiler kmod
-
-SUB_FILES=	pkg-message
-
-USE_RC_SUBR=	ndproxy
 USE_GITHUB=	yes
 GH_ACCOUNT=	AlexandreFenyo
+USE_RC_SUBR=	${PORTNAME}
 
 # build for a kernel with 'options VIMAGE'
 CFLAGS+=	-DVIMAGE ${CFLAGS_${CHOSEN_COMPILER_TYPE}}
 CFLAGS_gcc=	-Wno-error=strict-prototypes
 
-PLIST_FILES=	${KMODDIR}/${PORTNAME}.ko man/man4/${PORTNAME}.4.gz
+SUB_FILES=	pkg-message
+
+PLIST_FILES=	${KMODDIR}/${PORTNAME}.ko share/man/man4/${PORTNAME}.4.gz
+PORTDOCS=	README.md TESTING.TXT \
+		${PORTNAME}.html ${PORTNAME}.pdf ${PORTNAME}.ps \
+		network-architecture.png
+
+OPTIONS_DEFINE=	DOCS
 
 pre-build:
 	(cd ${BUILD_WRKSRC}; ${MAKE} depend)
 
 do-install:
 	${INSTALL_KLD} ${WRKSRC}/${PORTNAME}.ko ${STAGEDIR}${KMODDIR}
-	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.4 ${STAGEDIR}${PREFIX}/man/man4/
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.4 ${STAGEDIR}${PREFIX}/share/man/man4/
+
+do-install-DOCS-on:
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

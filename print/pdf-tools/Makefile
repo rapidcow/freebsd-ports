@@ -1,7 +1,6 @@
 PORTNAME=	pdf-tools
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.1.0
-PORTREVISION=	2
+DISTVERSION=	1.3.0
 CATEGORIES=	print elisp
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
@@ -12,16 +11,14 @@ WWW=		https://github.com/vedang/pdf-tools
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_FreeBSD_12_powerpc64=	fails to configure on powerpc64 elfv1: cannot find necessary poppler-private header (see README.org)
-
 BUILD_DEPENDS=	cask${EMACS_PKGNAMESUFFIX}>0:devel/cask@${EMACS_FLAVOR} \
 		tablist${EMACS_PKGNAMESUFFIX}>=0.70.4:devel/tablist@${EMACS_FLAVOR}
-LIB_DEPENDS=	libpng.so:graphics/png \
+LIB_DEPENDS=	libpng16.so:graphics/png \
 		libpoppler-glib.so:graphics/poppler-glib \
 		libpoppler.so:graphics/poppler
 RUN_DEPENDS=	tablist${EMACS_PKGNAMESUFFIX}>=0.70:devel/tablist@${EMACS_FLAVOR}
 
-USES=		autoreconf:build emacs gettext-runtime gmake gnome magick:7
+USES=		autoreconf:build emacs gettext-runtime gmake gnome magick:7,build,run
 USE_GITHUB=	yes
 GH_ACCOUNT=	vedang
 USE_GNOME=	cairo glib20

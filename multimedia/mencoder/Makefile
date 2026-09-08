@@ -1,5 +1,6 @@
 PORTNAME=	mencoder
 PORTVERSION=	${MPLAYER_PORT_VERSION}.${MPLAYER_SNAPSHOT_DATE:S/-//g}
+PORTREVISION=	1
 CATEGORIES=	multimedia audio
 
 MAINTAINER=	riggs@FreeBSD.org
@@ -8,10 +9,10 @@ WWW=		http://www.mplayerhq.hu/
 
 .include "${.CURDIR}/../mplayer/Makefile.common"
 
-OPTIONS_DEFINE=	AMR_NB AMR_WB ASS BLURAY CDIO DEBUG DV DVDNAV FAAC FONTCONFIG \
+OPTIONS_DEFINE=	AMR_NB AMR_WB ASS BLURAY CDIO DV DVDNAV FAAC FONTCONFIG \
 		FRIBIDI GIF GNUTLS GSM IPV6 JACK JPEG LADSPA LIBMNG LZO \
 		MAD NAS NLS OPENAL OPENJPEG OPUS PULSEAUDIO \
-		RTMP SMB SPEEX THEORA TWOLAME V4L VPX \
+		SMB SPEEX THEORA TWOLAME V4L VPX \
 		X264 XVID
 
 OPTIONS_DEFAULT=ASS DVDNAV FONTCONFIG GIF GNUTLS JPEG X264 XVID
@@ -43,7 +44,7 @@ TOOLFILES=	aconvert.sh binary_codecs.sh calcbpp.pl \
 		subedit.pl subsearch.sh vobshift.py \
 		w32codec_dl.pl wma2ogg.pl
 
-USES+=		alias iconv pkgconfig python shebangfix
+USES+=		iconv pkgconfig python shebangfix
 SHEBANG_FILES=	TOOLS/calcbpp.pl TOOLS/checktree.sh TOOLS/countquant.pl	\
 		TOOLS/divx2svcd.sh TOOLS/dvd2divxscript.pl TOOLS/mencvcd.sh \
 		TOOLS/mphelp_check.py TOOLS/plotpsnr.pl TOOLS/psnr-video.sh \
@@ -71,7 +72,8 @@ CONFIGURE_ARGS+=	--disable-mplayer \
 			--disable-mpg123 \
 			--disable-enca \
 			--disable-musepack \
-			--disable-sndio
+			--disable-sndio \
+			--disable-librtmp
 
 LIB_DEPENDS+=	libmp3lame.so:audio/lame
 
@@ -91,7 +93,7 @@ post-patch: common-post-patch
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/mencoder ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/DOCS/man/en/mplayer.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/mencoder.1
+	${INSTALL_MAN} ${WRKSRC}/DOCS/man/en/mplayer.1 ${STAGEDIR}${PREFIX}/share/man/man1/mencoder.1
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	@${CHMOD} 755 ${STAGEDIR}${DATADIR}
 	@${MKDIR} ${STAGEDIR}${DATADIR}/tools

@@ -1,16 +1,25 @@
---- chrome/browser/extensions/api/enterprise_reporting_private/enterprise_reporting_private_api.cc.orig	2023-05-05 12:12:41 UTC
+--- chrome/browser/extensions/api/enterprise_reporting_private/enterprise_reporting_private_api.cc.orig	2025-05-06 12:23:00 UTC
 +++ chrome/browser/extensions/api/enterprise_reporting_private/enterprise_reporting_private_api.cc
-@@ -32,7 +32,7 @@
+@@ -40,7 +40,7 @@
  #include "components/reporting/util/statusor.h"
  #endif
  
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ #include <optional>
+ 
  #include "base/strings/string_util.h"
- #include "chrome/browser/enterprise/signals/signals_aggregator_factory.h"
- #include "chrome/browser/extensions/api/enterprise_reporting_private/conversion_utils.h"
-@@ -105,7 +105,7 @@ api::enterprise_reporting_private::ContextInfo ToConte
-   return info;
+@@ -114,7 +114,7 @@ api::enterprise_reporting_private::ContextInfo ToConte
+ }
+ 
+ bool AllowClientCertificateReportingForUsers() {
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+   return base::FeatureList::IsEnabled(
+       enterprise_signals::features::kAllowClientCertificateReportingForUsers);
+ #else
+@@ -127,7 +127,7 @@ bool IsProfilePrefManaged(Profile* profile, std::strin
+   return pref && pref->IsManaged();
  }
  
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
@@ -18,7 +27,7 @@
  
  device_signals::SignalsAggregationRequest CreateAggregationRequest(
      device_signals::SignalName signal_name) {
-@@ -166,7 +166,7 @@ EnterpriseReportingPrivateGetDeviceIdFunction::
+@@ -189,7 +189,7 @@ EnterpriseReportingPrivateGetDeviceIdFunction::
  
  // getPersistentSecret
  
@@ -27,7 +36,7 @@
  
  EnterpriseReportingPrivateGetPersistentSecretFunction::
      EnterpriseReportingPrivateGetPersistentSecretFunction() = default;
-@@ -593,7 +593,7 @@ void EnterpriseReportingPrivateEnqueueRecordFunction::
+@@ -629,7 +629,7 @@ void EnterpriseReportingPrivateEnqueueRecordFunction::
  }
  #endif
  

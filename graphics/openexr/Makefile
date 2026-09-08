@@ -1,11 +1,13 @@
 PORTNAME?=	openexr
-PORTVERSION=	3.2.0
+PORTVERSION?=	3.4.4 # ALSO update openexr-website-docs! -- verify sigstore: make makesum verify-sigstore
 PORTREVISION?=	0
 CATEGORIES=	graphics devel
 .if !defined(MASTERDIR)
 MASTER_SITES=	https://raw.githubusercontent.com/AcademySoftwareFoundation/openexr-images/v1.0/:testimages \
+		https://github.com/AcademySoftwareFoundation/openexr/releases/download/v${PORTVERSION}/:DEFAULT \
 		LOCAL/mandree/openexr/:DEFAULT \
 		LOCAL/mandree/openexr/:testimages
+DISTFILES=	${EXTRACT_ONLY}:DEFAULT
 DISTFILES+=	Beachball/multipart.0001.exr:testimages
 DISTFILES+=	Beachball/singlepart.0001.exr:testimages
 DISTFILES+=	Chromaticities/Rec709_YC.exr:testimages
@@ -23,8 +25,8 @@ DISTFILES+=	TestImages/GrayRampsHorizontal.exr:testimages
 DISTFILES+=	v2/LeftView/Balls.exr:testimages
 DISTFILES+=	v2/Stereo/Trunks.exr:testimages
 .endif
-DIST_SUBDIR=	${PORTNAME}
-EXTRACT_ONLY=	${DISTFILES:M*${EXTRACT_SUFX}}
+DIST_SUBDIR=	openexr # hardcode - not using ${PORTNAME} - so we can share the distdir with openexr-website-docs, avoiding double download of ...
+EXTRACT_ONLY=	openexr-${PORTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	mandree@FreeBSD.org
 COMMENT=	High dynamic-range (HDR) image file format
@@ -32,26 +34,41 @@ WWW=		https://www.openexr.com/
 
 LICENSE=	BSD3CLAUSE
 
-BUILD_DEPENDS?=	help2man:misc/help2man
+BUILD_DEPENDS?=	help2man:misc/help2man \
+		openjph>=0.23.0:graphics/openjph
 # exact libImath version required to avoid hard-to-debug issues
-LIB_DEPENDS?=	libImath-3_1.so.29:math/Imath \
-		libdeflate.so:archivers/libdeflate
+# but this is due to Imath and OpenEXR being close in terms of their
+# release engineering, no other port should version pin Imath
+# or OpenEXR without extremely good reason
+LIB_DEPENDS?=	libImath-3_2.so.30:math/Imath \
+		libdeflate.so:archivers/libdeflate \
+		libopenjph.so:graphics/openjph
 
-USES?=		cmake compiler:c++14-lang cpe pathfix pkgconfig
+USES?=		cmake:testing compiler:c++14-lang cpe pathfix pkgconfig
 
-USE_GITHUB=	yes
-GH_TUPLE=	AcademySoftwareFoundation:openexr:v${PORTVERSION}
+#USE_GITHUB=	yes
+#GH_TUPLE=	AcademySoftwareFoundation:openexr:v${PORTVERSION}
 
 USE_LDCONFIG=	yes
 
 CMAKE_ARGS?=	-DCMAKE_DEBUG_POSTFIX=
 
+CMAKE_OFF=	BUILD_TESTING \
+		OPENEXR_TEST_LIBRARIES \
+		OPENEXR_TEST_PYTHON \
+		OPENEXR_TEST_TOOLS
+
+CMAKE_TESTING_ON=	BUILD_TESTING \
+			OPENEXR_TEST_LIBRARIES \
+			OPENEXR_TEST_PYTHON \
+			OPENEXR_TEST_TOOLS
+
 CPPFLAGS+=	-I.
 # must be linked with -l{thr|pthread} explicitly
 LDFLAGS+=	-lpthread
 
-_MAJORVER=	3_2
-_VER=		31
+_MAJORVER=	3_4
+_VER=		33
 _REL=		${PORTVERSION}
 PLIST_SUB+=	MAJORVER=${_MAJORVER} \
 		VER=${_VER} \
@@ -78,8 +95,10 @@ _imath_libcxx=	${COMPILER_FEATURES:Mlib*c++}
 # so we do not benefit from our checksumming and the distdir caching.
 post-extract:
 	${MKDIR} ${CONFIGURE_WRKSRC}/src/test/bin
-.for i in ${DISTFILES:M*.exr}
-	${PRINTF} %s ${i} | ( cd ${DISTDIR}/${DIST_SUBDIR} && ${CPIO} -dumpl ${CONFIGURE_WRKSRC}/src/test/bin/ 2>/dev/null )
+.for i in ${DISTFILES:M*.exr?testimages}
+	d="$$(dirname "${CONFIGURE_WRKSRC}/src/test/bin/${i:S/:testimages//}")" \
+	  && ${MKDIR} "$$d" \
+	  && ${CP} ${DISTDIR}/${DIST_SUBDIR}/${i:S/:testimages//} "$$d"
 .endfor
 
 pre-configure:
@@ -99,8 +118,11 @@ post-install-EXAMPLES-off:
 	${RM} -R ${STAGEDIR}${PREFIX}/share/doc/OpenEXR/examples/
 	@${RMDIR} ${STAGEDIR}${PREFIX}/share/doc/OpenEXR 2>/dev/null || :
 
-do-test:
-	cd ${BUILD_WRKSRC} && ctest -j ${MAKE_JOBS_NUMBER}
+verify-sigstore: openexr-${PORTVERSION}.tar.gz.sigstore.json
+	sigstore verify github --cert-identity https://github.com/AcademySoftwareFoundation/openexr/.github/workflows/release-sign.yml@refs/tags/v${PORTVERSION} ${DISTDIR}/${DIST_SUBDIR}/openexr-${PORTVERSION}.tar.gz --bundle openexr-${PORTVERSION}.tar.gz.sigstore.json
+
+openexr-${PORTVERSION}.tar.gz.sigstore.json:
+	${FETCH_CMD} https://github.com/AcademySoftwareFoundation/openexr/releases/download/v${PORTVERSION}/openexr-${PORTVERSION}.tar.gz.sigstore.json
 
 .endif
 .include <bsd.port.mk>

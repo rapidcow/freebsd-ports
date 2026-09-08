@@ -1,6 +1,6 @@
 PORTNAME=	xpad
 PORTVERSION=	5.8.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	deskutils
 MASTER_SITES=	https://launchpad.net/${PORTNAME}/trunk/${PORTVERSION}/+download/
 
@@ -24,14 +24,15 @@ OPTIONS_SUB=	yes
 
 CONFLICTS_INSTALL=	xpad3
 USE_XORG=	x11 sm ice
-USE_GNOME=	gtk30 gtksourceview4 cairo gdkpixbuf2
+USE_GNOME=	gtk30 gtksourceview4 cairo gdkpixbuf
 CPPFLAGS+=	${CXXFLAGS} -I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 PORTDOCS=	*
 PLIST_FILES=	\
 bin/xpad \
-man/man1/xpad.1.gz \
+share/man/man1/xpad.1.gz \
 share/applications/xpad.desktop \
 share/icons/hicolor/scalable/apps/xpad.svg \
 share/metainfo/xpad.appdata.xml \

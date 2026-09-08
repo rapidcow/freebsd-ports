@@ -1,6 +1,9 @@
+PORTREVISION=	13
 PKGNAMESUFFIX=	-daemon
 
 COMMENT=	Bitmark distributed property system daemon
+
+# license section (for portlint)
 
 CONFLICTS=	bitmark
 

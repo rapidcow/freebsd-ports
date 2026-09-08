@@ -1,6 +1,6 @@
 PORTNAME=	xisp
 PORTVERSION=	2.7p4
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	net
 MASTER_SITES=	http://xisp.hellug.gr/release/
 
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libforms.so:x11-toolkits/xforms
 
-USES=		alias ssl xorg
+USES=		ssl xorg
 USE_XORG=	x11 xpm
 
 CFLAGS+=	-DUSE_OPENSSL -I${OPENSSLINC}

@@ -1,17 +1,15 @@
 PORTNAME=	xmlwrapp
 PORTVERSION=	0.7.0
-PORTREVISION=	26
+PORTREVISION=	33
 CATEGORIES=	textproc
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Modern style C++ library for working with XML data
-WWW=		http://xmlwrapp.sourceforge.net/
+WWW=		https://xmlwrapp.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-BROKEN_FreeBSD_12_powerpc64=	fails to configure: invalid value: boost_major_version=
 
 LIB_DEPENDS=	libboost_iostreams.so:devel/boost-libs
 
@@ -29,8 +27,6 @@ USE_GNOME=	libxml2
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
-
-LDFLAGS+=	-lboost_system
 
 PORTDOCS=	*
 

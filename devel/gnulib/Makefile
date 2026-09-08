@@ -1,6 +1,6 @@
 PORTNAME=	gnulib
 PORTVERSION=	20140202
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://erislabs.net/ianb/projects/gnulib/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-stable
@@ -15,11 +15,16 @@ LICENSE_COMB=	multi
 BUILD_DEPENDS=	${LOCALBASE}/bin/makeinfo:print/texinfo
 
 USES=		cpe gmake perl5 shebangfix
-SHEBANG_FILES=	check-module
+SHEBANG_FILES=	check-module lib/uniname/gen-uninames.lisp
+SHEBANG_LANG=	perl clisp
+clisp_OLD_CMD=	/usr/local/bin/clisp
+clisp_CMD=	${LOCALBASE}/bin/clisp
 CPE_VENDOR=	gnu
 
 NO_ARCH=	yes
 
+BUILD_WRKSRC=	${WRKSRC}/doc
+ALL_TARGET=	info html
 PLIST_FILES=	bin/check-module bin/gnulib-tool
 INFO=		${PORTNAME}
 PORTDOCS=	gnulib.html
@@ -31,9 +36,6 @@ post-patch:
 	@${REINPLACE_CMD} -e 's,date -u.*,stat -f %Sa -t "@set UPDATED %F %T" `${LS} -t $$^ | ${SED} 1q` > $$@,' \
 		-e 's: makeinfo$$: ${LOCALBASE}/bin/makeinfo:' \
 		${WRKSRC}/doc/Makefile
-
-do-build:
-	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} -C doc info html
 
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR} ${STAGEDIR}${PREFIX}/${INFO_PATH}

@@ -1,6 +1,6 @@
 PORTNAME=	bifrost
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.2.1
+DISTVERSION=	1.3.5
 PORTREVISION=	1
 CATEGORIES=	biology
 
@@ -18,6 +18,8 @@ USES=		cmake
 USE_GITHUB=	yes
 
 CMAKE_ARGS=	-DCOMPILATION_ARCH=${CPUTYPE:UOFF}
+
+CXXFLAGS+=	-Wno-unqualified-std-cast-call
 
 GH_ACCOUNT=	pmelsted
 

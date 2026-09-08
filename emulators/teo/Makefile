@@ -1,7 +1,7 @@
 PORTNAME=	teo
 PORTVERSION=	1.8.4
 DISTVERSIONSUFFIX=	-src
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	emulators
 MASTER_SITES=	SF/teoemulator/linux/${PORTVERSION}
 
@@ -16,7 +16,7 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 		libpng.so:graphics/png
 
 USES=		gmake gnome pkgconfig xorg
-USE_GNOME=	cairo gdkpixbuf2 gtk30
+USE_GNOME=	cairo gdkpixbuf gtk30
 USE_XORG=	x11 xext
 
 ALL_TARGET=	default

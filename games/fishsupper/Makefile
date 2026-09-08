@@ -13,13 +13,13 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/bind.hpp:devel/boost-libs
 
-BROKEN_FreeBSD_12_powerpc64=	fails to compile: Log.h: expected initializer before '<' token
-
 GNU_CONFIGURE=	yes
 USES=		gl gmake localbase:ldflags sdl
 USE_SDL=	sdl image mixer
 USE_GL=		gl
-USE_CXXSTD=	c++98
+USE_CXXSTD=	c++14 # unbreaks build together with 2 warning waivers below
+CXXFLAGS+=	-Wno-static-float-init \
+		-Wno-c++11-narrowing
 
 PLIST_FILES=	bin/${PORTNAME}
 PORTDOCS=	*

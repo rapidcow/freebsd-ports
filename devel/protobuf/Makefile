@@ -1,9 +1,8 @@
 PORTNAME=	protobuf
-PORTVERSION=	3.21.12
-DISTVERSIONPREFIX=	cpp-
+PORTVERSION=	29.5
 PORTEPOCH=	1
 CATEGORIES=	devel
-MASTER_SITES=	https://github.com/protocolbuffers/protobuf/releases/download/v${PORTVERSION:R:E}.${PORTVERSION:E}/
+MASTER_SITES=	https://github.com/protocolbuffers/protobuf/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Data interchange format library
@@ -13,28 +12,43 @@ WWW=		https://protobuf.dev/ \
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_sparc64=	fails to compile: no atomic ops available
-
+BUILD_DEPENDS=	abseil>=20230802.2:devel/abseil
+LIB_DEPENDS=	libabsl_base.so:devel/abseil \
+		libjsoncpp.so:devel/jsoncpp
 TEST_DEPENDS=	googletest>=0:devel/googletest
 
-USES=		compiler:c++11-lang cpe libtool localbase pathfix pkgconfig
+USES=		cmake:testing compiler:c++17-lang cpe localbase pkgconfig
 
-CFLAGS+=	-D_THREAD_SAFE -DGOOGLE_PROTOBUF_NO_RTTI -I${WRKSRC}/src
-CONFIGURE_ENV=	CC_FOR_BUILD="${CC}" \
-		CFLAGS_FOR_BUILD="${CFLAGS}" \
-		CPPFLAGS_FOR_BUILD="${CPPFLAGS}" \
-		CXX_FOR_BUILD="${CXX}" \
-		CXXFLAGS_FOR_BUILD="${CXXFLAGS}" \
-		LDFLAGS_FOR_BUILD="${LDFLAGS}"
-GNU_CONFIGURE=	yes
-INSTALL_TARGET=	install-strip
-TEST_ARGS=	${MAKE_ARGS} ${_MAKE_JOBS}
-TEST_TARGET=	check
-USE_CXXSTD=	c++11
+CMAKE_ARGS=	-Dprotobuf_ABSL_PROVIDER=package \
+		-Dprotobuf_JSONCPP_PROVIDER=package
+CMAKE_OFF=	protobuf_BUILD_CONFORMANCE \
+		protobuf_BUILD_EXAMPLES \
+		protobuf_BUILD_EXAMPLES_MULTITEST \
+		protobuf_BUILD_TESTS \
+		protobuf_DISABLE_RTTI \
+		protobuf_INSTALL_EXAMPLES \
+		protobuf_INSTALL_TESTS \
+		protobuf_MODULE_COMPATIBLE \
+		protobuf_MSVC_STATIC_RUNTIME \
+		protobuf_REMOVE_INSTALLED_HEADERS \
+		protobuf_USE_UNITY_BUILD
+CMAKE_ON=	protobuf_ABSOLUTE_TEST_PLUGIN_PATH \
+		protobuf_ALLOW_CCACHE \
+		protobuf_BUILD_LIBPROTOC \
+		protobuf_BUILD_LIBUPB \
+		protobuf_BUILD_PROTOBUF_BINARIES \
+		protobuf_BUILD_PROTOC_BINARIES \
+		protobuf_BUILD_SHARED_LIBS \
+		protobuf_INSTALL \
+		protobuf_USE_EXTERNAL_GTEST \
+		protobuf_VERBOSE \
+		protobuf_WITH_ZLIB \
+		utf8_range_ENABLE_INSTALL
+CMAKE_TESTING_ON=	protobuf_BUILD_TESTS
+USE_CXXSTD=	c++17
 USE_LDCONFIG=	yes
 
-PLIST_SUB=	PATCH_VERSION=${PORTVERSION:E}
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 CPE_VENDOR=	google
 

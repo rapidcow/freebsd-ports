@@ -1,40 +1,29 @@
 PORTNAME=	atf
-PORTVERSION=	0.21
-PORTREVISION=	1
+DISTVERSION=	0.23
 CATEGORIES=	devel
-MASTER_SITES=	https://github.com/jmmv/${PORTNAME}/releases/download/${PORTNAME}-${PORTVERSION}/ \
-		LOCAL/jmmv
+MASTER_SITES=	https://github.com/freebsd/${PORTNAME}/releases/download/${PORTNAME}-${DISTVERSION}/
 
-MAINTAINER=	jmmv@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	C, C++ and shell libraries to write ATF-compliant test programs
-WWW=		https://github.com/jmmv/atf/
+WWW=		https://github.com/freebsd/atf
 
 LICENSE=	BSD3CLAUSE
 
-GNU_CONFIGURE=	yes
-INSTALL_TARGET=	install-strip
-USES=		libtool
-USE_CXXSTD=	gnu++11
+USES=		autoreconf libtool pathfix
+USE_CXXSTD=	gnu++14
 USE_LDCONFIG=	yes
+
+GNU_CONFIGURE=	yes
+
+INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	DOCS TEST
 OPTIONS_DEFAULT=TEST
+OPTIONS_SUB=	yes
 
-.include <bsd.port.options.mk>
+DOCS_MAKE_ARGS_OFF=	doc_DATA=
 
-MAKE_FLAGS+=	atf_pkgconfigdir=${PREFIX}/libdata/pkgconfig
-.if empty(PORT_OPTIONS:MDOCS)
-MAKE_FLAGS+=	doc_DATA=
-.endif
-.if empty(PORT_OPTIONS:MTEST)
-PLIST_SUB+=	TEST="@comment "
-.else
-PLIST_SUB+=	TEST=
-.endif
-
-post-install:
-.if empty(PORT_OPTIONS:MTEST)
+post-install-TEST-off:
 	@${RM} -r ${STAGEDIR}${PREFIX}/tests
-.endif
 
 .include <bsd.port.mk>

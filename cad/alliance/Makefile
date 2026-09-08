@@ -1,6 +1,6 @@
 PORTNAME=	alliance
 DISTVERSION=	5.1.1
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	cad
 
 MAINTAINER=	ports@FreeBSD.org
@@ -28,7 +28,7 @@ USE_XORG=	ice sm x11 xext xt
 
 HAS_CONFIGURE=	yes
 CONFIGURE_ENV+=	ALLIANCE_TOP=${ALLIANCE_TOP} YACC=${YACC}
-CONFIGURE_ARGS+=--mandir=${MANPREFIX}/man \
+CONFIGURE_ARGS+=--mandir=${PREFIX}/share/man \
 		--prefix=${ALLIANCE_TOP} \
 		--enable-alc-shared \
 		--enable-shared
@@ -36,7 +36,8 @@ USE_LDCONFIG=	${ALLIANCE_TOP}/lib
 
 MAKE_JOBS_UNSAFE=	yes
 INSTALL_TARGET=	install-strip
-CFLAGS+=	-fcommon
+CFLAGS+=	-fcommon \
+		-fpermissive
 
 CONFLICTS_INSTALL=	ocp publib
 

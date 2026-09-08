@@ -1,5 +1,6 @@
 PORTNAME=	slepc4py
-DISTVERSION=	3.19.2
+DISTVERSION=	3.22.2
+PORTREVISION=	1
 CATEGORIES=	math python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -21,12 +22,12 @@ LIB_DEPENDS=	libmpich.so:net/mpich \
 RUN_DEPENDS=	${PYNUMPY}
 
 USES=		fortran python
-USE_PYTHON=	distutils cython autoplist pytest
+USE_PYTHON=	autoplist cython3 distutils pytest
 
 MAKE_ENV=	PETSC_DIR=${LOCALBASE} SLEPC_DIR=${LOCALBASE}
 TEST_ENV=	${MAKE_ENV} PYTHONPATH=${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/slepc4py/lib/SLEPc${PYTHON_EXT_SUFFIX}.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/slepc4py/lib/SLEPc${PYTHON_TAG}.so
 
 .include <bsd.port.mk>

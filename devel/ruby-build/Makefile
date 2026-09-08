@@ -1,5 +1,5 @@
 PORTNAME=	ruby-build
-PORTVERSION=	20230919
+PORTVERSION=	20260121
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel ruby
 
@@ -14,7 +14,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 # warnings by portlint are not correct. keep this.
 RUN_DEPENDS=	autoconf>0:devel/autoconf \
 		curl:ftp/curl \
-		gmake:devel/gmake
+		gmake:devel/gmake \
+		${LOCALBASE}/libdata/pkgconfig/libffi.pc:devel/libffi \
+		${LOCALBASE}/libdata/pkgconfig/yaml-0.1.pc:textproc/libyaml
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	rbenv
@@ -24,7 +26,8 @@ NO_BUILD=	yes
 
 PLIST_FILES=	bin/ruby-build \
 		libexec/rbenv-install \
-		libexec/rbenv-uninstall
+		libexec/rbenv-uninstall \
+		share/man/man1/ruby-build.1.gz
 PORTDATA=	*
 
 OPTIONS_DEFINE=	RBENV
@@ -33,6 +36,7 @@ RBENV_DESC=	Install rbenv for installation support
 RBENV_RUN_DEPENDS=	rbenv:devel/rbenv
 
 do-install:
+	${INSTALL_MAN} ${WRKSRC}/share/man/man1/ruby-build.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/ruby-build ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/rbenv-install ${STAGEDIR}${PREFIX}/libexec
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/rbenv-uninstall ${STAGEDIR}${PREFIX}/libexec

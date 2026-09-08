@@ -1,30 +1,31 @@
 PORTNAME=	eternalterminal
 DISTVERSIONPREFIX=	et-v
-DISTVERSION=	6.2.4
-PORTREVISION=	1
+DISTVERSION=	6.2.11
+PORTREVISION=	2
 CATEGORIES=	net
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Remote shell that reconnects without interrupting session
 WWW=		https://eternalterminal.dev/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libgflags.so:devel/gflags \
-		libglog.so:devel/glog \
+BROKEN_FreeBSD_13=	OpenSSL versions prior to 3.0.0 are not supported
+
+LIB_DEPENDS=	libabsl_log_internal_check_op.so:devel/abseil \
 		libprotobuf.so:devel/protobuf \
 		libsodium.so:security/libsodium \
 		libunwind.so:devel/libunwind
 
-USES=		cmake compiler:c++11-lang ncurses ssl
+USES=		cmake:testing ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	MisterTea
 GH_PROJECT=	EternalTerminal
 
 CMAKE_ON=	DISABLE_VCPKG
-
-ALL_TARGET=	generated-code all # workaround for a suspected dependency problem, see https://github.com/MisterTea/EternalTerminal/issues/528
+CMAKE_OFF=	BUILD_TESTING
+CMAKE_TESTING_ON=	BUILD_TESTING
 
 CONFLICTS_INSTALL=	linux-enemyterritory # bin/et
 

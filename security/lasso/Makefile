@@ -1,5 +1,5 @@
 PORTNAME=	lasso
-PORTVERSION=	2.8.2
+DISTVERSION=	2.9.0
 CATEGORIES=	security
 MASTER_SITES=	https://dev.entrouvert.org/releases/lasso/
 
@@ -25,7 +25,12 @@ CONFIGURE_ARGS=	--disable-java \
 		--disable-php5 \
 		--with-zlib
 
+BINARY_ALIAS=	make=${GMAKE}
+
 INSTALL_TARGET=	install-strip
+
+SOLIB=	3.16.0
+PLIST_SUB=	SOLIB=${SOLIB}
 
 OPTIONS_DEFINE=	DOCS PERL PYTHON
 OPTIONS_SUB=	yes
@@ -33,12 +38,6 @@ OPTIONS_SUB=	yes
 PERL_USES=			perl5
 PERL_CONFIGURE_ENABLE=		perl
 PYTHON_CONFIGURE_ENABLE=	python
-
-.include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
-CFLAGS+=	-Wno-error=int-conversion
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -E 's,(xmlsec1-openssl >= 1\.2\.6) openssl,\1,' \

@@ -1,6 +1,5 @@
 PORTNAME=	gpu-firmware-intel-kmod
-PORTVERSION=	20230210
-PORTREVISION=	1
+PORTVERSION=	20250109
 CATEGORIES=	graphics
 
 MAINTAINER=	x11@FreeBSD.org
@@ -26,14 +25,16 @@ FLAVORS=	skylake \
 		tigerlake \
 		rocketlake \
 		dg1 \
-		alderlake
+		dg2 \
+		alderlake \
+		meteorlake
 
 USES=		kmod uidfix
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	freebsd
 GH_PROJECT=	drm-kmod-firmware
-GH_TAGNAME=	20230210_5
+GH_TAGNAME=	20250109
 
 MAKE_ENV=	KMODS="i915kmsfw"
 MAKE_ENV+=	I915KMODS="${FLAVOR}"

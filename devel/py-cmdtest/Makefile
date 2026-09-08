@@ -1,12 +1,12 @@
 PORTNAME=	cmdtest
 PORTVERSION=	0.33.s20191128
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	http://git.liw.fi/cmdtest/snapshot/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	${PORTNAME}-3cba2b5e030b05567057ba2b6720f4a87e6e1f4f
 
-MAINTAINER=	bapt@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Black box testing of Unix programs
 WWW=		https://liw.fi/cmdtest/
 
@@ -25,6 +25,6 @@ USE_PYTHON=	distutils concurrent autoplist
 NO_ARCH=	yes
 
 post-patch:
-	@${REINPLACE_CMD} -e "s,python3,${PYTHON_CMD},g ; s,share/man/,man/," ${WRKSRC}/setup.py
+	@${REINPLACE_CMD} -e "s,python3,${PYTHON_CMD},g" ${WRKSRC}/setup.py
 
 .include <bsd.port.mk>

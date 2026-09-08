@@ -1,6 +1,5 @@
 PORTNAME=	xorg
-PORTVERSION=	21.1.8
-PORTREVISION=	5
+PORTVERSION=	21.1.20
 PORTEPOCH=	1
 CATEGORIES=	x11-servers
 MASTER_SITES=	XORG/individual/xserver
@@ -14,8 +13,6 @@ LICENSE=	MIT
 
 FLAVORS=	xorg xnest xephyr xvfb
 FLAVOR?=	${FLAVORS:[1]}
-
-EXTRA_PATCHES=	${FILESDIR}/0002-xephyr_Dont_check_for_SeatId_anymore.patch:-p1
 
 USES=		compiler:c11 cpe gl meson pkgconfig tar:xz xorg
 USE_GL=		gl
@@ -36,8 +33,7 @@ PLIST=
 PKGMESSAGE=
 BINARY_NAME=	${FLAVOR:C/^(.).*/\1/:tu}${FLAVOR:C/^.//}
 PLIST_FILES=	bin/${BINARY_NAME} \
-		man/man1/${BINARY_NAME}.1.gz
-PLIST_DIRS=	/var/lib/xkb /var/lib
+		share/man/man1/${BINARY_NAME}.1.gz
 .endif
 
 DESCR=	${.CURDIR}/pkg-descr-${FLAVOR}
@@ -56,8 +52,7 @@ MESON_ARGS+=	-Dxwin=false \
 		-Dfallback_input_driver=libinput \
 		-Ddocs=false \
 		-Dxcsecurity=true \
-		-Dxkb_dir=${LOCALBASE}/share/X11/xkb \
-		-Dxkb_output_dir=/var/lib/xkb \
+		-Dsecure-rpc=false \
 		-D${FLAVOR}=true
 
 .for f in ${FLAVORS:N${FLAVOR}}
@@ -122,12 +117,6 @@ MESON_ARGS+=	-Dsha1=libmd
 LIB_DEPENDS+=	libunwind.so:devel/libunwind
 .endif
 
-.if ${ARCH} == "sparc64"
-PLIST_SUB+=	SPARC64=""
-.else
-PLIST_SUB+=	SPARC64="@comment "
-.endif
-
 .if ${FLAVOR} == xorg
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/X11/xorg.conf.d
@@ -135,13 +124,11 @@ post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/X11/xorg.conf.d
 	@${INSTALL_DATA} ${FILESDIR}/20-evdev-kbd.conf \
 		${STAGEDIR}${PREFIX}/share/X11/xorg.conf.d
-	${MKDIR} -p ${STAGEDIR}/var/lib/xkb
 .else
 post-install:
 	${RM} -r ${STAGEDIR}${PREFIX}/lib/xorg/protocol.txt
 	${RMDIR} ${STAGEDIR}${PREFIX}/lib/xorg
-	${RM} ${STAGEDIR}${PREFIX}/man/man1/Xserver.1
-	${MKDIR} -p ${STAGEDIR}/var/lib/xkb
+	${RM} ${STAGEDIR}${PREFIX}/share/man/man1/Xserver.1
 .endif
 
 .include <bsd.port.post.mk>

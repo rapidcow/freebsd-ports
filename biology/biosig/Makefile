@@ -1,13 +1,13 @@
 PORTNAME=	biosig
-DISTVERSION=	2.5.2
-PORTREVISION=	1
+DISTVERSION=	2.6.1
+PORTREVISION=	2
 CATEGORIES=	biology
 MASTER_SITES=	SF/${PORTNAME}/BioSig%20for%20C_C%2B%2B/src/
 DISTNAME=	${PORTNAME}-${PORTVERSION}.src
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Library for reading and writing different biosignal data format
-WWW=		http://biosig.sourceforge.net/
+WWW=		https://biosig.sourceforge.net/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -23,6 +23,7 @@ USE_LDCONFIG=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 CFLAGS+=	-D__BYTE_ORDER=BYTE_ORDER -D__LITTLE_ENDIAN=LITTLE_ENDIAN -D__BIG_ENDIAN=BIG_ENDIAN \
 		-Dbswap_16=bswap16 -Dbswap_32=bswap32 -Dbswap_64=bswap64
@@ -30,7 +31,7 @@ LDFLAGS+=	-liconv
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
 .endif
 

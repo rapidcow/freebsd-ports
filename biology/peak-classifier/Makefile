@@ -1,6 +1,7 @@
 PORTNAME=	peak-classifier
-DISTVERSION=	0.1.4-11
-DISTVERSIONSUFFIX=	-g394f61c
+DISTVERSION=	0.1.4-13
+DISTVERSIONSUFFIX=	-gfb89af3
+PORTREVISION=	2
 CATEGORIES=	biology
 
 MAINTAINER=	jwb@FreeBSD.org
@@ -16,9 +17,11 @@ RUN_DEPENDS=	bedtools:biology/bedtools \
 
 USES=		localbase python shebangfix
 USE_GITHUB=	yes
-
 GH_ACCOUNT=	auerlab
+
 SHEBANG_FILES=	feature-view.py
+
+MAKE_ARGS=	MANPREFIX=${PREFIX}/share
 
 pre-build:
 	cd ${WRKSRC} && make depend LOCALBASE=${LOCALBASE}

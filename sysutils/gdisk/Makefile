@@ -1,13 +1,13 @@
 PORTNAME=	gdisk
-PORTVERSION=	1.0.9
-PORTREVISION=	3
+PORTVERSION=	1.0.10
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/gptfdisk/gptfdisk/${PORTVERSION}
 DISTNAME=	gptfdisk-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	GPT fdisk
-WWW=		https://www.rodsbooks.com/fixparts/
+WWW=		https://www.rodsbooks.com/gdisk/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 ONLY_FOR_ARCHS=	amd64 armv7 i386 powerpc powerpc64 powerpc64le
 
 LIB_DEPENDS=	libpopt.so:devel/popt \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 
 USES=		localbase:ldflags
 

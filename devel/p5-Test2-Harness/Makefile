@@ -1,5 +1,5 @@
 PORTNAME=	Test2-Harness
-PORTVERSION=	1.000152
+PORTVERSION=	1.000161
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:EXODIST
@@ -11,7 +11,7 @@ WWW=		https://metacpan.org/release/Test2-Harness
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_FILE_GPLv1+ =	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-Data-UUID>=0:devel/p5-Data-UUID \
@@ -21,7 +21,7 @@ RUN_DEPENDS=	p5-Data-UUID>=0:devel/p5-Data-UUID \
 		p5-Term-Table>=0.015:devel/p5-Term-Table \
 		p5-Test2-Plugin-MemUsage>=0.002002:devel/p5-Test2-Plugin-MemUsage \
 		p5-Test2-Plugin-UUID>=0.002001:devel/p5-Test2-Plugin-UUID \
-		p5-Test2-Suite>=0.000127:devel/p5-Test2-Suite \
+		p5-Test-Simple>=1.302200:devel/p5-Test-Simple \
 		p5-YAML-Tiny>=0:textproc/p5-YAML-Tiny \
 		p5-goto-file>=0.005:devel/p5-goto-file
 
@@ -29,6 +29,8 @@ USES=		perl5
 USE_PERL5=	configure
 
 NO_ARCH=	yes
+
+PORTSCOUT=	skipv:2.000005
 
 OPTIONS_DEFINE=	RECOMMENDED
 OPTIONS_DEFAULT=RECOMMENDED

@@ -1,6 +1,6 @@
 PORTNAME=	rapid-photo-downloader
 DISTVERSION=	0.9.26
-PORTREVISION=	5
+PORTREVISION=	13
 CATEGORIES=	graphics
 MASTER_SITES=	https://launchpad.net/rapid/pyqt/${PORTVERSION}/+download/
 
@@ -16,9 +16,8 @@ LIB_DEPENDS=	libgexiv2.so:graphics/gexiv2 \
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}arrow>0:devel/py-arrow@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Babel>0:devel/py-babel@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}colour>0:graphics/py-colour@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dateutil>2.2:devel/py-dateutil@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}python-dateutil>2.2:devel/py-python-dateutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}easygui>=0:x11-toolkits/py-easygui@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}gobject3>0:devel/py-gobject3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}gphoto2>=1.4.0:graphics/py-gphoto2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}gstreamer1>=1.0:multimedia/py-gstreamer1@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}notify2>0:devel/py-notify2@${PY_FLAVOR} \
@@ -34,10 +33,11 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}arrow>0:devel/py-arrow@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}xdg>0:devel/py-xdg@${PY_FLAVOR} \
 		exiftool:graphics/p5-Image-ExifTool
 
-USES=		desktop-file-utils gettext pyqt:5 python qt:5
+USES=		desktop-file-utils gettext gnome pyqt:5 python qt:5
+USE_GNOME=	pygobject3:run
 USE_PYTHON=	autoplist distutils noflavors
 USE_QT=		imageformats:run
-USE_PYQT=	pyqt5 sip
+USE_PYQT=	pyqt5
 BINARY_ALIAS=	python3=${PYTHON_VERSION}
 
 NO_ARCH=	yes
@@ -50,9 +50,5 @@ PROGRESS_DESC=	shows a progress bar on the command line
 
 COLOUR_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}colorlog>0:devel/py-colorlog@${PY_FLAVOR}
 PROGRESS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyprind>=1.4.0:misc/py-pyprind@${PY_FLAVOR}
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|'share/man/man1'|'man/man1'|' \
-		${WRKSRC}/setup.py
 
 .include <bsd.port.mk>

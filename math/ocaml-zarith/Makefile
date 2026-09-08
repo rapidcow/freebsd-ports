@@ -1,6 +1,7 @@
 PORTNAME=	${GH_PROJECT:tl}
 PORTVERSION=	1.13
 DISTVERSIONPREFIX=	release-
+PORTREVISION=	2
 CATEGORIES=	math
 PKGNAMEPREFIX=	ocaml-
 
@@ -13,13 +14,11 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libgmp.so:math/gmp
 
-USES=		gmake localbase:ldflags tar:tgz
+USES=		gmake localbase:ldflags ocaml:findlib,ldconfig tar:tgz
 USE_GITHUB=	yes
 GH_ACCOUNT=	ocaml
 GH_PROJECT=	Zarith
-USE_OCAML=	yes
-USE_OCAML_FINDLIB=	yes
-OCAMLFIND_LDCONF=	/dev/null
+
 HAS_CONFIGURE=	yes
 ALL_TARGET=	all
 CONFIGURE_ENV=	DESTDIR=${STAGEDIR}
@@ -33,8 +32,19 @@ OPTIONS_DEFINE=	DOCS
 
 DOCS_ALL_TARGET=doc
 
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
+
+post-install:
+	@${STRIP_CMD} \
+		${STAGEDIR}${PREFIX}/${OCAML_SITELIBDIR}/${PORTNAME}/dllzarith.so \
+		${STAGEDIR}${PREFIX}/${OCAML_SITELIBDIR}/${PORTNAME}/zarith.cmxs
+
 post-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${MV} ${WRKSRC}/html ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

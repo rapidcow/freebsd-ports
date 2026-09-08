@@ -1,18 +1,18 @@
 PORTNAME=	wtf
-PORTVERSION=	0.43.0
-PORTREVISION=	4
 DISTVERSIONPREFIX=	v
+DISTVERSION=	0.48.0
+PORTREVISION=	2
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	go-
 
-MAINTAINER=	hsw@bitmark.com
+MAINTAINER=	bsd.hsw@gmail.com
 COMMENT=	Personal information dashboard for your terminal
 WWW=		https://wtfutil.com
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-USES=		cpe go:modules
+USES=		cpe go:1.25+,modules
 
 GO_MODULE=      github.com/wtfutil/wtf
 GO_BUILDFLAGS=	-ldflags "-X main.version=${DISTVERSION}"

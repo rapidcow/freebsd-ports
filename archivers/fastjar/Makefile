@@ -1,26 +1,27 @@
 PORTNAME=	fastjar
-PORTVERSION=	0.93.20060808
-PORTREVISION=	3
+DISTVERSION=	0.98
 CATEGORIES=	archivers java
-MASTER_SITES=	LOCAL/maho/fastjar
+MASTER_SITES=	SAVANNAH
 
 MAINTAINER=	java@FreeBSD.org
 COMMENT=	Version of JDK's `jar' command written entirely in C
-WWW=		http://fastjar.sourceforge.net/
+WWW=		https://savannah.nongnu.org/projects/fastjar/
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake makeinfo perl5 tar:bzip2
-USE_PERL5=	build
+USES=		gmake makeinfo
+
 GNU_CONFIGURE=	yes
 
-WRKSRC=		${WRKDIR}/${PORTNAME}
-PORTDOCS=	CHANGES ChangeLog NEWS README
-PLIST_FILES=	bin/fastjar bin/grepjar \
-		man/man1/fastjar.1.gz \
-		man/man1/grepjar.1.gz
-
 INFO=		fastjar
+PORTDOCS=	CHANGES ChangeLog NEWS README
+
+PLIST_FILES=	bin/fastjar \
+		bin/grepjar \
+		lib/charset.alias \
+		share/man/man1/fastjar.1.gz \
+		share/man/man1/grepjar.1.gz
 
 OPTIONS_DEFINE=	DOCS
 

@@ -1,20 +1,19 @@
 PORTNAME=	davmail
 PORTVERSION=	6.1.0
+PORTREVISION=	1
 CATEGORIES=	mail java
 MASTER_SITES=	SF/davmail/davmail/${PORTVERSION}
 DISTNAME=	${PORTNAME}-src-${PORTVERSION}-${REVISION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	POP/IMAP/SMTP/Caldav/Carddav/LDAP Exchange Gateway
-WWW=		http://davmail.sourceforge.net/
+WWW=		https://davmail.sourceforge.net/
 
 LICENSE=	GPLv2
 
-USES=		dos2unix tar:tgz
+USES=		dos2unix java:ant,run tar:tgz
 
 DOS2UNIX_FILES=	build.xml
-USE_ANT=	yes
-USE_JAVA=	yes
 USE_RC_SUBR=	davmail
 # 6.1.0
 REVISION=	3423

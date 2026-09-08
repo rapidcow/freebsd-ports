@@ -1,26 +1,35 @@
 PORTNAME=	redis
-DISTVERSION=	7.2.1
+DISTVERSION=	8.4.0
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	https://download.redis.io/releases/
 
-MAINTAINER=	yasu@FreeBSD.org
+MAINTAINER=	bofh@freebsd.org
 COMMENT=	Persistent key-value database with built-in net interface
 WWW=		https://redis.io/
 
-LICENSE=	BSD3CLAUSE
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE=	AGPLv3 RSALv2 SSPLv1
+LICENSE_COMB=	dual
+LICENSE_NAME_RSALv2=	Redis Source Available License v2
+LICENSE_NAME_SSPLv1=	Server Side Public License v1
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+LICENSE_PERMS_RSALv2=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+LICENSE_PERMS_SSPLv1=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		compiler:c11 cpe gmake tcl:test
+USES=		compiler:c11 cpe gmake localbase:ldflags pkgconfig tcl:test
 CPE_VENDOR=	redislabs
 USE_RC_SUBR=	redis sentinel
 
 MAKE_ENV=	OPTIMIZATION= \
 		V=yo
+BINARY_ALIAS=	gmd5sum=md5sum
 
-LDFLAGS+=	-lpthread -lm -lexecinfo
+#PIE_UNSAFE=	ld: error: relocation R_X86_64_32 cannot be used against local \
+#		symbol; recompile with -fPIC
 
-CONFLICTS_INSTALL=	redis-devel redis6 redis62 redis70 # etc/rc.d/redis
+CONFLICTS_INSTALL=	redis-devel redis[0-9]*
 
+PORTSCOUT=	limit:^[0-9\.]*$$
 SUB_FILES=	pkg-message
 SUB_LIST=	PORTNAME=${PORTNAME} \
 		REDIS_DBDIR=${REDIS_DBDIR} \
@@ -37,31 +46,16 @@ PLIST_SUB=	REDIS_DBDIR=${REDIS_DBDIR} \
 		REDIS_RUNDIR=${REDIS_RUNDIR} \
 		REDIS_USER=${USERS}
 
-OPTIONS_DEFINE=		JEMALLOC TLS TRIB
+OPTIONS_DEFINE=		JEMALLOC TLS
 OPTIONS_DEFAULT=	TLS
-OPTIONS_RADIO=		EXTLUA
-OPTIONS_RADIO_EXTLUA=	LUA LUAJIT
 OPTIONS_SUB=		yes
 
 JEMALLOC_DESC=	Use jemalloc
-LUAJIT_DESC=	Use luajit instead of builtin lua
-LUA_DESC=	Use lang/lua instead of builtin lua
 TLS_DESC=	Use TLS (openssl req.)
-TRIB_DESC=	Install redis-trib.rb (lang/ruby req.)
 
 JEMALLOC_MAKE_ENV=	USE_JEMALLOC=yes
-LUAJIT_BROKEN=		Fails to link
-LUAJIT_USES=		luajit
-LUAJIT_VARS=		_ADDFLAGS=true
-LUA_BROKEN=		Fails to link
-LUA_USES=		lua:51
-LUA_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src-Makefile.lua
-LUA_VARS=		_ADDFLAGS=true
 TLS_USES=		ssl
 TLS_MAKE_ENV=		BUILD_TLS=yes
-TRIB_CATEGORIES=	ruby
-TRIB_RUN_DEPENDS=	rubygem-redis>=2.2:databases/rubygem-redis
-TRIB_USES=		ruby
 
 BIN_FILES=	redis-benchmark redis-check-aof redis-check-rdb redis-cli \
 		redis-sentinel redis-server
@@ -70,36 +64,8 @@ REDIS_DBDIR?=	/var/db/redis
 REDIS_RUNDIR?=	/var/run/redis
 REDIS_LOGDIR?=	/var/log/redis
 
-.include <bsd.port.pre.mk>
-
-.if ${ARCH} == i386 && !${CFLAGS:M-march=*}
-# Needed for __atomic_fetch_add_8
-USE_GCC=	yes
-CFLAGS+=	-march=i586
-.endif
-
-.if defined(_ADDFLAGS)
-CFLAGS+=	-fPIC
-LDFLAGS+=	-Wl,-E
-.endif
-
-.if ${PORT_OPTIONS:MLUAJIT}
-.  if ${LUAJIT_VER} == luajit
-EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src-Makefile.luajit
-.  else
-EXTRA_PATCHES=	${PATCHDIR}/extra-patch-src-Makefile.luajit-or \
-		${PATCHDIR}/extra-patch-src-function_lua.c \
-		${PATCHDIR}/extra-patch-deps_lua_src_lua__cjson.c
-.  endif
-.endif
-
 post-patch-JEMALLOC-on:
-	@${REINPLACE_CMD} '35s!Linux!FreeBSD!g' ${WRKSRC}/src/Makefile
-
-post-patch-LUA-on:
-	@cd ${WRKSRC}/deps/lua/src && ${CP} fpconv.* lua_* strbuf.* ${WRKSRC}/src/
-post-patch-LUAJIT-on: post-patch-LUA-on
-post-patch-LUAJITOR-on: post-patch-LUA-on
+	@${REINPLACE_CMD} '78s!Linux!FreeBSD!g' ${WRKSRC}/src/Makefile
 
 post-build:
 	${SED} ${SUB_LIST:S/$/!g/:S/^/ -e s!%%/:S/=/%%!/} \
@@ -113,10 +79,7 @@ do-install:
 		${STAGEDIR}${REDIS_DBDIR} \
 		${STAGEDIR}${REDIS_RUNDIR}
 
-do-install-TRIB-on:
-	${INSTALL_SCRIPT} ${WRKSRC}/src/redis-trib.rb ${STAGEDIR}${PREFIX}/bin/
-
 do-test:
 	@cd ${WRKSRC} && ${TCLSH} tests/test_helper.tcl
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

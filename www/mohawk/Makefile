@@ -1,11 +1,11 @@
 PORTNAME=	mohawk
-DISTVERSION=	2.0.21
+DISTVERSION=	2.1.0
 CATEGORIES=	www
 MASTER_SITES=	https://fossil.bsdsx.fr/mohawk/tarball/?r=${DISTVERSION}&name=/
 
 MAINTAINER=	dsx+mohawk@bsdsx.fr
 COMMENT=	Simple and lightweight HTTP daemon
-WWW=		http://fossil.etoilebsd.net/mohawk
+WWW=		https://fossil.bsdsx.fr/mohawk
 
 LICENSE=	BSD2CLAUSE
 
@@ -16,11 +16,13 @@ USE_RC_SUBR=	mohawk
 
 CFLAGS+=	-I${LOCALBASE}/include/event2/compat
 
+MAKE_ARGS=	MANDIR="${PREFIX}/share/man/man"
+
 PLIST_FILES=	bin/mhtpasswd \
-		man/man5/mohawk.conf.5.gz \
-		man/man8/mhtpasswd.8.gz \
-		man/man8/mohawk.8.gz \
 		sbin/mohawk \
+		share/man/man5/mohawk.conf.5.gz \
+		share/man/man8/mhtpasswd.8.gz \
+		share/man/man8/mohawk.8.gz \
 		etc/mohawk.conf.sample
 
 PORTEXAMPLES=	*

@@ -1,11 +1,11 @@
 PORTNAME=	RT-Extension-RepeatTicket
-PORTVERSION=	2.00
+PORTVERSION=	2.04
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 PKGNAMESUFFIX=	2
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	RT Extension to repeat tickets base on a schedule
 WWW=		https://metacpan.org/release/RT-Extension-RepeatTicket
 
@@ -23,6 +23,9 @@ NO_ARCH=	yes
 
 RT_VER=		50
 PLIST_SUB=	RTHOME=share/rt${RT_VER}
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|LocalPath/man/man3|LocalPath/share/man/man3|g' ${WRKSRC}/inc/Module/Install/RTx.pm
 
 # Note: You can install using an arbitrary $PREFIX but only if it
 # matches the $PREFIX used to install www/rt44.  Hence ignore

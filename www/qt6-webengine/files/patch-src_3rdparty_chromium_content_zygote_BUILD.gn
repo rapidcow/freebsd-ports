@@ -1,4 +1,4 @@
---- src/3rdparty/chromium/content/zygote/BUILD.gn.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/content/zygote/BUILD.gn.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/content/zygote/BUILD.gn
 @@ -5,7 +5,7 @@ import("//content/public/common/zygote/features.gni")
  import("//build/config/nacl/config.gni")

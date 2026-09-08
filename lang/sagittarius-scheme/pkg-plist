@@ -40,6 +40,7 @@ include/%%PORTNAME%%/private/keyword.h
 include/%%PORTNAME%%/private/library.h
 include/%%PORTNAME%%/private/load.h
 include/%%PORTNAME%%/private/macro.h
+include/%%PORTNAME%%/private/mbignum.h
 include/%%PORTNAME%%/private/number.h
 include/%%PORTNAME%%/private/numconst.h
 include/%%PORTNAME%%/private/pair.h
@@ -104,6 +105,7 @@ lib/%%PORTNAME%%/%%PORTVERSION%%/include/%%PORTNAME%%/private/keyword.h
 lib/%%PORTNAME%%/%%PORTVERSION%%/include/%%PORTNAME%%/private/library.h
 lib/%%PORTNAME%%/%%PORTVERSION%%/include/%%PORTNAME%%/private/load.h
 lib/%%PORTNAME%%/%%PORTVERSION%%/include/%%PORTNAME%%/private/macro.h
+lib/%%PORTNAME%%/%%PORTVERSION%%/include/%%PORTNAME%%/private/mbignum.h
 lib/%%PORTNAME%%/%%PORTVERSION%%/include/%%PORTNAME%%/private/number.h
 lib/%%PORTNAME%%/%%PORTVERSION%%/include/%%PORTNAME%%/private/numconst.h
 lib/%%PORTNAME%%/%%PORTVERSION%%/include/%%PORTNAME%%/private/pair.h
@@ -134,6 +136,7 @@ lib/%%PORTNAME%%/%%PORTVERSION%%/%%PLIST_ARCH%%-pc-freebsd/compile-%%PORTNAME%%
 lib/%%PORTNAME%%/%%PORTVERSION%%/%%PLIST_ARCH%%-pc-freebsd/lib%%PORTNAME%%.so
 lib/%%PORTNAME%%/%%PORTVERSION%%/%%PLIST_ARCH%%-pc-freebsd/lib%%PORTNAME%%.so.%%PORTVERSION%%
 lib/%%PORTNAME%%/%%PORTVERSION%%/%%PLIST_ARCH%%-pc-freebsd/%%PORTNAME%%
+lib/%%PORTNAME%%/%%PORTVERSION%%/%%PLIST_ARCH%%-pc-freebsd/%%PORTNAME%%--atomic.so
 lib/%%PORTNAME%%/%%PORTVERSION%%/%%PLIST_ARCH%%-pc-freebsd/%%PORTNAME%%--ec.so
 lib/%%PORTNAME%%/%%PORTVERSION%%/%%PLIST_ARCH%%-pc-freebsd/%%PORTNAME%%--ffi.so
 lib/%%PORTNAME%%/%%PORTVERSION%%/%%PLIST_ARCH%%-pc-freebsd/%%PORTNAME%%--filewatch.so
@@ -227,6 +230,7 @@ libdata/pkgconfig/%%PORTNAME%%.pc
 %%DATADIR%%/%%PORTVERSION%%/lib/rnrs/sorting.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/rnrs/syntax-case.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/rnrs/unicode.scm
+%%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/atomic.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/calendar.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/calendar/constants.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/calendar/gregorian.scm
@@ -245,6 +249,8 @@ libdata/pkgconfig/%%PORTNAME%%.pc
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/ciphers/asymmetric/rsa.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/ciphers/asymmetric/state.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/ciphers/symmetric.scm
+%%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/ciphers/symmetric/ccm.scm
+%%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/ciphers/symmetric/gcm-siv.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/ciphers/types.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/descriptors.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/descriptors/cipher.scm
@@ -254,6 +260,8 @@ libdata/pkgconfig/%%PORTNAME%%.pc
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/digests/descriptors.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/digests/oid-map.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/kdfs.scm
+%%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/kdfs/pbkdf-2.scm
+%%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/kdfs/scrypt.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/keys.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/keys/operations.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/keys/operations/asymmetric.scm
@@ -267,6 +275,7 @@ libdata/pkgconfig/%%PORTNAME%%.pc
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/keys/types.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/keystores.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/keystores/pkcs12.scm
+%%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/logic/salsa.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/mac.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/mac/cmac.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/mac/gmac.scm
@@ -291,7 +300,9 @@ libdata/pkgconfig/%%PORTNAME%%.pc
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/pkcs/modules/cms.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/pkcs/modules/pbes.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/pkcs/modules/pfx.scm
+%%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/pkcs/modules/scrypt.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/pkcs/pbes.scm
+%%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/pkcs/scrypt.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/pkix/algorithms.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/pkix/attributes.scm
 %%DATADIR%%/%%PORTVERSION%%/lib/%%PORTNAME%%/crypto/pkix/certificate.scm
@@ -416,6 +427,7 @@ libdata/pkgconfig/%%PORTNAME%%.pc
 %%DATADIR%%/%%PORTVERSION%%/sitelib/math/modulus-check-digit.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/math/mt-random.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/naming/context.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/net/http.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/net/http-client.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/net/http-client/connection-manager.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/net/http-client/connection.scm
@@ -460,6 +472,8 @@ libdata/pkgconfig/%%PORTNAME%%.pc
 %%DATADIR%%/%%PORTVERSION%%/sitelib/record/accessor.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/record/builder.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/rfc/%3a5322.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/rfc/base-n.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/rfc/base32.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/rfc/base64.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/rfc/cmac.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/rfc/cookie.scm
@@ -516,6 +530,7 @@ libdata/pkgconfig/%%PORTNAME%%.pc
 %%DATADIR%%/%%PORTVERSION%%/sitelib/rfc/ssh/constants.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/rfc/ssh/transport.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/rfc/ssh/types.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/rfc/timestamps.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/rfc/tls.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/rfc/tls/constant.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/rfc/tls/port.scm
@@ -555,7 +570,9 @@ libdata/pkgconfig/%%PORTNAME%%.pc
 %%DATADIR%%/%%PORTVERSION%%/sitelib/%%PORTNAME%%/cgen/syntax.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/%%PORTNAME%%/cgen/type.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/%%PORTNAME%%/cgen/unit.scm
-%%DATADIR%%/%%PORTVERSION%%/sitelib/%%PORTNAME%%/char-set/boundary.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/%%PORTNAME%%/char-sets/emojis.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/%%PORTNAME%%/char-sets/grapheme.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/%%PORTNAME%%/char-sets/word.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/%%PORTNAME%%/combinators.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/%%PORTNAME%%/conditions.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/%%PORTNAME%%/control.scm
@@ -653,6 +670,10 @@ libdata/pkgconfig/%%PORTNAME%%.pc
 %%DATADIR%%/%%PORTVERSION%%/sitelib/security/keystore/jceks/keystore.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/security/keystore/jks.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/security/keystore/pkcs12.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/security/password.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/security/password/checker.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/security/password/generator.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/security/password/policy.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/security/signature.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/shorten.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/slib/alist.scm
@@ -787,14 +808,20 @@ libdata/pkgconfig/%%PORTNAME%%.pc
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/%3a17/generalized-set!.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/%3a193.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/%3a193/command-line.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/%3a195.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/%3a195/boxes.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/%3a197.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/%3a197/pipeline.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/%3a2.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/%3a2/and-let%2a.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/%3a210.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/%3a210/multiple-values.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/%3a219.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/%3a219/define.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/%3a23.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/%3a23/error.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/%3a230.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/%3a230/atomic.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/%3a25.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/%3a25/multi-dimensional-arrays.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/%3a25/srfi-25-reference.scm
@@ -923,10 +950,13 @@ libdata/pkgconfig/%%PORTNAME%%.pc
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/160/u8.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/17.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/193.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/195.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/197.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/2.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/210.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/219.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/23.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/230.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/25.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/26.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/srfi/27.scm
@@ -975,7 +1005,19 @@ libdata/pkgconfig/%%PORTNAME%%.pc
 %%DATADIR%%/%%PORTVERSION%%/sitelib/text/json/patch.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/text/json/pointer.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/text/json/schema.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/text/json/schema/conditions.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/text/json/schema/validators/api.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/text/json/schema/validators/array.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/text/json/schema/validators/core.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/text/json/schema/validators/format.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/text/json/schema/validators/logics.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/text/json/schema/validators/object.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/text/json/schema/validators/primitives.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/text/json/schema/validators/ref.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/text/json/schema/validators/vocabularies.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/text/json/schema/version.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/text/json/schema/validators.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/text/json/schema/vocabularies.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/text/json/validator.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/text/markdown.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/text/markdown/convert.scm
@@ -1027,6 +1069,7 @@ libdata/pkgconfig/%%PORTNAME%%.pc
 %%DATADIR%%/%%PORTVERSION%%/sitelib/text/toml/parser.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/text/tree.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/text/unicode.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/text/unicode/grapheme.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/text/xml/dom.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/text/xml/dom/converter.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/text/xml/dom/events.scm
@@ -1068,6 +1111,7 @@ libdata/pkgconfig/%%PORTNAME%%.pc
 %%DATADIR%%/%%PORTVERSION%%/sitelib/util/bytevector.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/util/concurrent.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/util/concurrent/actor.scm
+%%DATADIR%%/%%PORTVERSION%%/sitelib/util/concurrent/atomic.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/util/concurrent/completable-future.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/util/concurrent/executor.scm
 %%DATADIR%%/%%PORTVERSION%%/sitelib/util/concurrent/fork-join-pool.scm

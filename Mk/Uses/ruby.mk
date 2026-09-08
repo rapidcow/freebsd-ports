@@ -15,7 +15,7 @@
 # [variables that a user may define]
 #
 # RUBY_VER		- (See below)
-# RUBY_DEFAULT_VER	- Set to (e.g.) "3.1" if you want to refer to "ruby31"
+# RUBY_DEFAULT_VER	- Set to (e.g.) "3.2" if you want to refer to "ruby32"
 #			  just as "ruby".
 # RUBY_ARCH		- (See below)
 #
@@ -53,7 +53,6 @@
 #			  basename of the ruby distribution tarball.
 # RUBY_PATCHFILES	- PATCHFILES for the standard ruby ports, i.e. the
 #			  basename of the ruby distribution tarball.
-# RUBY_WRKSRC		- WRKSRC for the ruby port.
 # MASTER_SITE_SUBDIR_RUBY	- MASTER_SITE_SUBDIR for the ruby distfiles.
 #
 # RUBY_SHLIBVER		- Major version of libruby (see below for current
@@ -144,31 +143,34 @@ RUBY?=			${LOCALBASE}/bin/ruby${RUBY_SUFFIX}
 .    if defined(RUBY_VER)
 # When adding a version, please keep the comment in
 # Mk/bsd.default-versions.mk in sync.
-.      if ${RUBY_VER} == 3.0
-#
-# Ruby 3.0
-#
-RUBY_DISTVERSION=	3.0.6
-RUBY_PORTREVISION=	1
-.      elif ${RUBY_VER} == 3.1
-#
-# Ruby 3.1
-#
-RUBY_DISTVERSION=	3.1.4
-RUBY_PORTREVISION=	1
-
-.      elif ${RUBY_VER} == 3.2
+.      if ${RUBY_VER} == 3.2
 #
 # Ruby 3.2
 #
-RUBY_DISTVERSION=	3.2.2
-RUBY_PORTREVISION=	1
+RUBY_DISTVERSION=	3.2.9
+RUBY_PORTREVISION=	0
 
 .      elif ${RUBY_VER} == 3.3
 #
 # Ruby 3.3
 #
-RUBY_DISTVERSION=	3.3.0-preview2
+RUBY_DISTVERSION=	3.3.10
+RUBY_PORTREVISION=	0
+
+
+.      elif ${RUBY_VER} == 3.4
+#
+# Ruby 3.4
+#
+RUBY_DISTVERSION=	3.4.7
+RUBY_PORTREVISION=	0
+
+
+.      elif ${RUBY_VER} == 4.0
+#
+# Ruby 4.0
+#
+RUBY_DISTVERSION=	4.0.0-preview2
 RUBY_PORTREVISION=	0
 
 # When adding a version, please keep the comment in
@@ -177,7 +179,7 @@ RUBY_PORTREVISION=	0
 #
 # Other versions
 #
-IGNORE=	Only ruby 3.0, 3.1, 3,2 and 3.3 are supported
+IGNORE=	Only ruby 3,2, 3.3, 3.4 and 4.0 are supported
 _INVALID_RUBY_VER=	1
 .      endif
 RUBY_PORTEPOCH=		1
@@ -186,10 +188,10 @@ RUBY_VERSION=	${RUBY_DISTVERSION:C/^([0-9]+\.[0-9]+\.[0-9]+).*/\1/}
 
 .    if !defined(_INVALID_RUBY_VER)
 
-RUBY30?=		"@comment "
-RUBY31?=		"@comment "
 RUBY32?=		"@comment "
 RUBY33?=		"@comment "
+RUBY34?=		"@comment "
+RUBY40?=		"@comment "
 
 .      if defined(BROKEN_RUBY${RUBY_VER:R}${RUBY_VER:E})
 .        if ${BROKEN_RUBY${RUBY_VER:R}${RUBY_VER:E}} == "yes"
@@ -198,8 +200,6 @@ BROKEN=			does not build with Ruby ${RUBY_VER}
 BROKEN=			${BROKEN_RUBY${RUBY_VER:R}${RUBY_VER:E}}
 .        endif
 .      endif
-
-RUBY_WRKSRC=		${WRKDIR}/ruby-${RUBY_DISTVERSION}
 
 RUBY_CONFIGURE_ARGS+=	--with-rubyhdrdir="${PREFIX}/include/ruby-${RUBY_VER}/" \
 			--with-rubylibprefix="${PREFIX}/lib/ruby" \
@@ -224,8 +224,6 @@ RUBY_DEFAULT_SUFFIX?=	${RUBY_DEFAULT_VER:S/.//}
 RUBY_PORTVERSION?=	${RUBY_DISTVERSION:tl:C/([a-z])[a-z]+/\1/g:C/([0-9])([a-z])/\1.\2/g:C/:(.)/\1/g:C/[^a-z0-9+]+/./g}
 MASTER_SITE_SUBDIR_RUBY?=	${RUBY_VER}
 RUBY_DISTNAME?=		ruby-${RUBY_DISTVERSION}
-
-RUBY_WRKSRC?=		${WRKDIR}/${RUBY_DISTNAME}
 
 RUBY_RELVERSION_CODE?=	${RUBY_RELVERSION:S/.//g}
 RUBY_VERSION_CODE?=	${RUBY_VERSION:S/.//g}
@@ -311,12 +309,12 @@ ruby-extconf-configure:
 .        for d in ${RUBY_EXTCONF_SUBDIRS}
 	@${ECHO_MSG} "===>  Running ${RUBY_EXTCONF} in ${d} to configure"
 	@cd ${CONFIGURE_WRKSRC}/${d}; \
-	${SETENV} ${CONFIGURE_ENV} ${RUBY} ${RUBY_FLAGS} ${RUBY_EXTCONF} ${CONFIGURE_ARGS}
+	${SETENVI} ${WRK_ENV} ${CONFIGURE_ENV} ${RUBY} ${RUBY_FLAGS} ${RUBY_EXTCONF} ${CONFIGURE_ARGS}
 .        endfor
 .      else
 	@${ECHO_MSG} "===>  Running ${RUBY_EXTCONF} to configure"
 	@cd ${CONFIGURE_WRKSRC}; \
-	${SETENV} ${CONFIGURE_ENV} ${RUBY} ${RUBY_FLAGS} ${RUBY_EXTCONF} ${CONFIGURE_ARGS}
+	${SETENVI} ${WRK_ENV} ${CONFIGURE_ENV} ${RUBY} ${RUBY_FLAGS} ${RUBY_EXTCONF} ${CONFIGURE_ARGS}
 .      endif
 .    endif
 
@@ -331,21 +329,21 @@ do-configure:	ruby-setup-configure
 ruby-setup-configure:
 	@${ECHO_MSG} "===>  Running ${RUBY_SETUP} to configure"
 	@cd ${BUILD_WRKSRC}; \
-	${SETENV} ${CONFIGURE_ENV} ${RUBY} ${RUBY_FLAGS} ${RUBY_SETUP} config ${CONFIGURE_ARGS}
+	${SETENVI} ${WRK_ENV} ${CONFIGURE_ENV} ${RUBY} ${RUBY_FLAGS} ${RUBY_SETUP} config ${CONFIGURE_ARGS}
 
 do-build:	ruby-setup-build
 
 ruby-setup-build:
 	@${ECHO_MSG} "===>  Running ${RUBY_SETUP} to build"
 	@cd ${BUILD_WRKSRC}; \
-	${SETENV} ${MAKE_ENV} ${RUBY} ${RUBY_FLAGS} ${RUBY_SETUP} setup
+	${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${RUBY} ${RUBY_FLAGS} ${RUBY_SETUP} setup
 
 do-install:	ruby-setup-install
 
 ruby-setup-install:
 	@${ECHO_MSG} "===>  Running ${RUBY_SETUP} to install"
 	@cd ${INSTALL_WRKSRC}; \
-	${SETENV} ${MAKE_ENV} ${RUBY} ${RUBY_FLAGS} ${RUBY_SETUP} install --prefix=${STAGEDIR}
+	${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${RUBY} ${RUBY_FLAGS} ${RUBY_SETUP} install --prefix=${STAGEDIR}
 .    endif
 
 .    if !${ruby_ARGS:Mbuild} && !${ruby_ARGS:Mrun} && !${ruby_ARGS:Mnone}

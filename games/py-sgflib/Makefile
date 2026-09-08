@@ -5,16 +5,15 @@ CATEGORIES=	games python
 MASTER_SITES=	http://gotools.sourceforge.net/sgflib/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	${PORTNAME}
-EXTRACT_SUFX=	.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Smart Game Format parser library for Python
-WWW=		http://gotools.sourceforge.net/sgflib/
+WWW=		https://gotools.sourceforge.net/sgflib/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/lgpl.txt
 
-USES=		python shebangfix
+USES=		python shebangfix tar:tgz
 USE_PYTHON=	flavors
 NO_BUILD=	yes
 NO_ARCH=	yes

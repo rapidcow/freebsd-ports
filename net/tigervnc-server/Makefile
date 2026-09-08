@@ -1,4 +1,4 @@
-PORTREVISION=	2
+PORTREVISION=	1
 PKGNAMESUFFIX=	-server
 
 COMMENT=	TigerVNC Server
@@ -7,18 +7,20 @@ WWW=		https://tigervnc.org/
 PATCH_DEPENDS+=	${NONEXISTENT}:x11-servers/xorg-server:patch
 BUILD_DEPENDS+=	${LOCALBASE}/include/GL/internal/dri_interface.h:graphics/mesa-dri \
 		${LOCALBASE}/libdata/pkgconfig/fontutil.pc:x11-fonts/font-util \
+		${LOCALBASE}/include/libxcvt/libxcvt.h:x11/libxcvt \
 		bash:shells/bash
 LIB_DEPENDS=	libxshmfence.so:x11/libxshmfence \
-		libxcvt.so:x11/libxcvt \
 		libnettle.so:security/nettle \
-		libgmp.so:math/gmp
+		libgmp.so:math/gmp \
+		libavcodec.so:multimedia/ffmpeg \
+		libxcvt.so:x11/libxcvt
 # almost equivalent to x11-servers/xorg-server's
 RUN_DEPENDS+=	${LOCALBASE}/share/X11/xkb/rules/base:x11/xkeyboard-config \
 		xkbcomp:x11/xkbcomp
 
-USES+=		autoreconf:build compiler:c11 gl jpeg libtool pkgconfig ssl shebangfix xorg
+USES+=		autoreconf:build compiler:c11 gl jpeg libtool perl5 pkgconfig ssl shebangfix xorg
 USE_LDCONFIG=	yes
-USE_GL+=	gl
+USE_GL+=	gbm gl
 USE_XORG+=	ice pixman sm x11 xau xdamage xdmcp xext xfixes xfont2 \
 		xkbfile xorg-macros xorgproto xrandr xrender xtrans xtst
 
@@ -30,14 +32,11 @@ OPTIONS_DEFAULT=	GNUTLS PAM
 OPTIONS_SUB=	yes
 GNUTLS_CMAKE_BOOL=	ENABLE_GNUTLS
 GNUTLS_CONFIGURE_ARGS=	--enable-glx-tls
-GNUTLS_LIB_DEPENDS=	libtasn1.so:security/libtasn1 \
-			libgcrypt.so:security/libgcrypt \
-			libgpg-error.so:security/libgpg-error \
-			libgnutls.so:security/gnutls
+GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 PAM_CMAKE_BOOL=	ENABLE_PAM
 
 CONFIGURE_ARGS+=	\
-		--prefix=${PREFIX} --mandir=${MANPREFIX}/share/man \
+		--prefix=${PREFIX} --mandir=${PREFIX}/share/man \
 		--docdir=${PREFIX}/share/doc/${PORTNAME}/ --with-pic --without-dtrace \
 		--disable-static --disable-dri --disable-unit-tests \
 		--disable-xinerama --disable-xvfb --disable-xnest --disable-xorg \
@@ -70,13 +69,12 @@ CFLAGS+=	-I${LOCALBASE}/include/libdrm
 # - server is not internationalized
 CMAKE_ARGS+=	-DBUILD_VIEWER:BOOL=false -DENABLE_NLS:BOOL=false
 
-TIGERVNC_XORG_PATCH_VER=	${MAKE} -C "${.CURDIR}/../../x11-servers/xorg-server" -V PORTVERSION:R:S,\.,,g
+# TIGERVNC_XOG_PATCH_VER will be 21 when xorg-server 21.1.13
+TIGERVNC_XORG_PATCH_VER=	${MAKE} -C "${.CURDIR}/../../x11-servers/xorg-server" -V PORTVERSION:R:R
 XORG_WRKSRC=	${MAKE} -C ${.CURDIR}/../../x11-servers/xorg-server -VWRKSRC
 
 pre-patch:
 	${CP} -R $$(${XORG_WRKSRC})/ ${WRKSRC}/unix/xserver/
-	# workaround: upstream changed patch naming
-	${LN} -sf ${WRKSRC}/unix/xserver21.1.1.patch ${WRKSRC}/unix/xserver211.patch
 
 post-patch:
 	# do not build tests
@@ -95,7 +93,7 @@ post-stage:
 	# Install v1.10.0 vncserver script and manpage.
 	# See: https://cgit.freebsd.org/ports/commit/net/tigervnc-server?id=e6d3d07
 	${INSTALL_SCRIPT} ${FILESDIR}/v1.10.0-vncserver ${STAGEDIR}${PREFIX}/bin/vncserver
-	${INSTALL_MAN} ${FILESDIR}/v1.10.0-vncserver.man ${STAGEDIR}${MANPREFIX}/share/man/man8/vncserver.8
+	${INSTALL_MAN} ${FILESDIR}/v1.10.0-vncserver.man ${STAGEDIR}${PREFIX}/share/man/man8/vncserver.8
 
 post-install:
 	cd ${WRKSRC}/unix/xserver/hw/vnc/ && \

@@ -1,6 +1,5 @@
 PORTNAME=	libX11
-DISTVERSION=	1.8.6
-PORTREVISION=	1
+DISTVERSION=	1.8.12
 PORTEPOCH=	1
 CATEGORIES=	x11
 
@@ -14,6 +13,7 @@ USES=		cpe tar:xz xorg xorg-cat:lib
 USE_XORG=	xcb xtrans xorgproto
 CPE_VENDOR=	x
 
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS+=	--datadir=${PREFIX}/lib \
 			--without-xmlto \
 			--with-perl=no \

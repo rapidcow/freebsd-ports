@@ -1,6 +1,6 @@
 PORTNAME=	apcctrl
 PORTVERSION=	0.8.21
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	SF/${PORTNAME}
 
@@ -13,6 +13,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		gmake
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--sbindir=${PREFIX}/sbin \
 		--with-nologin=/var/run \
 		--disable-install-distdir \
@@ -55,7 +56,7 @@ CGI_CONFIGURE_ON=		--with-cgi-bin=${ETCDIR}/cgi
 CGI_LIB_DEPENDS=		libgd.so:graphics/gd
 GAPCMON_CONFIGURE_ENABLE=	gapcmon
 GAPCMON_USES=			gnome pkgconfig xorg
-GAPCMON_USE=			GNOME=cairo,gconf2,gdkpixbuf2 XORG=x11,xext
+GAPCMON_USE=			GNOME=cairo,gconf2,gdkpixbuf XORG=x11,xext
 GAPCMON_LIB_DEPENDS=		libfontconfig.so:x11-fonts/fontconfig \
 				libfreetype.so:print/freetype2
 GAPCMON_CONFLICTS=		gapcmon

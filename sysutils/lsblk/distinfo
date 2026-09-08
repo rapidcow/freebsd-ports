@@ -1,4 +1,5 @@
-TIMESTAMP = 1630176670
-SHA256 (lsblk-3.7.tar.gz) = c5d84b27c9664a4a005a01ec194df0eaeb628578d88d5f6ce9a95516dad4752b
-SIZE (lsblk-3.7.tar.gz) = 5228
-
+TIMESTAMP = 1744830936
+SHA256 (lsblk/lsblk-4.0.tar.gz) = 06cbdf8a1e16056b470af7cf9f313a3864e46b2ad028998086f24ff6d4adfb10
+SIZE (lsblk/lsblk-4.0.tar.gz) = 6356
+SHA256 (lsblk/LICENSE) = 31acfaf5e6363e4c91d5f8d59ef0f2f45b290c628186bab554a1bc0f5675ed46
+SIZE (lsblk/LICENSE) = 1318

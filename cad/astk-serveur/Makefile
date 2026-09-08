@@ -1,6 +1,6 @@
 PORTNAME=	astk
 DISTVERSION=	2020.0-1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	cad
 .if !defined(CLIENT_SEUL)
 PKGNAMESUFFIX=	-serveur
@@ -23,7 +23,6 @@ NOT_FOR_ARCHS_REASON=	ARG_MAX is too small for Code_Aster on 32 bits systems
 # - WITH_ZSH or WITH_BASH or WITH_KSH: select a shell among
 #			zsh (default), bash or ksh;
 # - WITH_ED: select an editor accepting '-display' (e.g. gvim, nedit);
-# - WITH_PBS: PBS (batch scheduler) support is experimental.
 #
 #-----------------------------------------------------------------------
 
@@ -60,11 +59,6 @@ conf_dir=	${WRKSRC}/etc/astkrc
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300068
-# ASTK is not useful without french/aster
-IGNORE=	a larger value of ARG_MAX is needed for Code_Aster, please upgrade your system
-.endif
-
 WRKCONF=	${WRKDIR}/${PORTNAME}-${PORTVERSION:R}/configuration
 .if !defined(CLIENT_SEUL)
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:R}/ASTK_SERV
@@ -74,9 +68,6 @@ PLIST_SUB+=	ASTKDIR=${LINSTDIR}/ASTK_SERV SERV="" CLIENT="@comment "\
 PATCH2RM=	bin/as_run bin/parallel_cp etc/asrun etc/profile.sh	\
 		asrun/config.py asrun/installation.py asrun/system.py	\
 		asrun/common/sysutils.py asrun/system_command.py
-. if exists(${LOCALBASE}/sbin/pbs_server)
-WITH_PBS=	yes
-. endif
 . if exists(${LOCALBASE}/bin/mpirun)
 WITH_MPI=	yes
 . endif
@@ -86,9 +77,6 @@ HOME_MPI=	${LOCALBASE}
 PLIST_SUB+=	MPI=""
 . else
 PLIST_SUB+=	MPI="@comment "
-. endif
-. if defined(WITH_PBS)
-RUN_DEPENDS+=	qsub:sysutils/torque
 . endif
 .else
 RUN_DEPENDS+=	xterm:x11/xterm						\
@@ -225,13 +213,8 @@ do-configure:
 		-e "s|/usr/bin/xterm|${LOCALBASE}/bin/xterm|"			\
 		-e "s|/opt/aster|${aster_dir}|" ${WRKSRC}/${libs}
 . endfor
-. if defined(WITH_PBS)
-	${REINPLACE_CMD} -e "s|batch : non|batch : oui|"			\
-		${WRKSRC}/etc/asrun
-. else
 	${REINPLACE_CMD} -e "s|batch : oui|batch : non|"			\
 		${WRKSRC}/unittest/datafiles/config_serveurs
-. endif
 . if defined(MAKE_JOBS_NUMBER) && ! defined(PACKAGE_BUILDING)
 	${REINPLACE_CMD}	\
 		-e "s|%%MAKE_JOBS_NUMBER%%|self.Shell('${ECHO_CMD} ${MAKE_JOBS_NUMBER}', mach, user)|" \

@@ -11,10 +11,10 @@ WWW=		https://github.com/featurecat/lizzie
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BUILD_DEPENDS=	mvn:devel/maven
+BUILD_DEPENDS=	maven>0:devel/maven
 RUN_DEPENDS=	leelaz:games/leela-zero
 
-USE_JAVA=	yes
+USES=		java
 USE_GITHUB=	yes
 GH_ACCOUNT=	featurecat
 

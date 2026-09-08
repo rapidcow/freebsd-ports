@@ -1,6 +1,6 @@
 PORTNAME=	cocotb
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.8.0
+DISTVERSION=	1.9.2
 CATEGORIES=	cad python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -41,11 +41,11 @@ VERILATOR_RUN_DEPENDS=	verilator:cad/verilator
 
 post-install:
 	@${STRIP_CMD} \
-		${STAGEDIR}${PYTHON_SITELIBDIR}/cocotb/simulator${PYTHON_EXT_SUFFIX}.so \
+		${STAGEDIR}${PYTHON_SITELIBDIR}/cocotb/simulator${PYTHON_TAG}.so \
 		${STAGEDIR}${PYTHON_SITELIBDIR}/cocotb/libs/lib*.so \
 		${STAGEDIR}${PYTHON_SITELIBDIR}/cocotb/libs/libcocotbvpi_icarus.vpl
 
-do-test: # some tests fail, see https://github.com/cocotb/cocotb/issues/3236
+do-test: # some tests fail, see https://github.com/cocotb/cocotb/issues/3236, https://github.com/cocotb/cocotb/issues/3435
 	@cd ${TEST_WRKSRC} && ${SETENV} ${TEST_ENV} ${GMAKE} test
 
 .include <bsd.port.mk>

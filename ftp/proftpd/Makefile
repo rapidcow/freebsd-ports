@@ -1,12 +1,10 @@
 PORTNAME?=	proftpd
 .if !defined(DISTVERSION)
 PORTVERSION?=	${PROFTPD_VERSION}
-.endif
 PORTREVISION?=	2
+.endif
 CATEGORIES?=	ftp
 MASTER_SITES=	ftp://ftp.proftpd.org/distrib/source/ \
-		https://github.com/downloads/proftpd/proftpd.github.com/ \
-		ftp://ftpmirror.uk/ftp.proftpd.org/distrib/source/ \
 		http://www.mirrorservice.org/sites/ftp.proftpd.org/distrib/source/
 .if defined(_BUILDING_PROFTPD_MODULE)
 DISTNAME=	proftpd-${PROFTPD_VERSION}
@@ -24,7 +22,7 @@ BUILD_DEPENDS+=	${LOCALBASE}/sbin/proftpd:ftp/proftpd
 RUN_DEPENDS+=	${LOCALBASE}/sbin/proftpd:ftp/proftpd
 .endif
 
-PROFTPD_VERSION=	1.3.8
+PROFTPD_VERSION=	1.3.8c
 
 CPE_VENDOR=	proftpd
 CPE_PRODUCT=	proftpd
@@ -50,8 +48,10 @@ PORTDOCS=	*
 .endif
 
 MAKE_JOBS_UNSAFE=	yes
-USES+=		gmake libtool
+USES+=		gmake libtool perl5
+USE_PERL5=	run
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 .if !defined(_BUILDING_PROFTPD_MODULE)
 USES+=		cpe ssl
@@ -87,8 +87,8 @@ PLIST_FILES+=	libexec/proftpd/${m}.a \
 		libexec/proftpd/${m}.so
 .endfor
 .else
-OPTIONS_DEFINE=	DOCS HTMLDOCS IPV6 NLS MEMCACHE REDIS
-OPTIONS_DEFAULT=	PCRE2
+OPTIONS_DEFINE=	DOCS HTMLDOCS IPV6 NLS MEMCACHE REDIS LIBSODIUM
+OPTIONS_DEFAULT=	PCRE2 LIBSODIUM
 
 OPTIONS_RADIO+=	PCREVER
 OPTIONS_RADIO_PCREVER=	PCRE1 PCRE2
@@ -99,6 +99,7 @@ PCREVER_DESC=		PCRE library to use
 PCRE1_DESC=		${PCRE_DESC}
 PCRE2_DESC=		${PCRE_DESC} version 2
 REDIS_DESC=		Redis support using hiredis
+LIBSODIUM_DESC=		Stronger key algorithm support using libsodium
 
 PLIST_SUB+=	LOCALSTATEDIR="${LOCALSTATEDIR}"
 OPTIONS_SUB=	yes
@@ -172,6 +173,10 @@ REDIS_CONFIGURE_ENABLE=		redis
 REDIS_VARS=		MODULES+="mod_redis mod_tls_redis mod_wrap2_redis" \
 			LIBS+="-L${LOCALBASE}/lib -lhiredis"
 
+LIBSODIUM_CONFIGURE_ENABLE=	sodium
+LIBSODIUM_LIB_DEPENDS=	libsodium.so:security/libsodium
+LIBSODIUM_VARS=		LIBS+="-L${LOCALBASE}/lib -lsodium"
+
 .include <bsd.port.options.mk>
 
 # Generate modules configuration string
@@ -234,7 +239,7 @@ post-install:
 	@${CP} -RP ${WRKSRC}/doc/howto ${STAGEDIR}${DOCSDIR}/html/howto
 . endif
 .endif
-	@${INSTALL_MAN} ${WRKSRC}/src/ftpdctl.8 ${STAGEDIR}${MAN8PREFIX}/man/man8/
+	@${INSTALL_MAN} ${WRKSRC}/src/ftpdctl.8 ${STAGEDIR}${PREFIX}/share/man/man8/
 .endif #!defined(_BUILDING_PROFTPD_MODULE)
 
 .include <bsd.port.post.mk>

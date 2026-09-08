@@ -1,5 +1,5 @@
 PORTNAME=	makemkv
-DISTVERSION=	1.17.4
+DISTVERSION=	1.17.7
 CATEGORIES=	multimedia
 MASTER_SITES=	http://www.makemkv.com/download/:makemkv \
 		http://www.makemkv.com/download/old/:makemkv \
@@ -8,7 +8,7 @@ MASTER_SITES=	http://www.makemkv.com/download/:makemkv \
 DISTFILES=	${DISTFL_MAKEMKV:S/$/:makemkv/} \
 		${DISTFL_FFMPEG:S/$/:ffmpeg/}
 
-MAINTAINER=	zirias@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Video converter reading from DVD and Bluray
 WWW=		https://www.makemkv.com
 
@@ -27,7 +27,7 @@ LICENSE_DISTFILES_LGPL21+ =	${DISTFL_FFMPEG}
 LICENSE_DISTFILES_MAKEMKV=	${DISTFL_MAKEMKV}
 
 ONLY_FOR_ARCHS=	aarch64 amd64 i386
-USES=		gmake linux pkgconfig
+USES=		gmake linux:c7 pkgconfig
 USE_CSTD=	c11
 USE_CXXSTD=	c++11
 USE_LINUX=	base expat \
@@ -48,8 +48,8 @@ SUB_FILES=	update-makemkv-drives
 SUB_LIST=	LINUXBASE=${LINUXBASE}
 PLIST_SUB=	LINUXBASE=${LINUXBASE}
 
-FDKAACVERSION=	2.0.2
-FFMPEGVERSION=	6.0
+FDKAACVERSION=	2.0.3
+FFMPEGVERSION=	6.1.2
 
 DISTFL_MAKEMKV=	makemkv-oss-${DISTVERSION}.tar.gz \
 		makemkv-bin-${DISTVERSION}.tar.gz
@@ -64,8 +64,7 @@ TARGET_ORDER_OVERRIDE=	290:pre-configure-FDK_AAC-on
 
 CC=		${LINUXBASE}/bin/gcc
 CXX=		${LINUXBASE}/bin/g++
-CPPFLAGS+=	-D_linux_ -DFORCE_OPENSSL_NO_EC \
-		${${OSVERSION}<1300000:?-Dcaddr_t=void\* -D__daddr_t_defined:}
+CPPFLAGS+=	-D_linux_ -DFORCE_OPENSSL_NO_EC
 PATCHELF_CMD?=	${LOCALBASE}/bin/patchelf
 LINUXSYSROOT=	${WRKDIR}/gnuroot
 HAS_CONFIGURE=	yes
@@ -111,7 +110,7 @@ pre-install:
 
 post-install:
 		${INSTALL_MAN} ${FILESDIR}/makemkvcon.1 \
-			${STAGEDIR}${PREFIX}/man/man1
+			${STAGEDIR}${PREFIX}/share/man/man1
 		cd ${WRKSRC_bin}; \
 		${MKDIR} tmp; \
 		${ECHO_CMD} accepted > tmp/eula_accepted; \

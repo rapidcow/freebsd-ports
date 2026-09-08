@@ -1,4 +1,4 @@
---- src/3rdparty/chromium/build/linux/strip_binary.py.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/build/linux/strip_binary.py.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/build/linux/strip_binary.py
 @@ -10,6 +10,7 @@ def main():
  

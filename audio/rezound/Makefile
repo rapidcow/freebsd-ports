@@ -1,12 +1,12 @@
 PORTNAME=	rezound
 DISTVERSION=	0.13.1beta
-PORTREVISION=	6
+PORTREVISION=	9
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/ReZound/${DISTVERSION}
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Graphical audio file editor
-WWW=		http://rezound.sourceforge.net/
+WWW=		https://rezound.sourceforge.net/
 
 LICENSE=	GPLv2
 

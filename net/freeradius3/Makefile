@@ -1,5 +1,5 @@
 PORTNAME=	freeradius
-DISTVERSION=	3.2.3
+DISTVERSION=	3.2.8
 CATEGORIES=	net
 MASTER_SITES=	https://github.com/FreeRADIUS/freeradius-server/releases/download/release_${DISTVERSION:S/./_/g}/ \
 		https://freeradius.org/ftp/pub/radius/%SUBDIR%/ \
@@ -20,7 +20,7 @@ BROKEN_SSL_REASON_libressl=	LibreSSL is no longer supported
 BROKEN_SSL_REASON_libressl-devel=	${BROKEN_SSL_REASON_libressl}
 
 LIB_DEPENDS=	libgdbm.so:databases/gdbm \
-		libtalloc.so:devel/talloc
+		libtalloc.so:${SAMBA_TALLOC_PORT}
 
 FLAVORS=	default ldap mysql pgsql sqlite3
 FLAVOR?=	${FLAVORS:[1]}
@@ -40,6 +40,7 @@ USE_RC_SUBR=	radiusd
 SHEBANG_FILES=	src/modules/rlm_counter/rad_counter scripts/sql/radsqlrelay \
 		scripts/sql/rlm_sqlippool_tool
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS+=--without-rlm_python
 # Prevent /root/.rnd leftover
 MAKE_ARGS+=	HOME=/dev/null
@@ -149,9 +150,8 @@ UNBOUND_CONFIGURE_WITH=		rlm_unbound
 UNBOUND_LIB_DEPENDS=		libunbound.so:dns/unbound
 UNIXODBC_CONFIGURE_WITH=	rlm_sql_unixodbc
 UNIXODBC_LIB_DEPENDS=		libodbc.so:databases/unixODBC
-WINBIND_USES=			samba:build,lib
-WINBIND_CONFIGURE_ON=		--with-winbind-include-dir=${LOCALBASE}/include/samba4 \
-				--with-winbind-lib-dir=${LOCALBASE}/lib/samba4
+WINBIND_CONFIGURE_ON=		--with-winbind-include-dir=${SAMBA_INCLUDEDIR} \
+				--with-winbind-lib-dir=${SAMBA_LIBDIR}
 JSON_CONFIGURE_WITH=		rlm_json
 JSON_CONFIGURE_ON=		--with-jsonc-lib-dir=${LOCALBASE}/lib \
 				--with-jsonc-include-dir=${LOCALBASE}/include
@@ -163,6 +163,12 @@ JSON_LIB_DEPENDS=		libjson-c.so:devel/json-c
 SUB_LIST+=	RUN_AS_USER="yes"
 .else
 SUB_LIST+=	RUN_AS_USER="no"
+.endif
+
+.if ${PORT_OPTIONS:MWINBIND}
+USES+=		samba:build,lib
+.else
+USES+=		samba:env
 .endif
 
 # User and group to use if USER option is chosen

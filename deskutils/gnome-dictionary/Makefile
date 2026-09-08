@@ -1,8 +1,8 @@
 PORTNAME=	gnome-dictionary
 PORTVERSION=	40.0
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	deskutils gnome
-MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
+MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome
 
 PATCH_SITES=	https://gitlab.gnome.org/GNOME/${PORTNAME}/-/commit/

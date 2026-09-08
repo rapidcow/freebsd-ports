@@ -1,6 +1,6 @@
---- chrome/browser/policy/chrome_browser_cloud_management_controller_desktop.cc.orig	2023-08-17 07:33:31 UTC
+--- chrome/browser/policy/chrome_browser_cloud_management_controller_desktop.cc.orig	2025-10-30 15:44:36 UTC
 +++ chrome/browser/policy/chrome_browser_cloud_management_controller_desktop.cc
-@@ -48,7 +48,7 @@
+@@ -57,7 +57,7 @@
  #include "chrome/browser/policy/browser_dm_token_storage_mac.h"
  #endif  // BUILDFLAG(IS_MAC)
  
@@ -9,16 +9,16 @@
  #include "chrome/browser/policy/browser_dm_token_storage_linux.h"
  #endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
  
-@@ -57,7 +57,7 @@
+@@ -66,7 +66,7 @@
  #include "chrome/install_static/install_util.h"
  #endif  // BUILDFLAG(IS_WIN)
  
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
- #include "chrome/browser/enterprise/connectors/device_trust/device_trust_features.h"  // nogncheck
+ #include "chrome/browser/enterprise/client_certificates/browser_context_delegate.h"
+ #include "chrome/browser/enterprise/client_certificates/cert_utils.h"
  #include "chrome/browser/enterprise/connectors/device_trust/key_management/browser/device_trust_key_manager_impl.h"
- #include "chrome/browser/enterprise/connectors/device_trust/key_management/browser/key_rotation_launcher.h"
-@@ -90,7 +90,7 @@ void ChromeBrowserCloudManagementControllerDesktop::
+@@ -111,7 +111,7 @@ void ChromeBrowserCloudManagementControllerDesktop::
  
  #if BUILDFLAG(IS_MAC)
    storage_delegate = std::make_unique<BrowserDMTokenStorageMac>();
@@ -27,12 +27,21 @@
    storage_delegate = std::make_unique<BrowserDMTokenStorageLinux>();
  #elif BUILDFLAG(IS_WIN)
    storage_delegate = std::make_unique<BrowserDMTokenStorageWin>();
-@@ -245,7 +245,7 @@ ChromeBrowserCloudManagementControllerDesktop::CreateC
+@@ -276,7 +276,7 @@ ChromeBrowserCloudManagementControllerDesktop::CreateC
  
  std::unique_ptr<enterprise_connectors::DeviceTrustKeyManager>
  ChromeBrowserCloudManagementControllerDesktop::CreateDeviceTrustKeyManager() {
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
-   if (enterprise_connectors::IsDeviceTrustConnectorFeatureEnabled()) {
-     auto key_rotation_launcher =
-         enterprise_connectors::KeyRotationLauncher::Create(
+   auto* browser_dm_token_storage = BrowserDMTokenStorage::Get();
+   auto* device_management_service = GetDeviceManagementService();
+   auto shared_url_loader_factory = GetSharedURLLoaderFactory();
+@@ -298,7 +298,7 @@ ChromeBrowserCloudManagementControllerDesktop::CreateD
+ std::unique_ptr<client_certificates::CertificateProvisioningService>
+ ChromeBrowserCloudManagementControllerDesktop::
+     CreateCertificateProvisioningService() {
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_BSD)
+   if (!certificate_store_) {
+     certificate_store_ =
+         std::make_unique<client_certificates::PrefsCertificateStore>(

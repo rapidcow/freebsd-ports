@@ -1,6 +1,5 @@
 PORTNAME=	mpvpaper
-DISTVERSION=	1.3
-PORTREVISION=	3
+DISTVERSION=	1.8
 CATEGORIES=	multimedia wayland
 
 MAINTAINER=	jbeich@FreeBSD.org

@@ -1,6 +1,5 @@
 PORTNAME=	sidplayfp
-DISTVERSION=	2.5.0
-PORTREVISION=	2
+DISTVERSION=	2.16.0
 CATEGORIES=	audio
 MASTER_SITES=	https://github.com/lib${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/
 
@@ -18,9 +17,9 @@ GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/sidplayfp \
 		bin/stilview \
-		man/man1/sidplayfp.1.gz \
-		man/man1/stilview.1.gz \
-		man/man5/sidplayfp.ini.5.gz
+		share/man/man1/sidplayfp.1.gz \
+		share/man/man1/stilview.1.gz \
+		share/man/man5/sidplayfp.ini.5.gz
 
 OPTIONS_DEFINE=		ALSA OUT123 PULSEAUDIO
 OPTIONS_DEFAULT=	OUT123

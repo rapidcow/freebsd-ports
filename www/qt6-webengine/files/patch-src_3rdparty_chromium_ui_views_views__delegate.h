@@ -1,4 +1,4 @@
---- src/3rdparty/chromium/ui/views/views_delegate.h.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/ui/views/views_delegate.h.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/ui/views/views_delegate.h
 @@ -139,7 +139,7 @@ class VIEWS_EXPORT ViewsDelegate {
    // environment.

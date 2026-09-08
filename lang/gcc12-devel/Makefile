@@ -1,5 +1,5 @@
 PORTNAME=	gcc
-PORTVERSION=	12.3.1.s20230922
+PORTVERSION=	12.4.1.s20250702
 CATEGORIES=	lang
 MASTER_SITES=	GCC/snapshots/${DIST_VERSION}
 PKGNAMESUFFIX=	${SUFFIX}-devel
@@ -12,7 +12,7 @@ WWW=		https://gcc.gnu.org
 LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi
 
-ONLY_FOR_ARCHS=	aarch64 amd64 arm armv6 armv7 i386 powerpc powerpc64 powerpc64le
+ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 powerpc powerpc64 powerpc64le
 
 LIB_DEPENDS=	libgmp.so:math/gmp \
 		libmpfr.so:math/mpfr \
@@ -71,14 +71,16 @@ CFLAGS:=	${CFLAGS:S/mcpu=g/mcpu=G/}
 CXXFLAGS:=	${CFLAGS:S/mcpu=g/mcpu=G/}
 .endif
 
+GRAPHITE_LIB_DEPENDS=		libisl.so:devel/isl
+GRAPHITE_CONFIGURE_WITH+=	isl
+
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == amd64
 CONFIGURE_TARGET=	x86_64-portbld-${OPSYS:tl}${OSREL}
 
-.elif defined(PPC_ABI) && ${PPC_ABI} == ELFv2
+.elif ${ARCH} == powerpc64
 CONFIGURE_ARGS+=	--with-abi=elfv2
-
 .endif
 
 LANGUAGES:=	c,c++,objc,fortran,jit
@@ -86,6 +88,7 @@ TARGLIB=	${PREFIX}/lib/gcc${SUFFIX}
 TARGLIB32=	${PREFIX}/lib32	# The version information is added later
 LIBEXEC=	${PREFIX}/libexec/gcc${SUFFIX}
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_OUTSOURCE=	yes
 .if empty(PORT_OPTIONS:M*BOOTSTRAP)
 CONFIGURE_ARGS+=--disable-bootstrap
@@ -103,6 +106,7 @@ INSTALL_TARGET=	install-strip
 BINMODE=	755
 .endif
 CONFIGURE_ARGS+=--disable-nls \
+		--disable-libssp \
 		--enable-gnu-indirect-function \
 		--enable-host-shared \
 		--enable-plugin \
@@ -140,12 +144,11 @@ INFO+=		gcc${SUFFIX}/libitm
 SUB_FILES=	pkg-message
 SUB_LIST+=	TARGLIB=${TARGLIB}
 
-.if ${PORT_OPTIONS:MGRAPHITE}
-LIB_DEPENDS+=	libisl.so:devel/isl
-CONFIGURE_ARGS+=--with-isl=${LOCALBASE}
-.endif
-
 CONFIGURE_ARGS+=--enable-languages=${LANGUAGES}
+
+.if (${ARCH} == amd64 || ${ARCH} == powerpc64) && ${PORT_OPTIONS:MMULTILIB}
+USE_LDCONFIG32=	${TARGLIB32}/gcc${SUFFIX}
+.endif
 
 pre-everything::
 	@${ECHO_MSG} "Making GCC ${PORTVERSION} for ${CONFIGURE_TARGET} [${LANGUAGES}]"
@@ -161,8 +164,12 @@ full-regression-test: build
 .endif
 
 post-stage:
-	${RM} ${STAGEDIR}${PREFIX}/man/man7/*
+	${RM} ${STAGEDIR}${PREFIX}/share/man/man7/*
 	${RM} -r ${STAGEDIR}${TARGLIB}/gcc/*/${GCC_VERSION}/include-fixed/
+	# Install ISO_Fortran_binding.h in an easily findable directory
+	${MKDIR} ${STAGEDIR}${PREFIX}/include/gcc${SUFFIX}
+	${INSTALL_DATA} ${STAGEDIR}${PREFIX}/lib/gcc${SUFFIX}/gcc/${CONFIGURE_TARGET}/${GCC_VERSION}/include/ISO_Fortran_binding.h	\
+		${STAGEDIR}${PREFIX}/include/gcc${SUFFIX}
 	# Add target libraries and include files to packaging list.
 	${RM} ${WRKDIR}/PLIST.lib
 

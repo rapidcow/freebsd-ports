@@ -1,10 +1,27 @@
---- CMakeLists.txt.orig	2021-05-31 22:55:03 UTC
+--- CMakeLists.txt.orig	2025-11-08 19:08:45 UTC
 +++ CMakeLists.txt
-@@ -592,6 +592,6 @@ INSTALL(FILES
-         src/database/mysql/mysql.sql
-         src/database/sqlite3/sqlite3.sql
-         DESTINATION share/gerbera)
--INSTALL(FILES ${PROJECT_SOURCE_DIR}/doc/gerbera.1 DESTINATION share/man/man1)
-+INSTALL(FILES ${PROJECT_SOURCE_DIR}/doc/gerbera.1 DESTINATION man/man1)
+@@ -906,15 +906,15 @@ endif()
+     )
+ endif()
  
- include(packaging)
+-if(NOT CMAKE_SYSTEM_NAME MATCHES "Darwin")
+-    set(BASH_COMPLETION_DIR "/usr/share/bash-completion/completions")
+-
+-    install(FILES
+-            scripts/gerbera-completion.sh
+-            DESTINATION "${BASH_COMPLETION_DIR}"
+-            RENAME gerbera
+-    )
+-endif()
++#if(NOT CMAKE_SYSTEM_NAME MATCHES "Darwin")
++#    set(BASH_COMPLETION_DIR "/usr/share/bash-completion/completions")
++#
++#    install(FILES
++#            scripts/gerbera-completion.sh
++#            DESTINATION "${BASH_COMPLETION_DIR}"
++#            RENAME gerbera
++#    )
++#endif()
+ 
+ set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA ${DEBIAN_EXTRA_FILES})
+ 

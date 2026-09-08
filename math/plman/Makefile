@@ -8,12 +8,11 @@ DISTNAME=	${PORTNAME}${PORTVERSION:C/\./_/g}
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Propositional Logic sentence shell/interpreter
-WWW=		http://plman.sourceforge.net/
+WWW=		https://plman.sourceforge.net/
 
 NO_BUILD=	yes
 
-USES=		zip
-USE_JAVA=	yes
+USES=		java zip
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
 REPLACE_FILES=	${WRKSRC}/bin/${PORTNAME}

@@ -1,5 +1,6 @@
 PORTNAME=	fasda
-DISTVERSION=	0.1.4
+DISTVERSION=	0.2.0-1
+DISTVERSIONSUFFIX=	-ga7d14ad
 CATEGORIES=	biology
 
 MAINTAINER=	jwb@FreeBSD.org
@@ -17,10 +18,7 @@ USE_GITHUB=	yes
 
 GH_ACCOUNT=	auerlab
 
-MAKE_ENV=	VERSION=${PORTVERSION}
+MAKE_ARGS=	MANPREFIX=${PREFIX}/share VERSION=${PORTVERSION}
 INSTALL_TARGET=	install-strip
-
-pre-build:
-	cd ${WRKSRC} && make depend LOCALBASE=${LOCALBASE}
 
 .include <bsd.port.mk>

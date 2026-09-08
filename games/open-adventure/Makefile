@@ -1,5 +1,6 @@
 PORTNAME=	open-adventure
 PORTVERSION=	1.16
+PORTREVISION=	2
 CATEGORIES=	games
 
 MAINTAINER=	se@FreeBSD.org
@@ -8,7 +9,7 @@ WWW=		http://www.catb.org/~esr/open-adventure/
 
 LICENSE=	BSD2CLAUSE
 
-BUILD_DEPENDS=	${PYTHONPREFIX_SITELIBDIR}/yaml/__init__.py:devel/py-yaml@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyyaml>=0:devel/py-pyyaml@${PY_FLAVOR} \
 		a2x:textproc/asciidoc
 
 USES=		gmake libedit pkgconfig python:build
@@ -20,13 +21,13 @@ MAKE_ENV=	CCFLAGS="${CFLAGS}"
 ALL_TARGET=	advent
 
 PLIST_FILES=	bin/advent \
-		man/man6/advent.6.gz
+		share/man/man6/advent.6.gz
 
 pre-build:
 		cd ${WRKSRC}; ${PYTHON_CMD} make_dungeon.py; a2x -f manpage advent.adoc
 
 do-install:
 		${INSTALL_PROGRAM} ${WRKSRC}/advent ${STAGEDIR}${PREFIX}/bin
-		${INSTALL_MAN} ${WRKSRC}/advent.6 ${STAGEDIR}${MANPREFIX}/man/man6
+		${INSTALL_MAN} ${WRKSRC}/advent.6 ${STAGEDIR}${PREFIX}/share/man/man6
 
 .include <bsd.port.mk>

@@ -1,5 +1,6 @@
 PORTNAME=	otf2bdf
 DISTVERSION=	3.1
+PORTREVISION=	1
 CATEGORIES=	x11-fonts
 MASTER_SITES=	http://sofia.nmsu.edu/~mleisher/Software/otf2bdf/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
@@ -7,7 +8,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 DIST_SUBDIR=	${PORTNAME}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	yasu@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OpenType to BDF converter
 WWW=		http://sofia.nmsu.edu/~mleisher/Software/otf2bdf/
 
@@ -19,8 +20,10 @@ USES=		autoreconf pkgconfig tar:tgz
 
 GNU_CONFIGURE=	yes
 
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
+
 PLIST_FILES=	bin/otf2bdf \
-		man/man1/otf2bdf.1.gz
+		share/man/man1/otf2bdf.1.gz
 
 post-extract:
 		${INSTALL_SCRIPT} ${DISTDIR}/${DIST_SUBDIR}/mkinstalldirs ${WRKSRC}

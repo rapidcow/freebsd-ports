@@ -1,19 +1,20 @@
 PORTNAME=	dia
 PORTVERSION=	0.97.3
-PORTREVISION=	5
+PORTREVISION=	9
 PORTEPOCH=	1
 CATEGORIES=	graphics gnome
 MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome2
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Diagram creation program, similar to Visio
-WWW=		https://live.gnome.org/Dia
+WWW=		https://wiki.gnome.org/Apps/Dia
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libpng.so:graphics/png
+LIB_DEPENDS=	libpng.so:graphics/png \
+		libicudata.so:devel/icu
 
 USES=		cpe desktop-file-utils gettext gmake gnome libtool \
 		localbase:ldflags pathfix pkgconfig tar:xz
@@ -21,6 +22,7 @@ CPE_VENDOR=	gnome
 USE_GNOME=	gtk20 gnomeprefix libxslt libartlgpl2 intlhack
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-gnome
 CONFIGURE_ENV=	LOCALBASE="${LOCALBASE}"
 
@@ -43,7 +45,7 @@ CONFIGURE_ARGS+=	--disable-libemf
 PLIST_SUB+=		WMF="@comment "
 #.endif
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

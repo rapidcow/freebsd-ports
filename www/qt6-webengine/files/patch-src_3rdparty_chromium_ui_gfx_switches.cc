@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/ui/gfx/switches.cc.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/ui/gfx/switches.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/ui/gfx/switches.cc
-@@ -26,7 +26,7 @@ const char kHeadless[] = "headless";
+@@ -32,7 +32,7 @@ const char kHeadless[] = "headless";
  // Run in headless mode, i.e., without a UI or display server dependencies.
  const char kHeadless[] = "headless";
  

@@ -1,7 +1,8 @@
 PORTNAME=	pyparsing
-PORTVERSION=	3.1.1
+PORTVERSION=	3.3.0
 CATEGORIES=	devel python
-MASTER_SITES=	PYPI
+MASTER_SITES=	PYPI \
+		https://github.com/pyparsing/pyparsing/releases/download/${PORTVERSION}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org

@@ -1,6 +1,6 @@
 PORTNAME=	lirc
 PORTVERSION=	0.9.0
-PORTREVISION=	13
+PORTREVISION=	14
 PORTEPOCH=	1
 CATEGORIES=	comms
 MASTER_SITES=	SF/${PORTNAME}/LIRC/${PORTVERSION}
@@ -14,13 +14,14 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 
-USES=		alias autoreconf gmake libtool localbase python tar:bzip2 xorg
+USES=		autoreconf gmake libtool localbase python tar:bzip2 xorg
 USE_XORG=	sm x11 ice
 USE_CSTD=	gnu89
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--enable-sandboxed --with-devdir=/var/run/lirc \
 		--sysconfdir=${PREFIX}/etc
 

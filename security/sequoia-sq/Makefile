@@ -1,50 +1,61 @@
-PORTNAME=	sq
-DISTVERSIONPREFIX=	v
-DISTVERSION=	0.31.0
-PORTREVISION=	2
+PORTNAME=	sequoia-sq
+DISTVERSION=	1.3.1
+PORTREVISION=	7
 CATEGORIES=	security
-PKGNAMEPREFIX=	sequoia-
+MASTER_SITES=	CRATESIO
+# XXX Teach USES=cargo to have proper default
+DISTFILES=	${CARGO_DIST_SUBDIR}/${DISTNAME}${CARGO_CRATE_EXT}
 
 MAINTAINER=	vishwin@FreeBSD.org
 COMMENT=	Sequoia-PGP command line tool
 WWW=		https://sequoia-pgp.org/
 
-LICENSE=	GPLv2+
+LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-LIB_DEPENDS=	libnettle.so:security/nettle \
-		libgmp.so:math/gmp
+BUILD_DEPENDS=	capnp:devel/capnproto
+LIB_DEPENDS=	libnettle.so:security/nettle
 
 USES=	cargo llvm sqlite ssl
 
-USE_GITLAB=	yes
-GL_ACCOUNT=	sequoia-pgp
-GL_PROJECT=	${PKGNAMEPREFIX}${PORTNAME}
+CARGO_ENV+=	ASSET_OUT_DIR=${CARGO_TARGET_DIR}
 
-OPTIONS_DEFINE=	BASH FISH MANPAGES ZSH
-OPTIONS_DEFAULT=	BASH FISH MANPAGES ZSH
+OPTIONS_DEFINE=	BASH ELVISH FISH MANPAGES ZSH
+OPTIONS_DEFAULT=	BASH ELVISH FISH MANPAGES ZSH
 OPTIONS_SUB=	yes
 
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+ELVISH_DESC=	Install Elvish module
+
+.include <bsd.port.pre.mk>
+
+.if ${ARCH:Marmv?}
+LTO_UNSAFE=	yes
+CARGO_ENV+=	CARGO_PROFILE_RELEASE_LTO=false
+.endif
 
 post-install-BASH-on:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/bash-completion/completions
-	${INSTALL_DATA} ${CARGO_TARGET_DIR}/${PORTNAME}.bash \
-		${STAGEDIR}${PREFIX}/share/bash-completion/completions/${PORTNAME}
+	${INSTALL_DATA} ${CARGO_TARGET_DIR}/shell-completions/sq.bash \
+		${STAGEDIR}${PREFIX}/share/bash-completion/completions/sq
+
+post-install-ELVISH-on:
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/elvish/lib
+	${INSTALL_DATA} ${CARGO_TARGET_DIR}/shell-completions/sq.elv \
+		${STAGEDIR}${PREFIX}/share/elvish/lib
 
 post-install-FISH-on:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/fish/completions
-	${INSTALL_DATA} ${CARGO_TARGET_DIR}/${PORTNAME}.fish \
+	${INSTALL_DATA} ${CARGO_TARGET_DIR}/shell-completions/sq.fish \
 		${STAGEDIR}${PREFIX}/share/fish/completions
 
 post-install-MANPAGES-on:
-	${FIND} ${CARGO_TARGET_DIR}/${CARGO_BUILD_TARGET}/release/build/${PKGNAMEPREFIX}${PORTNAME}-*/out -name "*.1" \
-		-exec ${INSTALL_MAN} {} ${STAGEDIR}${MANPREFIX}/man/man1 \;
+	${FIND} ${CARGO_TARGET_DIR}/man-pages -name "*.1" \
+		-exec ${INSTALL_MAN} {} ${STAGEDIR}${PREFIX}/share/man/man1 \;
 
 post-install-ZSH-on:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/zsh/site-functions
-	${INSTALL_DATA} ${CARGO_TARGET_DIR}/_${PORTNAME} \
+	${INSTALL_DATA} ${CARGO_TARGET_DIR}/shell-completions/_sq \
+		${CARGO_TARGET_DIR}/shell-completions/_sq.ps1 \
 		${STAGEDIR}${PREFIX}/share/zsh/site-functions
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

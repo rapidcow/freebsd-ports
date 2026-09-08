@@ -1,11 +1,11 @@
 PORTNAME=	euclid-wm
 PORTVERSION=	0.4.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11-wm
 
 MAINTAINER=	anastasios@mageirias.com
 COMMENT=	Minimalist, tiling window manager for X11
-WWW=		http://euclid-wm.sourceforge.net
+WWW=		https://euclid-wm.sourceforge.net
 
 LICENSE=	BSD3CLAUSE
 
@@ -19,7 +19,7 @@ ALL_TARGET=		noxinerama
 
 PLIST_FILES=	bin/euclid-wm \
 		bin/start-euclid \
-		man/man1/euclid-wm.1.gz \
+		share/man/man1/euclid-wm.1.gz \
 		share/xsessions/euclid.desktop \
 		%%DATADIR%%/VERSION \
 		%%DATADIR%%/euclid-wm.conf \
@@ -42,7 +42,7 @@ XINERAMA_ALL_TARGET=	euclid-wm
 .include <bsd.port.pre.mk>
 
 post-patch:
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 	@${REINPLACE_CMD} -e 's|^CFLAGS = |CFLAGS = -Wno-error=int-conversion |g' \
 		${WRKSRC}/Makefile
 .endif

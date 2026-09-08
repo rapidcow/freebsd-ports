@@ -1,6 +1,6 @@
---- chrome/services/printing/print_backend_service_impl.cc.orig	2023-09-17 07:59:53 UTC
+--- chrome/services/printing/print_backend_service_impl.cc.orig	2025-09-10 13:22:16 UTC
 +++ chrome/services/printing/print_backend_service_impl.cc
-@@ -46,7 +46,7 @@
+@@ -48,7 +48,7 @@
  #include "printing/backend/cups_connection_pool.h"
  #endif
  
@@ -9,16 +9,16 @@
  #include "base/no_destructor.h"
  #include "ui/linux/linux_ui.h"
  #include "ui/linux/linux_ui_delegate_stub.h"
-@@ -73,7 +73,7 @@ namespace printing {
+@@ -75,7 +75,7 @@ namespace printing {
  
  namespace {
  
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  void InstantiateLinuxUiDelegate() {
-   // TODO(crbug.com/809738)  Until a real UI can be used in a utility process,
+   // TODO(crbug.com/40561724)  Until a real UI can be used in a utility process,
    // need to use the stub version.
-@@ -82,7 +82,7 @@ void InstantiateLinuxUiDelegate() {
+@@ -84,7 +84,7 @@ void InstantiateLinuxUiDelegate() {
  #endif
  
  scoped_refptr<base::SequencedTaskRunner> GetPrintingTaskRunner() {
@@ -27,7 +27,7 @@
    // Use task runner associated with equivalent of UI thread.  Needed for calls
    // made through `PrintDialogLinuxInterface` to properly execute.
    CHECK(base::SequencedTaskRunner::HasCurrentDefault());
-@@ -466,7 +466,7 @@ void PrintBackendServiceImpl::Init(
+@@ -467,7 +467,7 @@ void PrintBackendServiceImpl::Init(
    // `InitCommon()`.
    InitializeProcessForPrinting();
    print_backend_ = PrintBackend::CreateInstance(locale);
@@ -36,9 +36,9 @@
    // Test framework already initializes the UI, so this should not go in
    // `InitCommon()`.  Additionally, low-level Linux UI is not needed when tests
    // are using `TestPrintingContext`.
-@@ -686,7 +686,7 @@ void PrintBackendServiceImpl::UpdatePrintSettings(
+@@ -676,7 +676,7 @@ void PrintBackendServiceImpl::UpdatePrintSettings(
    crash_keys_ = std::make_unique<crash_keys::ScopedPrinterInfo>(
-       print_backend_->GetPrinterDriverInfo(*printer_name));
+       *printer_name, print_backend_->GetPrinterDriverInfo(*printer_name));
  
 -#if BUILDFLAG(IS_LINUX) && BUILDFLAG(USE_CUPS)
 +#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)) && BUILDFLAG(USE_CUPS)

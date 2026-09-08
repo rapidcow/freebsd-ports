@@ -1,80 +1,59 @@
 PORTNAME=	higan
-PORTVERSION=	106
-PORTREVISION=	12
+DISTVERSIONPREFIX=	v
+DISTVERSION=	110
+PORTREVISION=	1
 CATEGORIES=	emulators games
-MASTER_SITES=	http://download.byuu.org/ \
-		http://www.cyberbotx.com/higan/
-DISTNAME=	${PORTNAME}_v${PORTVERSION}-source
 
-MAINTAINER=	cyberbotx@cyberbotx.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Nintendo multi-system emulator
-WWW=		http://byuu.org/higan/
+WWW=		https://github.com/higan-emu/higan
+
+LICENSE=	GPLv3+
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64 powerpc64le
 
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2
+		libfreetype.so:print/freetype2 \
+		libharfbuzz.so:print/harfbuzz
 
-USES=		7z compiler:c++14-lang gettext gmake gnome pkgconfig xorg
-USE_GNOME=	cairo gdkpixbuf2 gtk20 gtksourceview2
-USE_XORG=	x11 xext
+USES=		compiler:c++14-lang gettext gmake gnome pkgconfig xorg
 USE_CSTD=	c99
 USE_CXXSTD=	c++14
-USE_GCC=	yes
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	higan-emu
+
+USE_GNOME=	cairo gdkpixbuf gtk20 gtksourceview2
+USE_XORG=	x11 xext xrandr
 
 MAKEFILE=	GNUmakefile
-MAKE_ENV=	compiler="${CXX}" hiro="gtk"
+MAKE_ENV=	compiler="${CXX}" hiro="gtk2"
 
 OPTIONS_DEFINE=		DEBUG
-OPTIONS_MULTI=		VIDEO SOUND INPUT
+OPTIONS_DEFAULT=	GLX INPUT_SDL OPENAL SDL XSHM XV
+OPTIONS_MULTI=		INPUT SOUND VIDEO
+OPTIONS_MULTI_INPUT=	INPUT_SDL
+OPTIONS_MULTI_SOUND=	AO OPENAL PULSEAUDIO
 OPTIONS_MULTI_VIDEO=	GLX SDL XSHM XV
-OPTIONS_MULTI_SOUND=	AO OPENAL OSS PULSEAUDIO
-OPTIONS_MULTI_INPUT=	INPUT_SDL INPUT_X
-OPTIONS_DEFAULT=	GLX XSHM XV SDL \
-			OSS INPUT_SDL INPUT_X
 
-XSHM_DESC=		Build XShm video driver
-XV_DESC=		Build Xv video driver
-INPUT_SDL_DESC=		Build SDL input driver
-INPUT_X_DESC=		Build X input driver
+INPUT_SDL_DESC=	Build SDL input driver
+XSHM_DESC=	Build XShm video driver
+XV_DESC=	Build Xv video driver
 
-GLX_USES=	gl
-GLX_USE=	GL=gl
-GLX_VARS=	VIDEO_DRIVER+=video.glx
-
-SDL_USES=	sdl
-SDL_USE=	XORG=xv SDL=sdl
-SDL_VARS=	VIDEO_DRIVER+=video.sdl
-
-XSHM_USE=	XORG=xext
-XSHM_VARS=	VIDEO_DRIVER+=video.xshm
-
-XV_USE=		XORG=xv
-XV_VARS=	VIDEO_DRIVER+=video.xvideo
-
-AO_LIB_DEPENDS=	libao.so:audio/libao
-AO_VARS=	AUDIO_DRIVER+=audio.ao
-
-OPENAL_USES=	openal:al
-OPENAL_VARS=	AUDIO_DRIVER+=audio.openal
-
-OSS_VARS=	AUDIO_DRIVER+=audio.oss
-
+AO_LIB_DEPENDS=		libao.so:audio/libao
+GLX_USES=		gl
+GLX_USE=		GL=gl
+INPUT_SDL_USES=		sdl
+INPUT_SDL_USE=		SDL=sdl
+OPENAL_USES=		openal:al
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
-PULSEAUDIO_VARS=	AUDIO_DRIVER+=audio.pulseaudio
-
-INPUT_SDL_USES=	sdl
-INPUT_SDL_USE=	SDL=sdl
-INPUT_SDL_VARS=	INPUT_DRIVER+=input.sdl
-
-INPUT_X_VARS=	INPUT_DRIVER+=input.xlib
+SDL_USES=		sdl
+SDL_USE=		SDL=sdl2 XORG=xv
+XSHM_USE=		XORG=xext
+XV_USE=			XORG=xv
 
 post-patch:
-	${REINPLACE_CMD} \
-		-e 's|%%VIDEO%%|${VIDEO_DRIVER}|' \
-		-e 's|%%AUDIO%%|${AUDIO_DRIVER}|' \
-		-e 's|%%INPUT%%|${INPUT_DRIVER}|' \
-		${WRKSRC}/higan/target-tomoko/GNUmakefile
 	${REINPLACE_CMD} -e 's|/usr/share/|${PREFIX}/share/|' \
 		${WRKSRC}/nall/path.hpp
 
@@ -91,9 +70,9 @@ do-build:
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/higan/out/higan ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_PROGRAM} ${WRKSRC}/icarus/out/icarus ${STAGEDIR}${PREFIX}/bin/
-	${INSTALL_DATA} ${WRKSRC}/higan/data/higan.png ${STAGEDIR}${PREFIX}/share/pixmaps/
-	${INSTALL_DATA} ${WRKSRC}/higan/data/higan.desktop ${STAGEDIR}${PREFIX}/share/applications/
-	(cd ${WRKSRC}/higan/systems && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/)
+	${INSTALL_DATA} ${WRKSRC}/higan/target-higan/resource/higan.png ${STAGEDIR}${PREFIX}/share/pixmaps/
+	${INSTALL_DATA} ${WRKSRC}/higan/target-higan/resource/higan.desktop ${STAGEDIR}${PREFIX}/share/applications/
+	(cd ${WRKSRC}/higan/System && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR}/)
 	(cd ${WRKSRC}/icarus/Database && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/share/icarus/Database/)
 
 .include <bsd.port.mk>

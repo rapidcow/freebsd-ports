@@ -1,9 +1,10 @@
 PORTNAME=	sqliteodbc
-PORTVERSION=	0.9999
+PORTVERSION=	0.99991
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	http://www.ch-werner.de/sqliteodbc/
 
-MAINTAINER?=	madpilot@FreeBSD.org
+MAINTAINER?=	ports@FreeBSD.org
 COMMENT?=	ODBC driver for SQLite 3
 WWW=		http://www.ch-werner.de/sqliteodbc/
 

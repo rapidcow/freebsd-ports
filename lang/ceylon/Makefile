@@ -1,5 +1,6 @@
 PORTNAME=	ceylon
 PORTVERSION=	1.3.3
+PORTREVISION=	1
 CATEGORIES=	lang java
 MASTER_SITES=	http://downloads.ceylon-lang.org/cli/
 
@@ -10,11 +11,9 @@ WWW=		https://ceylon-lang.org/
 LICENSE=	APACHE20 GPLv2
 LICENSE_COMB=	multi
 
-USES=		zip
-NO_BUILD=	yes
+USES=		java zip
 
-USE_JAVA=	yes
-JAVA_RUN=	yes
+NO_BUILD=	yes
 
 PORTDATA=	*
 
@@ -24,7 +23,7 @@ CEYLON_DIRS=	contrib lib repo samples templates
 do-install:
 	${RM} ${WRKSRC}/bin/*.bat
 
-	${INSTALL_MAN} ${WRKSRC}/doc/man/man1/* ${STAGEDIR}/${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/doc/man/man1/* ${STAGEDIR}/${PREFIX}/share/man/man1
 
 	${MKDIR} ${STAGEDIR}${DATADIR}
 .for d in ${CEYLON_DIRS}

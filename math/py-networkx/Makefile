@@ -1,7 +1,7 @@
 PORTNAME=	networkx
-DISTVERSION=	3.1
-PORTREVISION=	1
-PORTEPOCH=	1
+DISTVERSION=	3.5
+PORTREVISION=	3
+PORTEPOCH=	2
 CATEGORIES=	math python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,15 +12,18 @@ WWW=		https://networkx.github.io/
 
 LICENSE=	BSD3CLAUSE
 
-RUN_DEPENDS:=	${PYTHON_PKGNAMEPREFIX}decorator>=4.3.0:devel/py-decorator@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR}
+#RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}decorator>=4.3.0:devel/py-decorator@${PY_FLAVOR}
 
 USES=		cpe python shebangfix
-USE_PYTHON=	autoplist concurrent distutils pytest
+USE_PYTHON=	autoplist concurrent pep517 pytest
+
 SHEBANG_GLOB=	*.py
 NO_ARCH=	yes
 CPE_VENDOR=	python
 
-PLIST_SUB+=	PYTHON_MAJOR_VER=${PYTHON_MAJOR_VER}
+#PLIST_SUB+=	PYTHON_MAJOR_VER=${PYTHON_MAJOR_VER}
 
 OPTIONS_DEFINE=	EXAMPLES GDAL LXML PANDAS PYDOT YAML
 OPTIONS_GROUP=	MATRIX RENDER
@@ -54,7 +57,7 @@ PYDOT_DESC=	Graphviz Dot language
 PYDOT_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pydot>=0:graphics/py-pydot@${PY_FLAVOR}
 
 YAML_DESC=	Reading and writing YAML files
-YAML_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}yaml>=0:devel/py-yaml@${PY_FLAVOR}
+YAML_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pyyaml>=0:devel/py-pyyaml@${PY_FLAVOR}
 
 PORTEXAMPLES=	*
 

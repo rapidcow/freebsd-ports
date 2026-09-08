@@ -1,6 +1,6 @@
 PORTNAME=	notify-osd
 PORTVERSION=	0.9.34
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	deskutils
 MASTER_SITES=	https://launchpad.net/notify-osd/precise/0.9.34/+download/ \
 		LOCAL/ehaupt
@@ -21,7 +21,7 @@ RUN_DEPENDS=	dbus-daemon:devel/dbus \
 		gsettings-desktop-schemas>=3.28.0:devel/gsettings-desktop-schemas
 
 USES=		gettext-runtime gmake gnome libtool pkgconfig xorg
-USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk30 pango
+USE_GNOME=	atk cairo gdkpixbuf glib20 gtk30 pango
 USE_XORG=	pixman x11
 
 GNU_CONFIGURE=	yes

@@ -553,8 +553,8 @@
 %%WWWDIR%%/assets/styles/dark-theme.css
 %%WWWDIR%%/assets/styles/hc-dark.css
 %%WWWDIR%%/assets/styles/hc-light.css
-%%WWWDIR%%/assets/styles/vendors/Leaflet/Leaflet/LICENSE
-%%WWWDIR%%/assets/styles/vendors/Leaflet/Leaflet/leaflet.css
+%%WWWDIR%%/assets/styles/vendors/Leaflet/LICENSE
+%%WWWDIR%%/assets/styles/vendors/Leaflet/leaflet.css
 %%WWWDIR%%/audio/alarm_average.mp3
 %%WWWDIR%%/audio/alarm_disaster.mp3
 %%WWWDIR%%/audio/alarm_high.mp3
@@ -604,6 +604,7 @@
 %%WWWDIR%%/include/classes/api/clients/CApiClient.php
 %%WWWDIR%%/include/classes/api/clients/CLocalApiClient.php
 %%WWWDIR%%/include/classes/api/helpers/CApiHostHelper.php
+%%WWWDIR%%/include/classes/api/helpers/CApiPskHelper.php
 %%WWWDIR%%/include/classes/api/helpers/CApiTagHelper.php
 %%WWWDIR%%/include/classes/api/managers/CDiscoveryRuleManager.php
 %%WWWDIR%%/include/classes/api/managers/CGraphManager.php
@@ -719,7 +720,6 @@
 %%WWWDIR%%/include/classes/helpers/CAuthenticationHelper.php
 %%WWWDIR%%/include/classes/helpers/CBrandHelper.php
 %%WWWDIR%%/include/classes/helpers/CConditionHelper.php
-%%WWWDIR%%/include/classes/helpers/CConfigGeneralHelper.php
 %%WWWDIR%%/include/classes/helpers/CCookieHelper.php
 %%WWWDIR%%/include/classes/helpers/CCorrelationHelper.php
 %%WWWDIR%%/include/classes/helpers/CCuid.php
@@ -832,6 +832,7 @@
 %%WWWDIR%%/include/classes/html/CTextBox.php
 %%WWWDIR%%/include/classes/html/CUiWidget.php
 %%WWWDIR%%/include/classes/html/CVar.php
+%%WWWDIR%%/include/classes/html/CVertical.php
 %%WWWDIR%%/include/classes/html/CVisibilityBox.php
 %%WWWDIR%%/include/classes/html/CWarning.php
 %%WWWDIR%%/include/classes/html/interfaces/CButtonInterface.php
@@ -1077,6 +1078,9 @@
 %%WWWDIR%%/include/classes/widgets/forms/CWidgetFormTrigOver.php
 %%WWWDIR%%/include/classes/widgets/forms/CWidgetFormUrl.php
 %%WWWDIR%%/include/classes/widgets/forms/CWidgetFormWeb.php
+%%WWWDIR%%/include/classes/widgets/views/js/widget.clock.form.view.js.php
+%%WWWDIR%%/include/classes/widgets/views/js/widget.graph.form.view.js.php
+%%WWWDIR%%/include/classes/widgets/views/js/widget.graphprototype.form.view.js.php
 %%WWWDIR%%/include/classes/widgets/views/js/widget.slareport.form.view.js.php
 %%WWWDIR%%/include/classes/widgets/views/js/widget.tophosts.form.view.js.php
 %%WWWDIR%%/include/classes/widgets/views/widget.actionlog.form.view.php
@@ -1253,6 +1257,7 @@
 %%WWWDIR%%/js/common.js
 %%WWWDIR%%/js/component.z-bar-gauge.js
 %%WWWDIR%%/js/component.z-select.js
+%%WWWDIR%%/js/component.z-vertical.js
 %%WWWDIR%%/js/flickerfreescreen.js
 %%WWWDIR%%/js/functions.js
 %%WWWDIR%%/js/gtlc.js
@@ -1276,11 +1281,14 @@
 %%WWWDIR%%/js/textareaflexible.js
 %%WWWDIR%%/js/vector/class.svg.canvas.js
 %%WWWDIR%%/js/vector/class.svg.map.js
-%%WWWDIR%%/js/vendors/Leaflet/Leaflet.markercluster/leaflet.markercluster.js
-%%WWWDIR%%/js/vendors/Leaflet/Leaflet/LICENSE
-%%WWWDIR%%/js/vendors/Leaflet/Leaflet/leaflet.js
-%%WWWDIR%%/js/vendors/jquery-ui.js
-%%WWWDIR%%/js/vendors/jquery.js
+%%WWWDIR%%/js/vendors/jQuery/LICENSE
+%%WWWDIR%%/js/vendors/jQuery/jquery.js
+%%WWWDIR%%/js/vendors/jQueryUI/LICENSE
+%%WWWDIR%%/js/vendors/jQueryUI/jquery-ui.js
+%%WWWDIR%%/js/vendors/Leaflet.markercluster/LICENSE
+%%WWWDIR%%/js/vendors/Leaflet.markercluster/leaflet.markercluster.js
+%%WWWDIR%%/js/vendors/Leaflet/LICENSE
+%%WWWDIR%%/js/vendors/Leaflet/leaflet.js
 %%WWWDIR%%/js/widgets/class.widget.clock.js
 %%WWWDIR%%/js/widgets/class.widget.geomap.js
 %%WWWDIR%%/js/widgets/class.widget.graph-prototype.js
@@ -1295,6 +1303,7 @@
 %%WWWDIR%%/js/widgets/class.widget.problemsbysv.js
 %%WWWDIR%%/js/widgets/class.widget.svggraph.js
 %%WWWDIR%%/js/widgets/class.widget.trigerover.js
+%%WWWDIR%%/js/widgets/class.widget.url.js
 %%WWWDIR%%/jsLoader.php
 %%WWWDIR%%/jsrpc.php
 %%WWWDIR%%/local/.htaccess
@@ -1316,6 +1325,7 @@
 %%WWWDIR%%/locale/en/LC_MESSAGES/frontend.pot
 %%WWWDIR%%/locale/en_GB/LC_MESSAGES/frontend.mo
 %%WWWDIR%%/locale/en_GB/LC_MESSAGES/frontend.po
+%%WWWDIR%%/locale/en_US/LC_MESSAGES/frontend.pot
 %%WWWDIR%%/locale/es/LC_MESSAGES/frontend.mo
 %%WWWDIR%%/locale/es/LC_MESSAGES/frontend.po
 %%WWWDIR%%/locale/fa/LC_MESSAGES/frontend.mo
@@ -1338,6 +1348,8 @@
 %%WWWDIR%%/locale/ja/LC_MESSAGES/frontend.po
 %%WWWDIR%%/locale/ka/LC_MESSAGES/frontend.mo
 %%WWWDIR%%/locale/ka/LC_MESSAGES/frontend.po
+%%WWWDIR%%/locale/kk/LC_MESSAGES/frontend.mo
+%%WWWDIR%%/locale/kk/LC_MESSAGES/frontend.po
 %%WWWDIR%%/locale/ko/LC_MESSAGES/frontend.mo
 %%WWWDIR%%/locale/ko/LC_MESSAGES/frontend.po
 %%WWWDIR%%/locale/lt/LC_MESSAGES/frontend.mo

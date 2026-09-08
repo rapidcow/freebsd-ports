@@ -1,21 +1,22 @@
 PORTNAME=	mcpp
-PORTVERSION=	2.7.2
-PORTREVISION=	3
+DISTVERSION=	2.7.2.1
 CATEGORIES=	devel
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/V.${PORTVERSION}
 
 MAINTAINER=	kmatsui@t3.rim.or.jp
 COMMENT=	Alternative C/C++ preprocessor
-WWW=		http://mcpp.sourceforge.net/
+WWW=		https://mcpp.sourceforge.net/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cpe libtool
+CPE_VENDOR=	mcpp_project
+USE_GITHUB=	yes
+GH_ACCOUNT=	museoa
+USE_LDCONFIG=	yes
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-mcpplib
-USE_LDCONFIG=	yes
-CPE_VENDOR=	mcpp_project
 
 OPTIONS_DEFINE=	DOCS
 

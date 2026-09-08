@@ -1,24 +1,30 @@
 PORTNAME=	mpc-qt
 DISTVERSIONPREFIX=	v
-DISTVERSION=	23.02
-PORTREVISION=	1
+DISTVERSION=	26.01
 CATEGORIES=	multimedia audio
 
-MAINTAINER=	jbeich@FreeBSD.org
-COMMENT=	Qt 5 clone of Media Player Classic based on libmpv
+MAINTAINER=	eduardo@FreeBSD.org
+COMMENT=	Media Player Classic Qute Theater
 WWW=		https://github.com/mpc-qt/mpc-qt
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	mpv>=0.29,1:multimedia/mpv
+BUILD_DEPENDS=	mpv>=0.37,1:multimedia/mpv
 LIB_DEPENDS=	libmpv.so:multimedia/mpv
 
-USES=		compiler:c++14-lang desktop-file-utils gl pkgconfig qmake qt:5
+USES=		cmake compiler:c++17-lang desktop-file-utils gl pkgconfig qt:6
 USE_GITHUB=	yes
-USE_GL=		gl
-USE_QT=		qmake:build buildtools:build linguisttools:build \
-		core dbus gui network svg:run widgets x11extras
-QMAKE_ARGS=	MPCQT_VERSION="${DISTVERSION}${DISTVERSIONSUFFIX}"
+USE_GL=		opengl
+USE_QT=		base svg tools:build
+CMAKE_ARGS=	-DMPCQT_VERSION="${DISTVERSION}"
+CMAKE_ON=	CMAKE_DISABLE_FIND_PACKAGE_Boost
+
+PLIST_FILES=	bin/${PORTNAME} \
+		share/applications/io.github.mpc_qt.mpc-qt.desktop \
+		share/icons/hicolor/scalable/apps/mpc-qt.svg \
+		share/metainfo/io.github.mpc_qt.mpc-qt.metainfo.xml
+PORTDOCS=	ipc.md
 
 OPTIONS_DEFINE=	DOCS
 

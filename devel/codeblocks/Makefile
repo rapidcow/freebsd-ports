@@ -1,6 +1,6 @@
 PORTNAME=	codeblocks
 PORTVERSION=	20.03
-PORTREVISION=	7
+PORTREVISION=	18
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/Sources/${PORTVERSION}
 
@@ -12,7 +12,7 @@ LICENSE=	GPLv3 LGPL3
 LICENSE_COMB=	multi
 
 BUILD_DEPENDS=	zip:archivers/zip
-LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
+LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libhunspell-1.7.so:textproc/hunspell \
@@ -28,6 +28,7 @@ USE_WX=		3.0+
 USE_XORG=	x11
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-wx-config=${WX_CONFIG} --disable-pch \
 		--with-boost-system=boost_system
 CONFIGURE_ENV=	CPPFLAGS="${CPPFLAGS}"
@@ -46,5 +47,9 @@ PLIST_SUB=	X86="@comment "
 CONFIGURE_ARGS+=	--with-contrib-plugins=all
 PLIST_SUB=	X86=""
 .endif
+
+post-patch:
+	@${REINPLACE_CMD} -e '/boost_system/d'  -e '/AX_BOOST_SYSTEM/d' \
+		${WRKSRC}/configure.ac
 
 .include <bsd.port.post.mk>

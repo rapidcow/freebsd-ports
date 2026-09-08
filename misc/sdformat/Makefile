@@ -1,6 +1,6 @@
 PORTNAME=	sdformat
 DISTVERSION=	8.0.0
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	misc
 MASTER_SITES=	https://bitbucket.org/${BB_ACCOUNT}/${BB_PROJECT}/get/${BB_COMMIT}.tar.gz?dummy=/
 
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libignition-math6.so:math/ignition-math \
 		liburdfdom_world.so:devel/ros-urdfdom
 RUN_DEPENDS=	ignition-tools>0:devel/ignition-tools
 
-USES=		cmake compiler:c++17-lang pkgconfig
+USES=		cmake compiler:c++17-lang pkgconfig ruby:build
 USE_LDCONFIG=	yes
 
 CMAKE_OFF=	BUILD_TESTING

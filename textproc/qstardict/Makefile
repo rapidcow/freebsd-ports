@@ -1,41 +1,38 @@
 PORTNAME=	qstardict
-DISTVERSIONPREFIX=	qstardict-
-DISTVERSION=	1.3
-PORTREVISION=	2
+DISTVERSION=	4.0.0
 CATEGORIES=	textproc
+MASTER_SITES=	https://qstardict.ylsoftware.com/files/
 
-MAINTAINER=	makc@FreeBSD.org
+MAINTAINER=	mew14930xvi@inbox.lv
 COMMENT=	Qt based dictionary program (stardict clone)
-WWW=		http://qstardict.ylsoftware.com/
+WWW=		https://qstardict.ylsoftware.com/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		compiler:c++11-lang gl gnome pkgconfig qmake qt:5 tar:bzip2 xorg
-USE_GL=		gl
-USE_GNOME=	glib20
-USE_QT=		core dbus gui network printsupport widgets xml \
-		buildtools:build linguisttools:build qmake:build
-USE_XORG=	x11
+LIB_DEPENDS=	libxkbcommon.so:x11/libxkbcommon
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	a-rodin
+USES=		compiler:c++17-lang gettext-runtime gl gnome pkgconfig qmake \
+		qt:6 xorg
+USE_GL=		opengl
+USE_GNOME=	glib20
+USE_QT=		base tools:build
+USE_XORG=	x11
 
 QMAKE_ARGS=	INSTALL_PREFIX=${PREFIX}
 
-OPTIONS_DEFINE=	DOCS KDE
-OPTIONS_SUB=	yes
+PORTDATA=	*
+PORTDOCS=	*
 
-KDE_DESC=	KDE integration
-KDE_USES=	kde:5
-KDE_USE=	KDE=globalaccel,notifications,windowsystem
-KDE_QMAKE_ON=	"ENABLED_PLUGINS=stardict web kdeintegration"
+OPTIONS_DEFINE=	DOCS
 
 # Path to dictionaries installed by stardict-* ports
-DICPATH=	${LOCALBASE}/share/stardict/dic
+DICPATH=	share/stardict/dic
 
 post-patch:
-	${REINPLACE_CMD} '/m_dictDirs/s|/usr/share/stardict/dic|${PREFIX}/share/stardict/dic|g' \
+	@${REINPLACE_CMD} '/${DICPATH:S/\//\\\//g}/s|/usr|${PREFIX}|' \
 		${WRKSRC}/plugins/stardict/stardict.cpp
+	@${REINPLACE_CMD} '/VERSION = /s/3\.0\.0/${DISTVERSION}/' \
+		${WRKSRC}/qstardict.pri
 
 .include <bsd.port.mk>

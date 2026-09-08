@@ -1,11 +1,9 @@
 PORTNAME=	strongswan
-DISTVERSION=	5.9.11
-PORTREVISION=	2
+DISTVERSION=	6.0.3
+PORTREVISION=	1
 CATEGORIES=	security net-vpn
 MASTER_SITES=	https://download.strongswan.org/ \
 		https://download2.strongswan.org/
-PATCH_SITES=	https://github.com/strongswan/strongswan/commit/
-PATCHFILES=	a619356b5f21bfe3c13f1576eb1d16c015532ceb.patch:-p1
 
 MAINTAINER=	strongswan@nanoteq.com
 COMMENT=	Open Source IKEv2 IPsec-based VPN solution
@@ -43,10 +41,10 @@ CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc \
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 
-OPTIONS_DEFINE=			CTR CURL EAPAKA3GPP2 EAPDYNAMIC EAPRADIUS \
+OPTIONS_DEFINE=			CTR CURL DHCP EAPAKA3GPP2 EAPDYNAMIC EAPRADIUS \
 				EAPSIMFILE FARP GCM IKEV1 IPSECKEY KDF \
-				KERNELLIBIPSEC LDAP LOADTESTER MEDIATION MYSQL \
-				PKCS11 PKI PYTHON SMP SQLITE SWANCTL \
+				KERNELLIBIPSEC LDAP LOADTESTER MEDIATION ML MYSQL \
+				PKCS11 PKI PYTHON SMP SQLITE STROKE SWANCTL \
 				TESTVECTOR TPM TSS2 UNBOUND UNITY VICI XAUTH
 OPTIONS_DEFINE_i386=	VIA
 OPTIONS_DEFAULT=		BUILTIN CURL GCM IKEV1 KDF PKI SWANCTL VICI
@@ -58,6 +56,7 @@ OPTIONS_SUB=			yes
 BUILTIN_DESC=		Use builtin printf hooks
 CTR_DESC=		Enable CTR cipher mode wrapper plugin
 CURL_DESC=		Enable CURL to fetch CRL/OCSP
+DHCP_DESC=		Enable DHCP based attribute provider plugin
 EAPAKA3GPP2_DESC=	Enable EAP AKA with 3gpp2 backend
 EAPDYNAMIC_DESC=	Enable EAP dynamic proxy module
 EAPRADIUS_DESC=		Enable EAP Radius proxy authentication
@@ -71,10 +70,12 @@ KERNELLIBIPSEC_DESC=	Enable IPSec userland backend
 LIBC_DESC=		Use libc printf hooks
 LOADTESTER_DESC=	Enable load testing plugin
 MEDIATION_DESC=		Enable IKEv2 Mediation Extension
+ML_DESC=		Enable Module-Lattice-based crypto plugin
 PKCS11_DESC=		Enable PKCS11 token support
 PKI_DESC=		Enable PKI tools
 PYTHON_DESC=		Python VICI protocol plugin
 SMP_DESC=		Enable XML-based management protocol (DEPRECATED)
+STROKE_DESC=		Enable stroke management protcol (DEPRECATED)
 SWANCTL_DESC=		Install swanctl (requires VICI)
 TESTVECTOR_DESC=	Enable crypto test vectors
 TPM_DESC=		Enable TPM plugin
@@ -91,6 +92,7 @@ BUILTIN_CONFIGURE_ON=		--with-printf-hooks=builtin
 CTR_CONFIGURE_ON=		--enable-ctr
 CURL_LIB_DEPENDS=		libcurl.so:ftp/curl
 CURL_CONFIGURE_ON=		--enable-curl
+DHCP_CONFIGURE_ON=		--enable-dhcp
 EAPAKA3GPP2_LIB_DEPENDS=	libgmp.so:math/gmp
 EAPAKA3GPP2_CONFIGURE_ON=	--enable-eap-aka \
 				--enable-eap-aka-3gpp2
@@ -109,6 +111,8 @@ LDAP_CONFIGURE_ON=		--enable-ldap
 LIBC_CONFIGURE_ON=		--with-printf-hooks=glibc
 LOADTESTER_CONFIGURE_ON=	--enable-load-tester
 MEDIATION_CONFIGURE_ON=		--enable-mediation
+ML_CONFIGURE_ON=		--enable-ml
+MYSQL_LIB_DEPENDS=		libunwind.so:devel/libunwind
 MYSQL_USES=			mysql
 MYSQL_CONFIGURE_ON=		--enable-mysql
 PKCS11_CONFIGURE_ON=		--enable-pkcs11
@@ -120,6 +124,7 @@ SMP_LIB_DEPENDS=		libxml2.so:textproc/libxml2
 SMP_CONFIGURE_ON=		--enable-smp
 SQLITE_LIB_DEPENDS=		libsqlite3.so:databases/sqlite3
 SQLITE_CONFIGURE_ON=		--enable-sqlite
+STROKE_CONFIGURE_ON=		--enable-stroke
 SWANCTL_IMPLIES=		VICI
 SWANCTL_CONFIGURE_ON=		--enable-swanctl
 TESTVECTOR_CONFIGURE_ON=	--enable-test-vectors

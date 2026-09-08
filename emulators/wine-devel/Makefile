@@ -1,11 +1,11 @@
 PORTNAME=	wine
-DISTVERSION=	8.15
+DISTVERSION=	11.0
 PORTEPOCH=	1
 CATEGORIES=	emulators
-MASTER_SITES=	https://dl.winehq.org/wine/source/8.x/
+MASTER_SITES=	https://dl.winehq.org/wine/source/11.0/
 PKGNAMESUFFIX=	-devel
 
-MAINTAINER=	damjan.jov@gmail.com
+MAINTAINER=	monwarez@mailoo.org
 COMMENT=	Microsoft Windows compatibility environment
 WWW=		https://www.winehq.org
 
@@ -14,21 +14,23 @@ LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=	amd64 i386
-BROKEN_i386=	fails to build: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=271201\#c6
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex llvm${_LLVM_VERSION}>=0:devel/llvm${_LLVM_VERSION}
+BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex
+LIB_DEPENDS=	libhwloc.so:devel/hwloc2
 
-USES=		bison cpe desktop-file-utils gmake localbase \
-		pkgconfig sdl shebangfix tar:xz
+# Only devel/llvm17 and later come with necessary include files - PR274542
+USES=		bison cpe desktop-file-utils gmake llvm:min=17,build,noexport \
+		localbase pkgconfig sdl shebangfix tar:xz
+CPE_VENDOR=	winehq
 USE_GCC=	yes
+USE_LDCONFIG=	${PREFIX}/lib ${PREFIX}/lib/wine
 USE_SDL=	sdl2
 
-CPE_VENDOR=	winehq
-
-CONFLICTS_INSTALL=	wine
+SHEBANG_FILES=	tools/make_requests tools/winemaker/winemaker \
+		tools/winedump/function_grep.pl
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS+=--verbose \
+CONFIGURE_ARGS=	--verbose \
 		--disable-kerberos \
 		--disable-tests \
 		--without-capi \
@@ -37,13 +39,12 @@ CONFIGURE_ARGS+=--verbose \
 		--without-gettext --without-gettextpo \
 		--without-gphoto \
 		--without-gssapi \
-		--without-gstreamer \
+		--with-hwloc \
 		--without-inotify \
 		--without-krb5 \
-		--with-mingw CROSSCC="clang" CROSSCFLAGS="-isystem ${FILESDIR}/clang" \
+		--with-mingw CROSSCC="clang" \
 		--without-netapi \
 		--without-opencl \
-		--without-osmesa \
 		--without-pcap \
 		--without-pcsclite \
 		--with-pthread \
@@ -52,71 +53,82 @@ CONFIGURE_ARGS+=--verbose \
 		--with-sdl \
 		--without-udev \
 		--without-unwind \
-		--without-usb \
-		--without-wayland
+		--without-usb
 CONFIGURE_ENV=	CPPBIN="${CPP}" FLEX="${LOCALBASE}/bin/flex"
-WINELIBDIR=	${PREFIX}/lib
-.if !defined(USE_LDCONFIG32)
-USE_LDCONFIG=	${WINELIBDIR} ${WINELIBDIR}/wine
-.endif
-SHEBANG_FILES=	tools/make_requests tools/winemaker/winemaker \
-		tools/winedump/function_grep.pl
 
-BINARY_ALIAS+=	clang=${LOCALBASE}/bin/clang${_LLVM_VERSION} \
-		lld-link=${LOCALBASE}/bin/lld-link${_LLVM_VERSION}
+PIE_UNSAFE=	yes
+
+CONFLICTS_INSTALL=	wine
+
+BINARY_ALIAS+=	clang=${LOCALBASE}/bin/clang${LLVM_VERSION} \
+		lld-link=${LOCALBASE}/bin/lld-link${LLVM_VERSION}
 
 SUB_FILES=	pkg-message
 
 PORTDATA=	wine.inf
 
-OPTIONS_DEFINE=	CUPS DOCS DOSBOX GNUTLS V4L WINEMAKER X11 GECKO MONO
-OPTIONS_DEFAULT=ALSA GNUTLS X11
-OPTIONS_RADIO=	AUDIO
+# GECKO and MONO are intentionally kept at the end since they are just
+# used to depends at runtime on wine-gecko-devel and wine-mono-devel
+OPTIONS_DEFINE=		CUPS DOCS DOSBOX FFMPEG GNUTLS V4L WAYLAND X11 GECKO MONO
+OPTIONS_DEFAULT=	ALSA FFMPEG GNUTLS WAYLAND X11
+OPTIONS_RADIO=		AUDIO
 OPTIONS_RADIO_AUDIO=	ALSA OSS
-OPTIONS_SUB=	yes
+OPTIONS_SUB=		yes
 
 DOSBOX_DESC=	Use DOSBox to run MS-DOS programs
-WINEMAKER_DESC=	Fully support winemaker (requires Perl)
 GECKO_DESC=	Bundle Gecko MSI package for Wine
 MONO_DESC=	Bundle Mono MSI package for Wine
+WAYLAND_DESC=	Wayland Support
 
-ALSA_CONFIGURE_ON=	--with-alsa --without-oss
 ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 ALSA_RUN_DEPENDS=	alsa-plugins>0:audio/alsa-plugins
+ALSA_USES=		gnome gstreamer
+ALSA_USE=		GNOME=glib20
+ALSA_CONFIGURE_WITH=	alsa
 
-CUPS_CONFIGURE_WITH=	cups
 CUPS_LIB_DEPENDS=	libcups.so:print/cups
+CUPS_CONFIGURE_WITH=	cups
 
 DOSBOX_RUN_DEPENDS=	dosbox:emulators/dosbox
 
+FFMPEG_LIB_DEPENDS=	libavutil.so:multimedia/ffmpeg
+FFMPEG_CONFIGURE_WITH=	ffmpeg
+
 GECKO_RUN_DEPENDS=	wine-gecko-devel>0:emulators/wine-gecko-devel
 
-GNUTLS_CONFIGURE_WITH=	gnutls
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
+GNUTLS_CONFIGURE_WITH=	gnutls
 
 MONO_RUN_DEPENDS=	wine-mono-devel>0:emulators/wine-mono-devel
 
-OSS_CONFIGURE_ON=	--without-alsa --with-oss
+OSS_USES=		gnome gstreamer
+OSS_USE=		GNOME=glib20
+OSS_CONFIGURE_WITH=	oss
 
-V4L_CONFIGURE_WITH=	v4l2
 V4L_BUILD_DEPENDS=	${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
 V4L_LIB_DEPENDS=	libv4l2.so:multimedia/libv4l
+V4L_CONFIGURE_WITH=	v4l2
 
-WINEMAKER_RUN_DEPENDS=	p5-XML-LibXML>0:textproc/p5-XML-LibXML
+WAYLAND_BUILD_DEPENDS=	${LOCALBASE}/include/linux/input.h:devel/evdev-proto
+WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland \
+			libxkbcommon.so:x11/libxkbcommon
+WAYLAND_CONFIGURE_WITH=	wayland
 
-X11_CONFIGURE_WITH=	x fontconfig freetype opengl xinerama xinput2 xrandr xrender
-X11_USES=		gl xorg
-X11_USE=		GL=glu XORG=x11,xext,xcomposite,xcursor,xi,xinerama,xrandr,xrender
 X11_LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 			libfreetype.so:print/freetype2 \
 			libvulkan.so:graphics/vulkan-loader
+X11_USES=		gl xorg
+X11_USE=		GL=glu XORG=x11,xcomposite,xcursor,xext,xi,xinerama,xrandr,xrender
+X11_CONFIGURE_WITH=	fontconfig freetype opengl x xinerama xinput2 xrandr xrender
 
 .include <bsd.port.pre.mk>
 
-.if (${LLVM_DEFAULT} == 10 || ${LLVM_DEFAULT} == 11)
-_LLVM_VERSION=	15
+.if ${PORT_OPTIONS:MALSA} || ${PORT_OPTIONS:MOSS}
+CONFIGURE_ARGS+=	--with-gstreamer
+PLIST_SUB+=		GSTREAMER=""
 .else
-_LLVM_VERSION=	${LLVM_DEFAULT}
+CONFIGURE_ARGS+=	--without-gstreamer
+PLIST_SUB+=		GSTREAMER="@comment "
 .endif
 
 .if ${ARCH} == amd64
@@ -138,11 +150,12 @@ post-patch:
 	${REINPLACE_CMD} '/Exec/s|wine|wine64|g' ${WRKSRC}/loader/wine.desktop
 
 .else
+EXTRA_PATCHES+=		${PATCHDIR}/extra-patch-tools-winebuild-res32
 PLIST_SUB+=		WINE32="" WINE64="@comment " WINEARCH="i386"
 .endif
 
 pre-build:
-	cd ${WRKSRC} && ${MAKE_CMD} depend
+	cd ${WRKSRC} && ${SETENVI} ${WRK_ENV} ${MAKE_CMD} depend
 
 post-install:
 .if ${ARCH} == i386
@@ -151,7 +164,7 @@ post-install:
 	-${ELFCTL} -e +noaslr				${STAGEDIR}${PREFIX}/bin/wine.bin
 	${INSTALL_SCRIPT} ${FILESDIR}/wine.sh		${STAGEDIR}${PREFIX}/bin/wine
 .else
-	${MV} ${STAGEDIR}${PREFIX}/bin/wine64		${STAGEDIR}${PREFIX}/bin/wine64.bin
+	${MV} ${STAGEDIR}${PREFIX}/bin/wine		${STAGEDIR}${PREFIX}/bin/wine64.bin
 	-${ELFCTL} -e +noaslr				${STAGEDIR}${PREFIX}/bin/wine64.bin
 	${INSTALL_SCRIPT} ${FILESDIR}/wine.sh		${STAGEDIR}${PREFIX}/bin/wine64
 	${INSTALL_SCRIPT} ${FILESDIR}/wine-wow64.sh	${STAGEDIR}${PREFIX}/bin/wine
@@ -159,7 +172,7 @@ post-install:
 .endif
 
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-.for i in README ANNOUNCE AUTHORS
+.for i in ANNOUNCE.md AUTHORS README.md
 	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
 	${INSTALL_DATA} ${WRKSRC}/programs/winedbg/README ${STAGEDIR}${DOCSDIR}/README.winedbg

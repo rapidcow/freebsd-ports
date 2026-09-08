@@ -1,16 +1,15 @@
 PORTNAME=	steam-utils
-DISTVERSION=	20230709
+DISTVERSION=	20251220
 CATEGORIES=	games linux
 PKGNAMEPREFIX=	linux-
 
-MAINTAINER=	iwtcex@gmail.com
+MAINTAINER=	monwarez@mailoo.org
 COMMENT=	Steam launcher for FreeBSD
 WWW=		https://github.com/shkhln/linuxulator-steam-utils
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-IGNORE_FreeBSD_12=not supported
 ONLY_FOR_ARCHS=	amd64
 
 RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss \
@@ -24,20 +23,19 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	shkhln
 GH_PROJECT=	linuxulator-steam-utils
 
-USE_LINUX=	devtools:build dbuslibs gtk2 dri nss alsa-plugins-oss
+USE_LINUX=	alsa-plugins-oss dbuslibs devtools:build dri gtk2 nss
 
 MAKE_ARGS+=	PREFIX=${STAGEDIR}${PREFIX}
 ALL_TARGET=	build
-
-PORTSCOUT=	ignore:1
 
 SUB_FILES=	pkg-message
 
 .include <bsd.port.options.mk>
 
 post-install:
-.for executable in steam steam-install lsu-register-proton lsu-wine-env
-	${LN} -s ../steam-utils/bin/${executable} ${STAGEDIR}${PREFIX}/bin/${executable}
-.endfor
+	${LN} -s ../steam-utils/bin/steam         ${STAGEDIR}${PREFIX}/bin/steam
+	${LN} -s ../steam-utils/bin/lsu-bootstrap ${STAGEDIR}${PREFIX}/bin/steam-install # deprecated since 2024-03-23
+	${LN} -s ../steam-utils/bin/lsu-wine-env  ${STAGEDIR}${PREFIX}/bin/lsu-wine-env
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/steam-utils/bin/lsu-freebsd-to-linux-env
 
 .include <bsd.port.mk>

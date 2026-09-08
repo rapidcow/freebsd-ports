@@ -1,26 +1,34 @@
 PORTNAME=	suitecrm
-PORTVERSION=	7.14.0
+PORTVERSION=	8.7
+PORTREVISION=	1
 CATEGORIES=	www
-MASTER_SITES=	https://suitecrm.com/download/141/suite84/562969/
+MASTER_SITES=	https://suitecrm.com/download/148/suite87/564667/
+DISTNAME=	${PORTNAME}-8-7-1
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Open source Customer Relationship Management (CRM) software solution
-WWW=		http://www.suitercrm.com/
+WWW=		https://suitercrm.com/
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		php zip
-USE_PHP=	curl ctype dom filter gd imap json mysqli pcre pdo posix \
-		session spl tokenizer xml mbstring zip zlib
+USES=		php
+USE_PHP=	curl ctype dom filter gd iconv imap intl ldap \
+		mysqli pdo pdo_mysql posix session simplexml \
+		soap sodium tokenizer xml mbstring xmlreader \
+		xmlwriter zip zlib
 NO_BUILD=	yes
 
-WRKSRC=		${WRKDIR}/SuiteCRM-${PORTVERSION}
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 PLIST=		${WRKDIR}/plist
 CRMDIR=		www/suitecrm
 
 SUB_FILES+=	pkg-message
+
+do-extract:
+	@${MKDIR} ${WRKSRC}
+	@${TAR} -yxf ${DISTDIR}/${DISTNAME}${EXTRACT_SUFX} -C ${WRKSRC}
 
 pre-install:
 	@${ECHO_CMD} "@owner ${WWWOWN}" >> ${PLIST}

@@ -1,5 +1,5 @@
 PORTNAME=	par2cmdline-turbo
-PORTVERSION=	1.1.0
+PORTVERSION=	1.3.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	archivers
 
@@ -14,6 +14,7 @@ ONLY_FOR_ARCHS_REASON=	untested on other archs
 
 USES=		autoreconf compiler:c++11-lang
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 LDFLAGS+=	-lpthread
 
 USE_GITHUB=	yes
@@ -23,7 +24,7 @@ PORTDOCS=	README.md
 CONFLICTS=	par2cmdline
 
 PLIST_FILES=	bin/par2 bin/par2create bin/par2repair bin/par2verify \
-	man/man1/par2.1.gz
+	share/man/man1/par2.1.gz
 
 OPTIONS_DEFINE=	DOCS
 

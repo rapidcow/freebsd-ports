@@ -60,57 +60,42 @@ MOZILLA?=	${PORTNAME}
 MOZILLA_VER?=	${PORTVERSION}
 MOZILLA_BIN?=	${PORTNAME}-bin
 MOZILLA_EXEC_NAME?=${MOZILLA}
-USES+=		compiler:c++17-lang cpe gl gmake gnome iconv localbase pkgconfig \
-			python:build desktop-file-utils
-.    if ${MOZILLA_VER:R:R} < 115
-USES+=		perl5
-.    endif
+USES+=		compiler:c++17-lang cpe elfctl gl gmake gnome iconv \
+			llvm:min=17,noexport localbase nodejs:24,build,env \
+			pkgconfig python:build desktop-file-utils
 CPE_VENDOR?=mozilla
 USE_GL=		gl
-USE_GNOME=	cairo gdkpixbuf2 gtk30
-.    if ${MOZILLA_VER:R:R} < 115
-USE_PERL5=	build
-.    endif
+USE_GNOME=	cairo gdkpixbuf gtk30
 USE_XORG=	x11 xcb xcomposite xdamage xext xfixes xrandr xrender xt xtst
 HAS_CONFIGURE=	yes
 CONFIGURE_OUTSOURCE=	yes
-LDFLAGS+=		-Wl,--as-needed
+LDFLAGS+=		-Wl,--as-needed -Wl,--undefined-version
 BINARY_ALIAS+=	python3=${PYTHON_CMD}
+
+ELF_FEATURES+=	+wxneeded:dist/bin/${MOZILLA} +wxneeded:dist/bin/${MOZILLA}-bin
 
 BUNDLE_LIBS=	yes
 
-BUILD_DEPENDS+=	llvm${LLVM_DEFAULT}>0:devel/llvm${LLVM_DEFAULT} \
-				rust-cbindgen>=0.24.3:devel/rust-cbindgen \
-				${RUST_DEFAULT}>=1.72.0:lang/${RUST_DEFAULT} \
-				node:www/node
+BUILD_DEPENDS+=	rust-cbindgen>=0.29.1:devel/rust-cbindgen \
+				${RUST_DEFAULT}>=1.92.0:lang/${RUST_DEFAULT}
 LIB_DEPENDS+=	libdrm.so:graphics/libdrm
 RUN_DEPENDS+=	${LOCALBASE}/lib/libpci.so:devel/libpci
 LIB_DEPENDS+=	libepoll-shim.so:devel/libepoll-shim
 MOZ_EXPORT+=	${CONFIGURE_ENV} \
 				PYTHON3="${PYTHON_CMD}" \
 				RUSTFLAGS="${RUSTFLAGS}"
-.    if ${MOZILLA_VER:R:R} < 115
-MOZ_EXPORT+=	 PERL="${PERL}"
-.    endif
 MOZ_OPTIONS+=	--prefix="${PREFIX}"
 MOZ_MK_OPTIONS+=MOZ_OBJDIR="${BUILD_WRKSRC}"
 
-MOZ_OPTIONS+=	--with-libclang-path="${LOCALBASE}/llvm${LLVM_DEFAULT}/lib"
+MOZ_OPTIONS+=	--with-libclang-path="${LLVM_PREFIX:S/${PREFIX}/${LOCALBASE}/}/lib"
 .    if !exists(/usr/bin/llvm-objdump)
-MOZ_EXPORT+=	LLVM_OBJDUMP="${LOCALBASE}/bin/llvm-objdump${LLVM_DEFAULT}"
+MOZ_EXPORT+=	LLVM_OBJDUMP="${LOCALBASE}/bin/llvm-objdump${LLVM_VERSION}"
 .    endif
-# fix LLVM to version 13, as that's the only reasonable wasi-toolchain
-# we currently have
-#    if !defined(DEFAULT_VERSIONS) || ! ${DEFAULT_VERSIONS:Mllvm*} || ${PORT_OPTIONS:MLTO}
-LLVM_DEFAULT=	13 # chase bundled LLVM in lang/rust for LTO
-LLVM_VERSION=	13.0.1 # keep in sync with devel/wasi-compiler-rt${LLVM_DEFAULT}
-#    endif
 # Require newer Clang than what's in base system unless user opted out
 .    if ${CC} == cc && ${CXX} == c++ && exists(/usr/lib/libc++.so)
-BUILD_DEPENDS+=	${LOCALBASE}/bin/clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
-CPP=			${LOCALBASE}/bin/clang-cpp${LLVM_DEFAULT}
-CC=				${LOCALBASE}/bin/clang${LLVM_DEFAULT}
-CXX=			${LOCALBASE}/bin/clang++${LLVM_DEFAULT}
+CPP=			${LOCALBASE}/bin/clang-cpp${LLVM_VERSION}
+CC=				${LOCALBASE}/bin/clang${LLVM_VERSION}
+CXX=			${LOCALBASE}/bin/clang++${LLVM_VERSION}
 USES:=			${USES:Ncompiler\:*} # XXX avoid warnings
 .    endif
 
@@ -130,7 +115,11 @@ RUSTFLAGS+=	${CFLAGS:M-mcpu=*:S/-mcpu=/-C target-cpu=/}
 .    endif
 
 # Standard depends
-_ALL_DEPENDS=	av1 event ffi graphite harfbuzz icu jpeg nspr nss png pixman sqlite vpx webp
+_ALL_DEPENDS=	av1 event ffi graphite harfbuzz jpeg nspr nss png pixman sqlite vpx webp
+# from 147 on, gecko needs ICU 78, but ports only has ICU 76 (2025-12-28)
+.    if ${MOZILLA_VER:R:R} < 147
+_ALL_DEPENDS+=	icu
+.    endif
 
 .    if exists(${FILESDIR}/patch-bug1559213)
 av1_LIB_DEPENDS=	libaom.so:multimedia/aom libdav1d.so:multimedia/dav1d
@@ -239,11 +228,7 @@ MOZ_OPTIONS+=	--disable-dbus
 
 .    if ${PORT_OPTIONS:MFFMPEG}
 # dom/media/platforms/ffmpeg/FFmpegRuntimeLinker.cpp
-.      if ${MOZILLA_VER:R:R} < 112
-RUN_DEPENDS+=	ffmpeg4>=4.4:multimedia/ffmpeg4
-.      else
 RUN_DEPENDS+=	ffmpeg>=6.0,1:multimedia/ffmpeg
-.      endif
 .    endif
 
 .    if ${PORT_OPTIONS:MLIBPROXY}

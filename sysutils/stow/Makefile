@@ -1,5 +1,5 @@
 PORTNAME=	stow
-PORTVERSION=	2.3.1
+DISTVERSION=	2.4.1
 CATEGORIES=	sysutils
 MASTER_SITES=	GNU
 
@@ -17,11 +17,12 @@ USES=		gmake perl5 tar:bzip2
 
 GNU_CONFIGURE=	yes
 
-OPTIONS_DEFINE=	DOCS
+NO_ARCH=	yes
 
 INFO=		stow
 PORTDOCS=	*
-NO_ARCH=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

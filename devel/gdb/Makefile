@@ -1,6 +1,6 @@
 PORTNAME=	gdb
-DISTVERSION=	13.2
-PORTREVISION=	1
+DISTVERSION=	15.1
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libexpat.so:textproc/expat2 \
 		libzstd.so:archivers/zstd
 TEST_DEPENDS=	runtest:misc/dejagnu
 
-USES=		compiler:c++11-lang cpe gmake libtool makeinfo pkgconfig tar:xz
+USES=		compiler:c++17-lang cpe gmake libtool makeinfo pkgconfig tar:xz
 USE_PYTHON=	flavors py3kplist
 
 TEST_TARGET=	check
@@ -25,15 +25,17 @@ TEST_TARGET=	check
 CPE_VENDOR=	gnu
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	CONFIGURED_M4=m4 CONFIGURED_BISON=byacc
-CONFIGURE_ARGS=	--program-suffix=${DISTVERSION:S/.//g} \
+CONFIGURE_ARGS=	--program-suffix=${VER} \
+		--disable-sim \
 		--enable-targets=all --enable-64-bit-bfd \
 		--with-separate-debug-dir=/usr/lib/debug \
+		--with-additional-debug-dirs=${LOCALBASE}/lib/debug \
 		${ICONV_CONFIGURE_ARG} \
 		--without-libunwind-ia64
 CONFIGURE_OUTSOURCE=	yes
 CFLAGS:=	${CFLAGS:C/ +$//}	# blanks at EOL creep in sometimes
 CFLAGS+=	-DRL_NO_COMPAT
-EXCLUDE=	dejagnu expect sim texinfo intl
+EXCLUDE=	dejagnu expect texinfo intl
 EXTRACT_AFTER_ARGS=	${EXCLUDE:S/^/--exclude /}
 
 VER=		${DISTVERSION:S/.//g}
@@ -78,12 +80,15 @@ PYTHON_CONFIGURE_OFF=	--without-python
 PYTHON_USES=		python
 SOURCE_HIGHLIGHT_CONFIGURE_ENABLE=	source-highlight
 SOURCE_HIGHLIGHT_LIB_DEPENDS=	\
+	libboost_regex.so:devel/boost-libs \
 	libsource-highlight.so:textproc/source-highlight
 SYSTEM_ICONV_USES=	iconv
 SYSTEM_ZLIB_CONFIGURE_WITH=	system-zlib
 TUI_CONFIGURE_ENABLE=	tui
 XXHASH_CONFIGURE_OFF=	--with-xxhash=no
 XXHASH_LIB_DEPENDS=	libxxhash.so:devel/xxhash
+
+ALL_TARGET=	all-gdb
 
 .include <bsd.port.pre.mk>
 
@@ -99,7 +104,7 @@ USE_GITHUB=	nodefault
 
 GH_ACCOUNT=	bsdjhb:libcxx
 GH_PROJECT=	libcxx-gdbpy:libcxx
-GH_TAGNAME=	03d0d9b:libcxx
+GH_TAGNAME=	4bb8585:libcxx
 
 # Workaround USE_GITHUB preventing the default DISTFILES
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -136,40 +141,40 @@ do-install:
 	${INSTALL_PROGRAM} ${INSTALL_WRKSRC}/gdb/gdb \
 		${STAGEDIR}${PREFIX}/bin/gdb${VER}
 	${INSTALL_MAN} ${WRKSRC}/gdb/doc/gdb.1 \
-		${STAGEDIR}${MAN1PREFIX}/man/man1/gdb${VER}.1
-	(cd ${INSTALL_WRKSRC}/gdb/data-directory ; \
-		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-syscalls )
+		${STAGEDIR}${PREFIX}/share/man/man1/gdb${VER}.1
+	(cd ${INSTALL_WRKSRC}/gdb/data-directory ; ${SETENVI} ${WRK_ENV} \
+		${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-syscalls )
 
 do-install-KGDB-on:
 	${INSTALL_PROGRAM} ${INSTALL_WRKSRC}/gdb/kgdb \
 		${STAGEDIR}${PREFIX}/bin/kgdb${VER}
 	${INSTALL_MAN} ${FILESDIR}/kgdb/kgdb.1 \
-		${STAGEDIR}${MAN1PREFIX}/man/man1/kgdb${VER}.1
+		${STAGEDIR}${PREFIX}/share/man/man1/kgdb${VER}.1
 
 do-install-TUI-on:
 	${LN} -sf gdb${VER} ${STAGEDIR}${PREFIX}/bin/gdbtui${VER}
 
 do-install-GDB_LINK-on:
 	${LN} -sf gdb${VER} ${STAGEDIR}${PREFIX}/bin/gdb
-	${LN} -sf gdb${VER}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/gdb.1
+	${LN} -sf gdb${VER}.1 ${STAGEDIR}${PREFIX}/share/man/man1/gdb.1
 .if ${PORT_OPTIONS:MKGDB}
 	${LN} -sf kgdb${VER} ${STAGEDIR}${PREFIX}/bin/kgdb
-	${LN} -sf kgdb${VER}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/kgdb.1
+	${LN} -sf kgdb${VER}.1 ${STAGEDIR}${PREFIX}/share/man/man1/kgdb.1
 .endif
 
 do-install-PYTHON-on:
-	(cd ${INSTALL_WRKSRC}/gdb ; \
-		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-python )
-	(cd ${INSTALL_WRKSRC}/gdb/data-directory ; \
-		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-python )
+	(cd ${INSTALL_WRKSRC}/gdb ; ${SETENVI} ${WRK_ENV} \
+		${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-python )
+	(cd ${INSTALL_WRKSRC}/gdb/data-directory ; ${SETENVI} ${WRK_ENV} \
+		${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-python )
 	@(cd ${STAGEDIR}${PREFIX}/share/gdb/python && \
 		${PYTHON_CMD} -m compileall .)
 . for f in gdb gdb/command gdb/function gdb/printer
 	@(cd ${STAGEDIR}${PREFIX}/share/gdb/python/${f} ; ${CHMOD} 644 *.py* )
 . endfor
 .if exists(/usr/lib/libc++.so.1) || exists(/lib/libc++.so.1)
-	@(cd ${WRKSRC_libcxx} ; \
-		${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_ARGS} \
+	@(cd ${WRKSRC_libcxx} ; ${SETENVI} ${WRK_ENV} \
+		${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} \
 		    LIBCXX_DIR="${LIBCXX_DIR}" install )
 	@(cd ${STAGEDIR}${PREFIX}/share/gdb/auto-load/${LIBCXX_DIR} && \
 		${PYTHON_CMD} -m compileall .)
@@ -183,9 +188,9 @@ do-install-PYTHON-on:
 # breakage at run time.
 
 do-install-GUILE-on:
-	(cd ${INSTALL_WRKSRC}/gdb ; \
-		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-guile )
-	(cd ${INSTALL_WRKSRC}/gdb/data-directory ; \
-		${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-guile )
+	(cd ${INSTALL_WRKSRC}/gdb ; ${SETENVI} ${WRK_ENV} \
+		${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-guile )
+	(cd ${INSTALL_WRKSRC}/gdb/data-directory ; ${SETENVI} ${WRK_ENV} \
+		${MAKE_ENV} ${MAKE_CMD} ${MAKE_ARGS} install-guile )
 
 .include <bsd.port.post.mk>

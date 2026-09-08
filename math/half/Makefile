@@ -1,11 +1,11 @@
 PORTNAME=	half
-DISTVERSION=	2.2.0
+DISTVERSION=	2.2.1
 CATEGORIES=	math
 MASTER_SITES=	SF
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	C++ library for half precision floating point arithmetic
-WWW=		http://half.sourceforge.net/
+WWW=		https://half.sourceforge.net/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

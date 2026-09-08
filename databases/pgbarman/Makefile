@@ -1,6 +1,6 @@
 PORTNAME=		barman
 DISTVERSIONPREFIX=	release/
-DISTVERSION=		3.8.0
+DISTVERSION=		3.17.0
 CATEGORIES=		databases
 PKGNAMEPREFIX=		pg
 PKGNAMESUFFIX=		${PYTHON_PKGNAMESUFFIX}
@@ -13,7 +13,7 @@ LICENSE=	GPLv3
 
 RUN_DEPENDS=	rsync:net/rsync									\
 		${PYTHON_PKGNAMEPREFIX}psycopg2>=2.4.2:databases/py-psycopg2@${PY_FLAVOR}	\
-		${PYTHON_PKGNAMEPREFIX}dateutil>0:devel/py-dateutil@${PY_FLAVOR}		\
+		${PYTHON_PKGNAMEPREFIX}python-dateutil>0:devel/py-python-dateutil@${PY_FLAVOR}	\
 		${PYTHON_PKGNAMEPREFIX}argcomplete>0:devel/py-argcomplete@${PY_FLAVOR}
 
 USES=		python
@@ -28,33 +28,20 @@ NO_ARCH=	yes
 USERS=		barman
 GROUPS=		barman
 
-OPTIONS_DEFINE=		DOCS
-
-DOCS_DESC=	Install PDF manual
-DOCS_VARS=	PORTDOCS=barman-${DISTVERSION}-manual.pdf \
-		MASTER_SITES+=https://github.com/${GH_ACCOUNT}/${PORTNAME}/releases/download/release%2F${DISTVERSION}/:docs \
-		DISTFILES+=barman-${DISTVERSION}-manual.pdf:docs \
-		EXTRACT_ONLY=${DISTNAME}${EXTRACT_SUFX}
-
 .include <bsd.port.pre.mk>
 
-PGUSER=		pgsql
-
-post-extract-DOCS-on:
-	${CP} ${DISTDIR}/${PORTDOCS} ${WRKDIR}/
-
 post-patch:
-	${SED} -i -e "s@%%PREFIX%%@${PREFIX}@" ${WRKSRC}/barman/config.py
-	${SED} -i -e "s@%%PREFIX%%@${PREFIX}@" ${WRKSRC}/doc/barman.conf
-	${SED} -i -e "s@%%PGUSER%%@${PGUSER}@" ${WRKSRC}/doc/barman.5
+.for f in barman/config.py \
+	  docs/barman.conf \
+	  docs/_build/man/barman-config-update.1 \
+	  docs/_build/man/barman.1 \
+	  docs/_build/man/barman.5
+	${SED} -i -e "s@%%PREFIX%%@${PREFIX}@" ${WRKSRC}/${f}
+.endfor
 
 post-install:
 	${MKDIR} ${STAGEDIR}${ETCDIR}
-	${INSTALL_DATA} ${WRKSRC}/doc/barman.conf \
+	${INSTALL_DATA} ${WRKSRC}/docs/barman.conf \
 		${STAGEDIR}${ETCDIR}/barman.conf.sample
-
-post-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKDIR}/${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.post.mk>

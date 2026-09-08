@@ -1,12 +1,12 @@
 PORTNAME=	rox-filer
 PORTVERSION=	2.11
-PORTREVISION=	12
+PORTREVISION=	14
 CATEGORIES=	x11-fm gnome
 MASTER_SITES=	SF/rox/rox/${PORTVERSION}
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Simple and easy to use graphical file manager
-WWW=		http://rox.sourceforge.net/phpwiki/index.php/ROX-Filer
+WWW=		https://rox.sourceforge.net/phpwiki/index.php/ROX-Filer
 
 LICENSE=	GPLv2+
 
@@ -19,7 +19,7 @@ PLIST_SUB+=	LOCALBASE=${LOCALBASE}
 USES=		gettext-runtime:build gmake gnome pkgconfig shared-mime-info \
 		tar:bzip2 xorg
 USE_XORG=	ice sm x11 xaw xorgproto
-USE_GNOME=	atk cairo gdkpixbuf2 glib20 gtk20 libxml2 pango
+USE_GNOME=	atk cairo gdkpixbuf glib20 gtk20 libxml2 pango
 
 GNU_CONFIGURE=		yes
 CONFIGURE_ENV=		APP_DIR=${WRKSRC}/ROX-Filer
@@ -50,7 +50,7 @@ do-install:
 	   style.css subclasses ${STAGEDIR}${PREFIX}/apps/ROX-Filer
 	cd ${WRKSRC} && ${CP} -r Choices ${STAGEDIR}${PREFIX}/share/
 	${CAT} ${FILESDIR}/rox | ${SED} -e "s|%%PREFIX%%|${PREFIX}|" > ${STAGEDIR}${PREFIX}/bin/rox
-	${INSTALL_MAN} ${WRKSRC}/rox.1 ${STAGEDIR}${PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/rox.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/mime/packages
 	${INSTALL_DATA} ${WRKSRC}/rox.xml ${STAGEDIR}${PREFIX}/share/mime/packages
 

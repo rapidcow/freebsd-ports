@@ -1,6 +1,5 @@
 PORTNAME=	uim
-PORTVERSION=	1.9.0.b.${SNAPDATE}
-PORTREVISION=	1
+PORTVERSION=	1.9.6
 CATEGORIES?=	textproc
 .if !defined(UIM_SLAVE) && defined(WITHOUT_X11)
 PKGNAMESUFFIX=	-nox11
@@ -22,13 +21,11 @@ USE_LDCONFIG=	yes
 USE_GNOME+=	glib20 intltool
 
 USE_GITHUB=	yes
-GH_TAGNAME=	15f0788
-GH_TUPLE=	uim:sigscheme:beb8fbd:sigscheme \
-		uim:libgcroots:d362356:libgcroots
-
-SNAPDATE=	20220927
+GH_TUPLE=	uim:sigscheme:ccf1f92:sigscheme \
+		uim:libgcroots:f019129:libgcroots
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS+=	--enable-maintainer-mode
 
 OPTIONS_DEFINE=	DOCS X11
@@ -47,8 +44,9 @@ CONFIGURE_ARGS+=	--with-x --with-xft
 USES+=		perl5 ruby:build
 USE_GNOME+=	librsvg2:build
 USE_PERL5=	build
+RUN_DEPENDS=	${LOCALBASE}/share/skk/SKK-JISYO.L:japanese/skk-jisyo
 .if ${PORT_OPTIONS:MX11}
-USE_GNOME+=	cairo gdkpixbuf2 gtk30
+USE_GNOME+=	cairo gdkpixbuf gtk30
 LIB_DEPENDS+=	libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libharfbuzz.so:print/harfbuzz
@@ -76,11 +74,11 @@ PLIST_SUB+=	X11=""
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "amd64" || ${ARCH} == "sparc64"
+.if ${ARCH} == "amd64"
 CONFIGURE_ARGS+=	--enable-storage=fatty
 .endif
 
-.for _x in x xft gtk2 gtk3 qt5 anthy canna m17nlib prime scim dict
+.for _x in x xft gtk2 gtk3 qt5 qt6 anthy canna m17nlib prime scim dict
 .if ${CONFIGURE_ARGS:M--with-${_x}} == ""
 CONFIGURE_ARGS+=--without-${_x}
 .endif
@@ -95,6 +93,11 @@ post-extract:
 	${CP} -R ${WRKSRC_sigscheme}/* ${WRKSRC}/sigscheme
 	${MKDIR} ${WRKSRC}/sigscheme/libgcroots
 	${CP} -R ${WRKSRC_libgcroots}/* ${WRKSRC}/sigscheme/libgcroots
+
+post-patch:
+.for f in predict-custom.scm predict-look-skk.scm
+	${REINPLACE_CMD} -e 's|%PREFIX%|${PREFIX}|g' ${WRKSRC}/scm/${f}
+.endfor
 
 pre-configure:
 	cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} ./autogen.sh

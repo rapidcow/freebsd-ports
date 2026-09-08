@@ -5,7 +5,7 @@ WWW=		https://www.claws-mail.org/plugin.php?plugin=pdf_viewer
 
 LIB_DEPENDS=	libpoppler-glib.so:graphics/poppler-glib
 
-USES+=		ghostscript
+USES=		ghostscript
 
 CLAWS_PLUGINS_BUILD=	${PORTNAME}
 

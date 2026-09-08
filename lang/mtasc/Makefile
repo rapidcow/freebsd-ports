@@ -1,6 +1,6 @@
 PORTNAME=	mtasc
 PORTVERSION=	1.14
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	lang www
 MASTER_SITES=	LOCAL/chinsan
 
@@ -12,9 +12,7 @@ LICENSE=	GPLv2+
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/ocaml/site-lib/extlib/IO.cmi:devel/ocaml-extlib
 
-USE_OCAML=	yes
-USE_OCAML_FINDLIB=yes
-USE_OCAML_CAMLP4=yes
+USES=		ocaml:camlp4,findlib
 OCAML_PKGDIRS=	# This port uses ocaml-findlib but doesn't install one
 
 OCAMLLEX?=	${LOCALBASE}/bin/ocamllex
@@ -32,6 +30,12 @@ WRKSRC=		${WRKDIR}/ocaml
 PORTDATA=	std std8
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc
+USE_BINUTILS=	yes
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -E 's,n(read|write) ch,n\1_string ch,' \
@@ -65,7 +69,7 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/mtasc-bin ${STAGEDIR}${PREFIX}/bin/mtasc
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	(cd ${WRKSRC}/mtasc && ${COPYTREE_SHARE} "${PORTDATA}" ${STAGEDIR}${DATADIR})
-	${INSTALL_MAN} ${WRKSRC}/mtasc/doc/mtasc.1 ${STAGEDIR}${PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/mtasc/doc/mtasc.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA}	${WRKSRC}/mtasc/doc/*.txt ${STAGEDIR}${DOCSDIR}
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

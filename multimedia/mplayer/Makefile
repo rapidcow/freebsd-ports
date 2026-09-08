@@ -1,5 +1,6 @@
 PORTNAME=	mplayer
 PORTVERSION=	${MPLAYER_PORT_VERSION}.${MPLAYER_SNAPSHOT_DATE:S/-//g}
+PORTREVISION=	2
 CATEGORIES=	multimedia audio
 
 MAINTAINER=	riggs@FreeBSD.org
@@ -11,9 +12,9 @@ WWW=		http://www.mplayerhq.hu/
 OPTIONS_DEFINE=	AALIB AMR_NB AMR_WB ASS BLURAY CACA CDIO DV DVDNAV \
 		ENCA FONTCONFIG FRIBIDI GIF GNUTLS GSM GUI IPV6 JACK \
 		JPEG LADSPA LIBMNG LIRC LZO NAS NLS OPENAL OPENGL \
-		OPENJPEG OPUS PULSEAUDIO RTMP \
+		OPENJPEG OPUS PULSEAUDIO \
 		SDL SKINS SNDIO SMB SPEEX SVGALIB V4L VDPAU VPX \
-		X11 X11DGA X11VM XINERAMA XVIDEO XVMC
+		X11 X11DGA X11VM XINERAMA XVIDEO
 
 OPTIONS_DEFAULT=ASS DVDNAV FONTCONFIG FRIBIDI GNUTLS OPENGL \
 		SKINS X11 X11DGA X11VM XINERAMA XVIDEO
@@ -22,8 +23,8 @@ OPTIONS_DEFINE_i386=	RTCPU
 OPTIONS_DEFINE_amd64=	RTCPU
 OPTIONS_DEFINE_powerpc=	RTCPU
 
-OPTIONS_DEFAULT_i386=	RTCPU VDPAU
-OPTIONS_DEFAULT_amd64=	RTCPU VDPAU
+OPTIONS_DEFAULT_i386=	RTCPU
+OPTIONS_DEFAULT_amd64=	RTCPU
 OPTIONS_DEFAULT_powerpc=RTCPU
 
 ASS_DESC?=	Subtitles rendering via libass
@@ -37,8 +38,6 @@ X11DGA_DESC?=	X11 DGA video driver support
 X11VM_DESC?=	X11 VidMode support
 
 SUB_FILES=	pkg-message
-
-CONFLICTS=	mplayer2-2.*
 
 CONFFILES=	example.conf input.conf menu.conf dvb-menu.conf
 USES+=		iconv pkgconfig
@@ -59,7 +58,8 @@ CONFIGURE_ARGS+=	--disable-arts \
 			--disable-mencoder \
 			--disable-mpg123 \
 			--disable-musepack \
-			--disable-theora
+			--disable-theora \
+			--disable-librtmp
 
 .include "${.CURDIR}/../../multimedia/mplayer/Makefile.options"
 
@@ -91,8 +91,9 @@ post-install:
 .endfor
 .if ${PORT_OPTIONS:MGUI} && ${PORT_OPTIONS:MX11}
 	@${LN} -sf mplayer ${STAGEDIR}${PREFIX}/bin/gmplayer
-	@(cd ${STAGEDIR}${MAN1PREFIX}/man/man1 && ${LN} -sf mplayer.1.gz gmplayer.1.gz)
-	${CP} -f ${WRKSRC}/etc/mplayer256x256.png ${STAGEDIR}${PREFIX}/share/pixmaps/mplayer.png
+	@(cd ${STAGEDIR}${PREFIX}/share/man/man1 && ${LN} -sf mplayer.1.gz gmplayer.1.gz)
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/pixmaps
+	${CP} ${WRKSRC}/etc/mplayer256x256.png ${STAGEDIR}${PREFIX}/share/pixmaps/mplayer.png
 .endif
 
 .include <bsd.port.post.mk>

@@ -1,5 +1,5 @@
 PORTNAME=	calculator
-DISTVERSION=	2.0.2
+DISTVERSION=	8.0.1
 CATEGORIES=	math
 PKGNAMEPREFIX=	elementary-
 
@@ -13,12 +13,10 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libgee-0.8.so:devel/libgee \
 		libgranite-7.so:x11-toolkits/granite7
 
-USES=		gettext gnome meson pkgconfig python:build vala:build
-
+USES=		gettext-tools gnome meson pkgconfig python:build vala:build
 USE_GITHUB=	yes
 GH_ACCOUNT=	elementary
-
-USE_GNOME=	cairo gdkpixbuf2 glib20 gtk40
+USE_GNOME=	glib20 gtk40
 
 GLIB_SCHEMAS=	io.elementary.calculator.gschema.xml
 

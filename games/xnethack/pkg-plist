@@ -82,6 +82,7 @@ bin/%%HACKNAME%%
 %%DATADIR%%/bigrm-11.lua
 %%DATADIR%%/bigrm-12.lua
 %%DATADIR%%/bigrm-13.lua
+%%DATADIR%%/bigrm-14.lua
 %%DATADIR%%/bigrm-2.lua
 %%DATADIR%%/bigrm-3.lua
 %%DATADIR%%/bigrm-4.lua
@@ -190,10 +191,10 @@ bin/%%HACKNAME%%
 @sample(games,games,664) %%DATADIR%%/xlogfile.sample
 @owner
 @group
-man/man6/dlb.6.gz
-man/man6/makedefs.6.gz
-man/man6/recover.6.gz
-man/man6/%%HACKNAME%%.6.gz
+share/man/man6/dlb.6.gz
+share/man/man6/makedefs.6.gz
+share/man/man6/recover.6.gz
+share/man/man6/%%HACKNAME%%.6.gz
 %%PORTDOCS%%%%DOCSDIR%%/Guidebook.txt
 @dir(games,games,0775) %%DATADIR%%/save
 @dir(games,games,0775) %%DATADIR%%/whereis

@@ -1,11 +1,12 @@
 PORTNAME=	lumina-photo
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.6.2
+PORTREVISION=	1
 CATEGORIES=	deskutils
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Image viewer utility from the Lumina Desktop
-WWW=		https://lumina-desktop.org
+WWW=		https://github.com/lumina-desktop/lumina/tree/master/src-qt5/desktop-utils/lumina-photo
 
 LICENSE=	BSD3CLAUSE
 
@@ -16,6 +17,8 @@ USE_GL=		gl
 USE_GITHUB=	yes
 GH_ACCOUNT=	lumina-desktop
 GH_PROJECT=	lumina
+
+QMAKE_ARGS=	L_MANDIR=${PREFIX}/share/man
 
 OPTIONS_DEFINE=		NLS
 OPTIONS_SUB=		yes

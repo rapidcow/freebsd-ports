@@ -1,28 +1,32 @@
 PORTNAME=	sqlalchemy
-PORTVERSION=	1.4.49
+PORTVERSION=	1.4.54
 CATEGORIES=	databases python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 PKGNAMESUFFIX=	14
-DISTNAME=	SQLAlchemy-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Python SQL toolkit and Object Relational Mapper 1.4.x
 WWW=		https://www.sqlalchemy.org/ \
+		https://docs.sqlalchemy.org/en/14/ \
 		https://github.com/sqlalchemy/sqlalchemy
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}greenlet>=0:devel/py-greenlet@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mock>=0:devel/py-mock@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest>=2.5.2:devel/py-pytest@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytest-xdist>=0,1:devel/py-pytest-xdist@${PY_FLAVOR}
 
 USES=		cpe python
-USE_PYTHON=	autoplist concurrent distutils
+USE_PYTHON=	autoplist concurrent pep517
 
 CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}sqlalchemy[0-9][0-9]
+
+PORTSCOUT=	limit:^1\.4\.
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 OPTIONS_MULTI=	BACKEND

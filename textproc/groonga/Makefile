@@ -1,7 +1,7 @@
 PORTNAME=	groonga
-PORTVERSION=	13.0.1
+DISTVERSION=	15.0.9
 CATEGORIES=	textproc
-MASTER_SITES=	http://packages.groonga.org/source/groonga/
+MASTER_SITES=	https://packages.groonga.org/source/groonga/
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Open-source fulltext search engine and column store
@@ -9,8 +9,6 @@ WWW=		https://groonga.org/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-LIB_DEPENDS=	libpcre.so:devel/pcre
 
 USES=		gmake libedit libtool localbase:ldflags pathfix pkgconfig ssl
 USE_LDCONFIG=	yes
@@ -29,7 +27,7 @@ CONFIGURE_ARGS=	--disable-benchmark \
 INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=		MECAB RUBY SUGGEST
-OPTIONS_DEFAULT=	MECAB RUBY SUGGEST
+OPTIONS_DEFAULT=	MECAB RUBY
 OPTIONS_SUB=		yes
 
 MECAB_DESC=	Morphological analysis support via MeCab
@@ -42,31 +40,12 @@ RUBY_USES=		ruby
 RUBY_CONFIGURE_ON=	--enable-mruby
 SUGGEST_LIB_DEPENDS=	libevent.so:devel/libevent \
 			libmsgpackc.so:devel/msgpack-c \
-			libzmq.so:net/libzmq2
+			libzmq.so:net/libzmq4
 SUGGEST_CONFIGURE_ON=	--enable-zeromq \
 			--with-libevent=${LOCALBASE} \
 			--with-message-pack=${LOCALBASE}
 SUGGEST_CONFIGURE_OFF=	--disable-zeromq \
 			--without-libevent \
 			--without-message-pack
-
-post-patch:
-	@${REINPLACE_CMD} -e \
-		's|lib/$${PACKAGE}/db/db|db/$${PACKAGE}/db| ; \
-		 s|-lpthread|-pthread|' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e \
-		'/NGX_PID_PATH/s|mkdir|${TRUE}| ; \
-		 /NGX_HTTP_LOG_PATH/s|mkdir|${TRUE}| ; \
-		 /NGX_ERROR_LOG_PATH/s|mkdir|${TRUE}|' \
-		${WRKSRC}/vendor/nginx-1.23.3/auto/install
-# Avoid conflict with C++20 <version> by adding .txt suffix
-	@${MV} ${WRKSRC}/version ${WRKSRC}/version.txt
-	@${REINPLACE_CMD} -Ei .c++20 '/test|cat/s/[[:<:]]version/&.txt/' \
-		${WRKSRC}/version-gen.sh
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/groonga-httpd
-	@${MKDIR} ${STAGEDIR}/var/log/groonga/httpd
-	@${MKDIR} ${STAGEDIR}/var/run/groonga
 
 .include <bsd.port.mk>

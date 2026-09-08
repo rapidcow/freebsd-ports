@@ -1,6 +1,6 @@
 PORTNAME=	pacpl
 PORTVERSION=	6.1.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	SF
 
@@ -28,7 +28,7 @@ NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}-code
 
 OPTIONS_DEFINE=		APE CDPARANOIA DOCS FAAC FAAD FFMPEG KDE4 \
-			LAME LAUDIO MUSEPACK MPLAYER OPTIMFROG OPUS \
+			LAME LAUDIO MPLAYER OPTIMFROG OPUS \
 			SNDFILE SOX SPEEX TOOLAME TTA VORBIS WAVPACK
 OPTIONS_DEFAULT=	CDPARANOIA FAAC FAAD FFMPEG LAME VORBIS
 OPTIONS_SUB=		yes
@@ -47,7 +47,6 @@ FFMPEG_RUN_DEPENDS=	ffmpeg:multimedia/ffmpeg
 LAME_RUN_DEPENDS=	lame:audio/lame
 LAUDIO_RUN_DEPENDS=	laudio:audio/linux-laudio
 MPLAYER_RUN_DEPENDS=	mplayer:multimedia/mplayer
-MUSEPACK_RUN_DEPENDS=	mpcenc:audio/musepack
 OPTIMFROG_RUN_DEPENDS=	ofr:audio/optimfrog
 OPUS_RUN_DEPENDS=	opusenc:audio/opus-tools
 SNDFILE_RUN_DEPENDS=	sndfile-convert:audio/libsndfile
@@ -76,7 +75,7 @@ do-build:
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/pacpl ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/pacpl.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/pacpl.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	@${MKDIR} ${STAGEDIR}${ETCDIR}
 	${INSTALL_DATA} ${WRKSRC}/pacpl.png ${STAGEDIR}${ETCDIR}
 .for i in codecs.conf pacpl.conf

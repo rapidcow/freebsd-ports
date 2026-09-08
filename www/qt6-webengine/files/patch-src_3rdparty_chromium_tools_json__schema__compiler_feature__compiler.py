@@ -1,9 +1,9 @@
---- src/3rdparty/chromium/tools/json_schema_compiler/feature_compiler.py.orig	2023-03-28 19:45:02 UTC
+--- src/3rdparty/chromium/tools/json_schema_compiler/feature_compiler.py.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/tools/json_schema_compiler/feature_compiler.py
-@@ -268,6 +268,8 @@ FEATURE_GRAMMAR = ({
+@@ -290,6 +290,8 @@ FEATURE_GRAMMAR = ({
+                 'linux': 'Feature::LINUX_PLATFORM',
                  'mac': 'Feature::MACOSX_PLATFORM',
                  'win': 'Feature::WIN_PLATFORM',
-                 'fuchsia': 'Feature::FUCHSIA_PLATFORM',
 +                'openbsd': 'Feature::LINUX_PLATFORM',
 +                'freebsd': 'Feature::LINUX_PLATFORM',
              }

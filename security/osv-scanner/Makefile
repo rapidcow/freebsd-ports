@@ -1,22 +1,25 @@
 PORTNAME=	osv-scanner
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.4.0
+DISTVERSION=	2.3.1
+PORTREVISION=	2
 CATEGORIES=	security
 
-MAINTAINER=	lcook@FreeBSD.org
+MAINTAINER=	dutra@FreeBSD.org
 COMMENT=	Vulnerability scanner written in Go which uses the OSV database
 WWW=		https://github.com/google/osv-scanner
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:modules
+USES=		go:1.25+,modules,run
+
+NOT_FOR_ARCHS=	armv6 armv7 i386 mips powerpc powerpcspe
 
 _BUILD_VERSION=	${DISTVERSION}
-_BUILD_COMMIT=	51fc4fd
+_BUILD_COMMIT=	d037742
 _BUILD_DATE=	$$(date +%Y-%m-%d)
 
-GO_MODULE=	github.com/google/${PORTNAME}
+GO_MODULE=	github.com/google/${PORTNAME}/v2
 GO_TARGET=	./cmd/${PORTNAME}
 GO_BUILDFLAGS=	-ldflags "\
 		-s -w \
@@ -24,14 +27,18 @@ GO_BUILDFLAGS=	-ldflags "\
 		-X main.date=${_BUILD_DATE} \
 		-X main.commit=${_BUILD_COMMIT}"
 
-PORTDOCS=	README.md
 PLIST_FILES=	${GO_TARGET:C/.\/cmd/bin/}
+PORTDOCS=	CHANGELOG.md CONTRIBUTING.md README.md
 
 OPTIONS_DEFINE=	DOCS
 
+post-patch:
+	@${REINPLACE_CMD} -e 's,%%GO_SUFFIX%%,${GO_SUFFIX},' \
+		${WRKSRC}/internal/sourceanalysis/go.go
+
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/${PORTDOCS} \
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} \
 		${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

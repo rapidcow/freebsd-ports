@@ -1,9 +1,9 @@
 PORTNAME=	prowlarr
-DISTVERSION=	1.8.6.3946
+DISTVERSION=	2.0.5.5160
 PORTREVISION=	1
 CATEGORIES=	net-p2p
-MASTER_SITES=	https://github.com/Prowlarr/Prowlarr/releases/download/v${PORTVERSION}/
-DISTNAME=	Prowlarr.master.${PORTVERSION}.freebsd-core-x64
+MASTER_SITES=	https://github.com/Prowlarr/Prowlarr/releases/download/v${DISTVERSION}/
+DISTNAME=	Prowlarr.master.${DISTVERSION}.freebsd-core-x64
 
 MAINTAINER=	michiel@vanbaak.eu
 COMMENT=	Indexer Manager for Usenet and BitTorrent users
@@ -16,10 +16,11 @@ ONLY_FOR_ARCHS=	amd64
 RUN_DEPENDS=	ca_root_nss>0:security/ca_root_nss \
 		icu>0:devel/icu \
 		krb5>0:security/krb5 \
+		libiconv>0:converters/libiconv \
 		libinotify>0:devel/libinotify \
 		libunwind>0:devel/libunwind
 
-USES=	ssl:run sqlite:3 iconv
+USES=		sqlite:3 ssl:run
 
 USE_RC_SUBR=	${PORTNAME}
 

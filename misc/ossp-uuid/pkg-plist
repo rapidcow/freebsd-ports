@@ -1,3 +1,4 @@
+%%DOCSDIR%%/README
 bin/uuid
 bin/uuid-config
 include/ossp/uuid.h
@@ -11,7 +12,7 @@ lib/libossp-uuid++.so
 lib/libossp-uuid++.so.16
 lib/libossp-uuid++.so.16.0.22
 libdata/pkgconfig/ossp-uuid.pc
-man/man1/uuid-config.1.gz
-man/man1/uuid.1.gz
-man/man3/ossp-uuid++.3.gz
-man/man3/ossp-uuid.3.gz
+share/man/man1/uuid-config.1.gz
+share/man/man1/uuid.1.gz
+share/man/man3/ossp-uuid++.3.gz
+share/man/man3/ossp-uuid.3.gz

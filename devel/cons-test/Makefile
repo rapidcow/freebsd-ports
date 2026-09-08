@@ -1,6 +1,6 @@
 PORTNAME=	cons-test
 PORTVERSION=	2.2.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	devel
 MASTER_SITES=	http://www.dsmit.com/cons/stable/ \
 		http://www.gnu.org/software/cons/stable/ \
@@ -8,7 +8,7 @@ MASTER_SITES=	http://www.dsmit.com/cons/stable/ \
 		http://www.baldmt.com/cons/stable/
 
 MAINTAINER=	ports@FreeBSD.org
-COMMENT=	Test bed for `Cons' development
+COMMENT=	Test bed for 'Cons' development
 WWW=		http://www.dsmit.com/cons/
 
 LICENSE=	GPLv2+
@@ -49,7 +49,7 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/Test/Cmd/Cons.pm \
 		${STAGEDIR}${PREFIX}/lib/${CONS_TEST}/Test/Cmd
 	${INSTALL_MAN} ${WRKSRC}/cons-test.1.gz \
-		${STAGEDIR}${MANPREFIX}/man/man1
+		${STAGEDIR}${PREFIX}/share/man/man1
 
 do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

@@ -1,5 +1,5 @@
 PORTNAME=	libhtp
-PORTVERSION=	0.5.45
+DISTVERSION=	0.5.52
 CATEGORIES=	devel
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -9,8 +9,8 @@ WWW=		https://github.com/ironbee/libhtp
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		autoreconf cpe iconv:translit libtool localbase:ldflags pathfix \
-		pkgconfig
+USES=		autoreconf cpe gettext-tools iconv:translit libtool \
+		localbase:ldflags pathfix pkgconfig
 CPE_VENDOR=	oisf
 USE_GITHUB=	yes
 GH_ACCOUNT=	OISF

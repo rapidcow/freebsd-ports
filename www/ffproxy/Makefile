@@ -1,18 +1,16 @@
 PORTNAME=	ffproxy
-PORTVERSION=	1.6
+DISTVERSION=	1.72
 CATEGORIES=	www
-MASTER_SITES=	http://${PORTNAME}.sourceforge.net/${PORTNAME}/ \
-		http://www.sourcefiles.org/System/Daemons/Proxy/ \
-		http://www.nevm.de/${PORTNAME}/ \
-		http://faith.eu.org/${PORTNAME}/
+MASTER_SITES=	https://codeberg.org/BSDforge/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Filtering HTTP proxy server
-WWW=		http://ffproxy.sourceforge.net
+WWW=		https://codeberg.org/BSDforge/ffproxy
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
+WRKSRC=		${WRKDIR}/${PORTNAME}
 
 .include <bsd.port.mk>

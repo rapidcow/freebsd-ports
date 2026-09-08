@@ -1,5 +1,5 @@
 PORTNAME=	libmsiecf
-DISTVERSION=	alpha-20221024
+DISTVERSION=	alpha-20240425
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/libyal/libmsiecf/releases/download/${PORTVERSION:E}/ \
 		LOCAL/antoine
@@ -11,7 +11,10 @@ WWW=		https://github.com/libyal/libmsiecf
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	${PY_SETUPTOOLS}
+
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--enable-python
 CONFIGURE_ENV=	PYTHON_CONFIG=${PYTHON_CMD}-config
 USES=		libtool pathfix python

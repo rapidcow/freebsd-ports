@@ -1,11 +1,11 @@
 PORTNAME=	just
-DISTVERSION=	1.14.0
-PORTREVISION=	4
+DISTVERSION=	1.46.0
 CATEGORIES=	deskutils
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Just a command runner: handy way to save/run project-specific commands
-WWW=		https://just.systems/
+WWW=		https://just.systems/ \
+		https://github.com/casey/just
 
 LICENSE=	CC0-1.0
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -16,125 +16,165 @@ USES=		cargo
 USE_GITHUB=	yes
 GH_ACCOUNT=	casey
 
-CARGO_CRATES=	aho-corasick-1.0.1 \
+CARGO_CRATES=	aho-corasick-1.1.4 \
+		android_system_properties-0.1.5 \
 		ansi_term-0.12.1 \
-		atty-0.2.14 \
-		bitflags-1.3.2 \
+		anstream-0.6.21 \
+		anstyle-1.0.13 \
+		anstyle-parse-0.2.7 \
+		anstyle-query-1.1.5 \
+		anstyle-wincon-3.0.11 \
+		arrayref-0.3.9 \
+		arrayvec-0.7.6 \
+		autocfg-1.5.0 \
+		bitflags-2.10.0 \
+		blake3-1.8.2 \
 		block-buffer-0.10.4 \
-		bstr-0.2.17 \
-		camino-1.1.4 \
-		cc-1.0.79 \
-		cfg-if-1.0.0 \
-		clap-2.34.0 \
-		cpufeatures-0.2.7 \
-		cradle-0.2.2 \
-		crypto-common-0.1.6 \
-		ctor-0.1.26 \
-		ctrlc-3.4.0 \
-		derivative-2.2.0 \
+		block2-0.6.2 \
+		bstr-1.12.1 \
+		bumpalo-3.19.1 \
+		camino-1.2.2 \
+		cc-1.2.51 \
+		cfg-if-1.0.4 \
+		cfg_aliases-0.2.1 \
+		chrono-0.4.42 \
+		clap-4.5.53 \
+		clap_builder-4.5.53 \
+		clap_complete-4.5.48 \
+		clap_derive-4.5.49 \
+		clap_lex-0.7.6 \
+		clap_mangen-0.2.31 \
+		colorchoice-1.0.4 \
+		constant_time_eq-0.3.1 \
+		core-foundation-sys-0.8.7 \
+		cpufeatures-0.2.17 \
+		crossbeam-deque-0.8.6 \
+		crossbeam-epoch-0.9.18 \
+		crossbeam-utils-0.8.21 \
+		crypto-common-0.1.7 \
+		ctrlc-3.5.1 \
+		derive-where-1.6.0 \
 		diff-0.1.13 \
 		digest-0.10.7 \
-		doc-comment-0.3.3 \
+		dirs-6.0.0 \
+		dirs-sys-0.5.0 \
+		dispatch2-0.3.0 \
 		dotenvy-0.15.7 \
-		edit-distance-2.1.0 \
-		either-1.8.1 \
-		env_logger-0.10.0 \
-		errno-0.3.1 \
-		errno-dragonfly-0.1.2 \
+		edit-distance-2.2.2 \
+		env_home-0.1.0 \
+		errno-0.3.14 \
 		executable-path-1.0.0 \
-		fastrand-1.9.0 \
+		fastrand-2.3.0 \
+		find-msvc-tools-0.1.6 \
 		generic-array-0.14.7 \
-		getopts-0.2.21 \
-		getrandom-0.2.9 \
-		heck-0.3.3 \
-		heck-0.4.1 \
-		hermit-abi-0.1.19 \
-		hermit-abi-0.3.1 \
-		humantime-2.1.0 \
-		instant-0.1.12 \
-		io-lifetimes-1.0.11 \
-		is-terminal-0.4.7 \
-		itoa-1.0.6 \
-		lazy_static-1.4.0 \
+		getopts-0.2.24 \
+		getrandom-0.2.16 \
+		getrandom-0.3.4 \
+		heck-0.5.0 \
+		hermit-abi-0.5.2 \
+		iana-time-zone-0.1.64 \
+		iana-time-zone-haiku-0.1.2 \
+		is_executable-1.0.5 \
+		is_terminal_polyfill-1.70.2 \
+		itoa-1.0.17 \
+		js-sys-0.3.83 \
 		lexiclean-0.0.1 \
-		libc-0.2.144 \
-		linked-hash-map-0.5.6 \
-		linux-raw-sys-0.3.8 \
-		log-0.4.18 \
-		memchr-2.5.0 \
-		nix-0.26.2 \
-		once_cell-1.17.2 \
-		output_vt100-0.1.3 \
-		pretty_assertions-1.3.0 \
-		proc-macro-error-1.0.4 \
-		proc-macro-error-attr-1.0.4 \
-		proc-macro2-1.0.59 \
-		pulldown-cmark-0.9.3 \
+		libc-0.2.178 \
+		libredox-0.1.12 \
+		linux-raw-sys-0.11.0 \
+		log-0.4.29 \
+		memchr-2.7.6 \
+		memmap2-0.9.9 \
+		nix-0.30.1 \
+		num-traits-0.2.19 \
+		num_cpus-1.17.0 \
+		objc2-0.6.3 \
+		objc2-encode-4.1.0 \
+		once_cell-1.21.3 \
+		once_cell_polyfill-1.70.2 \
+		option-ext-0.2.0 \
+		percent-encoding-2.3.2 \
+		ppv-lite86-0.2.21 \
+		pretty_assertions-1.4.1 \
+		proc-macro2-1.0.104 \
+		pulldown-cmark-0.9.6 \
 		pulldown-cmark-to-cmark-10.0.4 \
-		quote-1.0.28 \
-		redox_syscall-0.3.5 \
-		regex-1.8.3 \
-		regex-automata-0.1.10 \
-		regex-syntax-0.7.2 \
-		rustix-0.37.19 \
-		rustversion-1.0.12 \
-		ryu-1.0.13 \
-		serde-1.0.163 \
-		serde_derive-1.0.163 \
-		serde_json-1.0.96 \
-		sha2-0.10.6 \
-		similar-2.2.1 \
-		snafu-0.7.4 \
-		snafu-derive-0.7.4 \
-		static_assertions-1.1.0 \
-		strsim-0.8.0 \
-		structopt-0.3.26 \
-		structopt-derive-0.4.18 \
-		strum-0.24.1 \
-		strum_macros-0.24.3 \
-		syn-1.0.109 \
-		syn-2.0.18 \
-		target-2.0.0 \
-		tempfile-3.5.0 \
+		quote-1.0.42 \
+		r-efi-5.3.0 \
+		rand-0.9.2 \
+		rand_chacha-0.9.0 \
+		rand_core-0.9.3 \
+		rayon-core-1.13.0 \
+		redox_users-0.5.2 \
+		regex-1.12.2 \
+		regex-automata-0.4.13 \
+		regex-syntax-0.8.8 \
+		roff-0.2.2 \
+		rustix-1.1.3 \
+		rustversion-1.0.22 \
+		semver-1.0.27 \
+		serde-1.0.228 \
+		serde_core-1.0.228 \
+		serde_derive-1.0.228 \
+		serde_json-1.0.148 \
+		sha2-0.10.9 \
+		shellexpand-3.1.1 \
+		shlex-1.3.0 \
+		similar-2.7.0 \
+		snafu-0.8.9 \
+		snafu-derive-0.8.9 \
+		strsim-0.11.1 \
+		strum-0.27.2 \
+		strum_macros-0.27.2 \
+		syn-2.0.112 \
+		target-2.1.0 \
+		tempfile-3.24.0 \
 		temptree-0.2.0 \
-		term_size-0.3.2 \
-		termcolor-1.2.0 \
-		textwrap-0.11.0 \
+		terminal_size-0.4.3 \
+		thiserror-2.0.17 \
+		thiserror-impl-2.0.17 \
 		typed-arena-2.0.2 \
-		typenum-1.16.0 \
-		unicase-2.6.0 \
-		unicode-ident-1.0.9 \
-		unicode-segmentation-1.10.1 \
-		unicode-width-0.1.10 \
-		uuid-1.3.3 \
-		vec_map-0.8.2 \
-		version_check-0.9.4 \
-		wasi-0.11.0+wasi-snapshot-preview1 \
-		which-4.4.0 \
+		typenum-1.19.0 \
+		unicase-2.8.1 \
+		unicode-ident-1.0.22 \
+		unicode-segmentation-1.12.0 \
+		unicode-width-0.2.2 \
+		utf8parse-0.2.2 \
+		uuid-1.19.0 \
+		version_check-0.9.5 \
+		wasi-0.11.1+wasi-snapshot-preview1 \
+		wasip2-1.0.1+wasi-0.2.4 \
+		wasm-bindgen-0.2.106 \
+		wasm-bindgen-macro-0.2.106 \
+		wasm-bindgen-macro-support-0.2.106 \
+		wasm-bindgen-shared-0.2.106 \
+		which-8.0.0 \
 		winapi-0.3.9 \
 		winapi-i686-pc-windows-gnu-0.4.0 \
-		winapi-util-0.1.5 \
 		winapi-x86_64-pc-windows-gnu-0.4.0 \
-		windows-sys-0.45.0 \
-		windows-sys-0.48.0 \
-		windows-targets-0.42.2 \
-		windows-targets-0.48.0 \
-		windows_aarch64_gnullvm-0.42.2 \
-		windows_aarch64_gnullvm-0.48.0 \
-		windows_aarch64_msvc-0.42.2 \
-		windows_aarch64_msvc-0.48.0 \
-		windows_i686_gnu-0.42.2 \
-		windows_i686_gnu-0.48.0 \
-		windows_i686_msvc-0.42.2 \
-		windows_i686_msvc-0.48.0 \
-		windows_x86_64_gnu-0.42.2 \
-		windows_x86_64_gnu-0.48.0 \
-		windows_x86_64_gnullvm-0.42.2 \
-		windows_x86_64_gnullvm-0.48.0 \
-		windows_x86_64_msvc-0.42.2 \
-		windows_x86_64_msvc-0.48.0 \
-		yaml-rust-0.4.5 \
-		yansi-0.5.1
+		windows-core-0.62.2 \
+		windows-implement-0.60.2 \
+		windows-interface-0.59.3 \
+		windows-link-0.2.1 \
+		windows-result-0.4.1 \
+		windows-strings-0.5.1 \
+		windows-sys-0.60.2 \
+		windows-sys-0.61.2 \
+		windows-targets-0.53.5 \
+		windows_aarch64_gnullvm-0.53.1 \
+		windows_aarch64_msvc-0.53.1 \
+		windows_i686_gnu-0.53.1 \
+		windows_i686_gnullvm-0.53.1 \
+		windows_i686_msvc-0.53.1 \
+		windows_x86_64_gnu-0.53.1 \
+		windows_x86_64_gnullvm-0.53.1 \
+		windows_x86_64_msvc-0.53.1 \
+		winsafe-0.0.19 \
+		wit-bindgen-0.46.0 \
+		yansi-1.0.1 \
+		zerocopy-0.8.31 \
+		zerocopy-derive-0.8.31 \
+		zmij-1.0.7
 PLIST_FILES=	bin/${PORTNAME}
 
 OPTIONS_DEFINE=		COMPLETIONS
@@ -144,9 +184,6 @@ COMPLETIONS_DESC=		Build and install bash, fish and zsh shell completions
 COMPLETIONS_PLIST_FILES=	share/bash-completion/completions/${PORTNAME} \
 				share/fish/vendor_completions.d/${PORTNAME}.fish \
 				share/zsh/site-functions/_${PORTNAME}
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 post-install-COMPLETIONS-on:
 .for _shell in bash fish zsh

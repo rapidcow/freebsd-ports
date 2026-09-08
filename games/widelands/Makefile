@@ -1,7 +1,6 @@
 PORTNAME=	widelands
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.1
-PORTREVISION=	7
+DISTVERSION=	1.2.1
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -13,7 +12,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libicuuc.so:devel/icu \
-		libboost_system.so:devel/boost-libs \
+		libboost_thread.so:devel/boost-libs \
 		libminizip.so:archivers/minizip
 BUILD_DEPENDS=	${PREFIX}/include/asio.hpp:net/asio
 
@@ -43,6 +42,9 @@ OPTIONS_EXCLUDE_riscv64=	LTO
 LTO_CMAKE_ON=	-DUSE_FLTO_IF_AVAILABLE:STRING="yes"
 NLS_CMAKE_BOOL=	OPTION_BUILD_TRANSLATIONS
 TEST_CMAKE_BOOL=OPTION_BUILD_TESTS
+
+post-extract:
+	@${RM} -r ${WRKSRC}/src/third_party/minizip
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' \

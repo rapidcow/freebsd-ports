@@ -1,6 +1,6 @@
 PORTNAME=	wzdftpd
 PORTVERSION=	0.8.3
-PORTREVISION=	9
+PORTREVISION=	12
 CATEGORIES=	ftp
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-sources/${PORTNAME}-${PORTVERSION:R}
 
@@ -11,7 +11,7 @@ WWW=		https://sourceforge.net/projects/wzdftpd/
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		autoreconf:2.69 cpe gettext-tools libtool localbase pkgconfig
+USES=		autoreconf cpe gettext-tools libtool localbase pkgconfig
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--sysconfdir=${ETCDIR} --datadir=${PREFIX}/lib \
 		--disable-bonjour --disable-static
@@ -47,6 +47,7 @@ PERL_USES=		perl5
 
 MYSQL_CONFIGURE_ENABLE=	mysql
 MYSQL_USES=		mysql
+MYSQL_VARS=		IGNORE_WITH_MYSQL="80 81"
 
 PAM_CONFIGURE_WITH=	pam
 

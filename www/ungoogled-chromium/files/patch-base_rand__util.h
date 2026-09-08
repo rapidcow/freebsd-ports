@@ -1,6 +1,6 @@
---- base/rand_util.h.orig	2023-06-05 19:39:05 UTC
+--- base/rand_util.h.orig	2025-05-06 12:23:00 UTC
 +++ base/rand_util.h
-@@ -121,7 +121,7 @@ void RandomShuffle(Itr first, Itr last) {
+@@ -213,7 +213,7 @@ void RandomShuffle(Itr first, Itr last) {
    std::shuffle(first, last, RandomBitGenerator());
  }
  

@@ -1,25 +1,24 @@
 PKGNAMEPREFIX=	java-
 CATEGORIES=	java
 
-MAINTAINER=	lev@FreeBSD.org
+MAINTAINER=	michaelo@apache.org
 COMMENT=	Java bindings for Version control system
 WWW=		https://subversion.apache.org/
 
-USES=		compiler
-
-USE_JAVA=	yes
+USES=		compiler java
 JAVA_OS=	native
-JAVA_BUILD=	yes
-JAVA_RUN=	yes
 
-PORTREVISION_114=	0
-PORTREVISION_LTS=	0
+PORTREVISION_LATEST=	0
+PORTREVISION_LTS=		0
 
 SVN_BUILD_BINDINGS=	yes
 
 .include "${.CURDIR}/../../devel/subversion/Makefile.addons"
 
 CONFIGURE_ARGS+=	--enable-javahl \
+			--without-swig-perl \
+			--without-siwg-python \
+			--without-swig-ruby \
 			--with-jdk=${JAVA_HOME} \
 			--with-jikes=no \
 			--without-gnome-keyring \

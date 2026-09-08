@@ -1,6 +1,7 @@
 PORTNAME=	micro
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.0.12
+DISTVERSION=	2.0.14
+PORTREVISION=	13
 CATEGORIES=	editors
 
 MAINTAINER=	lcook@FreeBSD.org
@@ -13,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USES=		desktop-file-utils go:modules
 
 _BUILD_VERSION=	${DISTVERSION}
-_BUILD_HASH=	c2cebaa
+_BUILD_HASH=	04c5770
 _BUILD_DATE=	$$(date '+%B %d, %Y')
 _BUILD_DEBUG=	OFF
 
@@ -44,7 +45,7 @@ pre-build:
 
 post-install:
 	${INSTALL_DATA} ${WRKSRC}/assets/packaging/micro.1 \
-		${STAGEDIR}${MANPREFIX}/share/man/man1
+		${STAGEDIR}${PREFIX}/share/man/man1
 	${INSTALL_DATA} ${WRKSRC}/assets/packaging/micro.desktop \
 		${STAGEDIR}${PREFIX}/share/applications
 	${INSTALL_DATA} ${WRKSRC}/assets/*.svg \

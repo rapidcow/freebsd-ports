@@ -1,5 +1,5 @@
 PORTNAME=	ibus-m17n
-DISTVERSION=	1.4.22
+DISTVERSION=	1.4.36
 CATEGORIES=	textproc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,18 +11,19 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libibus-1.0.so:textproc/ibus \
 		libm17n.so:devel/m17n-lib \
-		libfreetype.so:print/freetype2 \
-		libfontconfig.so:x11-fonts/fontconfig \
 		libharfbuzz.so:print/harfbuzz
 RUN_DEPENDS=	ibus-daemon:textproc/ibus
 
 PORTSCOUT=	limit:^[0-9]+\.[0-9].*$$
 
 USES=		autoreconf gmake gnome libtool pkgconfig
-GNU_CONFIGURE=	yes
+USE_GNOME=	glib20 gtk20 gtk30 atk gdkpixbuf cairo pango intltool
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	ibus
-USE_GNOME=	glib20 gtk20 atk gdkpixbuf2 cairo pango intltool
+
+GNU_CONFIGURE=	yes
+
 GLIB_SCHEMAS=	org.freedesktop.ibus.engine.m17n.gschema.xml
 
 OPTIONS_DEFINE=	NLS

@@ -1,12 +1,13 @@
 PORTNAME=	optik
 PORTVERSION=	1.5.3
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	SF
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command-line parsing library for Python
-WWW=		http://optik.sourceforge.net/
+WWW=		https://optik.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 

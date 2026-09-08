@@ -1,5 +1,6 @@
 PORTNAME=	pypowerwall
-PORTVERSION=	0.6.1
+PORTVERSION=	0.10.8
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net-mgmt python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -19,12 +20,23 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}beautifulsoup>0:www/py-beautifulsoup@${PY_FL
 
 USES=		python shebangfix
 USE_PYTHON=	autoplist distutils
-SHEBANG_FILES=	proxy/server.py proxy/server-r.py
+SHEBANG_FILES=	proxy/server.py proxy/transform.py
 
 USE_RC_SUBR=	${PORTNAME}_proxy
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	jasonacox
+
+# disable cloud support for the moment (additional deps needed--teslapy)
+post-patch:
+	@${REINPLACE_CMD} -E -e '/teslapy/d' ${WRKSRC}/setup.py
+	@${REINPLACE_CMD} -E \
+		-e '/PyPowerwallCloud/d' \
+		-e '/pypowerwall_cloud/d' \
+		${WRKSRC}/pypowerwall/__main__.py \
+		${WRKSRC}/pypowerwall/__init__.py
+	@${RM} ${WRKSRC}/pypowerwall/cloud/pypowerwall_cloud.py
+	@${TOUCH} ${WRKSRC}/pypowerwall/cloud/pypowerwall_cloud.py
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}

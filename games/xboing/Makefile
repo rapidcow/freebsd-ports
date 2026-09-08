@@ -1,6 +1,6 @@
 PORTNAME=	xboing
 PORTVERSION=	2.4
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	games
 MASTER_SITES=	XCONTRIB/games
 DISTNAME=	${PORTNAME}${PORTVERSION}
@@ -23,7 +23,7 @@ SOUND_MAKE_ENV=	WITHOUT_AUDIO=True
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
 .endif
 

@@ -1,6 +1,6 @@
 PORTNAME=	xfce4-bsdcpufreq-plugin
 PORTVERSION=	0.3.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	sysutils xfce
 
 MAINTAINER=	riggs@FreeBSD.org
@@ -13,7 +13,7 @@ LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz
 
 USES=		compiler:c11 gnome pkgconfig xfce
 USE_XFCE=	libmenu panel
-USE_GNOME=	cairo gdkpixbuf2 gtk30
+USE_GNOME=	cairo gdkpixbuf gtk30
 
 PLIST_FILES=	lib/xfce4/panel/plugins/libbsdcpufreq.so \
 		share/xfce4/panel/plugins/bsdcpufreq.desktop

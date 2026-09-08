@@ -1,5 +1,5 @@
 PORTNAME=	rex-encoder
-PORTVERSION=	0.1.6
+PORTVERSION=	0.1.8
 CATEGORIES=	security rubygems
 MASTER_SITES=	RG
 

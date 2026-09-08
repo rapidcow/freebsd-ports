@@ -1,20 +1,19 @@
 PORTNAME=	icinga2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.14.0
-PORTREVISION=	2
+DISTVERSION=	2.15.1
 CATEGORIES=	net-mgmt
 
-MAINTAINER=	joneum@FreeBSD.org
+MAINTAINER=	flo@FreeBSD.org
 COMMENT=	Monitoring and management system for hosts, services and networks
 WWW=		https://www.icinga.org/icinga2/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libboost_system.so:devel/boost-libs
+LIB_DEPENDS=	libboost_thread.so:devel/boost-libs
 RUN_DEPENDS=	${LOCALBASE}/bin/bash:shells/bash
 
-USES=		alias bison cmake:insource compiler:c++0x libedit ssl
+USES=		bison cmake:insource compiler:c++0x libedit ssl
 USE_GITHUB=	yes
 GH_ACCOUNT=	icinga
 
@@ -53,6 +52,7 @@ CMAKE_ARGS+=	-DCMAKE_EXE_LINKER_FLAGS=${PREFIX}/lib/icinga2 \
 		-DCMAKE_MODULE_LINKER_FLAGS=${PREFIX}/lib/icinga2 \
 		-DCMAKE_SHARED_LINKER_FLAGS=${PREFIX}/lib/icinga2 \
 		-DCMAKE_STATIC_LINKER_FLAGS=${PREFIX}/lib/icinga2 \
+		-DCMAKE_INSTALL_MANDIR=${PREFIX}/share/man \
 		-DICINGA2_COMMAND_GROUP=${ICINGA2USER} \
 		-DICINGA2_COMMAND_USER=${ICINGA2USER} \
 		-DICINGA2_GROUP=${ICINGA2GROUP} \

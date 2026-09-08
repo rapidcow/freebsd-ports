@@ -1,5 +1,6 @@
 PORTNAME=		stendhal
 PORTVERSION=		1.35
+PORTREVISION=	2
 DISTVERSIONSUFFIX=	-src
 CATEGORIES=		games java
 MASTER_SITES=		SF/arianne/${PORTNAME}/${PORTVERSION}/
@@ -11,9 +12,7 @@ WWW=		https://stendhalgame.org/
 LICENSE=		BSD2CLAUSE GPLv2
 LICENSE_COMB=		multi
 
-USES=			shebangfix
-USE_JAVA=		yes
-USE_ANT=		yes
+USES=			java:ant,run shebangfix
 
 WRKSRC=			${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
@@ -74,7 +73,7 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/${CLIENTICON}.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/${PORTNAME}.png
 	${INSTALL_DATA} ${FILESDIR}/${PORTNAME}.desktop ${STAGEDIR}${PREFIX}/share/applications
-	${INSTALL_MAN} ${FILESDIR}/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/man/man1
+	${INSTALL_MAN} ${FILESDIR}/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/share/man/man1
 .endif
 
 	# SERVER
@@ -93,7 +92,7 @@ do-install:
 	${INSTALL} ${FILESDIR}/${PORTNAME}-server \
 		${STAGEDIR}${PREFIX}/bin
 	${INSTALL_DATA}	${WRKSRC}/data/conf/admins.txt ${STAGEDIR}${DATADIR}/data/conf
-	${INSTALL_MAN} ${FILESDIR}/${PORTNAME}-server.1 ${STAGEDIR}${PREFIX}/man/man1
+	${INSTALL_MAN} ${FILESDIR}/${PORTNAME}-server.1 ${STAGEDIR}${PREFIX}/share/man/man1
 .endif
 
 .include <bsd.port.mk>

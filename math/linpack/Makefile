@@ -1,6 +1,6 @@
 PORTNAME=	linpack
 PORTVERSION=	1.0
-PORTREVISION=	15
+PORTREVISION=	17
 CATEGORIES=	math
 MASTER_SITES=	NL
 DISTFILES=	${SRCS}
@@ -11,7 +11,7 @@ WWW=		https://www.netlib.org/linpack/
 
 LIB_DEPENDS=	libblas.so:math/blas
 
-MAKE_ENV=	WITHOUT_PROFILE=yes __MAKE_CONF=/dev/null SRCCONF=/dev/null
+MAKE_ENV=	WITHOUT_PROFILE=yes SRCCONF=/dev/null
 MAKEFILE=	${FILESDIR}/Makefile.lib
 
 USES=		fortran uidfix
@@ -46,5 +46,9 @@ SRCS=	cchdc.f cchdd.f cchex.f cchud.f cgbco.f cgbdi.f cgbfa.f cgbsl.f \
 	zposl.f zppco.f zppdi.f zppfa.f zppsl.f zptsl.f zqrdc.f zqrsl.f \
 	zsico.f zsidi.f zsifa.f zsisl.f zspco.f zspdi.f zspfa.f zspsl.f \
 	zsvdc.f ztrco.f ztrdi.f ztrsl.f
+
+# ld.bfd supports neither -z relro nor -z norelro on armv7
+BINUTILS_NO_MAKE_ENV_armv7=	LD
+BINUTILS_NO_MAKE_ENV=	${BINUTILS_NO_MAKE_ENV_${ARCH}}
 
 .include <bsd.port.mk>

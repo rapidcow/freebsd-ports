@@ -1,6 +1,6 @@
 PORTNAME=	bareos
 DISTVERSIONPREFIX=	Release/
-DISTVERSION=	22.0.3
+DISTVERSION=	25.0.1
 CATEGORIES?=	www sysutils
 PKGNAMESUFFIX=	-webui
 
@@ -41,6 +41,10 @@ ETCDIRWEBUI=		etc/${PORTNAME}${PKGNAMESUFFIX}
 post-extract:
 	${FIND} ${WRKSRC}/webui -name .gitignore -delete
 
+post-patch:
+	@${REINPLACE_CMD} -e 's/CMAKE_INSTALL_FULL_DATAROOTDIR/CMAKE_INSTALL_DATAROOTDIR/g' \
+		${WRKSRC}/webui/CMakeLists.txt
+
 pre-install:
 	${FIND} ${WRKSRC}/webui -name *.in -delete
 
@@ -54,13 +58,10 @@ do-install:
 		${STAGEDIR}${WWWDIR}
 	${INSTALL_DATA} ${WRKSRC}/webui/*.php ${STAGEDIR}${WWWDIR}
 	${INSTALL_DATA} ${WRKSRC}/webui/composer* ${STAGEDIR}${WWWDIR}
-	${INSTALL_DATA} ${WRKSRC}/webui/phpunit.xml ${STAGEDIR}${WWWDIR}
 	${INSTALL_DATA} ${WRKSRC}/webui/install/directors.ini ${STAGEDIR}${PREFIX}/${ETCDIRWEBUI}/directors.ini
 	${INSTALL_DATA} ${WRKSRC}/webui/install/configuration.ini ${STAGEDIR}${PREFIX}/${ETCDIRWEBUI}/configuration.ini
 	${INSTALL_DATA} ${WRKSRC}/webui/install/bareos/bareos-dir.d/console/admin.conf.example ${STAGEDIR}${ETCDIR}/bareos-dir.d/console/admin.conf.sample
-	${INSTALL_DATA} ${WRKSRC}/webui/install/bareos/bareos-dir.d/profile/webui-admin.conf ${STAGEDIR}${ETCDIR}/bareos-dir.d/profile/webui-admin.conf.sample
 	${INSTALL_DATA} ${WRKSRC}/webui/install/bareos/bareos-dir.d/profile/webui-limited.conf.example ${STAGEDIR}${ETCDIR}/bareos-dir.d/profile/webui-limited.conf.sample
-	${INSTALL_DATA} ${WRKSRC}/webui/install/bareos/bareos-dir.d/profile/webui-readonly.conf ${STAGEDIR}${ETCDIR}/bareos-dir.d/profile/webui-readonly.conf.sample
 	${INSTALL_DATA} ${WRKSRC}/webui/install/apache/bareos-webui.conf ${STAGEDIR}${PREFIX}/${ETCDIRWEBUI}/apache-bareos-webui.conf
 	${INSTALL_DATA} ${WRKSRC}/webui/install/nginx/bareos-webui.conf ${STAGEDIR}${PREFIX}/${ETCDIRWEBUI}/nginx-bareos-webui.conf
 

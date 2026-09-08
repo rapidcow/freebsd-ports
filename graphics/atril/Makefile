@@ -2,8 +2,8 @@
 # Please update update atril-lite also
 
 PORTNAME=	atril
-PORTVERSION=	1.26.0
-PORTREVISION=	20
+PORTVERSION=	1.28.1
+PORTREVISION=	6
 CATEGORIES=	graphics print mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -28,11 +28,12 @@ SLAVEPORT?=	no
 
 USES=		compiler:c11 desktop-file-utils gettext gmake gnome libarchive \
 		libtool mate pathfix pkgconfig tar:xz xorg
-USE_MATE=	icontheme
+USE_MATE=	icontheme desktop:build
 USE_XORG=	ice sm x11
 USE_GNOME=	cairo gtk30 intlhack libxml2
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-static \
 		--disable-synctex
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -80,7 +81,7 @@ XPS_LIB_DEPENDS=	libgxps.so:graphics/libgxps
 
 EPUB_DESC=		Epub support
 EPUB_CONFIGURE_ENABLE=	epub
-EPUB_LIB_DEPENDS=	libwebkit2gtk-4.0.so:www/webkit2-gtk3
+EPUB_LIB_DEPENDS=	libwebkit2gtk-4.0.so:www/webkit2-gtk@40
 
 DVI_DESC=		DVI viewer support
 DVI_USES=		tex

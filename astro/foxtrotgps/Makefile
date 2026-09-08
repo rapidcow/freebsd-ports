@@ -1,6 +1,6 @@
 PORTNAME=	foxtrotgps
 PORTVERSION=	1.2.2
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	astro geography
 MASTER_SITES=	http://www.foxtrotgps.org/releases/
 
@@ -31,6 +31,7 @@ SHEBANG_FILES=	contrib/convert2gpx \
 		contrib/poi2osm
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-schemas-install
 CONFIGURE_ENV=	DATADIRNAME=share
 
@@ -38,7 +39,7 @@ INFO=		foxtrotgps
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
 .endif
 

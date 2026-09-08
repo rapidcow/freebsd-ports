@@ -1,5 +1,5 @@
 PORTNAME=	headsetcontrol
-DISTVERSION=	2.6.1
+DISTVERSION=	3.1.0
 CATEGORIES=	audio
 
 MAINTAINER=	Alexander88207@protonmail.com
@@ -17,8 +17,7 @@ USES=		cmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	Sapd
 GH_PROJECT=	HeadsetControl
-GH_TAGNAME=	5deb75a
 
-PLIST_FILES=	${LOCALBASE}/bin/headsetcontrol
+PLIST_FILES=	bin/headsetcontrol
 
 .include <bsd.port.mk>

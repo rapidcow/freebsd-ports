@@ -1,6 +1,6 @@
---- ui/ozone/platform/headless/ozone_platform_headless.cc.orig	2022-10-01 07:40:07 UTC
+--- ui/ozone/platform/headless/ozone_platform_headless.cc.orig	2025-05-06 12:23:00 UTC
 +++ ui/ozone/platform/headless/ozone_platform_headless.cc
-@@ -102,7 +102,7 @@ class OzonePlatformHeadless : public OzonePlatform {
+@@ -108,7 +108,7 @@ class OzonePlatformHeadlessImpl : public OzonePlatform
    }
  
  // Desktop Linux, not CastOS.

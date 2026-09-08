@@ -1,5 +1,5 @@
 PORTNAME=	responders
-PORTVERSION=	3.1.0
+PORTVERSION=	3.1.1
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	-rails60
@@ -17,5 +17,7 @@ RUN_DEPENDS=	rubygem-actionpack60>=5.2:www/rubygem-actionpack60 \
 USES=		gem
 
 NO_ARCH=	yes
+
+PORTSCOUT=	limit:^3\.1\.
 
 .include <bsd.port.mk>

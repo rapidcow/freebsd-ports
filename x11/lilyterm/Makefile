@@ -1,7 +1,7 @@
 PORTNAME=	lilyterm
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.9.9.4
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11
 
 MAINTAINER=	jwb@FreeBSD.org
@@ -15,7 +15,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
 USES=		gettext gmake gnome pkgconfig xorg
-USE_GNOME=	cairo gdkpixbuf2 gtk20 vte
+USE_GNOME=	cairo gdkpixbuf gtk20 vte
 USE_XORG=	x11 xext
 GNU_CONFIGURE=	yes
 USE_GITHUB=	yes

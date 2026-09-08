@@ -1,25 +1,28 @@
 PORTNAME=	libchewing
-PORTVERSION=	0.5.1
-DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTVERSION=	0.8.5
 CATEGORIES=	chinese textproc
+MASTER_SITES=	https://github.com/chewing/libchewing/releases/download/v${PORTVERSION}/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Chewing intelligent phonetic input method library
-WWW=		http://chewing.im
+WWW=		https://chewing.im/ \
+		https://github.com/chewing/libchewing
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/makeinfo:print/texinfo
+USES=		cmake:testing localbase:ldflags pkgconfig sqlite tar:zst
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	chewing
-
-USES=		cmake libtool localbase pathfix pkgconfig sqlite
-CMAKE_ARGS=	-DMAKEINFO=${LOCALBASE}/bin/makeinfo
+CMAKE_OFF=	BUILD_INFO \
+		BUILD_TESTING \
+		ENABLE_GCOV \
+		USE_VALGRIND \
+		WITH_INTERNAL_SQLITE3 \
+		WITH_RUST
+CMAKE_ON=	BUILD_SHARED_LIBS \
+		NO_UNDEFINED \
+		WITH_SQLITE3
+CMAKE_TESTING_JOBS=	1	# https://github.com/chewing/libchewing/issues/293
 USE_LDCONFIG=	yes
-
-INFO=		libchewing
 
 .include <bsd.port.mk>

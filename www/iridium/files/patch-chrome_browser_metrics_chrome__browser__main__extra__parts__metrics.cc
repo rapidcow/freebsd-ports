@@ -1,36 +1,33 @@
---- chrome/browser/metrics/chrome_browser_main_extra_parts_metrics.cc.orig	2023-09-14 08:08:21 UTC
+--- chrome/browser/metrics/chrome_browser_main_extra_parts_metrics.cc.orig	2026-01-16 14:21:21 UTC
 +++ chrome/browser/metrics/chrome_browser_main_extra_parts_metrics.cc
-@@ -78,8 +78,10 @@
+@@ -80,7 +80,7 @@
+ #endif
+ #endif  // BUILDFLAG(IS_ANDROID)
  
- // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
- // of lacros-chrome is complete.
--#if defined(__GLIBC__) && (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS))
-+#if defined(__GLIBC__) && (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD))
-+#if !BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ #if defined(__GLIBC__)
  #include <gnu/libc-version.h>
-+#endif
- 
- #include "base/linux_util.h"
- #include "base/strings/string_split.h"
-@@ -108,7 +110,7 @@
- #include "chromeos/crosapi/cpp/crosapi_constants.h"
- #endif  // BUILDFLAG(IS_CHROMEOS_LACROS)
+ #endif  // defined(__GLIBC__)
+@@ -105,7 +105,7 @@
+ #include "chrome/installer/util/taskbar_util.h"
+ #endif  // BUILDFLAG(IS_WIN)
  
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  #include "chrome/browser/metrics/pressure/pressure_metrics_reporter.h"
  #endif  // BUILDFLAG(IS_LINUX)
  
-@@ -117,7 +119,7 @@
+@@ -114,7 +114,7 @@
  #include "components/user_manager/user_manager.h"
- #endif  // BUILDFLAG(IS_CHROMEOS_ASH)
+ #endif  // BUILDFLAG(IS_CHROMEOS)
  
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
  #include "components/power_metrics/system_power_monitor.h"
  #endif
  
-@@ -539,7 +541,7 @@ void RecordStartupMetrics() {
+@@ -884,7 +884,7 @@ void RecordStartupMetrics() {
  
    // Record whether Chrome is the default browser or not.
    // Disabled on Linux due to hanging browser tests, see crbug.com/1216328.
@@ -39,8 +36,8 @@
    shell_integration::DefaultWebClientState default_state =
        shell_integration::GetDefaultBrowser();
    base::UmaHistogramEnumeration("DefaultBrowser.State", default_state,
-@@ -860,11 +862,11 @@ void ChromeBrowserMainExtraPartsMetrics::PostBrowserSt
-   }
+@@ -1115,11 +1115,11 @@ void ChromeBrowserMainExtraPartsMetrics::PostBrowserSt
+       std::make_unique<web_app::SamplingMetricsProvider>();
  #endif  // !BUILDFLAG(IS_ANDROID)
  
 -#if BUILDFLAG(IS_LINUX)

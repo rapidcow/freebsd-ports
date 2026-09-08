@@ -1,49 +1,43 @@
 PORTNAME=	wayfire-plugins-extra
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.7.5
+DISTVERSION=	0.10.0
 CATEGORIES=	x11-wm wayland
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Additional plugins for Wayfire
 WWW=		https://wayfire.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	wayland-scanner:graphics/wayland \
+BUILD_DEPENDS=	boost-libs>0:devel/boost-libs \
+		evdev-proto>0:devel/evdev-proto \
+		wayland-scanner:graphics/wayland \
 		wayland-protocols>0:graphics/wayland-protocols \
 		wayfire>0:x11-wm/wayfire
-LIB_DEPENDS=	libwf-config.so:devel/wf-config \
-		libwlroots.so:x11-toolkits/wlroots
+LIB_DEPENDS=	libevdev.so:devel/libevdev \
+		libwf-config.so:devel/wf-config \
+		libwayland-server.so:graphics/wayland \
+		libwlroots-0.19.so:x11-toolkits/wlroots019
 
-USES=		compiler:c++17-lang gnome meson pkgconfig shebangfix
+USES=		compiler:c++17-lang gl gnome meson pkgconfig
 USE_GITHUB=	yes
 USE_GITLAB=	nodefault
+USE_GL=		glesv2
 USE_GNOME=	cairo glibmm
 GH_ACCOUNT=	WayfireWM
-GH_TUPLE=	damianatorrpm:wayfire-plugin_dbus_interface:c705bf1:dbus/subprojects/dbus
-GL_TUPLE=	wayfireplugins:windecor:6ad31bf:windecor/subprojects/windecor
-SHEBANG_FILES=	subprojects/dbus/compile-schemas.sh
-bash_CMD=	${SH}
+GH_TUPLE=	timgott:wayfire-shadows:v0.9.0-1-g453c217:wayfire_shadows/subprojects/wayfire-shadows \
+		soreau:pixdecor:8a0b028:pixdecor/subprojects/pixdecor \
+		soreau:filters:00024b5:filters/subprojects/filters
+GL_TUPLE=	wayfireplugins:focus-request:v0.9.0:focus_request/subprojects/focus-request
+MESON_ARGS=	-Denable_focus_request=true -Denable_wayfire_shadows=true \
+		-Denable_filters=true
 
-OPTIONS_DEFINE=	DBUS LIBRSVG2
-OPTIONS_DEFAULT=DBUS LIBRSVG2
+OPTIONS_DEFINE=	PANGO
+OPTIONS_DEFAULT=PANGO
 OPTIONS_SUB=	yes
 
-DBUS_BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto
-DBUS_USES=		xorg
-DBUS_USE=		XORG=xcb
-DBUS_MESON_TRUE=	enable_dbus
-DBUS_VARS=		GLIB_SCHEMAS+=org.wayland.compositor.dbus.gschema.xml
-
-LIBRSVG2_BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto
-LIBRSVG2_USES=		xorg
-LIBRSVG2_USE=		GNOME=librsvg2 XORG=pixman
-LIBRSVG2_MESON_TRUE=	enable_windecor
-
-post-patch:
-# Respect PREFIX for icons
-	@${REINPLACE_CMD} 's,/usr/share,${DATADIR:H},' \
-		${WRKSRC}/subprojects/windecor/deco-theme.cpp
+PANGO_USE=		GNOME=pango
+PANGO_MESON_TRUE=	enable_pixdecor
 
 .include <bsd.port.mk>

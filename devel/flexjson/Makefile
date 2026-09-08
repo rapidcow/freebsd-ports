@@ -5,12 +5,13 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/flexjson%20${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lightweight Java library to write JSON
-WWW=		http://flexjson.sourceforge.net/
+WWW=		https://flexjson.sourceforge.net/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE-2.0.txt
 
-USE_JAVA=	yes
+USES=		java
+
 NO_BUILD=	yes
 NO_ARCH=	yes
 

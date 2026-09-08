@@ -1,6 +1,6 @@
 PORTNAME=	libpoly
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.1.13
+DISTVERSION=	0.2.1
 CATEGORIES=	math
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -10,8 +10,6 @@ WWW=		https://github.com/SRI-CSL/libpoly
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENCE
-
-BROKEN_i386=	compilation fails with error: incompatible function pointer types, see https://github.com/SRI-CSL/libpoly/issues/70
 
 LIB_DEPENDS=	libpoly.so:math/libpoly
 

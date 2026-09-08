@@ -1,12 +1,12 @@
 PORTNAME=	steghide
 PORTVERSION=	0.5.1
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	security
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Steganography tool to hide data in binary files
-WWW=		http://steghide.sourceforge.net/
+WWW=		https://steghide.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -19,6 +19,7 @@ CPE_VENDOR=	${PORTNAME}_project
 USE_CXXSTD=	c++14
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 MAKE_ARGS=	LIBTOOL="${LOCALBASE}/bin/libtool"
 

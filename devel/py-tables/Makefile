@@ -1,5 +1,5 @@
 PORTNAME=	tables
-PORTVERSION=	3.7.0
+PORTVERSION=	3.10.2
 PORTREVISION=	2
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
@@ -13,10 +13,12 @@ LICENSE=	BSD3CLAUSE
 
 BUILD_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}numexpr>=1.4.1:math/py-numexpr@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}packaging>=0:devel/py-packaging@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}packaging>=0:devel/py-packaging@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}py-cpuinfo>=0:sysutils/py-py-cpuinfo@${PY_FLAVOR}
 LIB_DEPENDS=	libhdf5.so:science/hdf5 \
 		liblzo2.so:archivers/lzo2 \
-		libucl.so:archivers/ucl
+		libucl.so:archivers/ucl \
+		libblosc2.so:archivers/c-blosc2
 RUN_DEPENDS:=	${BUILD_DEPENDS} \
 		${PYTHON_PKGNAMEPREFIX}six>=1.9.0:devel/py-six@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mock>=2.0:devel/py-mock@${PY_FLAVOR}

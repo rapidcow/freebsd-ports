@@ -1,12 +1,15 @@
 PORTNAME=	ansible-core
-DISTVERSION=	2.15.2
+DISTVERSION=	2.18.7
 CATEGORIES=	sysutils python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+DISTFILES=	${PORTNAME:R:S/-/_/}-${DISTVERSION}${EXTRACT_SUFX}
 
-MAINTAINER=	0mp@FreeBSD.org
+MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Radically simple IT automation
 WWW=		https://www.ansible.com/
+
+WRKSRC=		${WRKDIR}/${PORTNAME:R:S/-/_/}-${DISTVERSION}
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,7 +20,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Jinja2>=3.0.0:devel/py-Jinja2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}packaging>=0:devel/py-packaging@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}resolvelib>=0.5.3<1.1.0:devel/py-resolvelib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}toml>0:textproc/py-toml@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}yaml>=5.1:devel/py-yaml@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}passlib>0:security/py-passlib@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyyaml>=5.1:devel/py-pyyaml@${PY_FLAVOR}
 TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}bcrypt>=0:security/py-bcrypt@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}boto3>0:www/py-boto3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mock>0:devel/py-mock@${PY_FLAVOR} \
@@ -30,7 +34,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}bcrypt>=0:security/py-bcrypt@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR} \
 		git:devel/git
 
-USES=		ansible:env cpe python:3.9+ shebangfix
+USES=		ansible:env cpe python shebangfix
 CPE_VENDOR=	redhat
 CPE_PRODUCT=	ansible
 USE_PYTHON=	autoplist concurrent cryptography pep517
@@ -44,19 +48,6 @@ TEST_ENV=	${MAKE_ENV}
 BINARY_ALIAS=	python=${PYTHON_CMD}
 NO_ARCH=	yes
 
-PLIST_FILES=	share/man/man1/ansible-config.1.gz \
-		share/man/man1/ansible-console.1.gz \
-		share/man/man1/ansible-doc.1.gz \
-		share/man/man1/ansible-galaxy.1.gz \
-		share/man/man1/ansible-inventory.1.gz \
-		share/man/man1/ansible-playbook.1.gz \
-		share/man/man1/ansible-pull.1.gz \
-		share/man/man1/ansible-vault.1.gz \
-		share/man/man1/ansible.1.gz
-PORTEXAMPLES=	ansible.cfg hosts
-
-OPTIONS_DEFINE=	DOCS EXAMPLES
-
 post-patch:
 # Preserve the original paths in
 # test/units/cli/galaxy/test_execute_list_collection.py.
@@ -66,16 +57,6 @@ post-patch:
 			-e 's|/etc/ansible|${ETCDIR}|g' \
 			-e 's|/usr/share/ansible|${DATADIR}|g'
 	${FIND} ${WRKSRC} -type f -name "*.bak" -delete
-
-post-install:
-	@${MKDIR} ${STAGEDIR}${MAN1PREFIX}/man/man1
-	${INSTALL_MAN} ${WRKSRC}/docs/man/man1/*.1 \
-		${STAGEDIR}${MAN1PREFIX}/share/man/man1
-
-post-install-EXAMPLES-on:
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/examples/ansible.cfg ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/examples/hosts ${STAGEDIR}${EXAMPLESDIR}
 
 post-stage:
 	${FIND} ${STAGEDIR}${PREFIX}/bin -type l -name ansible-\* -lname ansible \

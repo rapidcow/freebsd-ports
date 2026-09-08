@@ -4,12 +4,14 @@
 # Usage:	USES=ssl
 # Valid ARGS:	none (build and run), build, run
 #
-# The user can choose which ssl library he wants with:
+# The user can choose which ssl library they want with:
 #
 # DEFAULT_VERSIONS+=	ssl=<openssl variant>
 #
-# Variants being base, openssl, openssl30, openssl31, openssl32,
-# openssl-quictls, libressl, and libressl-devel.
+# When updating this, please also update the same list in bsd.default-versions.mk
+# and the checks for USES=ssl in qa.sh!
+# Variants being base, openssl, openssl111, openssl33, openssl34, openssl35,
+# openssl36, libressl, and libressl-devel.
 #
 # The Makefile sets these variables:
 # OPENSSLBASE		- "/usr" or ${LOCALBASE}

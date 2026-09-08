@@ -6,7 +6,7 @@ DISTFILES=	Sokobano.zip
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Entertaining Sokoban game with nice 3D graphics
-WWW=		http://sokobano.sourceforge.net/
+WWW=		https://sokobano.sourceforge.net/
 
 LICENSE=	GPLv2
 
@@ -14,8 +14,9 @@ BUILD_DEPENDS=	${LOCALBASE}/share/java/classes/lwjgl/lwjgl.jar:games/lwjgl
 RUN_DEPENDS:=	${LOCALBASE}/share/java/classes/jmf.jar:java/jmf \
 		${BUILD_DEPENDS}
 
-USES=		gmake
-USE_JAVA=	8
+USES=		gmake java
+JAVA_VERSION=	8
+
 MAKEFILE=	${FILESDIR}/makefile
 MAKE_ENV=	JAVA_VERSION=${JAVA_VERSION}
 WRKSRC=		${WRKDIR}/Sokobano

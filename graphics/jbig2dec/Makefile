@@ -1,5 +1,6 @@
 PORTNAME=	jbig2dec
 PORTVERSION=	0.20
+PORTREVISION=	1
 CATEGORIES=	graphics devel
 MASTER_SITES=	https://github.com/ArtifexSoftware/jbig2dec/releases/download/${PORTVERSION}/
 
@@ -10,7 +11,7 @@ WWW=		https://github.com/ArtifexSoftware/jbig2dec
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cpe libtool pathfix python:env,test shebangfix
+USES=		cpe libtool python:env,test shebangfix
 
 CONFIGURE_ENV=	ac_cv_func_getopt_long=yes
 GNU_CONFIGURE=	yes

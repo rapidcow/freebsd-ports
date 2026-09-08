@@ -1,17 +1,18 @@
 PORTNAME=	conserver
 DISTVERSION=	8.2.7
+PORTREVISION=	3
 CATEGORIES=	comms
 MASTER_SITES=	https://github.com/bstansell/conserver/releases/download/v${DISTVERSION}/
 PKGNAMESUFFIX=	-com
 
-MAINTAINER=	eduardo@FreeBSD.org
+MAINTAINER=	philip@FreeBSD.org
 COMMENT=	Application that allows multiple users to watch serial consoles
 WWW=		https://www.conserver.com/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		autoreconf:2.69 ssl
+USES=		ssl
 USE_RC_SUBR=	conserver
 
 GNU_CONFIGURE=	yes

@@ -1,11 +1,11 @@
---- ui/compositor/compositor.cc.orig	2023-07-24 14:27:53 UTC
+--- ui/compositor/compositor.cc.orig	2025-12-10 15:04:57 UTC
 +++ ui/compositor/compositor.cc
-@@ -897,7 +897,7 @@ void Compositor::OnResume() {
+@@ -979,7 +979,7 @@ void Compositor::OnResume() {
+     obs.ResetIfActive();
+ }
  
- // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
- // of lacros-chrome is complete.
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_LINUX) && BUILDFLAG(IS_OZONE_X11)
++#if (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)) && BUILDFLAG(IS_OZONE_X11)
  void Compositor::OnCompleteSwapWithNewSize(const gfx::Size& size) {
-   for (auto& observer : observer_list_)
-     observer.OnCompositingCompleteSwapWithNewSize(this, size);
+   observer_list_.Notify(
+       &CompositorObserver::OnCompositingCompleteSwapWithNewSize, this, size);

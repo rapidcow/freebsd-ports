@@ -1,12 +1,12 @@
 PORTNAME=	man2html
-DISTVERSION=	3.1.20220714
+DISTVERSION=	3.1.20240105
 CATEGORIES=	textproc
 MASTER_SITES=	https://invisible-island.net/archives/man2html/
 DISTNAME=	man2html-${DISTVERSION:E}
 
 MAINTAINER=	fuz@FreeBSD.org
 COMMENT=	Convert nroff(1) man pages to HTML
-WWW=		https://dickey.his.com/scripts/man2html.html
+WWW=		https://invisible-island.net/scripts/man2html.html
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -20,12 +20,12 @@ NO_BUILD=	yes
 CGIDIR=		${PREFIX}/www/cgi-bin
 
 PLIST_FILES=	bin/man2html \
-		man/man1/man2html.1.gz \
+		share/man/man1/man2html.1.gz \
 		www/cgi-bin/man.cgi
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/man2html ${STAGEDIR}/${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/doc/man2html.1 ${STAGEDIR}/${PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/doc/man2html.1 ${STAGEDIR}/${PREFIX}/share/man/man1
 	${MKDIR} ${STAGEDIR}${CGIDIR}
 	${INSTALL_SCRIPT} ${WRKSRC}/man.cgi ${STAGEDIR}${CGIDIR}
 

@@ -2,7 +2,7 @@ PORTNAME=	schilyutils
 CATEGORIES=	sysutils converters deskutils textproc shells
 
 COMMENT=	Collection of utilities from J. Schilling
-WWW=		http://schilytools.sourceforge.net/
+WWW=		https://codeberg.org/schilytools/schilytools
 
 USES+=		perl5 shebangfix
 USE_PERL5=	run

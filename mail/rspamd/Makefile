@@ -1,9 +1,7 @@
 PORTNAME=	rspamd
-PORTVERSION=	3.6
+PORTVERSION=	3.14.0
+PORTREVISION=	1
 CATEGORIES=	mail
-
-PATCH_SITES=	https://github.com/rspamd/rspamd/commit/
-PATCHFILES=	ffbab4fbf218514845b8e5209aec044621b1f460.patch:-p1
 
 MAINTAINER=	vsevolod@FreeBSD.org
 COMMENT=	Fast spam filtering system
@@ -32,7 +30,6 @@ CMAKE_ARGS+=	-DBUILD_PORT=yes \
 		-DDBDIR=/var/db/rspamd \
 		-DLIBDIR=${PREFIX}/lib/rspamd \
 		-DLOGDIR=/var/log/rspamd \
-		-DMANDIR=${MANPREFIX}/man \
 		-DRUNDIR=/var/run/rspamd
 
 CONFLICTS_INSTALL=	rspamd-devel

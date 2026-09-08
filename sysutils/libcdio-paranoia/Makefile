@@ -1,5 +1,5 @@
 PORTNAME=	libcdio-paranoia
-PORTVERSION=	10.2+2.0.1
+PORTVERSION=	10.2+2.0.2
 CATEGORIES=	sysutils
 MASTER_SITES=	GNU/libcdio
 
@@ -21,8 +21,6 @@ INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 
 post-patch:
-	${REINPLACE_CMD} -e 's|/jp/man1|/ja/man1|' \
-		${WRKSRC}/doc/ja/Makefile.in
 	${REINPLACE_CMD} -e 's|freebsd10\.\*|freebsd[1-9][0-9].*|' \
 		${WRKSRC}/configure
 

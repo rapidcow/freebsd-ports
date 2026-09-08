@@ -1,13 +1,14 @@
 PORTNAME=	vroom
-PORTVERSION=	1.6.3
+DISTVERSION=	1.6.7
 CATEGORIES=	textproc
-DISTNAME=	${PORTNAME}_${PORTVERSION}
+DISTNAME=	${PORTNAME}_${DISTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Read and Write Rectangular Text Data Quickly
-WWW=		https://cran.r-project.org/web/packages/vroom/
+WWW=		https://cran.r-project.org/package=vroom
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 CRAN_DEPENDS=	R-cran-bit64>0:devel/R-cran-bit64 \
 		R-cran-cli>=3.2.0:devel/R-cran-cli \
@@ -25,9 +26,23 @@ CRAN_DEPENDS=	R-cran-bit64>0:devel/R-cran-bit64 \
 		R-cran-withr>0:devel/R-cran-withr
 BUILD_DEPENDS=	${CRAN_DEPENDS}
 RUN_DEPENDS=	${CRAN_DEPENDS}
+TEST_DEPENDS=	R-cran-dplyr>0:math/R-cran-dplyr \
+		R-cran-forcats>0:math/R-cran-forcats \
+		R-cran-ggplot2>0:graphics/R-cran-ggplot2 \
+		R-cran-knitr>0:print/R-cran-knitr \
+		R-cran-testthat>0:devel/R-cran-testthat \
+		R-cran-tidyr>0:devel/R-cran-tidyr
 
 USES=		compiler:c++11-lang cran:auto-plist,compiles shebangfix
 
 SHEBANG_FILES=	inst/bench/*.sh
+
+pre-test:
+
+# Test depends not ported yet
+.for pkg in patchwork bench
+	@${LOCALBASE}/bin/Rscript -e 'install.packages("${pkg}", \
+		repos = "https://cloud.r-project.org")'
+.endfor
 
 .include <bsd.port.mk>

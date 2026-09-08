@@ -1,6 +1,5 @@
 PORTNAME=	engrampa
-PORTVERSION=	1.26.0
-PORTREVISION=	2
+PORTVERSION=	1.28.2
 CATEGORIES=	archivers mate
 MASTER_SITES=	MATE
 DIST_SUBDIR=	mate
@@ -20,11 +19,12 @@ RUN_DEPENDS=	${LOCALBASE}/bin/gtar:archivers/gtar \
 PORTSCOUT=	limitw:1,even
 
 USES=		desktop-file-utils gettext gmake gnome libtool localbase \
-		mate pathfix pkgconfig tar:xz
+		mate pkgconfig tar:xz
 USE_MATE=	caja
 USE_GNOME=	cairo gtk30 intltool
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-packagekit
 INSTALL_TARGET=	install-strip
 

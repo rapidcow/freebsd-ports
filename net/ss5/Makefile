@@ -1,12 +1,12 @@
 PORTNAME=	ss5
 DISTVERSION=	3.8.9-8
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net security
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${DISTVERSION}
 
 MAINTAINER=	raffaele.delorenzo@libero.it
 COMMENT=	SOCKS v4/v5 application layer gateway with many features
-WWW=		http://ss5.sourceforge.net/
+WWW=		https://ss5.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/License
@@ -31,7 +31,7 @@ OPTIONS_DEFINE=	DOCS EXAMPLES
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

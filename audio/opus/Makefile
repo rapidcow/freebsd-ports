@@ -1,8 +1,7 @@
 PORTNAME=	opus
-DISTVERSION=	1.4
+DISTVERSION=	1.6
 CATEGORIES=	audio
-MASTER_SITES=	https://downloads.xiph.org/releases/opus/ \
-		https://github.com/xiph/opus/releases/download/v${DISTVERSION}/
+MASTER_SITES=	https://downloads.xiph.org/releases/opus/
 
 MAINTAINER=	naddy@FreeBSD.org
 COMMENT=	IETF audio codec
@@ -11,21 +10,18 @@ WWW=		https://opus-codec.org/
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cpe gmake libtool pathfix
+USES=		cpe gmake libtool
 CPE_VENDOR=	opus-codec
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-custom-modes \
+		--enable-dred \
+		--enable-osce \
+		--enable-qext \
 		--disable-doc   # requires doxygen
+CONFIGURE_TARGET=${ARCH:S/amd64/x86_64/}-portbld-${OPSYS:tl}${OSREL}
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
-
-.include <bsd.port.options.mk>
-
-# drop after FreeBSD 12 EOL
-.if ${ARCH} == "arm"
-CONFIGURE_ARGS+=--enable-fixed-point
-.endif
 
 .include <bsd.port.mk>

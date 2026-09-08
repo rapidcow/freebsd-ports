@@ -1,6 +1,6 @@
 PORTNAME=	qmailanalog
 PORTVERSION=	0.70
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	mail
 MASTER_SITES=	http://cr.yp.to/software/ \
 		http://www.emaillab.org/djb/qmailanalog/
@@ -14,7 +14,7 @@ USES=		qmail:run
 ALL_TARGET=	prog
 INSTALL_TARGET=	setup
 
-MANPREFIX=	${QMPREFIX}
+MANDIRS=	${QMPREFIX}/man
 
 PLIST_SUB+=	MYSUBDIR=${MYSUBDIR}
 
@@ -55,6 +55,6 @@ post-build:
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${QMPREFIX}
-	${INSTALL_MAN} ${WRKSRC}/*.1 ${STAGEDIR}${MANPREFIX}/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/*.1 ${STAGEDIR}${QMPREFIX}/man/man1/
 
 .include <bsd.port.post.mk>

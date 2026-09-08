@@ -1,6 +1,6 @@
 PORTNAME=	recordmydesktop
 DISTVERSION=	0.3.8.1
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	multimedia
 MASTER_SITES=	SF
 
@@ -10,14 +10,16 @@ WWW=		http://recordmydesktop.sourceforge.net/
 
 LICENSE=	GPLv2+
 
-LIB_DEPENDS=	libtheora.so:multimedia/libtheora
+LIB_DEPENDS=	libtheora.so:multimedia/libtheora \
+		libvorbis.so:audio/libvorbis
 
 USES=		xorg
 USE_XORG=	ice sm x11 xdamage xext xfixes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--enable-oss=yes
 
-PLIST_FILES=	bin/recordmydesktop man/man1/recordmydesktop.1.gz
+PLIST_FILES=	bin/recordmydesktop share/man/man1/recordmydesktop.1.gz
 PORTDOCS=	ChangeLog
 
 OPTIONS_DEFINE=	DOCS JACK

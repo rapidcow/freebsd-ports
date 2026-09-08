@@ -7,13 +7,13 @@ DISTNAME=	${PORTNAME}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java Chart Construction Kit
-WWW=		http://jcckit.sourceforge.net/
+WWW=		https://jcckit.sourceforge.net/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		zip
-USE_JAVA=	yes
+USES=		java zip
+
 WRKSRC=		${WRKDIR}/JCCKit
 NO_BUILD=	yes
 NO_ARCH=	yes

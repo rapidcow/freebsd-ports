@@ -1,6 +1,6 @@
 PORTNAME=	wmweather+
 PORTVERSION=	2.18
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	misc windowmaker geography
 MASTER_SITES=	SF/wmweatherplus/wmweather%2B/ \
 		SF/nemysisfreebsdp/misc/:icons
@@ -17,13 +17,9 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libpcre.so:devel/pcre \
-		libtiff.so:graphics/tiff \
-		libHermes.so:graphics/Hermes \
-		libpng.so:graphics/png \
-		libgif.so:graphics/giflib \
 		libwraster.so:x11-wm/libwraster
 
-USES=		iconv jpeg xorg
+USES=		iconv xorg
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-libwraster=${LOCALBASE} \
 		--with-libpcre=${LOCALBASE} \
@@ -33,12 +29,10 @@ CONFIGURE_ARGS=	--with-libwraster=${LOCALBASE} \
 USE_XORG=	x11 xext xpm sm ice
 LDFLAGS+=	-lm
 
-WRKSRC=		${WRKDIR}/wmweather+-${PORTVERSION}
-
 SUB_FILES=	pkg-message
 
 PLIST_FILES=	bin/${PORTNAME} \
-		man/man1/${PORTNAME}.1.gz \
+		share/man/man1/${PORTNAME}.1.gz \
 		share/pixmaps/${PORTNAME}.png
 
 PORTDOCS=	ChangeLog README
@@ -66,7 +60,7 @@ post-patch:
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 \
-		${STAGEDIR}${MAN1PREFIX}/man/man1/
+		${STAGEDIR}${PREFIX}/share/man/man1/
 	${INSTALL_DATA} ${_DISTDIR}/${PORTNAME}.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/
 

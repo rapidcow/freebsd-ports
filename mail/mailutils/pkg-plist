@@ -247,6 +247,8 @@ lib/mailutils/spamd.a
 lib/mailutils/spamd.so
 lib/mailutils/timestamp.a
 lib/mailutils/timestamp.so
+lib/mailutils/uidnew.a
+lib/mailutils/uidnew.so
 lib/mailutils/vacation.a
 lib/mailutils/vacation.so
 %%PYTHON%%%%PYTHON_SITELIBDIR%%/mailutils/__init__.py
@@ -333,10 +335,6 @@ libexec/mailutils/mailutils-send
 libexec/mailutils/mailutils-smtp
 libexec/mailutils/mailutils-stat
 libexec/mailutils/mailutils-wicket
-man/man1/imap4d.1.gz
-man/man1/mail.1.gz
-man/man1/pop3d.1.gz
-man/man1/popauth.1.gz
 sbin/comsatd
 sbin/imap4d
 sbin/lmtpd
@@ -353,6 +351,7 @@ share/aclocal/mailutils.m4
 %%NLS%%share/locale/fi/LC_MESSAGES/mailutils.mo
 %%NLS%%share/locale/fr/LC_MESSAGES/mailutils.mo
 %%NLS%%share/locale/id/LC_MESSAGES/mailutils.mo
+%%NLS%%share/locale/ka/LC_MESSAGES/mailutils.mo
 %%NLS%%share/locale/pl/LC_MESSAGES/mailutils.mo
 %%NLS%%share/locale/pt_BR/LC_MESSAGES/mailutils.mo
 %%NLS%%share/locale/ro/LC_MESSAGES/mailutils.mo
@@ -376,3 +375,7 @@ share/aclocal/mailutils.m4
 %%MH%%%%DATADIR%%/mh/scan.size
 %%MH%%%%DATADIR%%/mh/scan.time
 %%MH%%%%DATADIR%%/mh/scan.timely
+share/man/man1/imap4d.1.gz
+share/man/man1/mail.1.gz
+share/man/man1/pop3d.1.gz
+share/man/man1/popauth.1.gz

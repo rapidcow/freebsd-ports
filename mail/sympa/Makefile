@@ -1,8 +1,9 @@
 PORTNAME=	sympa
-DISTVERSION=	6.2.70
+DISTVERSION=	6.2.76
+PORTREVISION=	1
 CATEGORIES=	mail
 
-MAINTAINER=	dgeo@centrale-marseille.fr
+MAINTAINER=	dgeo@centrale-med.fr
 COMMENT=	Electronic mailing list manager
 WWW=		https://www.sympa.org/
 
@@ -49,6 +50,7 @@ RUN_DEPENDS=	mhonarc>=0:www/mhonarc \
 		p5-Term-ProgressBar>=2.09:devel/p5-Term-ProgressBar \
 		p5-Time-HiRes>=1.29:devel/p5-Time-HiRes \
 		p5-Unicode-LineBreak>=2019.001:textproc/p5-Unicode-LineBreak \
+		p5-Unicode-UTF8>=0.62:converters/p5-Unicode-UTF8 \
 		p5-URI>=1.35:net/p5-URI \
 		p5-XML-LibXML>=1.70:textproc/p5-XML-LibXML
 
@@ -59,6 +61,7 @@ GH_ACCOUNT=	sympa-community
 USE_RC_SUBR=	sympa
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 CONFIGURE_ARGS+=	--bindir=${PREFIX}/bin \
 			--datadir=${DATADIR} \
@@ -108,9 +111,10 @@ APACHE_RUN_DEPENDS=	${LOCALBASE}/${APACHEMODDIR}/mod_fastcgi.so:www/mod_fastcgi
 APACHE_USES=		apache:run
 FASTCGI_RUN_DEPENDS=	p5-CGI-Fast>=1.08:www/p5-CGI-Fast \
 			p5-FCGI>=0.67:www/p5-FCGI
-MYSQL_RUN_DEPENDS=	p5-DBD-mysql>=0:databases/p5-DBD-mysql
+MYSQL_RUN_DEPENDS=	${DBD_MYSQL}
 MYSQL_SUB_LIST=		REQ_MYSQL=mysql
 MYSQL_SUB_LIST_OFF=	REQ_MYSQL=""
+MYSQL_USES=		mysql
 PGSQL_RUN_DEPENDS=	p5-DBD-Pg>=2.00:databases/p5-DBD-Pg
 PGSQL_SUB_LIST=		REQ_PGSQL=postgresql
 PGSQL_SUB_LIST_OFF=	REQ_PGSQL=""

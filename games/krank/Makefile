@@ -1,12 +1,12 @@
 PORTNAME=	krank
 PORTVERSION=	07
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	games
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Little casual game
-WWW=		http://krank.sourceforge.net/
+WWW=		https://krank.sourceforge.net/
 
 RUN_DEPENDS=	${PYGAME} \
 		${PYNUMPY}

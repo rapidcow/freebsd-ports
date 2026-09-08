@@ -1,14 +1,14 @@
---- configure.orig	2018-12-25 13:50:45 UTC
+--- configure.orig	2025-02-16 15:23:15 UTC
 +++ configure
-@@ -669,7 +669,6 @@ fi
+@@ -752,7 +752,6 @@ fi
  
  ## check for various headers
  
 -need_include inttypes.h
  
- if [ "$use_devdsp" != no ]; then
-     remember_use devdsp
-@@ -729,11 +728,11 @@ fi
+ if [ "$use_zlib" != no ]; then
+     remember_use zlib
+@@ -924,11 +923,11 @@ if [ "$use_nas" != no ]; then
  
  if [ "$use_nas" != no ]; then
      remember_use nas
@@ -22,7 +22,7 @@
  int main(int argc, char **argv) { return 0; }
  EOF
          retval2=$?
-@@ -954,7 +953,7 @@ append_nodupe CFLAGS -D_FORTIFY_SOURCE=2 -Wall -fsigne
+@@ -1246,7 +1245,7 @@ else
  if [ "$use_debug" = "yes" ]; then
      append_nodupe CFLAGS -g3
  else

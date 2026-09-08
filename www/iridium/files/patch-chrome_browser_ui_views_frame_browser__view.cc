@@ -1,11 +1,29 @@
---- chrome/browser/ui/views/frame/browser_view.cc.orig	2023-08-28 20:17:35 UTC
+--- chrome/browser/ui/views/frame/browser_view.cc.orig	2026-01-16 14:21:21 UTC
 +++ chrome/browser/ui/views/frame/browser_view.cc
-@@ -2015,7 +2015,7 @@ void BrowserView::TabDraggingStatusChanged(bool is_dra
-   // CrOS cleanup is done.
- // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
- // of lacros-chrome is complete.
--#if !(BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS))
-+#if !(BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS) || BUILDFLAG(IS_BSD))
-   contents_web_view_->SetFastResize(is_dragging);
-   if (!is_dragging) {
-     // When tab dragging is ended, we need to make sure the web contents get
+@@ -2346,7 +2346,7 @@ void BrowserView::ToolbarSizeChanged(bool is_animating
+ }
+ 
+ void BrowserView::TabDraggingStatusChanged(bool is_dragging) {
+-#if !BUILDFLAG(IS_LINUX)
++#if !BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_BSD)
+   std::vector<ContentsWebView*> contents_web_views =
+       GetAllVisibleContentsWebViews();
+ 
+@@ -6061,7 +6061,7 @@ void BrowserView::MaybeShowProfileSwitchIPH() {
+ }
+ 
+ void BrowserView::MaybeShowSupervisedUserProfileSignInIPH() {
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+   if (!ShouldShowAvatarToolbarIPH()) {
+     return;
+   }
+@@ -6071,7 +6071,7 @@ void BrowserView::MaybeShowSupervisedUserProfileSignIn
+ }
+ 
+ void BrowserView::MaybeShowSignInBenefitsIPH() {
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+   if (!ShouldShowAvatarToolbarIPH()) {
+     return;
+   }

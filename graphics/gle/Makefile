@@ -1,6 +1,6 @@
 PORTNAME=	gle
 PORTVERSION=	3.1.0
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	graphics
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}\
 		http://linas.org/gle/pub/ \
@@ -20,6 +20,7 @@ USE_LDCONFIG=	yes
 USE_XORG=	ice xext xmu xt
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 LIBS+=		-L${LOCALBASE}/lib -lXext
 
@@ -27,7 +28,7 @@ OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

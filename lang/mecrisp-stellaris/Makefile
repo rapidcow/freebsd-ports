@@ -1,11 +1,12 @@
 PORTNAME=	mecrisp-stellaris
-PORTVERSION=	2.6.3
+DISTVERSION=	3.0.1
 CATEGORIES=	lang
-MASTER_SITES=	SF/mecrisp
+MASTER_SITES=	SF/mecrisp \
+		http://fuz.su/pub/mecrisp/
 
 MAINTAINER=	fuz@FreeBSD.org
 COMMENT=	Native code Forth system for ARM
-WWW=		http://mecrisp.sourceforge.net
+WWW=		https://mecrisp.sourceforge.net
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -14,11 +15,13 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 IGNORE_aarch64=	fails to build with qemu-user-static: \
 		qemu-aarch64-static cannot execute armv7 binaries
 .endif
-IGNORE_FreeBSD_12_aarch64=	OS too old to run armv7 binaries on arm64, upgrade to FreeBSD 13
 ONLY_FOR_ARCHS=		aarch64 armv6 armv7
 ONLY_FOR_ARCHS_REASON=	written in ARM assembly
 
 BUILD_DEPENDS=	arm-none-eabi-binutils>2.25:devel/binutils@arm_none_eabi
+
+# Port installs a hand-crafted position-dependent ELF binary.
+PIE_UNSAFE=	yes
 
 # stripping eats our hand-crafted ELF binaries, so don't do that
 # the binaries are free of symbols or stuff like that anyway

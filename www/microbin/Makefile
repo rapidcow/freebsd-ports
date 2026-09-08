@@ -1,12 +1,13 @@
 PORTNAME=	microbin
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.0.4
-PORTREVISION=	2
+PORTREVISION=	22
 CATEGORIES=	www
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Tiny, self-contained, configurable paste bin and URL shortener
-WWW=		https://microbin.eu
+WWW=		https://microbin.eu \
+		https://github.com/szabodanika/microbin
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -346,8 +347,5 @@ CARGO_CRATES=	actix-codec-0.5.0 \
 		zstd-sys-2.0.1+zstd.1.5.2
 
 PLIST_FILES=	bin/${PORTNAME}
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
 .include <bsd.port.mk>

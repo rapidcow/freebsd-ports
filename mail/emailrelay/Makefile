@@ -1,13 +1,13 @@
 PORTNAME=	emailrelay
 PORTVERSION=	1.9
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	mail
 MASTER_SITES=	SF
 EXTRACT_SUFX=	-src.tar.gz
 
 MAINTAINER=	robertn@the-nelsons.org
 COMMENT=	Simple SMTP proxy and store-and-forward MTA
-WWW=		http://emailrelay.sourceforge.net/
+WWW=		https://emailrelay.sourceforge.net/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,6 +17,7 @@ USE_CXXSTD=	c++14
 USE_RC_SUBR=	${PORTNAME}
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--without-pam
 CONFIGURE_ENV=	e_spooldir=${PREFIX}/var/spool/emailrelay
 

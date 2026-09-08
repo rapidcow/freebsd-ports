@@ -1,6 +1,6 @@
---- base/files/file_path_watcher_unittest.cc.orig	2023-09-13 12:11:42 UTC
+--- base/files/file_path_watcher_unittest.cc.orig	2024-07-30 11:12:21 UTC
 +++ base/files/file_path_watcher_unittest.cc
-@@ -586,7 +586,7 @@ TEST_F(FilePathWatcherTest, WatchDirectory) {
+@@ -902,7 +902,7 @@ TEST_F(FilePathWatcherTest, WatchDirectory) {
    }
    delegate.RunUntilEventsMatch(event_expecter);
  
@@ -8,8 +8,8 @@
 +#if !BUILDFLAG(IS_APPLE) && BUILDFLAG(IS_BSD)
    ASSERT_TRUE(WriteFile(file1, "content v2"));
    // Mac implementation does not detect files modified in a directory.
-   // TODO(https://crbug.com/1432064): Expect that no events are fired on Mac.
-@@ -1525,7 +1525,7 @@ namespace {
+   // TODO(crbug.com/40263777): Expect that no events are fired on Mac.
+@@ -1848,7 +1848,7 @@ namespace {
  
  enum Permission { Read, Write, Execute };
  
@@ -18,7 +18,7 @@
  bool ChangeFilePermissions(const FilePath& path, Permission perm, bool allow) {
    struct stat stat_buf;
  
-@@ -1559,7 +1559,7 @@ bool ChangeFilePermissions(const FilePath& path, Permi
+@@ -1882,7 +1882,7 @@ bool ChangeFilePermissions(const FilePath& path, Permi
  
  }  // namespace
  

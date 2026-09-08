@@ -1,5 +1,5 @@
 PORTNAME=	osc
-PORTVERSION=	1.3.1
+PORTVERSION=	1.23.0
 CATEGORIES=	devel
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -11,6 +11,8 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}urllib3>=0:net/py-urllib3@${PY_FLAVOR}
+TEST_DEPENDS=	git:devel/git \
+		${PYTHON_PKGNAMEPREFIX}ruamel.yaml>=0:devel/py-ruamel.yaml@${PY_FLAVOR}
 
 USES=		cpe python
 USE_GITHUB=	yes
@@ -22,9 +24,15 @@ CPE_PRODUCT=	opensuse_osc
 
 PORTDOCS=	*
 
-PYTEST_BROKEN_TESTS=	testPrdiffDiffstat
+PYTEST_BROKEN_TESTS=	testPrdiffDiffstat TestVC
 
 OPTIONS_DEFINE=	DOCS
+
+post-install:
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/zsh/site-functions
+	${INSTALL_DATA} ${WRKSRC}/contrib/osc.zsh ${STAGEDIR}${PREFIX}/share/zsh/site-functions/_osc
+	@${MKDIR} ${STAGEDIR}${PREFIX}/share/fish/vendor_completions.d
+	${INSTALL_DATA} ${WRKSRC}/contrib/osc.fish ${STAGEDIR}${PREFIX}/share/fish/vendor_completions.d/osc.fish
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

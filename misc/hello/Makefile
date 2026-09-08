@@ -1,5 +1,5 @@
 PORTNAME=	hello
-PORTVERSION=	2.12.1
+PORTVERSION=	2.12.2
 CATEGORIES=	misc
 MASTER_SITES=	GNU
 
@@ -12,6 +12,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		charsetfix gmake perl5
 USE_PERL5=	build
+
 GNU_CONFIGURE=	yes
 
 INFO=		hello

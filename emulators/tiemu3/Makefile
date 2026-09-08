@@ -1,6 +1,6 @@
 PORTNAME=	tiemu3
 PORTVERSION=	3.03
-PORTREVISION=	13
+PORTREVISION=	15
 CATEGORIES=	emulators
 MASTER_SITES=	SF/gtktiemu/tiemu-linux/TIEmu%20${DISTVERSION}
 DISTNAME=	tiemu-${DISTVERSION}
@@ -20,10 +20,11 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libtifiles2.so:devel/libtifiles2
 
 USES=		gmake gnome groff libtool localbase pkgconfig sdl
-USE_GNOME=	cairo gdkpixbuf2 gtk20 libglade2
+USE_GNOME=	cairo gdkpixbuf gtk20 libglade2
 USE_SDL=	sdl
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-gdb --without-kde
 
 LDFLAGS+=	-Wl,-E

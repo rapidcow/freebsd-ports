@@ -1,6 +1,7 @@
 PORTNAME=	gitlab-pages
-PORTVERSION=	16.3.5
+PORTVERSION=	${GITLAB_VERSION}
 DISTVERSIONPREFIX=	v
+PORTREVISION=	${GITLAB_PORTREVISION} # modify it in www/gitlab/Makefile.common
 CATEGORIES=	www
 MASTER_SITES+=	https://gitlab.com/gitlab-org/gitlab-pages/-/raw/v${DISTVERSION}/
 DISTFILES+=	go.mod
@@ -13,14 +14,13 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		go:modules
-GO_MODULE=	gitlab.com/gitlab-org/gitlab-pages
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	gitlab-org
-
-GO_BUILDFLAGS=	-ldflags="-X 'main.VERSION=${PORTVERSION}' -X 'main.REVISION=${GL_TAGNAME}'"
-
 USE_RC_SUBR=	gitlab_pages
+
+GO_MODULE=	gitlab.com/gitlab-org/gitlab-pages
+GO_BUILDFLAGS=	-ldflags="-X 'main.VERSION=${PORTVERSION}' -X 'main.REVISION=${GL_TAGNAME}'"
 
 USERS=		gitlab-pages
 GROUPS=		gitlab-pages
@@ -43,4 +43,5 @@ post-install:
 		s#${DATADIR_REL}/bin#@(,,555) ${DATADIR_REL}/bin#; ' >> ${TMPPLIST}
 	cat ${TMPPLIST}
 
+.include "${.CURDIR}/../gitlab/Makefile.common"
 .include <bsd.port.mk>

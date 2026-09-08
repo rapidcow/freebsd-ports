@@ -1,7 +1,5 @@
 bin/LDView
 bin/ldraw-thumbnailer
-man/man1/LDView.1.gz
-man/man1/ldraw-thumbnailer.1.gz
 share/application-registry/ldview.applications
 share/applications/ldview.desktop
 share/icons/gnome/32x32/mimetypes/gnome-mime-application-x-ldraw.png
@@ -10,14 +8,14 @@ share/icons/gnome/32x32/mimetypes/gnome-mime-application-x-multipart-ldraw.png
 %%DATADIR%%/ChangeHistory.html
 %%DATADIR%%/Help.html
 %%DATADIR%%/LDViewMessages.ini
-%%DATADIR%%/LDViewMessages_cz.ini
+%%DATADIR%%/LDViewMessages_cs.ini
 %%DATADIR%%/LDViewMessages_de.ini
 %%DATADIR%%/LDViewMessages_hu.ini
 %%DATADIR%%/LDViewMessages_it.ini
 %%DATADIR%%/LGEO.xml
 %%DATADIR%%/Readme.txt
 %%DATADIR%%/SansSerif.fnt
-%%DATADIR%%/ldview_cz.qm
+%%DATADIR%%/ldview_cs.qm
 %%DATADIR%%/ldview_de.qm
 %%DATADIR%%/ldview_en.qm
 %%DATADIR%%/ldview_hu.qm
@@ -25,6 +23,8 @@ share/icons/gnome/32x32/mimetypes/gnome-mime-application-x-multipart-ldraw.png
 %%DATADIR%%/license.txt
 %%DATADIR%%/m6459.ldr
 %%DATADIR%%/todo.txt
+share/man/man1/LDView.1.gz
+share/man/man1/ldraw-thumbnailer.1.gz
 share/metainfo/io.github.tcobbs.LDView.metainfo.xml
 share/mime-info/ldraw.keys
 share/mime-info/ldraw.mime

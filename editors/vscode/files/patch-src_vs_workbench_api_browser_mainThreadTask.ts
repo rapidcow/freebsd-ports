@@ -1,11 +1,10 @@
---- src/vs/workbench/api/browser/mainThreadTask.ts.orig	2022-11-09 00:04:34 UTC
+--- src/vs/workbench/api/browser/mainThreadTask.ts.orig	2025-06-11 13:47:56 UTC
 +++ src/vs/workbench/api/browser/mainThreadTask.ts
-@@ -667,7 +667,7 @@ export class MainThreadTask implements MainThreadTaskS
- 			case 'darwin':
+@@ -727,6 +727,7 @@ export class MainThreadTask extends Disposable impleme
  				platform = Platform.Platform.Mac;
  				break;
--			case 'linux':
-+			case 'linux': case 'freebsd':
+ 			case 'linux':
++			case 'freebsd':
  				platform = Platform.Platform.Linux;
  				break;
  			default:

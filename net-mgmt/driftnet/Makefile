@@ -1,7 +1,6 @@
 PORTNAME=	driftnet
-PORTVERSION=	1.5.0
-PORTREVISION=	1
 DISTVERSIONPREFIX=	v
+DISTVERSION=	1.6.0
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	ehaupt@FreeBSD.org
@@ -22,7 +21,7 @@ USES=		autoreconf gettext-runtime gmake gnome jpeg localbase:ldflags \
 USE_CSTD=	c99
 USE_GITHUB=	yes
 GH_ACCOUNT=	deiv
-USE_GNOME=	gtk20
+USE_GNOME=	gtk30
 USE_XORG=	x11 xext xi
 
 GNU_CONFIGURE=		yes
@@ -30,9 +29,8 @@ CONFIGURE_ARGS+=	--disable-debug
 
 INSTALL_TARGET=	install-strip
 
-PLIST_FILES=	${DATADIR}/static-html/index.html \
-		bin/driftnet \
-		man/man1/driftnet.1.gz
+PLIST_FILES=	bin/driftnet \
+		share/man/man1/driftnet.1.gz
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS

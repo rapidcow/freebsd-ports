@@ -1,6 +1,6 @@
 PORTNAME=	libappindicator
 PORTVERSION=	${MAJOR_VER}.${SNAPSHOT_VER:S/.//g}.${PATCH_VER:S/ubuntu//}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://archive.ubuntu.com/ubuntu/pool/main/liba/${PORTNAME}/
 DISTNAME=	${PORTNAME}_${MAJOR_VER}+${SNAPSHOT_VER}.orig
@@ -25,7 +25,7 @@ LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib \
 
 USES=		autoreconf:build gmake gnome libtool pkgconfig
 USE_LDCONFIG=	yes
-USE_GNOME=	cairo gdkpixbuf2 gtk30
+USE_GNOME=	cairo gdkpixbuf gtk30
 
 OPTIONS_DEFINE=		VAPI
 OPTIONS_DEFAULT=	VAPI

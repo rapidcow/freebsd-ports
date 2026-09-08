@@ -1,32 +1,38 @@
 PORTNAME=	modules
-PORTVERSION=	4.6.0
+DISTVERSION=	5.6.1
 CATEGORIES=	sysutils tcl
-MASTER_SITES=	https://github.com/cea-hpc/modules/releases/download/v${PORTVERSION}/
+MASTER_SITES=	https://github.com/envmodules/modules/releases/download/v${DISTVERSION}/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	laurent.chardon@gmail.com
 COMMENT=	Dynamic modification of a user environment
-WWW=		http://modules.sourceforge.net/
+WWW=		https://modules.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.GPLv2
 
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>=0:textproc/py-sphinx@${PY_FLAVOR} \
 		bash:shells/bash
+TEST_DEPENDS=	runtest:misc/dejagnu
 
-USES=			gmake python:env shebangfix tar:bzip2 tcl
-GNU_CONFIGURE=		yes
+USES=		gmake python:env shebangfix tar:bzip2 tcl
+
+GNU_CONFIGURE=	yes
 GNU_CONFIGURE_PREFIX=	${PREFIX}/Modules
-CONFIGURE_SHELL=	${LOCALBASE}/bin/bash
-CONFIGURE_ARGS=		--disable-compat-version \
-			--enable-versioning \
-			--with-python="${PYTHON_CMD}"
+CONFIGURE_ARGS=	--enable-versioning \
+		--with-python="${PYTHON_CMD}"
 
-PLIST_SUB=	MODULES_VERSION=${PORTVERSION}
+TEST_TARGET=	test
 
-post-extract:
-	${MV} ${WRKSRC}/doc/build/modulefile.4 ${WRKSRC}/doc/build/modulefile.5
+PLIST_SUB=	MODULES_VERSION=${DISTVERSION}
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${GNU_CONFIGURE_PREFIX}/${PORTVERSION}/lib/libtclenvmodules.so
+	@${STRIP_CMD} ${STAGEDIR}${GNU_CONFIGURE_PREFIX}/${DISTVERSION}/lib/libtclenvmodules.so
+
+post-stage:
+	${MKDIR} ${STAGEDIR}${PREFIX}/etc/profile.d
+	${RLN} ${STAGEDIR}${PREFIX}/Modules/${PORTVERSION}/init/profile.sh \
+		${STAGEDIR}${PREFIX}/etc/profile.d/module.sh
+	${RLN} ${STAGEDIR}${PREFIX}/Modules/${PORTVERSION}/init/profile.csh \
+		${STAGEDIR}${PREFIX}/etc/profile.d/module.csh
 
 .include <bsd.port.mk>

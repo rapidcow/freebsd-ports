@@ -1,6 +1,6 @@
 PORTNAME=	milter-regex
 PORTVERSION=	2.7
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	mail
 MASTER_SITES=	https://www.benzedrine.ch/
 
@@ -13,9 +13,10 @@ LICENSE_FILE=	${FILESDIR}/COPYRIGHT
 
 USE_RC_SUBR=	milterregex
 SUB_LIST=	SPOOLDIR=${SPOOLDIR}
-PLIST_SUB=	SPOOLDIR=${SPOOLDIR}
+PLIST_SUB=	MAILUSER=${MAILUSER} MAILGROUP=${MAILGROUP} SPOOLDIR=${SPOOLDIR}
 
 MAILUSER?=	mailnull
+MAILGROUP?=	mail
 SPOOLDIR?=	/var/run/milter-regex
 
 .include <bsd.port.pre.mk>
@@ -37,7 +38,7 @@ post-patch:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/milter-regex ${STAGEDIR}${PREFIX}/libexec/
-	${INSTALL_MAN} ${WRKSRC}/milter-regex.8 ${STAGEDIR}${PREFIX}/man/man8/
+	${INSTALL_MAN} ${WRKSRC}/milter-regex.8 ${STAGEDIR}${PREFIX}/share/man/man8/
 	${MKDIR} ${STAGEDIR}${SPOOLDIR}
 
 .include <bsd.port.post.mk>

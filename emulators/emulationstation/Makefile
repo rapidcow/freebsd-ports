@@ -1,6 +1,6 @@
 PORTNAME=	emulationstation
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.9.4
+DISTVERSION=	2.11.2
 PORTREVISION=	5
 CATEGORIES=	emulators
 
@@ -13,21 +13,23 @@ LICENSE_COMB=	multi
 LICENSE_FILE_APACHE20=	${WRKSRC}/opensans_license.txt
 LICENSE_FILE_MIT=	${WRKSRC}/LICENSE.md
 
-BUILD_DEPENDS=	${LOCALBASE}/include/rapidjson/document.h:devel/rapidjson
+BUILD_DEPENDS=	${LOCALBASE}/include/rapidjson/document.h:devel/rapidjson \
+		pugixml>0:textproc/pugixml
 LIB_DEPENDS=	libboost_date_time.so:devel/boost-libs \
 		libboost_filesystem.so:devel/boost-libs \
 		libboost_locale.so:devel/boost-libs \
-		libboost_system.so:devel/boost-libs \
+		libboost_thread.so:devel/boost-libs \
 		libcurl.so:ftp/curl \
 		libfreeimage.so:graphics/freeimage \
 		libfreetype.so:print/freetype2 \
 		libpugixml.so:textproc/pugixml \
 		libvlc.so:multimedia/vlc
 
-USES=		cmake compiler:gcc-c++11-lib gl pkgconfig sdl
+USES=		cmake gl pkgconfig sdl
 USE_GITHUB=	yes
 GH_ACCOUNT=	RetroPie
 GH_PROJECT=	EmulationStation
+USE_GCC=	yes
 USE_GL=		gl glu
 USE_SDL=	sdl2
 

@@ -1,7 +1,6 @@
 PORTNAME=	argobots
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.1-186
-DISTVERSIONSUFFIX=	-gdce6e72
+DISTVERSION=	1.2
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,7 +10,7 @@ WWW=		https://www.argobots.org/
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
-BUILD_DEPENDS=	${LOCALBASE}/bin/grep:textproc/gnugrep # workaround for https://github.com/pmodels/argobots/issues/375
+BUILD_DEPENDS=	ggrep:textproc/gnugrep # workaround for https://github.com/pmodels/argobots/issues/375
 
 USES=		autoreconf gmake libtool
 USE_LDCONFIG=	yes
@@ -23,7 +22,7 @@ GH_ACCOUNT=	pmodels
 
 INSTALL_TARGET=	install-strip
 
-BINARY_ALIAS=	grep=${LOCALBASE}/bin/grep # for https://github.com/pmodels/argobots/issues/375
+BINARY_ALIAS=	grep=ggrep # for https://github.com/pmodels/argobots/issues/375
 
 PLIST_FILES=	include/abt.h \
 		lib/libabt.a \

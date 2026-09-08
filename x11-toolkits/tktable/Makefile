@@ -7,7 +7,7 @@ DISTNAME=	${PORTNAME:S/tk/Tk/}${PORTVERSION}
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Table/matrix widget extension to Tk
-WWW=		http://tktable.sourceforge.net/
+WWW=		https://tktable.sourceforge.net/
 
 LICENSE=	TclTk
 LICENSE_NAME=	Tcl/Tk License
@@ -22,7 +22,7 @@ TEST_TARGET=	test
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

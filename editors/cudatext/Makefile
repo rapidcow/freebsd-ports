@@ -1,5 +1,5 @@
 PORTNAME=	cudatext
-PORTVERSION=	1.199.0
+PORTVERSION=	1.231.2.0
 CATEGORIES=	editors
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
 
@@ -9,23 +9,24 @@ WWW=		https://uvviewsoft.com/
 
 LICENSE=	MPL20
 
+ONLY_FOR_ARCHS=	aarch64 amd64 i386
+
 USES=		desktop-file-utils dos2unix fpc gnome lazarus:flavors python xorg
-USE_FPC=	chm fcl-base fcl-image fcl-json fcl-stl fcl-xml pasjpeg rtl-objpas x11
 USE_XORG=	x11
 USE_GITHUB=	yes
 GH_ACCOUNT=	Alexey-T
 GH_PROJECT=	CudaText
-GH_TUPLE=	bgrabitmap:bgrabitmap:ace7e0e:bgrabitmap/bgrabitmap \
-		Alexey-T:Python-for-Lazarus:7bada0d:python4lazarus/python4lazarus \
-		Alexey-T:ATFlatControls:ea437fb:atflatcontrols/atflatcontrols  \
-		Alexey-T:ATSynEdit:78f1c35:atsynedit/atsynedit \
-		Alexey-T:Emmet-Pascal:9eb2bf2:emmet/emmet \
-		Alexey-T:EControl:518cc39:econtrol/econtrol \
-		Alexey-T:ATSynEdit_Ex:baf41cf:atsyneditex/atsyneditex \
-		Alexey-T:ATSynEdit_Cmp:29a57dc:atsyneditcmp/atsyneditcmp \
-		Alexey-T:ATBinHex-Lazarus:44985a1:atbinhex/atbinhex \
-		Alexey-T:UniqueInstance:753f823:uniqueinstance/uniqueinstance \
-		Alexey-T:EncConv:ec878e9:encconv/encconv
+GH_TUPLE=	bgrabitmap:bgrabitmap:6ada359:bgrabitmap/bgrabitmap \
+		Alexey-T:EncConv:8caaa6b:encconv/encconv \
+		Alexey-T:ATBinHex-Lazarus:ac03d54:atbinhex/atbinhex \
+		Alexey-T:ATFlatControls:fef6bbc:atflatcontrols/atflatcontrols  \
+		Alexey-T:ATSynEdit:d487efd:atsynedit/atsynedit \
+		Alexey-T:ATSynEdit_Cmp:c24f441:atsyneditcmp/atsyneditcmp \
+		Alexey-T:EControl:9499374:econtrol/econtrol \
+		Alexey-T:ATSynEdit_Ex:a9e651d:atsyneditex/atsyneditex \
+		Alexey-T:Python-for-Lazarus:fda3fdb:python4lazarus/python4lazarus \
+		Alexey-T:Emmet-Pascal:df69312:emmet/emmet \
+		Alexey-T:UniqueInstance:753f823:uniqueinstance/uniqueinstance
 
 DOS2UNIX_FILES=	app/settings_default/default.json setup/debfiles/cudatext.desktop
 
@@ -44,8 +45,9 @@ LAZARUS_PROJECT_FILES+=	app/cudatext.lpi
 
 LAZBUILD_ARGS=		-d
 
-gtk2_CONFLICTS_INSTALL=	${PORTNAME}-qt5
-qt5_CONFLICTS_INSTALL=	${PORTNAME}-gtk2
+gtk2_CONFLICTS_INSTALL=	${PORTNAME}-qt5 ${PORTNAME}-qt6
+qt5_CONFLICTS_INSTALL=	${PORTNAME}-gtk2 ${PORTNAME}-qt6
+qt6_CONFLICTS_INSTALL=	${PORTNAME}-gtk2 ${PORTNAME}-qt5
 
 USE_FPC_gtk2=	cairo
 USE_GNOME_gtk2=	cairo
@@ -56,9 +58,10 @@ USE_GNOME+=	${USE_GNOME_${FLAVOR}}
 
 post-patch:
 	${REINPLACE_CMD} 's|-512||g' ${WRKSRC}/setup/debfiles/${PORTNAME}.desktop
-	${REINPLACE_CMD} 's|%%DATADIR%%|${DATADIR}|g' ${WRKSRC}/app/proc_globdata.pas
+	${REINPLACE_CMD} -e 's|%%DATADIR%%|${DATADIR}|g' -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
+		${WRKSRC}/app/proc_globdata.pas
 	${REINPLACE_CMD} 's|TEncoding.UTF8|True|g' ${WRKSRC}/app/formmain_py_pluginwork.inc
-	${REINPLACE_CMD} 's|ifdef GTK2_IME_CODE|if defined(GTK2_IME_CODE) and not defined(freebsd)|g' ${WRKSRC}/atsynedit/atsynedit/atsynedit.pas
+	${REINPLACE_CMD} 's|ifdef LCLGTK2|if defined(LCLGTK2) and not defined(freebsd)|g' ${WRKSRC}/atsynedit/atsynedit/atsynedit.pas
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/app/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}

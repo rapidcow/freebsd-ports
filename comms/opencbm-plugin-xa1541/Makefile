@@ -2,15 +2,15 @@ PORTNAME=	opencbm-plugin-xa1541
 PORTVERSION=	${OCBM_VERSION}
 CATEGORIES=	comms archivers
 
-MAINTAINER=	zirias@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	OpenCBM plugin for parallel-port cables
 WWW=		http://opencbm.sourceforge.net/
 
 LICENSE=	GPLv2
 
 BUILD_DEPENDS=	cc65:devel/cc65
-RUN_DEPENDS=	opencbm=${PORTVERSION}:comms/opencbm \
-		opencbm-kmod=${PORTVERSION}:comms/opencbm-kmod
+RUN_DEPENDS=	opencbm=${PKGVERSION}:comms/opencbm \
+		opencbm-kmod>0:comms/opencbm-kmod
 
 USES=		gmake pkgconfig
 USE_LDCONFIG=	yes

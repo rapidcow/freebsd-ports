@@ -1,6 +1,6 @@
 PORTNAME=	${ORIGNAME:tl}
 DISTVERSION=	2.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	http://downloads.reviewboard.org/releases/${ORIGNAME}/${DISTVERSION}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -8,7 +8,7 @@ DISTNAME=	${ORIGNAME}-${DISTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Set of client tools to use with Review Board
-WWW=		http://www.reviewboard.org/
+WWW=		https://www.reviewboard.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

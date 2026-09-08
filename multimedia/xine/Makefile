@@ -1,13 +1,13 @@
 PORTNAME=	xine
 PORTVERSION=	0.99.14
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-ui/${PORTVERSION}
 DISTNAME=	${PORTNAME}-ui-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	X11 multimedia player
-WWW=		https://www.xine-project.org
+WWW=		https://xine.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

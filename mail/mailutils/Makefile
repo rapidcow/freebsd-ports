@@ -1,6 +1,5 @@
 PORTNAME=	mailutils
-PORTVERSION=	3.16
-PORTREVISION=	1
+PORTVERSION=	3.21
 CATEGORIES=	mail
 MASTER_SITES=	GNU GNU_ALPHA
 
@@ -13,7 +12,8 @@ LICENSE=	GPLv3+
 LIB_DEPENDS=	libgc-threaded.so:devel/boehm-gc-threaded \
 		libltdl.so:devel/libltdl \
 		libunistring.so:devel/libunistring
-TEST_DEPENDS=	automake:devel/automake
+TEST_DEPENDS=	automake:devel/automake \
+		runtest:misc/dejagnu
 
 USES=		cpe gmake iconv libtool localbase readline tar:xz
 CPE_VENDOR=	gnu
@@ -96,8 +96,6 @@ CONFIGURE_ARGS+=	--enable-debug
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e '/MU_AUTHLIBS=/s,-lldap,-llber &,' \
-		${WRKSRC}/configure
 	@${REINPLACE_CMD} -e '/chown/,+1s|ch|#&|' \
 		${WRKSRC}/dotlock/Makefile.in ${WRKSRC}/mda/mda/Makefile.in
 	@${REINPLACE_CMD} -e 's,-E,& -P,' ${WRKSRC}/libmu_scm/Makefile.in

@@ -1,36 +1,23 @@
 PORTNAME=	declarative
 DISTVERSION=	${QT6_VERSION}
+PORTREVISION=	2
 CATEGORIES=	x11-toolkits
 PKGNAMEPREFIX=	qt6-
 
-PATCH_SITES=	https://github.com/qt/qtdeclarative/commit/
-PATCHFILES=	54059d0dffd1966c8a442b3675eb979c32c16cbe.patch:-p1 # QTBUG-117513
-
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt declarative framework for dynamic user interfaces
-WWW=		https://qt-project.org
 
 BUILD_DEPENDS=	${LOCALBASE}/include/vulkan/vulkan.h:graphics/vulkan-headers
-LIB_DEPENDS=	libdouble-conversion.so:devel/double-conversion \
-		libexpat.so:textproc/expat2 \
-		libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2 \
-		libgraphite2.so:graphics/graphite2 \
-		libharfbuzz.so:print/harfbuzz \
-		libicudata.so:devel/icu \
-		libpcre.so:devel/pcre \
-		libpcre2-16.so:devel/pcre2 \
-		libpng16.so:graphics/png \
-		libxkbcommon.so:x11/libxkbcommon \
-		libzstd.so:archivers/zstd
+LIB_DEPENDS=	libxkbcommon.so:x11/libxkbcommon
 
-USES=		cmake compiler:c++17-lang gettext-runtime gl gnome pkgconfig python xorg \
+USES=		cmake compiler:c++17-lang gl pkgconfig python \
 		qt-dist:6
 USE_GL=		opengl
-USE_GNOME=	glib20
-USE_QT=		base shadertools languageserver
-USE_XORG=	x11 xau xcb xdmcp
 USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}
+USE_QT=		base svg \
+		languageserver:build shadertools:build
+
+CMAKE_ON=	CMAKE_DISABLE_FIND_PACKAGE_LTTngUST
 
 .include <bsd.port.options.mk>
 
@@ -40,14 +27,12 @@ PLIST_SUB+=	QML_JIT=""
 PLIST_SUB+=	QML_JIT="@comment "
 .endif
 
-# TODO: do this cleaner
 post-install:
-	${RM} -vr ${STAGEDIR}${PREFIX}/${QT_LIBDIR_REL}/cmake
-	# Install symlinks for user-facing tools
-	${REINPLACE_CMD} -e "s#^#${STAGEDIR}#" -e "s# # ${STAGEDIR}#" \
-		${WRKDIR}/.build/user_facing_tool_links.txt
-	while read t; do \
-		${RLN} $$t; \
-	done <${WRKDIR}/.build/user_facing_tool_links.txt
+# Install symlinks for user-facing tools
+	while read line; do \
+		source="$$(${ECHO_CMD} $${line} | ${AWK} '{print $$1}')"; \
+		target="${STAGEDIR}${PREFIX}/$$(${ECHO_CMD} $${line} | ${AWK} '{print $$2}')"; \
+		${RLN} $${source} $${target}; \
+	done <${BUILD_WRKSRC}/user_facing_tool_links.txt
 
 .include <bsd.port.mk>

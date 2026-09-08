@@ -1,5 +1,5 @@
 PORTNAME=	basic-engines
-PORTVERSION=	${TEXLIVE_VERSION}
+DISTVERSION=	${TEXLIVE_VERSION}
 CATEGORIES=	print
 MASTER_SITES=	TEX_CTAN/systems/texlive/${TEXLIVE_YEAR}
 PKGNAMEPREFIX=	tex-
@@ -16,6 +16,7 @@ USES=		libtool localbase pkgconfig tar:xz tex
 USE_TEX=	kpathsea web2c
 
 GNU_CONFIGURE=		yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=		${EXCLUDE_ENGINES:S/^/--disable-/} \
 			--disable-missing \
 			--with-system-kpathsea \
@@ -35,14 +36,10 @@ EXTRACT_FILES=	build-aux libs/xpdf texk/web2c
 
 WRKSRC=		${WRKDIR}/${DISTNAME}/texk/web2c
 
-EXCLUDE_ENGINES=	aleph luatex luajittex mf mf-nowin ptex eptex uptex \
-			euptex xetex otangle mp pmp upmp web2c web-progs \
-			synctex hitex \
-			luahbtex \
-			luajithbtex \
-			mflua \
-			mfluajit \
-			latex
+EXCLUDE_ENGINES=	aleph eptex euptex hitex latex luahbtex luajithbtex  \
+			luajittex luatex mf-nowin mf mflua mfluajit mp \
+			otangle pmp ptex synctex texprof upmp uptex \
+			web2c web-progs web2c xetex
 
 post-extract:
 	@${FIND} ${WRKSRC} -name '*.orig' -delete

@@ -1,13 +1,15 @@
 - eliminate the need to use git
 
---- cmake/SetupSpheral.cmake.orig	2023-07-06 16:44:17 UTC
+--- cmake/SetupSpheral.cmake.orig	2025-07-23 20:11:18 UTC
 +++ cmake/SetupSpheral.cmake
-@@ -176,7 +176,7 @@ if (ENABLE_TESTS)
+@@ -27,8 +27,8 @@ include(Compilers)
+ #-------------------------------------------------------------------------------
  
-   # Find the test files we want to install
-   execute_process(
--    COMMAND git ls-files tests
-+    COMMAND find tests -type f
-     WORKING_DIRECTORY ${SPHERAL_ROOT_DIR}
-     OUTPUT_VARIABLE test_files1)
-   string(REPLACE "\n" " " test_files ${test_files1})
+ # Need to define Python paths here as BLT finds it's own Python package.
+-set(Python_EXECUTABLE ${python_DIR}/bin/python3)
+-set(Python3_EXECUTABLE ${python_DIR}/bin/python3)
++#set(Python_EXECUTABLE ${python_DIR}/bin/python3)
++#set(Python3_EXECUTABLE ${python_DIR}/bin/python3)
+ 
+ set(ENABLE_MPI ON CACHE BOOL "")
+ set(ENABLE_OPENMP ON CACHE BOOL "")

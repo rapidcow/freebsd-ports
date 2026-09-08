@@ -1,8 +1,9 @@
 PORTNAME=	gather
 PORTVERSION=	0.4.1
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
-MAINTAINER=	trociny@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Utility to store and display system statistics
 WWW=		https://github.com/trociny/gather
 
@@ -24,7 +25,7 @@ OPTIONS_DEFINE=	DOCS EXAMPLES
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/gather ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/gather.1 ${STAGEDIR}${PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/gather.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/gather
 	${INSTALL_DATA} ${WRKSRC}/gather.cfg \
 	    ${STAGEDIR}${PREFIX}/etc/gather/gather.cfg.sample

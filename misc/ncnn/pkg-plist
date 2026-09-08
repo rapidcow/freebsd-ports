@@ -14,6 +14,7 @@ include/ncnn/c_api.h
 include/ncnn/command.h
 include/ncnn/cpu.h
 include/ncnn/datareader.h
+include/ncnn/expression.h
 include/ncnn/gpu.h
 include/ncnn/layer.h
 include/ncnn/layer_shader_type.h
@@ -29,9 +30,11 @@ include/ncnn/paramdict.h
 include/ncnn/pipeline.h
 include/ncnn/pipelinecache.h
 include/ncnn/platform.h
+include/ncnn/simplemath.h
 include/ncnn/simpleocv.h
 include/ncnn/simpleomp.h
 include/ncnn/simplestl.h
+include/ncnn/simplevk.h
 include/ncnn/vulkan_header_fix.h
 lib/cmake/ncnn/ncnn-%%CMAKE_BUILD_TYPE%%.cmake
 lib/cmake/ncnn/ncnn.cmake

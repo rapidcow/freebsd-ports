@@ -1,6 +1,6 @@
 PORTNAME=	xsp
-PORTVERSION=	4.5
-PORTREVISION=	2
+PORTVERSION=	4.7.1
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	http://download.mono-project.com/sources/${PORTNAME}/
 
@@ -12,9 +12,12 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		gmake libtool mono pathfix pkgconfig sqlite
+USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ENV=	ac_cv_path_GMCS=${LOCALBASE}/bin/mcs
+MAKE_ENV=	MONO_REGISTRY_PATH=/tmp/registry
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 pre-install:

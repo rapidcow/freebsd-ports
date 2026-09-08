@@ -1,58 +1,59 @@
 PORTNAME?=	arcanist
-PORTVERSION?=	20220518
-PORTREVISION?=	4
+PORTVERSION?=	20230530
 CATEGORIES?=	devel
 PKGNAMESUFFIX=	${SLAVE_PKGNAMESUFFIX}${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	grembo@FreeBSD.org
-COMMENT?=	Libraries for the command line interface for Phabricator
+COMMENT?=	Phabricator Arcanist libraries
 WWW?=		https://secure.phabricator.com/book/arcanist/
-
-SLAVEPORT?=	lib
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-PHP_DESTDIR=	lib/php/arcanist
 USES=		php:cli,flavors python:env shebangfix
-SHEBANG_FILES=	bin/arc \
-		bin/phage \
-		scripts/*.php \
-		scripts/hgdaemon/*.php \
-		src/parser/*.php \
-		support/arcanoid/arcanoid.py \
-		support/lib/*.php \
-		support/unit/*.php \
-		support/xhpast/*.php \
+IGNORE_WITH_PHP=	85
+USE_GITHUB=	yes
+GH_ACCOUNT=	phacility
+GH_TAGNAME=	e50d1bc
+USE_PHP=	curl dom simplexml zlib
+
+SHEBANG_FILES=	bin/arc bin/phage scripts/*.php scripts/hgdaemon/*.php \
+		src/parser/*.php support/arcanoid/arcanoid.py support/lib/*.php \
+		support/unit/*.php support/xhpast/*.php \
 		support/xhpast/bin/*.php
 
-USE_PHP=	curl dom simplexml zlib
-USE_GITHUB=	yes
-NO_BUILD=	yes
 NO_ARCH=	yes
+NO_BUILD=	yes
 PORTSCOUT=	ignore:1
-GH_ACCOUNT=	phacility
-GH_TAGNAME=	85c953e
+SLAVEPORT?=	lib
+
 PLIST=		${.CURDIR}/pkg-plist
+
+PHP_DESTDIR=	lib/php/arcanist
 
 .if ${SLAVEPORT} == lib
 SLAVE_PKGNAMESUFFIX=	-${SLAVEPORT}
 
-RUN_DEPENDS=	ca_root_nss>0:security/ca_root_nss
-
-OPTIONS_DEFINE=	ENCODINGS
-OPTIONS_DEFAULT=ENCODINGS
-ENCODINGS_DESC=	Support for encodings other than utf-8
-ENCODINGS_USE=	PHP=mbstring
+OPTIONS_DEFINE=		ENCODINGS
+OPTIONS_DEFAULT=	ENCODINGS
+ENCODINGS_DESC=		Support for encodings other than utf-8
+ENCODINGS_USE=		PHP=mbstring
 
 .else # link only
 
-RUN_DEPENDS=	arcanist-lib${PHP_PKGNAMESUFFIX}>0:devel/arcanist-lib@${PHP_FLAVOR}
+RUN_DEPENDS=	arcanist-lib${PHP_PKGNAMESUFFIX}>=${PORTVERSION}_${PORTREVISION}:devel/arcanist-lib@${PHP_FLAVOR}
 
 CONFLICTS=	arc arcanist-php??
 
 PLIST_FILES=	bin/arc
 
+.endif
+
+.include <bsd.port.pre.mk>
+
+.if ${PHP_VER} >= 83
+post-patch:
+	@${REINPLACE_CMD} -e 's/ | E_STRICT//' ${WRKSRC}/support/init/init-script.php
 .endif
 
 do-install:
@@ -82,11 +83,10 @@ do-install:
 	@${REINPLACE_CMD} \
 		's|%%PYTHON_CMD%%|${PYTHON_CMD}|g' \
 		${STAGEDIR}${PREFIX}/${PHP_DESTDIR}/src/workflow/ArcanistAnoidWorkflow.php
-	${LN} -sf ${LOCALBASE}/share/certs/ca-root-nss.crt \
-		${STAGEDIR}${PREFIX}/${PHP_DESTDIR}/resources/ssl/default.pem
+	${RM} ${STAGEDIR}${PREFIX}/${PHP_DESTDIR}/resources/ssl/default.pem
 	${RLN} ${STAGEDIR}${PREFIX}/${PHP_DESTDIR}/support/shell/hooks/bash-completion.sh \
 		 ${STAGEDIR}${PREFIX}/share/bash-completion/completions/arc
 	${STAGEDIR}${PREFIX}/${PHP_DESTDIR}/bin/arc shell-complete --generate
 .endif
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

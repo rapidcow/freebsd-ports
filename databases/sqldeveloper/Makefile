@@ -1,5 +1,5 @@
 PORTNAME=	sqldeveloper
-DISTVERSION=	23.1.0.097.1607
+DISTVERSION=	24.3.1.347.1826
 DISTVERSIONSUFFIX=	-no-jre
 CATEGORIES=	databases java
 # https://www.oracle.com/tools/downloads/sqldev-downloads.html
@@ -10,17 +10,19 @@ MAINTAINER=	vvd@FreeBSD.org
 COMMENT=	Graphical tool for database development
 WWW=		https://www.oracle.com/database/technologies/appdev/sqldeveloper-landing.html
 
-# https://www.oracle.com/downloads/licenses/sqldev-license.html
-LICENSE_NAME=	OTN
+LICENSE=	OTN
+LICENSE_NAME=	Oracle Technology Network License Agreement for Business Operations
+LICENSE_TEXT=	https://www.oracle.com/downloads/licenses/sqldev-license.html
 LICENSE_PERMS=	no-dist-mirror no-dist-sell no-pkg-mirror
 
-RUN_DEPENDS=	bash:shells/bash
+RUN_DEPENDS=	openjfx14>=0:java/openjfx14 \
+		bash:shells/bash
 
-USES=		gnome zip
-USE_JAVA=	yes
-JAVA_VERSION=	11+
+USES=		gnome java zip
+JAVA_VERSION=	17
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}
+NO_ARCH=	yes
 NO_BUILD=	yes
 SUB_FILES=	${PORTNAME}.desktop ${PORTNAME}.sh
 SUB_LIST=	JAVA_HOME=${JAVA_HOME} \
@@ -28,18 +30,7 @@ SUB_LIST=	JAVA_HOME=${JAVA_HOME} \
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-OPTIONS_DEFINE=		OPENJFX14
-OPTIONS_DEFAULT=	OPENJFX14
-OPENJFX14_DESC=		Use JavaFX 14 (can work without it with some limitations)
-OPENJFX14_RUN_DEPENDS=	openjfx14>=0:java/openjfx14
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MOPENJFX14}
-OPENJFX14_JVM_OPTIONS=	-J--module-path=${LOCALBASE}/openjfx14/lib \
-			-J--add-modules=javafx.swing,javafx.web
-.endif
-SUB_LIST+=		OPENJFX14_JVM_OPTIONS="${OPENJFX14_JVM_OPTIONS}"
+SUB_LIST+=	OPENJFX14_JVM_OPTIONS="-J--module-path=${LOCALBASE}/openjfx14/lib -J--add-modules=javafx.swing,javafx.web"
 
 .include <bsd.port.pre.mk>
 
@@ -74,6 +65,9 @@ do-install:
 		-exec ${INSTALL_DATA} \{} ${STAGEDIR}/${DATADIR}/\{} \;
 	${ECHO_MSG} " [ DONE ]"
 .endfor
+
+	${RM} -r ${STAGEDIR}/${DATADIR}/modules/javafx
+	${RM} -r ${STAGEDIR}/${DATADIR}/netbeans/platform/modules/lib
 
 	@${ECHO_MSG} ">> Installing icon and desktop file ..."
 	@${MKDIR} ${STAGEDIR}/${PREFIX}/share/applications/ \

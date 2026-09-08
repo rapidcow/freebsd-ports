@@ -1,6 +1,6 @@
 PORTNAME=	libhandy
 PORTVERSION=	0.0.13
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11-toolkits gnome
 DIST_SUBDIR=	gnome
 PKGNAMESUFFIX=	0
@@ -12,7 +12,7 @@ WWW=		https://gitlab.gnome.org/GNOME/libhandy/
 LICENSE=	LGPL21
 
 USES=		compiler:c11 gettext gnome meson pkgconfig vala:build
-USE_GNOME=	cairo gdkpixbuf2 gtk30 introspection:build
+USE_GNOME=	cairo gdkpixbuf gtk30 introspection:build
 
 USE_LDCONFIG=	yes
 MESON_ARGS=	-Dtests=false \

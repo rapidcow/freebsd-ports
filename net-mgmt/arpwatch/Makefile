@@ -1,5 +1,5 @@
 PORTNAME=	arpwatch
-PORTVERSION=	3.4
+PORTVERSION=	3.9
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://ee.lbl.gov/downloads/arpwatch/ \
 		LOCAL/leres/arpwatch
@@ -11,12 +11,15 @@ WWW=		https://ee.lbl.gov/downloads/arpwatch/
 LICENSE=	BSD3CLAUSE
 
 BUILD_DEPENDS=	${LOCALBASE}/include/pcap.h:net/libpcap
-RUN_DEPENDS=	${LOCALBASE}/include/pcap.h:net/libpcap
+RUN_DEPENDS=	${LOCALBASE}/bin/curl:ftp/curl \
+		ca_root_nss>=0:security/ca_root_nss \
+		${LOCALBASE}/include/pcap.h:net/libpcap
 
 USES=		python:run
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-sendmail=/usr/sbin/sendmail
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 SUB_FILES=	pkg-message
 

@@ -1,6 +1,6 @@
 PORTNAME=	libfwsi
 # If/When moving from experimental to alpha, switch to DISTVERSIONPREFIX to prevent PORTEPOCH
-DISTVERSION=	experimental-20220927
+DISTVERSION=	experimental-20240423
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/libyal/libfwsi/releases/download/${PORTVERSION:E}/ \
 		LOCAL/antoine
@@ -12,7 +12,10 @@ WWW=		https://github.com/libyal/libfwsi
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	${PY_SETUPTOOLS}
+
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--enable-python
 CONFIGURE_ENV=	PYTHON_CONFIG=${PYTHON_CMD}-config
 USES=		cpe libtool pathfix python

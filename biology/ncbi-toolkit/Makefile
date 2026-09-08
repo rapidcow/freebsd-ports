@@ -1,6 +1,6 @@
 PORTNAME=	ncbi-toolkit
 DISTVERSION=	2017.01.06	# containing BLAST v2.2.27 (? is this true)
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	biology
 MASTER_SITES=	ftp://ftp.ncbi.nlm.nih.gov/toolbox/ncbi_tools/old/${PORTVERSION:S/.//g}/
 DISTNAME=	ncbi
@@ -33,11 +33,9 @@ OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
-.if ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 )
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
-.endif
 .endif
 
 post-patch:
@@ -77,7 +75,7 @@ do-install:
 	cd ${WRKSRC}/include/connect && ${INSTALL_DATA} *.h \
 		${STAGEDIR}${PREFIX}/include/${DISTNAME}/connect
 	cd ${WRKSRC}/doc/man && ${INSTALL_MAN} * \
-		${STAGEDIR}${MANPREFIX}/man/man1
+		${STAGEDIR}${PREFIX}/share/man/man1
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	cd ${WRKSRC}/data && ${INSTALL_DATA} * ${STAGEDIR}${DATADIR}
 

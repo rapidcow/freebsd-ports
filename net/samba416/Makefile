@@ -1,17 +1,18 @@
 PORTNAME=			${SAMBA4_BASENAME}416
 PORTVERSION=			${SAMBA4_VERSION}
+PORTREVISION=			10
 CATEGORIES?=			net
 MASTER_SITES=			SAMBA/samba/stable SAMBA/samba/rc
 DISTNAME=			${SAMBA4_DISTNAME}
 
-MAINTAINER=			timur@FreeBSD.org
+MAINTAINER=			samba@FreeBSD.org
 COMMENT=			Free SMB/CIFS and AD/DC server and client for Unix
 WWW=				https://gitlab.com/samba-freebsd/
 
 LICENSE=			GPLv3+
 LICENSE_FILE=			${WRKSRC}/COPYING
 
-IGNORE_FreeBSD_12=		only runs on FreeBSD 13.1 and above due use of O_EMPTY_PATH
+DEPRECATED=	Discontinued upstream; transition to a supported versions of Samba (refer to https://wiki.samba.org/index.php/Samba_Release_Planning)
 
 USES=				cpe
 
@@ -46,6 +47,7 @@ EXTRA_PATCHES=			\
 				${PATCHDIR}/0026-vfs-add-a-compatibility-option-to-the-vfs_streams_xa.patch:-p1 \
 				${PATCHDIR}/0027-Add-VFS-module-vfs_freebsd-that-implements-FreeBSD-s.patch:-p1 \
 				${PATCHDIR}/0028-s3-lib-system-add-FreeBSD-proc_fd_pattern.patch:-p1 \
+				${PATCHDIR}/0029-Fix-rl_completion_func_t.patch:-p1 \
 				${PATCHDIR}/0099-s3-modules-zfsacl-fix-get-set-ACL-on-FreeBSD-13.patch:-p1 \
 				${PATCHDIR}/0099-s4-mitkdc-Add-support-for-MIT-Kerberos-1.20.patch:-p1
 
@@ -74,7 +76,7 @@ SAMBA4_CONFIG=			smb4.conf
 SAMBA4_MODULES_CLASS=		auth bind9 gensec gpext idmap ldb nss_info \
 				pdb perfcount process_model service vfs
 
-CONFIGURE_ARGS=			--mandir="${MANPREFIX}/man" \
+CONFIGURE_ARGS=			--mandir="${PREFIX}/share/man" \
 				--sysconfdir="${SAMBA4_CONFDIR}" \
 				--includedir="${SAMBA4_INCLUDEDIR}" \
 				--datadir="${DATADIR}" \
@@ -104,6 +106,17 @@ USE_LDCONFIG=			${SAMBA4_LIBDIR}
 WAF_CMD=			buildtools/bin/waf
 CONFIGURE_LOG=			bin/config.log
 
+FLAVORS=			default externalldb
+FLAVOR?=			${FLAVORS:[1]}
+externalldb_PKGNAMESUFFIX=		-externalldb
+.if ${FLAVOR:U} == externalldb
+BROKEN=				fails to build; databases/ldb25 is not built with Python support by default
+.endif
+
+# Make sure that the right version of Python is used by the tools
+# https://bugzilla.samba.org/show_bug.cgi?id=7305
+SHEBANG_FILES=			${PATCH_WRKSRC}/source4/scripting/bin/* ${PATCH_WRKSRC}/selftest/*
+
 PKGCONFIGDIR?=			${PREFIX}/libdata/pkgconfig
 PKGCONFIGDIR_REL?=		${PKGCONFIGDIR:S,^${PREFIX}/,,}
 PLIST_SUB=			PKGCONFIGDIR=${PKGCONFIGDIR_REL}
@@ -113,7 +126,7 @@ OPTIONS_SUB=			yes
 
 OPTIONS_DEFINE=			AD_DC ADS CLUSTER CUPS DOCS FAM GPGME \
 				LDAP MANDOC PROFILE PYTHON3 QUOTAS \
-				SPOTLIGHT SYSLOG UTMP
+				SYSLOG UTMP
 #OPTIONS_DEFINE+=		DEVELOPER MEMORY_DEBUG
 
 OPTIONS_GROUP=			VFS
@@ -138,7 +151,6 @@ FAM_DESC=			File Alteration Monitor
 GPGME_DESC=			GpgME support
 LDAP_DESC=			LDAP client
 LIBZFS_DESC=			LibZFS
-SPOTLIGHT_DESC=			Spotlight server-side search support
 MANDOC_DESC=			Build manpages from DOCBOOK templates
 MEMORY_DEBUG_DESC=		Debug memory allocator
 PICKY_DEVELOPER_DESC=		Treat compiler warnings as errors(implies DEVELOPER)
@@ -194,7 +206,11 @@ SAMBA4_BUNDLED_CMOCKA?=		no
 SAMBA4_BUNDLED_TALLOC?=		no
 SAMBA4_BUNDLED_TEVENT?=		no
 SAMBA4_BUNDLED_TDB?=		no
+.if ${FLAVOR:U} != externalldb
 SAMBA4_BUNDLED_LDB?=		yes
+.else
+SAMBA4_BUNDLED_LDB?=		no
+.endif
 # cmocka
 .if defined(SAMBA4_BUNDLED_CMOCKA) && ${SAMBA4_BUNDLED_CMOCKA} == yes
 SAMBA4_BUNDLED_LIBS+=		cmocka
@@ -299,18 +315,19 @@ CONFIGURE_ARGS+=		\
 				--with-libarchive \
 				--with-acl-support \
 				--with-sendfile-support \
-				--disable-ctdb-tests
+				--disable-ctdb-tests \
+				--disable-spotlight
 #				${ICONV_CONFIGURE_BASE}
 ##############################################################################
 FRUIT_PREVENTS=			ZEROCONF_NONE
 FRUIT_PREVENTS_MSG=		MacOSX support requires Zeroconf(AVAHI or MDNSRESPONDER)
 FRUIT_VARS=			SAMBA4_MODULES+=vfs_fruit
-FRUIT_PLIST_FILES=		man/man8/vfs_fruit.8.gz
+FRUIT_PLIST_FILES=		share/man/man8/vfs_fruit.8.gz
 
 GLUSTERFS_CONFIGURE_ENABLE=	glusterfs
 GLUSTERFS_LIB_DEPENDS=		libglusterfs.so:net/glusterfs
 GLUSTERFS_VARS=			SAMBA4_MODULES+=vfs_glusterfs
-GLUSTERFS_PLIST_FILES=		man/man8/vfs_glusterfs.8.gz
+GLUSTERFS_PLIST_FILES=		share/man/man8/vfs_glusterfs.8.gz
 
 ZEROCONF_NONE_MAKE_ENV=		ZEROCONF=none
 ##############################################################################
@@ -359,14 +376,14 @@ CLUSTER_VARS=			PLIST+=${PKGDIR}/pkg-plist.cluster
 CUPS_CONFIGURE_ENABLE=		cups iprint
 CUPS_LIB_DEPENDS=		libcups.so:print/cups
 # https://bugzilla.samba.org/show_bug.cgi?id=9545
-FAM_USES=			fam
+FAM_LIB_DEPENDS=		libfam.so.0:devel/gamin
 FAM_CONFIGURE_WITH=		fam
 
 GPGME_CONFIGURE_WITH=		gpgme
 GPGME_LIB_DEPENDS=		libgpgme.so:security/gpgme
-GPGME_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}gpgme>=1.14.0:security/py-gpgme@${PY_FLAVOR}
+GPGME_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}gpg>=2.0.0:security/py-gpg@${PY_FLAVOR}
 
-GSSAPI_BUILTIN_USES=		bison
+GSSAPI_BUILTIN_USES=		bison gssapi
 GSSAPI_BUILTIN_BUILD_DEPENDS=	p5-JSON>=4.0:converters/p5-JSON
 
 GSSAPI_MIT_CONFIGURE_ON=	--with-system-mitkrb5 ${GSSAPIBASEDIR} \
@@ -394,14 +411,6 @@ MANDOC_CONFIGURE_ENV_OFF=	XSLTPROC="true"
 PROFILE_CONFIGURE_WITH=		profiling-data
 
 QUOTAS_CONFIGURE_WITH=		quotas
-
-SPOTLIGHT_CONFIGURE_ENABLE=	spotlight
-SPOTLIGHT_BUILD_DEPENDS=	tracker>=1.4.1:sysutils/tracker
-SPOTLIGHT_RUN_DEPENDS=		tracker>=1.4.1:sysutils/tracker
-# ICU
-SPOTLIGHT_LIB_DEPENDS=		libicuuc.so:devel/icu
-SPOTLIGHT_USES=			bison gnome
-SPOTLIGHT_USE=			gnome=glib20
 
 SYSLOG_CONFIGURE_WITH=		syslog
 
@@ -451,11 +460,12 @@ SAMBA4_MODULES+=		auth_skel pdb_test gpext_security gpext_registry \
 				vfs_nfs4acl_xattr vfs_error_inject vfs_delay_inject
 .endif
 # Python bindings
+BUILD_DEPENDS+=			${PY_SETUPTOOLS}
 .if ! ${PORT_OPTIONS:MPYTHON3} || defined(NO_PYTHON)
-USES+=				python:build,test
+USES+=				python:build,test,3.11-3.12
 CONFIGURE_ARGS+=		--disable-python
 .else
-USES+=				python
+USES+=				python:3.11-3.12
 PLIST+=				${PKGDIR}/pkg-plist.python
 # Don't cache Python modules
 CONFIGURE_ARGS+=		--nopycache
@@ -536,7 +546,7 @@ PLIST_FILES+=			${SAMBA4_LIBDIR}/private/libldb-mdb-int-samba4.so \
 
 .if ${PORT_OPTIONS:MGSSAPI_MIT}
 PLIST_FILES+=			${SAMBA4_MODULEDIR}/krb5/winbind_krb5_localauth.so \
-				man/man8/winbind_krb5_localauth.8.gz
+				share/man/man8/winbind_krb5_localauth.8.gz
 .	if ${PORT_OPTIONS:MAD_DC}
 PLIST_FILES+=			${SAMBA4_LIBDIR}/krb5/plugins/kdb/samba.so
 .	endif
@@ -553,10 +563,10 @@ MAKE_ENV+=			RPCGEN_CPP="${CPP}"
 #.if ${readline_ARGS} == port
 #CFLAGS+=			-D_FUNCTION_DEF
 #.endif
-
-# Make sure that the right version of Python is used by the tools
-# https://bugzilla.samba.org/show_bug.cgi?id=7305
-SHEBANG_FILES=			${PATCH_WRKSRC}/source4/scripting/bin/* ${PATCH_WRKSRC}/selftest/*
+# Some symbols in samba's linker version scripts are not defined, but since the
+# scripts are generated dynamically, suppress errors with lld >= 17 due to these
+# undefined symbols.
+LDFLAGS+=			-Wl,--undefined-version
 
 SAMBA4_SUB=			SAMBA4_LOGDIR="${SAMBA4_LOGDIR}" \
 				SAMBA4_RUNDIR="${SAMBA4_RUNDIR}" \
@@ -648,21 +658,21 @@ post-install-rm-junk:
 
 post-install-fix-manpages:
 .for f in vfs_aio_linux.8 vfs_btrfs.8 vfs_ceph.8 vfs_gpfs.8
-				${RM} ${STAGEDIR}${PREFIX}/man/man8/${f}
+				${RM} ${STAGEDIR}${PREFIX}/share/man/man8/${f}
 .endfor
 .if defined(SAMBA4_BUNDLED_LDB) && ${SAMBA4_BUNDLED_LDB} == yes
 .	for f in ldbadd.1 ldbdel.1 ldbedit.1 ldbmodify.1 ldbrename.1 ldbsearch.1
-				${MV} ${STAGEDIR}${PREFIX}/man/man1/${f} ${STAGEDIR}${PREFIX}/man/man1/samba-${f}
+				${MV} ${STAGEDIR}${PREFIX}/share/man/man1/${f} ${STAGEDIR}${PREFIX}/share/man/man1/samba-${f}
 .	endfor
 .endif
 .if defined(SAMBA4_BUNDLED_TDB) && ${SAMBA4_BUNDLED_TDB} == yes
 .	for f in tdbbackup.8 tdbdump.8 tdbrestore.8 tdbtool.8
-				${MV} ${STAGEDIR}${PREFIX}/man/man8/${f} ${STAGEDIR}${PREFIX}/man/man8/samba-${f}
+				${MV} ${STAGEDIR}${PREFIX}/share/man/man8/${f} ${STAGEDIR}${PREFIX}/share/man/man8/samba-${f}
 .	endfor
 .endif
 
 post-install: post-install-rm-junk post-install-fix-manpages
-				${LN} -sf smb.conf.5.gz ${STAGEDIR}${PREFIX}/man/man5/smb4.conf.5.gz
+				${LN} -sf smb.conf.5.gz ${STAGEDIR}${PREFIX}/share/man/man5/smb4.conf.5.gz
 # Run post-install script
 .for dir in			${SAMBA4_LOGDIR} ${SAMBA4_RUNDIR} ${SAMBA4_LOCKDIR} ${SAMBA4_MODULEDIR}
 					${INSTALL} -d -m 0755 "${STAGEDIR}${dir}"
@@ -681,7 +691,7 @@ post-install: post-install-rm-junk post-install-fix-manpages
 
 post-install-FRUIT-off:
 				${RM} ${STAGEDIR}${SAMBA4_MODULEDIR}/vfs/fruit.so
-				${RM} ${STAGEDIR}${PREFIX}/man/man8/vfs_fruit.8
+				${RM} ${STAGEDIR}${PREFIX}/share/man/man8/vfs_fruit.8
 
 post-install-DOCS-on:
 				${MKDIR} ${STAGEDIR}${DOCSDIR}

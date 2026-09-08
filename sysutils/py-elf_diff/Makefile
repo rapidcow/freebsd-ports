@@ -1,6 +1,7 @@
 PORTNAME=	elf_diff
 DISTVERSIONPREFIX=v
-DISTVERSION=	0.6.0
+DISTVERSION=	0.7.1
+PORTREVISION=	2
 CATEGORIES=	sysutils python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -13,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools-git>0:devel/py-setuptools-git@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>0:devel/py-Jinja2@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}yaml>0:devel/py-yaml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyyaml>=0:devel/py-pyyaml@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}progressbar2>0:misc/py-progressbar2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}anytree>0:devel/py-anytree@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dict2xml>0:textproc/py-dict2xml@${PY_FLAVOR}
@@ -22,7 +23,7 @@ TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}deepdiff>0:devel/py-deepdiff@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}gitpython>0:devel/py-gitpython@${PY_FLAVOR} \
 		git:devel/git
 
-USES=		python:3.8-3.10
+USES=		python
 USE_GITHUB=	yes
 USE_PYTHON=	autoplist concurrent distutils
 

@@ -1,6 +1,6 @@
 PORTNAME=	xneur
 PORTVERSION=	0.20.0
-PORTREVISION=	3
+PORTREVISION=	4
 DISTVERSIONSUFFIX=.orig
 CATEGORIES=	deskutils
 MASTER_SITES=	https://launchpad.net/~andrew-crew-kuznetsov/+archive/xneur-stable/+files/
@@ -16,7 +16,7 @@ BUILD_DEPENDS=	intltool-update:textproc/intltool
 LIB_DEPENDS=	libnotify.so:devel/libnotify \
 		libpcre.so:devel/pcre
 
-USES=		compiler:nestedfct gnome iconv libtool localbase pathfix \
+USES=		compiler:nestedfct gnome iconv libtool localbase \
 		pkgconfig xorg
 USE_GNOME=	gtk20
 
@@ -24,10 +24,12 @@ USE_XORG=	xtst
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-static --libdir=${PREFIX}/lib/xneur --with-gtk=gtk2
 
 USE_LDCONFIG=	${PREFIX}/lib/xneur ${PREFIX}/lib/xneur/xneur
 INSTALL_TARGET=	install-strip
+MAKE_ARGS=	pkgconfigdir=${PREFIX}/libdata/pkgconfig
 
 OPTIONS_DEFINE=	ASPELL XOSD NLS X11 SOUND
 OPTIONS_DEFAULT=	GSTREAMER ASPELL SOUND

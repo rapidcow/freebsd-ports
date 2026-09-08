@@ -1,5 +1,6 @@
 PORTNAME=	ScrollZ
 PORTVERSION=	2.3.1
+PORTREVISION=	1
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	irc
 
@@ -18,6 +19,7 @@ USES=		gmake iconv ncurses
 USE_GITHUB=	yes
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 DATADIR=	${PREFIX}/share/${PORTNAME:tl}
 
@@ -39,11 +41,9 @@ UTF8_CONFIGURE_ENABLE=	utf8
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=       -Wno-error=int-conversion
-.if ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 )
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
-.endif
 .endif
 
 .if !empty(ICONV_LIB)

@@ -1,9 +1,10 @@
 PORTNAME=	gsl
 PORTVERSION=	2.7.1
+PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	GNU
 
-MAINTAINER=	tcberner@FreeBSD.org
+MAINTAINER=	kde@FreeBSD.org
 COMMENT=	The GNU Scientific Library - mathematical libs
 WWW=		https://www.gnu.org/software/gsl
 
@@ -12,6 +13,7 @@ LICENSE=	GPLv3
 USES=		libtool pathfix
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 
 INFO=		gsl-ref

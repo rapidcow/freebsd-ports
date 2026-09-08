@@ -1,19 +1,15 @@
 PORTNAME=	libgamepad
-PORTVERSION=	0.1.2
+DISTVERSION=	0.1.2-4
+DISTVERSIONSUFFIX=	-gcd7306c
 CATEGORIES=	devel games
-MASTER_SITES=	http://acadix.biz/Ports/distfiles/
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Generic gamepad API
+WWW=		https://github.com/outpaddling/libgamepad/
 
 LICENSE=	BSD2CLAUSE
 
-USES=		tar:xz
-
-pre-build:
-	(cd ${WRKSRC} && make depend)
-
-MAKE_FLAGS+=	PREFIX=${STAGEDIR}${PREFIX} \
-		MANPREFIX=${STAGEDIR}${PREFIX}
+USE_GITHUB=	yes
+GH_ACCOUNT=	outpaddling
 
 .include <bsd.port.mk>

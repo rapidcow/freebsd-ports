@@ -1,14 +1,15 @@
 PORTNAME=	podman-suite
-PORTVERSION=	20230817
+PORTVERSION=	20251210
 CATEGORIES=	sysutils
 
 MAINTAINER=	dfr@FreeBSD.org
-COMMENT=	Metaport of podman and buildah toolkit
+COMMENT=	Metaport of Podman and Buildah toolkit
 WWW=		https://podman.io/
 
 USES=		metaport
 
-RUN_DEPENDS=	buildah>=0:sysutils/buildah  \
+RUN_DEPENDS=	buildah>=0:sysutils/buildah \
+		catatonit>=0:sysutils/catatonit \
 		podman>=0:sysutils/podman \
 		skopeo>=0:sysutils/skopeo
 

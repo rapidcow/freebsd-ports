@@ -5,11 +5,12 @@ MASTER_SITES=	SF
 EXTRACT_SUFX=	.jar
 EXTRACT_ONLY=
 
-MAINTAINER=	alex@stangl.us
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java-based flashcard learning using the Leitner system
-WWW=		http://pauker.sourceforge.net
+WWW=		https://pauker.sourceforge.net
 
-USE_JAVA=	yes
+USES=		java
+
 NO_BUILD=	yes
 
 do-install:

@@ -1,6 +1,7 @@
 PORTNAME=	babeltrace
 PORTVERSION=	1.5.7
 DISTVERSIONPREFIX=	v
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	pizzamig@FreeBSD.org
@@ -16,7 +17,7 @@ LICENSE_FILE_LGPL21=	${WRKSRC}/lgpl-2.1.txt
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libpopt.so:devel/popt \
-		libuuid.so:misc/e2fsprogs-libuuid
+		libuuid.so:misc/libuuid
 
 USES=		autoreconf:build bison compiler:c11 gmake gnome libtool \
 		pathfix pkgconfig
@@ -25,6 +26,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	efficios
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--disable-debug-info
 CONFIGURE_ENV=	YACC="bison -y"
 USE_GNOME=	glib20

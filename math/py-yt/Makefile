@@ -1,5 +1,6 @@
 PORTNAME=	yt
-DISTVERSION=	4.2.0
+DISTVERSION=	4.3.1
+PORTREVISION=	3
 CATEGORIES=	math astro python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,8 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING.txt
 # dependencies are in setup.cfg
 BUILD_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}ewah-bool-utils>=1.0.2:devel/py-ewah-bool-utils@${PY_FLAVOR}
-RUN_DEPENDS=	\
-		${PYNUMPY} \
+RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}cmyt>=0.2.2:math/py-cmyt@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ewah-bool-utils>=1.0.2:devel/py-ewah-bool-utils@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ipywidgets>0:devel/py-ipywidgets@${PY_FLAVOR} \
@@ -33,7 +33,7 @@ RUN_DEPENDS=	\
 		${PYTHON_PKGNAMEPREFIX}unyt>=2.8.0:math/py-unyt@${PY_FLAVOR}
 
 USES=		dos2unix localbase python
-USE_PYTHON=	distutils cython autoplist concurrent
+USE_PYTHON=	autoplist concurrent cython3 distutils
 
 post-patch:
 	@${REINPLACE_CMD} -e "s|check_for_pyembree() is not None|False|" \

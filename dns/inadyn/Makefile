@@ -1,6 +1,5 @@
 PORTNAME=	inadyn
-PORTVERSION=	2.11.0
-PORTREVISION=	1
+PORTVERSION=	2.13.0
 CATEGORIES=	dns
 MASTER_SITES=	https://github.com/troglobit/${PORTNAME}/releases/download/v${PORTVERSION}/
 
@@ -17,6 +16,7 @@ RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss
 USES=		pkgconfig tar:xz
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 USERS=		inadyn
 GROUPS=		inadyn

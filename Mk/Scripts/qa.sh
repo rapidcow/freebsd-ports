@@ -116,6 +116,7 @@ baselibs() {
 	local found_openssl
 	local file
 	[ "${PKGBASE}" = "pkg" -o "${PKGBASE}" = "pkg-devel" ] && return
+
 	while read -r f; do
 		case ${f} in
 		File:\ .*)
@@ -136,10 +137,13 @@ baselibs() {
 	done <<-EOF
 	$(list_stagedir_elfs -exec readelf -d {} + 2>/dev/null)
 	EOF
-	if [ -z "${USESSSL}" -a -n "${found_openssl}" ]; then
-		warn "you need USES=ssl"
-	elif [ -n "${USESSSL}" -a -z "${found_openssl}" ]; then
-		warn "you may not need USES=ssl"
+
+	if ! list_stagedir_elfs | egrep -q 'lib(crypto|ssl).so*'; then
+		if [ -z "${USESSSL}" -a -n "${found_openssl}" ]; then
+			warn "you need USES=ssl"
+		elif [ -n "${USESSSL}" -a -z "${found_openssl}" ]; then
+			warn "you may not need USES=ssl"
+		fi
 	fi
 	return ${rc}
 }
@@ -367,7 +371,6 @@ proxydeps_suggest_uses() {
 		${pkg} = "graphics/cairomm" -o \
 		${pkg} = "devel/dconf" -o \
 		${pkg} = "devel/gconf2" -o \
-		${pkg} = "devel/gconfmm26" -o \
 		${pkg} = "devel/glib20" -o \
 		${pkg} = "devel/glibmm" -o \
 		${pkg} = "audio/gsound" -o \
@@ -382,7 +385,6 @@ proxydeps_suggest_uses() {
 		${pkg} = "x11-toolkits/gtksourceviewmm3" -o \
 		${pkg} = "databases/libgda5" -o \
 		${pkg} = "databases/libgda5-ui" -o \
-		${pkg} = "databases/libgdamm5" -o \
 		${pkg} = "devel/libglade2" -o \
 		${pkg} = "graphics/libgnomecanvas" -o \
 		${pkg} = "x11/libgnomekbd" -o \
@@ -395,7 +397,6 @@ proxydeps_suggest_uses() {
 		${pkg} = "textproc/libxml++26" -o \
 		${pkg} = "textproc/libxml2" -o \
 		${pkg} = "textproc/libxslt" -o \
-		${pkg} = "x11-wm/metacity" -o \
 		${pkg} = "x11-toolkits/pango" -o \
 		${pkg} = "x11-toolkits/pangomm" -o \
 		${pkg} = "x11-toolkits/pangox-compat" -o \
@@ -406,12 +407,12 @@ proxydeps_suggest_uses() {
 	# grep LIB_DEPENDS= Mk/Uses/gnome.mk |sed -e 's|\(.*\)_LIB_DEPENDS.*:\(.*\)\/\(.*\)|[ "\1" = "\3" ] \|\| echo "elif [ \\${pkg} = \\\"\2/\3\\\" ]; then; warn \\\"you need USE_GNOME+=\1\\\""|'|sort|sh
 	elif [ ${pkg} = "databases/evolution-data-server" ]; then warn "you need USE_GNOME+=evolutiondataserver3"
 	elif [ ${pkg} = "graphics/gdk-pixbuf" ]; then warn "you need USE_GNOME+=gdkpixbuf"
-	elif [ ${pkg} = "graphics/gdk-pixbuf2" ]; then warn "you need USE_GNOME+=gdkpixbuf2"
+	elif [ ${pkg} = "graphics/gdk-pixbuf2" ]; then warn "you need USE_GNOME+=gdkpixbuf"
 	elif [ ${pkg} = "x11/gnome-desktop" ]; then warn "you need USE_GNOME+=gnomedesktop3"
 	elif [ ${pkg} = "devel/gobject-introspection" ]; then warn "you need USE_GNOME+=introspection"
 	elif [ ${pkg} = "graphics/libart_lgpl" ]; then warn "you need USE_GNOME+=libartlgpl2"
 	elif [ ${pkg} = "devel/libIDL" ]; then warn "you need USE_GNOME+=libidl"
-	elif [ ${pkg} = "x11-fm/nautilus" ]; then warn "you need USE_GNOME+=nautilus3"
+	elif [ ${pkg} = "x11-fm/nautilus" ]; then warn "you need USE_GNOME+=nautilus4"
 	elif [ ${pkg} = "graphics/librsvg2-rust" ]; then warn "you need USE_GNOME+=librsvg2"
 	# mate
 	# grep LIB_DEPENDS= Mk/Uses/mate.mk |sed -e 's|\(.*\)_LIB_DEPENDS.*:\(.*\)\/\(.*\)|elif [ ${pkg} = "\2/\3" ]; then warn "you need USE_MATE+=\1"|'
@@ -425,7 +426,7 @@ proxydeps_suggest_uses() {
 	elif [ ${pkg} = "x11/mate-panel" ]; then warn "you need USE_MATE+=panel"
 	elif [ ${pkg} = "sysutils/mate-polkit" ]; then warn "you need USE_MATE+=polkit"
 	# KDE
-	# grep -B1 _LIB= Mk/Uses/kde.mk | grep _PORT=|sed -e 's/^kde-\(.*\)_PORT=[[:space:]]*\([^[:space:]]*\).*/elif [ ${pkg} = "\2" ]; then warn "you need to use USE_KDE+=\1"/' 
+	# grep -B1 _LIB= Mk/Uses/kde.mk | grep _PORT=|sed -e 's/^kde-\(.*\)_PORT=[[:space:]]*\([^[:space:]]*\).*/elif [ ${pkg} = "\2" ]; then warn "you need to use USE_KDE+=\1"/'
 	# KDE Applications
 	elif [ ${pkg} = "net/akonadi-contacts" ]; then warn "you need to use USE_KDE+=akonadicontacts"
 	elif [ ${pkg} = "deskutils/akonadi-import-wizard" ]; then warn "you need to use USE_KDE+=akonadiimportwizard"
@@ -471,7 +472,6 @@ proxydeps_suggest_uses() {
 	elif [ ${pkg} = "games/libkdegames" ]; then warn "you need to use USE_KDE+=libkdegames"
 	elif [ ${pkg} = "misc/libkeduvocdocument" ]; then warn "you need to use USE_KDE+=libkeduvocdocument"
 	elif [ ${pkg} = "graphics/libkexiv2" ]; then warn "you need to use USE_KDE+=libkexiv2"
-	elif [ ${pkg} = "graphics/libkipi" ]; then warn "you need to use USE_KDE+=libkipi"
 	elif [ ${pkg} = "graphics/libksane" ]; then warn "you need to use USE_KDE+=libksane"
 	elif [ ${pkg} = "astro/marble" ]; then warn "you need to use USE_KDE+=marble"
 	elif [ ${pkg} = "graphics/okular" ]; then warn "you need to use USE_KDE+=okular"
@@ -496,7 +496,6 @@ proxydeps_suggest_uses() {
 	elif [ ${pkg} = "x11/kf5-kded" ]; then warn "you need to use USE_KDE+=kded"
 	elif [ ${pkg} = "x11/kf5-kdelibs4support" ]; then warn "you need to use USE_KDE+=kdelibs4support"
 	elif [ ${pkg} = "security/kf5-kdesu" ]; then warn "you need to use USE_KDE+=kdesu"
-	elif [ ${pkg} = "www/kf5-kdewebkit" ]; then warn "you need to use USE_KDE+=kdewebkit"
 	elif [ ${pkg} = "www/kf5-khtml" ]; then warn "you need to use USE_KDE+=khtml"
 	elif [ ${pkg} = "devel/kf5-kio" ]; then warn "you need to use USE_KDE+=kio"
 	elif [ ${pkg} = "lang/kf5-kross" ]; then warn "you need to use USE_KDE+=kross"
@@ -558,6 +557,9 @@ proxydeps_suggest_uses() {
 	# Qt5
 	elif expr ${pkg} : '.*/qt5-.*' > /dev/null; then
 		warn "you need USES=qt:5 and USE_QT+=$(echo ${pkg} | sed -E 's|.*/qt5-||')"
+	# Qt6
+	elif expr ${pkg} : '.*/qt6-.*' > /dev/null; then
+		warn "you need USES=qt:6 and USE_QT+=$(echo ${pkg} | sed -E 's|.*/qt6-||')"
 	# MySQL
 	elif expr ${lib_file} : "${LOCALBASE}/lib/mysql/[^/]*$" > /dev/null; then
 		warn "you need USES+=mysql"
@@ -574,7 +576,7 @@ proxydeps_suggest_uses() {
 	elif [ ${pkg} = "databases/firebird25-client" ]; then
 		warn "you need USES+=firebird"
 	# fuse
-	elif [ ${pkg} = "sysutils/fusefs-libs" ]; then
+	elif [ ${pkg} = "filesystems/fusefs-libs" ]; then
 		warn "you need USES+=fuse"
 	# gnustep
 	elif [ ${pkg} = "lang/gnustep-base" ]; then
@@ -620,7 +622,11 @@ proxydeps_suggest_uses() {
 	elif [ ${pkg} = "devel/readline" ]; then
 		warn "you need USES+=readline"
 	# ssl
+	# When updating this, please also update the versions list in
+	# bsd.default-versions.mk and ssl.mk!
 	elif [ ${pkg} = "security/openssl" -o ${pkg} = "security/openssl111" \
+	  -o ${pkg} = "security/openssl31" -o ${pkg} = "security/openssl32" \
+	  -o ${pkg} = "security/openssl33" \
 	  -o ${pkg} = "security/libressl" -o ${pkg} = "security/libressl-devel" \
 	  ]; then
 		warn "you need USES=ssl"
@@ -714,9 +720,9 @@ proxydeps() {
 		sed -e 's/^\.//')
 	EOT
 
-	# Check whether all files in LIB_DPEENDS are actually linked against
+	# Check whether all files in LIB_DEPENDS are actually linked against
 	for _library in ${WANTED_LIBRARIES} ; do
-		if ! listcontains ${_library} "${dep_lib_files}" ; then
+		if ! listcontains ${_library%%.so*}.so "${dep_lib_files}" ; then
 			warn "you might not need LIB_DEPENDS on ${_library}"
 		fi
 	done
@@ -733,6 +739,8 @@ sonames() {
 		[ -z "${f}" ] && continue
 		# Ignore symlinks
 		[ -f "${f}" -a ! -L "${f}" ] || continue
+		# Ignore .debug files
+		[ "${f}" == "${f%.debug}" ] || continue
 		if ! readelf -d ${f} | grep SONAME > /dev/null; then
 			warn "${f} doesn't have a SONAME."
 			warn "pkg(8) will not register it as being provided by the port."
@@ -885,24 +893,24 @@ gemfiledeps()
 	if [ -z "$USE_RUBY" ]; then
 		return 0
 	fi
-	
+
 	# skip check if port is a rubygem-* one; they have no Gemfiles
 	if [ "${PKGBASE%%-*}" = "rubygem" ]; then
 		return 0
 	fi
-	
+
 	# advise install of bundler if its not present for check
 	if ! type bundle > /dev/null 2>&1; then
 		notice "Please install sysutils/rubygem-bundler for additional Gemfile-checks"
 		return 0
 	fi
- 
+
 	# locate the Gemfile(s)
 	while read -r f; do
-	
+
 		# no results presents a blank line from heredoc
 		[ -z "$f" ] && continue
-	
+
 		# if there is no Gemfile everything is fine - stop here
 		[ ! -f "$f" ] && return 0;
 
@@ -912,7 +920,7 @@ gemfiledeps()
 		if ! bundle check --dry-run --gemfile $f > /dev/null 2>&1; then
 			warn "Dependencies defined in ${f} are not satisfied"
 		fi
-      
+
 	done <<-EOF
 		$(find ${STAGEDIR} -name Gemfile)
 		EOF
@@ -1029,10 +1037,18 @@ reinplace()
 	fi
 }
 
+prefixman() {
+	if [ -d "${STAGEDIR}${PREFIX}/man" ]; then
+		warn "Installing man files in ${PREFIX}/man is no longer supported. Consider installing these files in ${PREFIX}/share/man instead."
+		ls -liTd ${STAGEDIR}${PREFIX}/man
+	fi
+	return 0
+}
+
 checks="shebang symlinks paths stripped desktopfileutils sharedmimeinfo"
 checks="$checks suidfiles libtool libperl prefixvar baselibs terminfo"
 checks="$checks proxydeps sonames perlcore no_arch gemdeps gemfiledeps flavors"
-checks="$checks license depends_blacklist pkgmessage reinplace"
+checks="$checks license depends_blacklist pkgmessage reinplace prefixman"
 
 ret=0
 cd ${STAGEDIR} || exit 1

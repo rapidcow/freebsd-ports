@@ -1,7 +1,6 @@
 PORTNAME=	mdbx
-PORTVERSION=	0.11.14
+DISTVERSION=	0.13.9
 CATEGORIES=	databases
-MASTER_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/releases/download/${DISTVERSIONPREFIX}${DISTVERSION}/
 MASTER_SITES=	https://libmdbx.dqdkfa.ru/release/
 DISTNAME=	libmdbx-amalgamated-${DISTVERSION}
 
@@ -9,26 +8,20 @@ MAINTAINER=	mahlon@martini.nu
 COMMENT=	Lightning Memory-Mapped Database (Extended)
 WWW=		https://github.com/erthink/libmdbx
 
-LICENSE=	OPENLDAP
-LICENSE_NAME=	OpenLDAP Public License
+LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
-LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		gmake
+USES=		cmake tar:xz
 USE_LDCONFIG=	yes
-
-MAKEFILE=	GNUmakefile
-MAKE_ARGS=	mdbx tools
-
-CFLAGS+=	-Wall -Werror -Wextra -Wpedantic -ffunction-sections \
-		-fPIC -fvisibility=hidden -std=gnu11 -pthread -Wno-error=attributes
 
 NO_WRKSUBDIR=	yes
 
-PLIST_SUB=	VERSION=${PORTVERSION}
+PLIST_SUB=	VERSION=${DISTVERSION}
 
 post-install:
-	${RLN} libmdbx.so.${PORTVERSION} ${STAGEDIR}${PREFIX}/lib/libmdbx.so
-	${RLN} libmdbx.so.${PORTVERSION} ${STAGEDIR}${PREFIX}/lib/libmdbx.so.0
+	${INSTALL_DATA} ${BUILD_WRKSRC}/libmdbx-static.a ${STAGEDIR}${PREFIX}/lib/libmdbx.a
+	${MV}  ${STAGEDIR}${PREFIX}/lib/libmdbx.so ${STAGEDIR}${PREFIX}/lib/libmdbx.so.${DISTVERSION}
+	${RLN} libmdbx.so.${DISTVERSION} ${STAGEDIR}${PREFIX}/lib/libmdbx.so
+	${RLN} libmdbx.so.${DISTVERSION} ${STAGEDIR}${PREFIX}/lib/libmdbx.so.0
 
 .include <bsd.port.mk>

@@ -1,6 +1,6 @@
 --- lumina-desktop/LSession.cpp.orig	2021-12-26 02:33:45 UTC
 +++ lumina-desktop/LSession.cpp
-@@ -97,46 +97,96 @@ LSession::~LSession(){
+@@ -97,46 +97,100 @@ LSession::~LSession(){
  //Static function so everything can get the same icon name
  QString LSession::batteryIconName(int charge, bool charging){
    int icon = -1;
@@ -11,15 +11,19 @@
 -  else if (charge > 0 ) { icon = 0; }
 -  if(charging){ icon = icon+10; }
 +
-+  // Add 5% in order to round to nearest 10%
-+  // E.g. 85% to 94% will show 90% icon
-+  icon = (charge + 5) / 10;
-+
++  // Old code with only a few different battery levels shown
 +  //if (charge > 90) { icon = 4; }
 +  //else if (charge > 70) { icon = 3; }
 +  //else if (charge > 20) { icon = 2; }
 +  //else if (charge > 5) { icon = 1; }
 +  //else if (charge > 0 ) { icon = 0; }
++
++  // New code with battery levels for every 10% difference shown
++  // Add 5% in order to round to nearest 10%
++  // E.g. 85% to 94% will show 90% icon
++  // Note: icon is an arbitrary integer used in a case statement later
++  // 0 - 10 are for discharging states, 11+ are for charging
++  icon = (charge + 5) / 10;
 +
 +  if(charging){ icon += 11; }
 +
@@ -112,3 +116,23 @@
          if(charge==100){ iconList << "battery-full-charged"; }
          iconList << "battery-100-charging" << "battery-full-charging"
  		<< "battery-charging-100" << "battery-charging-full";
+@@ -644,11 +698,16 @@ void LSession::adjustWindowGeom(WId win, bool maximize
+       if(DEBUG){ qDebug() << "Y-Diff:" << diff; }
+       if(diff < 0){ diff = -diff; } //need a positive value
+       if( (fgeom.height()+ diff)< desk.height()){
+-        //just move the window - there is room for it above
+-	geom.setBottom(desk.bottom()-frame[1]);
+-	fgeom.setBottom(desk.bottom());
++        // Just move the window - there is room for it above
++        // FIXME: geom calculations appear to be off
++        // This creates a large gap between the bottom of the new window
++        // and the lower panel
++	geom.moveBottom(desk.bottom()-frame[1]);
++	fgeom.moveBottom(desk.bottom());
+       }else if(geom.height() > diff){ //window bigger than the difference
+ 	//Need to resize the window - keeping the origin point the same
++	//This should only happen if the window is taller than the screen
++	//e.g. the screen size has shrunk
+ 	geom.setHeight( geom.height()-diff-1 ); //shrink it by the difference (need an extra pixel somewhere)
+ 	fgeom.setHeight( fgeom.height()-diff );
+       }

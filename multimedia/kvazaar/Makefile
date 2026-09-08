@@ -1,12 +1,11 @@
 PORTNAME=	kvazaar
+PORTVERSION=	2.3.2
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.2.0
-PORTREVISION=	1
 CATEGORIES=	multimedia
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	H.265/HEVC encoder implemented in C
-WWW=		https://ultravideo.fi/#encoder_x
+WWW=		https://ultravideo.fi/kvazaar.html
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -20,13 +19,7 @@ TEST_TARGET=	check
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
-OPTIONS_DEFINE=	ASM CRYPTOPP DOCS
-OPTIONS_DEFAULT=ASM
-
-ASM_BUILD_DEPENDS=	${ASM_BUILD_DEPENDS_${ARCH}}
-ASM_BUILD_DEPENDS_amd64=yasm:devel/yasm
-ASM_BUILD_DEPENDS_i386=	yasm:devel/yasm
-ASM_CONFIGURE_ENABLE=	asm
+OPTIONS_DEFINE=	CRYPTOPP DOCS
 
 CRYPTOPP_DESC=		Selective encryption via Crypto++ library
 CRYPTOPP_LIB_DEPENDS=	libcryptopp.so:security/cryptopp

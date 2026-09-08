@@ -136,7 +136,7 @@ steadykey                 0
 ui_active                 0
 offscreen_reload          0
 joystick_map              auto
-joystick_deadzone         0.3
+joystick_deadzone         0.15
 joystick_saturation       0.85
 joystick_threshold        0.3
 natural                   0
@@ -240,6 +240,7 @@ joystickprovider          auto
 # OSD DEBUGGING OPTIONS
 #
 debugger                  auto
+debugger_host             localhost
 debugger_port             23946
 debugger_font             auto
 debugger_font_size        0
@@ -381,7 +382,9 @@ keymap_file               keymap.dat
 #
 # SDL JOYSTICK MAPPING
 #
+enable_touch              0
 sixaxis                   0
+dual_lightgun             0
 
 #
 # SDL LIGHTGUN MAPPING

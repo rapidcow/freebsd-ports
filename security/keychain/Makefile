@@ -1,5 +1,5 @@
 PORTNAME=	keychain
-PORTVERSION=	2.8.5
+PORTVERSION=	2.9.8
 CATEGORIES=	security
 
 MAINTAINER=	garga@FreeBSD.org
@@ -9,31 +9,27 @@ WWW=		https://www.funtoo.org/Keychain
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING.txt
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	funtoo
-
-CONFLICTS_INSTALL=	py*-pycoin # bin/keychain
-
-OPTIONS_DEFINE=	DOCS
-
-NO_BUILD=	yes
-
-PLIST_FILES=	bin/${PORTNAME} \
-		man/man1/keychain.1.gz
-
-PORTDOCS=	ChangeLog README.md
-
 .if !exists(${LOCALBASE}/bin/ssh-agent) && !exists(/usr/bin/ssh-agent)
 RUN_DEPENDS+=	ssh-agent:security/openssh-portable
 .endif
 
-post-patch:
-	@${REINPLACE_CMD} -e '1 s,^.*,#!/bin/sh,' \
-		${WRKSRC}/${PORTNAME}
+USES=		perl5
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	funtoo
+USE_PERL5=	build
+
+CONFLICTS_INSTALL=	py*-pycoin # bin/keychain
+
+PLIST_FILES=	bin/${PORTNAME} \
+		share/man/man1/keychain.1.gz
+PORTDOCS=	ChangeLog.md README.md
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/keychain.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/keychain.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 

@@ -1,8 +1,9 @@
 PORTNAME=	bsnmp-ucd
 PORTVERSION=	0.4.5
+PORTREVISION=	1
 CATEGORIES=	net-mgmt
 
-MAINTAINER=	trociny@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	bsnmpd module that implements parts of UCD-SNMP-MIB
 WWW=		https://github.com/trociny/bsnmp-ucd
 
@@ -13,6 +14,7 @@ GH_ACCOUNT=	trociny
 
 USES=		uidfix
 MAKE_ENV+=	NO_OBJ=yes
+MAKE_ARGS=	MANDIR=${PREFIX}/share/man/man
 
 OPTIONS_DEFINE=	EXAMPLES
 

@@ -1,4 +1,4 @@
---- src/3rdparty/chromium/third_party/crashpad/crashpad/util/misc/address_types.h.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/third_party/crashpad/crashpad/util/misc/address_types.h.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/third_party/crashpad/crashpad/util/misc/address_types.h
 @@ -25,7 +25,7 @@
  #include <mach/mach_types.h>

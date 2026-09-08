@@ -1,9 +1,9 @@
 PORTNAME=	kobodeluxe
 PORTVERSION=	0.5.1
-PORTREVISION=	14
+PORTREVISION=	15
 CATEGORIES=	games
 MASTER_SITES=	http://olofson.net/kobodl/download/ \
-		http://mirror.amdmi3.ru/distfiles/
+		https://mirror.amdmi3.ru/distfiles/
 DISTNAME=	KoboDeluxe-${DISTVERSION}
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -14,6 +14,7 @@ USES=		sdl tar:bzip2
 USE_SDL=	image sdl
 USE_CXXSTD=	c++98
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--sharedstatedir=${SCOREDIR} --enable-oss
 
 SCOREDIR=	/var/games/${PORTNAME}

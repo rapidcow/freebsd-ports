@@ -1,8 +1,8 @@
 PORTNAME=	hexchat
-DISTVERSION=	2.16.1
-PORTREVISION=	3
+DISTVERSION=	2.16.2
+PORTREVISION=	2
 CATEGORIES=	irc gnome
-MASTER_SITES=	https://dl.hexchat.net/hexchat/
+MASTER_SITES=	https://github.com/hexchat/hexchat/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	IRC chat program with GTK and Text Frontend
@@ -11,7 +11,9 @@ WWW=		https://hexchat.github.io/
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes \
+DEPRECATED=	Repo archived upstream as of 2024-02-10
+
+BUILD_DEPENDS=	iso-codes>=0:misc/iso-codes \
 		${PYTHON_PKGNAMEPREFIX}cffi>0:devel/py-cffi@${PY_FLAVOR}
 LIB_DEPENDS=	libproxy.so:net/libproxy \
 		libfontconfig.so:x11-fonts/fontconfig \
@@ -20,14 +22,14 @@ LIB_DEPENDS=	libproxy.so:net/libproxy \
 RUN_DEPENDS=	${LOCALBASE}/share/xml/iso-codes/iso_639.xml:misc/iso-codes
 
 USES=		compiler:c++11-lang cpe desktop-file-utils gettext-tools gnome \
-		libtool localbase meson ninja pkgconfig python shebangfix \
+		localbase meson ninja pkgconfig python shebangfix \
 		ssl tar:xz xorg
 CPE_VENDOR=	${PORTNAME}_project
 SHEBANG_FILES=	meson_post_install.py \
 		plugins/perl/generate_header.py \
 		plugins/python/generate_plugin.py \
 		src/common/make-te.py
-USE_GNOME=	cairo gdkpixbuf2 gtk20 intltool libxml2
+USE_GNOME=	cairo gdkpixbuf gtk20 intltool libxml2
 USE_XORG=	x11
 
 MESON_ARGS=	-Dtls=enabled -Dgtk-frontend=true -Dwith-python=python-${PYTHON_VER}
@@ -36,26 +38,21 @@ SUB_FILES=	pkg-message
 
 PORTDOCS=	*
 
-OPTIONS_DEFINE=		CA_BUNDLE CANBERRA DBUS DOCS FISHLIM LUA PERL TEXTFE \
-			SYSINFO
+OPTIONS_DEFINE=		CANBERRA DBUS DOCS FISHLIM LUA PERL SYSINFO TEXTFE
 
-OPTIONS_DEFAULT=	CA_BUNDLE CANBERRA DBUS PERL
+OPTIONS_DEFAULT=	CANBERRA DBUS PERL
 
 OPTIONS_SUB=	yes
 
-CA_BUNDLE_DESC=		Include CA bundle for SSL verification
 CANBERRA_DESC=		Audio support via Libcanberra
 FISHLIM_DESC=		FiSHLiM plugin
 TEXTFE_DESC=		Text frontend
 SYSINFO_DESC=		Sysinfo plugin
 
-CA_BUNDLE_RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 CANBERRA_LIB_DEPENDS=	libcanberra.so:audio/libcanberra
-CANBERRA_MESON_ON=	-Dlibcanberra=enabled
-CANBERRA_MESON_OFF=	-Dlibcanberra=disabled
+CANBERRA_MESON_ENABLED=	libcanberra
 DBUS_LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib
-DBUS_MESON_ON=		-Ddbus=enabled
-DBUS_MESON_OFF=		-Ddbus=disabled
+DBUS_MESON_ENABLED=	dbus
 FISHLIM_MESON_TRUE=	with-fishlim
 LUA_MESON_ON=		-Dwith-lua=lua-${LUA_VER}
 LUA_MESON_OFF=		-Dwith-lua=false

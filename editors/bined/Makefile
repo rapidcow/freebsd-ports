@@ -1,5 +1,5 @@
 PORTNAME=	bined
-PORTVERSION=	0.2.2
+PORTVERSION=	0.2.3
 CATEGORIES=	editors java
 MASTER_SITES=	SF/${PORTNAME}/editor/${PORTVERSION}
 
@@ -9,8 +9,8 @@ WWW=		https://bined.exbin.org/editor/
 
 LICENSE=	APACHE20
 
-USES=		zip
-USE_JAVA=	yes
+USES=		java zip
+
 NO_BUILD=	yes
 
 OPTIONS_DEFINE=	DOCS

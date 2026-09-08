@@ -1,5 +1,5 @@
 PORTNAME=	libunistring
-DISTVERSION=	1.1
+DISTVERSION=	1.4.1
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
@@ -13,14 +13,17 @@ LICENSE_FILE_GFDL=	${WRKSRC}/doc/libunistring.texi
 LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 LICENSE_FILE_LGPL3+ =	${WRKSRC}/COPYING.LIB
 
-USES=		alias charsetfix cpe iconv libtool tar:xz
+USES=		charsetfix cpe iconv libtool tar:xz
 CPE_VENDOR=	gnu
 USE_LDCONFIG=	yes
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static
+
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 INFO=		${PORTNAME}
+
 OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

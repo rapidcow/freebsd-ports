@@ -1,5 +1,5 @@
 PORTNAME=	jedit
-PORTVERSION=	5.6.0
+PORTVERSION=	5.7.0
 PORTEPOCH=	1
 CATEGORIES=	editors java
 MASTER_SITES=	SF
@@ -8,9 +8,11 @@ EXTRACT_SUFX=	.jar
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Powerful programmer's text editor written in Java
-WWW=		http://jedit.sourceforge.net/
+WWW=		https://jedit.sourceforge.net/
 
 LICENSE=	GPLv2
+
+USES=		cpe java xorg
 
 OPTIONS_DEFINE=	MACROS DOCS
 MACROS_DESC=	Install default set of macros (highly recommended)
@@ -18,9 +20,6 @@ MACROS_DESC=	Install default set of macros (highly recommended)
 OPTIONS_DEFAULT=	MACROS
 OPTIONS_SUB=	yes
 
-USES=		cpe xorg
-
-USE_JAVA=	yes
 JAVA_VERSION=	11+
 
 USE_XORG=	x11
@@ -50,6 +49,6 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKDIR}/jedit.sh ${STAGEDIR}${PREFIX}/bin/jedit
 	${INSTALL_DATA} ${STAGEDIR}${DATADIR}/doc/jedit.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/${PORTNAME}.png
-	${INSTALL_MAN} ${WRKDIR}/jedit.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKDIR}/jedit.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

@@ -1,10 +1,10 @@
 - workaround for https://gitlab.kitware.com/vtk/vtk/-/issues/18683
 
---- src/IVtkDraw/IVtkDraw_Interactor.cxx.orig	2021-10-30 11:13:52 UTC
+--- src/IVtkDraw/IVtkDraw_Interactor.cxx.orig	2025-02-17 22:00:23 UTC
 +++ src/IVtkDraw/IVtkDraw_Interactor.cxx
-@@ -26,6 +26,12 @@
- #ifdef AllValues
- #undef AllValues
+@@ -173,6 +173,12 @@ void IVtkDraw_Interactor::Initialize()
+   aSize             = aRenWin->GetSize();
+   aRenWin->Start();
  #endif
 +#ifdef Status
 +#undef Status
@@ -13,5 +13,5 @@
 +#undef Success
 +#endif
  
- #include <vtkXRenderWindowInteractor.h>
- #include <vtkXOpenGLRenderWindow.h>
+   this->Enable();
+   this->Size[0] = aSize[0];

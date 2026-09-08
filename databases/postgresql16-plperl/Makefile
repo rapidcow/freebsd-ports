@@ -1,15 +1,15 @@
 PORTNAME=	postgresql
 # Keep the ?=, this port is used as master by the other plperl.
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES=	databases perl5
-PKGNAMESUFFIX?=	${WANT_PGSQL_VER:S/.//}${COMPONENT}
+PKGNAMESUFFIX?=	${WANT_PGSQL_VER}${COMPONENT}
 
 MAINTAINER=	pgsql@FreeBSD.org
 COMMENT=	Write SQL functions for PostgreSQL using Perl5
 
-RUN_DEPENDS=	postgres:databases/postgresql${WANT_PGSQL_VER:S/.//}-server
+RUN_DEPENDS=	postgres:databases/postgresql${WANT_PGSQL_VER}-server
 
-MASTERDIR=	${.CURDIR}/../../databases/postgresql${WANT_PGSQL_VER:S/.//}-server
+MASTERDIR=	${.CURDIR}/../../databases/postgresql${WANT_PGSQL_VER}-server
 
 WANT_PGSQL_VER?=16
 

@@ -1,2 +1,6 @@
-Jupyter Server YDoc is a Jupyter Server Extension providing support for Y
-documents.
+jupyter-server-ydoc is a jupyter-server extension integrating collaborative
+shared models.
+
+The collaborative shared models are used for both:
+- real time collaboration, and
+- server-side execution of notebooks

@@ -1,8 +1,8 @@
---- base/process/kill.h.orig	2022-10-01 07:40:07 UTC
+--- base/process/kill.h.orig	2025-11-01 06:40:37 UTC
 +++ base/process/kill.h
-@@ -113,7 +113,7 @@ BASE_EXPORT TerminationStatus GetTerminationStatus(Pro
- BASE_EXPORT TerminationStatus GetKnownDeadTerminationStatus(
-     ProcessHandle handle, int* exit_code);
+@@ -125,7 +125,7 @@ BASE_EXPORT TerminationStatus GetTerminationStatus(Pro
+ BASE_EXPORT TerminationStatus
+ GetKnownDeadTerminationStatus(ProcessHandle handle, int* exit_code);
  
 -#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)

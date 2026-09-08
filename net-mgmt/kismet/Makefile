@@ -15,6 +15,7 @@ USES=		gmake localbase:ldflags tar:xz
 USE_CXXSTD=	c++14
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 WRKSRC=	${WRKDIR}/${DISTNAME:S/a$$//}
 
@@ -59,8 +60,7 @@ post-patch:
 			${WRKSRC}/conf/kismet.conf.in \
 			${WRKSRC}/conf/kismet_drone.conf
 	@${REINPLACE_CMD} -e "s/plugin-/plugin-[aps]/" \
-		-e "s/make/${MAKE_CMD}/" \
-		-e "s/\$$(MAKE)/${MAKE_CMD}/" \
+		-e 's/make/$$(MAKE)/' \
 		${WRKSRC}/Makefile.in
 	@${REINPLACE_CMD} -e "s/CXXFLAGS/CPPFLAGS/" \
 		${WRKSRC}/plugin-alertsyslog/Makefile

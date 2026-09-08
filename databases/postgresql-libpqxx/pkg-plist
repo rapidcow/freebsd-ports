@@ -23,7 +23,6 @@ include/pqxx/internal/array-composite.hxx
 include/pqxx/internal/callgate.hxx
 include/pqxx/internal/concat.hxx
 include/pqxx/internal/conversions.hxx
-include/pqxx/internal/cxx-features.hxx
 include/pqxx/internal/encoding_group.hxx
 include/pqxx/internal/encodings.hxx
 include/pqxx/internal/gates/connection-errorhandler.hxx
@@ -107,7 +106,10 @@ include/pqxx/version
 include/pqxx/version.hxx
 include/pqxx/zview
 include/pqxx/zview.hxx
-lib/libpqxx-%%PORTVERSION%%.so
-lib/libpqxx.a
+lib/cmake/libpqxx/libpqxx-config-version.cmake
+lib/cmake/libpqxx/libpqxx-config.cmake
+lib/cmake/libpqxx/libpqxx-targets-%%CMAKE_BUILD_TYPE%%.cmake
+lib/cmake/libpqxx/libpqxx-targets.cmake
+lib/libpqxx-%%DISTVERSION%%.so
 lib/libpqxx.so
 libdata/pkgconfig/libpqxx.pc

@@ -1,11 +1,11 @@
---- gpu/command_buffer/service/gles2_cmd_decoder.cc.orig	2023-09-13 12:11:42 UTC
+--- gpu/command_buffer/service/gles2_cmd_decoder.cc.orig	2026-01-14 08:33:23 UTC
 +++ gpu/command_buffer/service/gles2_cmd_decoder.cc
-@@ -2980,7 +2980,7 @@ GLES2Decoder* GLES2Decoder::Create(
+@@ -2846,7 +2846,7 @@ std::unique_ptr<GLES2Decoder> GLES2Decoder::Create(
    }
  
  // Allow linux to run fuzzers.
 -#if BUILDFLAG(ENABLE_VALIDATING_COMMAND_DECODER) || BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(ENABLE_VALIDATING_COMMAND_DECODER) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-   return new GLES2DecoderImpl(client, command_buffer_service, outputter, group);
+   return std::make_unique<GLES2DecoderImpl>(client, command_buffer_service,
+                                             outputter, group);
  #else
-   LOG(FATAL) << "Validating command decoder is not supported.";

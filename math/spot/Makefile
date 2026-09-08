@@ -1,5 +1,5 @@
 PORTNAME=	spot
-DISTVERSION=	2.11.6
+DISTVERSION=	2.14.5
 CATEGORIES=	math
 MASTER_SITES=	http://www.lrde.epita.fr/dload/${PORTNAME}/
 
@@ -18,6 +18,7 @@ USES=		charsetfix compiler:c++17-lang gmake libtool python:test
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 .if !defined(WITH_PYTHON) # math/py-spot is a separate port but tests don't work there. To test run: make test WITH_PYTHON=yes
 CONFIGURE_ARGS=	--disable-python --disable-static
 .else
@@ -33,5 +34,16 @@ PORTDOCS=	tl.pdf
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/*.so
+
+# ============================================================================
+# Testsuite summary for spot 2.14.5
+# ============================================================================
+# TOTAL: 211
+# PASS:  189
+# SKIP:  20
+# XFAIL: 0
+# FAIL:  2
+# XPASS: 0
+# ERROR: 0
 
 .include <bsd.port.mk>

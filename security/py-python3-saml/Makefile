@@ -1,13 +1,14 @@
 PORTNAME=	python3-saml
-PORTVERSION=	1.15.0
-PORTREVISION=	1
+PORTVERSION=	1.16.0
+PORTREVISION=	2
 CATEGORIES=	security python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Add SAML support to your Python software
-WWW=		https://github.com/SAML-Toolkits/python3-saml
+WWW=		https://developers.onelogin.com/saml/python \
+		https://github.com/SAML-Toolkits/python3-saml
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

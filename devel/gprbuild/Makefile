@@ -1,6 +1,6 @@
 PORTNAME=	gprbuild
 DISTVERSIONPREFIX=	v
-DISTVERSION=	23.0.0	# Upgrade with devel/libgpr
+DISTVERSION=	25.0.0	# Upgrade with devel/libgpr + textproc/xmlada
 PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	devel
@@ -22,8 +22,9 @@ GH_PROJECT=	gprconfig_kb:kb xmlada:xa
 
 BOOTPATH=	${WRKSRC}/bootstrap/bin
 MAKE_JOBS_NUMBER_LIMIT=	4
-MAKE_ARGS=	PROCESSORS=${MAKE_JOBS_NUMBER}	\
-		ENABLE_SHARED=yes
+DISABLE_MAKE_JOBS=yes	# to avoid "raised ADA.IO_EXCEPTIONS.END_ERROR : a-tigeli.adb:96"
+#MAKE_ARGS=     PROCESSORS=${MAKE_JOBS_NUMBER} ENABLE_SHARED=yes
+MAKE_ARGS=	PROCESSORS=1 ENABLE_SHARED=yes
 XMLADA_SRC=	${WRKDIR}/xmlada-${PORTVERSION}
 PLATFORM=	${OPSYS:tl}${OSREL}
 GARCH=		${ARCH:S/amd64/x86_64/}
@@ -31,10 +32,12 @@ CONFIGURE_TARGET=	${GARCH}-portbld-${PLATFORM}
 MAKE_ENV+=	GPR_PROJECT_PATH=${WRKSRC}/bootstrap/share/gpr
 ALL_TARGET=	all	# libgpr.build.static
 INSTALL_TARGET=	install	# libgpr.install
-P2STRIP=	libexec/gprbuild/gprbind bin/gprname bin/gprslave bin/gprbuild	\
-		bin/gprconfig bin/gprls bin/gprinstall bin/gprclean
+P2STRIP=	libexec/gprbuild/gprbind libexec/gprbuild/gprlib bin/gprname	\
+		bin/gprslave bin/gprbuild bin/gprconfig bin/gprls bin/gprinstall\
+		bin/gprclean
 
 GCC_VER=	12
+PLIST_SUB=	GCC_VER=${GCC_VER}
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 DOCSDIR=	${PREFIX}/gnat${GCC_VER}/share/doc/${PORTNAME}
@@ -84,22 +87,10 @@ do-build-DOCS-on:
 	(cd ${WRKSRC}/doc &&	\
 	${DO_MAKE_BUILD} html )
 
-do-build-EXAMPLES-on:
-	@${ECHO} "*** Build examples"
-	# Fortran is not yet supported on FreeBSD
-.for d in ada_f77 matrix
-	${MV} ${WRKSRC}/examples/${d} ${WRKDIR}
-.endfor
-	(cd ${WRKSRC}/examples &&	\
-	${DO_MAKE_BUILD:C|PATH=|PATH=${WRKSRC}/bootstrap/bin:|} ${ALL_TARGET} )
-.for d in ada_f77 matrix
-	${MV} ${WRKDIR}/${d} ${WRKSRC}/examples/
-.endfor
-
 do-install:
 	@${ECHO} "*** Installation of gprbuild"
 	(cd ${WRKSRC} &&	\
-	${SETENV} ${MAKE_ENV:C|PATH=|PATH=${WRKSRC}/bootstrap/bin:|} ${FAKEROOT}	\
+	${SETENVI} ${WRK_ENV} ${MAKE_ENV:C|PATH=|PATH=${WRKSRC}/bootstrap/bin:|} ${FAKEROOT} \
 	${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${INSTALL_TARGET} )
 .for p in ${P2STRIP}
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/gnat${GCC_VER}/${p}

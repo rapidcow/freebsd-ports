@@ -1,20 +1,20 @@
 PORTNAME=	tomcat-native
-DISTVERSION=	1.2.38
+DISTVERSION=	1.3.5
 CATEGORIES=	www java
 MASTER_SITES=	https://archive.apache.org/dist/tomcat/tomcat-connectors/native/${PORTVERSION}/source/
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
-MAINTAINER=	ale@FreeBSD.org
+MAINTAINER=	michaelo@apache.org
 COMMENT=	Tomcat native library
-WWW=		https://tomcat.apache.org/native-1.2-doc/
+WWW=		https://tomcat.apache.org/native-${PORTVERSION:R}-doc/
 
 LICENSE=	APACHE20
 
 LIB_DEPENDS=	libapr-1.so:devel/apr1
 
-USES=		libtool ssl
-USE_JAVA=	yes
+USES=		java libtool ssl
 USE_LDCONFIG=	yes
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-apr=${LOCALBASE} \
 		--with-java-home=${JAVA_HOME} \

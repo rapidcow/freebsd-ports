@@ -1,9 +1,10 @@
 PORTNAME=	mdbook
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.4.35
+DISTVERSION=	0.5.1
+PORTREVISION=	1
 CATEGORIES=	textproc
 
-MAINTAINER=	eduardo@FreeBSD.org
+MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Create book from Markdown files (like GitBook but implemented in Rust)
 WWW=		https://rust-lang.github.io/mdBook/
 
@@ -17,8 +18,14 @@ GH_ACCOUNT=	rust-lang
 GH_PROJECT=	mdBook
 
 PLIST_FILES=	bin/mdbook
+PORTEXAMPLES=	examples guide
 
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/mdbook
+OPTIONS_DEFINE=	EXAMPLES
+
+post-install-EXAMPLES-on:
+	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	(cd ${WRKSRC} && \
+		${COPYTREE_SHARE} "${PORTEXAMPLES}" \
+		${STAGEDIR}${EXAMPLESDIR})
 
 .include <bsd.port.mk>

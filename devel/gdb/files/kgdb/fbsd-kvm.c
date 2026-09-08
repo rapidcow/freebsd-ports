@@ -271,7 +271,7 @@ kgdb_resolve_symbol(const char *name, kvaddr_t *kva)
 static void
 fbsd_kvm_target_open (const char *args, int from_tty)
 {
-	struct fbsd_vmcore_ops *ops = get_fbsd_vmcore_ops (target_gdbarch ());
+	struct fbsd_vmcore_ops *ops = get_fbsd_vmcore_ops (current_inferior ()->arch ());
 	char kvm_err[_POSIX2_LINE_MAX];
 	struct inferior *inf;
 	struct cleanup *old_chain;
@@ -279,7 +279,7 @@ fbsd_kvm_target_open (const char *args, int from_tty)
 	kvm_t *nkvm;
 	const char *kernel;
 	std::string filename;
-	int osreldate;
+	LONGEST osreldate;
 	bool writeable;
 
 	if (ops == NULL || ops->supply_pcb == NULL || ops->cpu_pcb_addr == NULL)
@@ -343,11 +343,14 @@ fbsd_kvm_target_open (const char *args, int from_tty)
 
 	kvm = nkvm;
 	vmcore = std::move(filename);
-	current_inferior()->push_target (&fbsd_kvm_ops);
-
-	/* Pop the target automatically upon failure. */
 	target_unpush_up unpusher;
-	unpusher.reset (&fbsd_kvm_ops);
+	inf = current_inferior();
+	inf->push_target (&fbsd_kvm_ops);
+
+	if (inf->pid == 0) {
+		inferior_appeared(inf, 1);
+		inf->fake_pid_p = 1;
+	}
 
 	/*
 	 * Determine the first address in KVA.  Newer kernels export
@@ -362,24 +365,18 @@ fbsd_kvm_target_open (const char *args, int from_tty)
 		kernstart = kgdb_lookup("kernbase");
 	}
 
-	try {
-		CORE_ADDR osreldatesym = kgdb_lookup("osreldate");
-		osreldate = read_memory_unsigned_integer(osreldatesym, 4,
-		    gdbarch_byte_order (target_gdbarch ()));
-	} catch (const gdb_exception_error &e) {
-		error ("Failed to look up osreldate");
-	}
+	osreldate = parse_and_eval_long("osreldate");
 
 	/*
 	 * Look up symbols needed for stoppcbs handling, but don't
 	 * fail if they aren't present.
 	 */
 	stoppcbs = kgdb_lookup("stoppcbs");
-	if (osreldate > 1400088) {
+	if (osreldate >= 1400088) {
 		/* stoppcbs is now a pointer rather than an array. */
 		try {
 			stoppcbs = read_memory_typed_address(stoppcbs,
-			    builtin_type(target_gdbarch())->builtin_data_ptr);
+			    builtin_type(current_inferior ()->arch())->builtin_data_ptr);
 		} catch (const gdb_exception_error &e) {
 			stoppcbs = 0;
 		}
@@ -408,12 +405,6 @@ fbsd_kvm_target_open (const char *args, int from_tty)
 
 	kgdb_dmesg();
 
-	inf = current_inferior();
-	if (inf->pid == 0) {
-		inferior_appeared(inf, 1);
-		inf->fake_pid_p = 1;
-	}
-	solib_create_inferior_hook(0);
 	kt = kgdb_thr_init(ops->cpu_pcb_addr);
 	thread_info *curthr = nullptr;
 	while (kt != NULL) {
@@ -425,13 +416,14 @@ fbsd_kvm_target_open (const char *args, int from_tty)
 	}
 	switch_to_thread (curthr);
 
-	target_fetch_registers (get_current_regcache (), -1);
+	unpusher.release ();
+
+	post_create_inferior (from_tty);
+
+	target_fetch_registers (get_thread_regcache (curthr), -1);
 
 	reinit_frame_cache ();
 	print_stack_frame (get_selected_frame (NULL), 0, SRC_AND_LOC, 1);
-
-	/* Keep the target pushed. */
-	unpusher.release ();
 }
 
 void
@@ -440,9 +432,9 @@ fbsd_kvm_target::close()
 
 	if (kvm != NULL) {
 		switch_to_no_thread ();
-		exit_inferior_silent (current_inferior ());
+		exit_inferior (current_inferior ());
 
-		clear_solib();
+		clear_solib (current_program_space);
 		if (kvm_close(kvm) != 0)
 			warning("cannot close \"%s\": %s", vmcore.c_str (),
 			    kvm_geterr(kvm));
@@ -515,7 +507,7 @@ fbsd_kvm_target::thread_alive(ptid_t ptid)
 void
 fbsd_kvm_target::fetch_registers(struct regcache *regcache, int regnum)
 {
-	struct fbsd_vmcore_ops *ops = get_fbsd_vmcore_ops (target_gdbarch ());
+	struct fbsd_vmcore_ops *ops = get_fbsd_vmcore_ops (regcache->arch ());
 	struct kthr *kt;
 
 	if (ops->supply_pcb == NULL)
@@ -560,9 +552,7 @@ fbsd_kvm_target::xfer_partial(enum target_object object,
 static void
 kgdb_switch_to_thread(const char *arg, int tid)
 {
-  struct thread_info *tp;
-
-  tp = find_thread_ptid (&fbsd_kvm_ops, fbsd_vmcore_ptid (tid));
+  struct thread_info *tp = fbsd_kvm_ops.find_thread (fbsd_vmcore_ptid (tid));
   if (tp == NULL)
     error ("invalid tid");
   thread_select (arg, tp);

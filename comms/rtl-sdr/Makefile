@@ -1,6 +1,6 @@
 PORTNAME=	rtl-sdr
-PORTVERSION=	0.6.0
-PORTREVISION=	3
+PORTVERSION=	2.0.2
+DISTVERSIONPREFIX=	v
 PORTEPOCH=	1
 CATEGORIES=	comms hamradio
 
@@ -10,7 +10,7 @@ WWW=		https://sdr.osmocom.org/trac/wiki/rtl-sdr
 
 LICENSE=	GPLv2
 
-USES=		autoreconf pkgconfig libtool pathfix tar:tgz
+USES=		autoreconf pkgconfig libtool tar:tgz
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	steve-m

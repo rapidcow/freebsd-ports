@@ -1,5 +1,6 @@
 PORTNAME=	gwsocket
 PORTVERSION=	0.3
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	http://tar.gwsocket.io/
 
@@ -10,8 +11,9 @@ WWW=		https://gwsocket.io
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		alias compiler:c11 pkgconfig
+USES=		compiler:c11 pkgconfig
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 PORTDOCS=	AUTHORS COPYING ChangeLog NEWS README
 

@@ -1,5 +1,6 @@
 PORTNAME=	libskk
 DISTVERSION=	1.0.5
+PORTREVISION=	1
 CATEGORIES=	japanese
 
 MAINTAINER=	hiroto.kagotani@gmail.com
@@ -18,6 +19,7 @@ USES=		autoreconf gmake gnome libtool pathfix pkgconfig vala:build
 USE_GITHUB=	yes
 GH_ACCOUNT=	ueno
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 USE_GNOME=	introspection:build
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
@@ -35,7 +37,7 @@ NLS_USES_OFF=	gettext-tools
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

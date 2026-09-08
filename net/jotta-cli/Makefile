@@ -1,5 +1,5 @@
 PORTNAME=	jotta-cli
-DISTVERSION=	0.15.84961
+DISTVERSION=	0.17.132497
 CATEGORIES=	net
 MASTER_SITES=	https://repo.jotta.us/archives/freebsd/${ARCH:S|amd64|amd64|:S|i386|386|}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}_freebsd_${ARCH:S|amd64|amd64|:S|i386|386|}
@@ -14,18 +14,16 @@ LICENSE_TEXT=	"JottaCloud has its own terms and conditions available at https://
 LICENSE_PERMS=	dist-mirror no-dist-sell pkg-mirror no-pkg-sell auto-accept
 
 ONLY_FOR_ARCHS=	amd64 i386
-RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 
 RESTRICTED=	yes
 
 USE_RC_SUBR=	jottad
 
 NO_BUILD=	yes
-SUB_FILES=	pkg-message \
-		jottad
+SUB_FILES=	jottad pkg-message
 
-USERS=	jottad
-GROUPS=	jottad
+USERS=		jottad
+GROUPS=		jottad
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/jottad

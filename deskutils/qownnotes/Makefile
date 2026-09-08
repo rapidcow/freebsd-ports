@@ -1,7 +1,8 @@
 PORTNAME=	qownnotes
-PORTVERSION=	23.9.2
+DISTVERSION=	25.9.3
+PORTREVISION=	2
 CATEGORIES=	deskutils
-MASTER_SITES=	https://github.com/pbek/QOwnNotes/releases/download/v${PORTVERSION}/
+MASTER_SITES=	https://github.com/pbek/QOwnNotes/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	stobbsm@gmail.com
 COMMENT=	Markdown note taking program with cloud integration
@@ -9,16 +10,37 @@ WWW=		https://www.qownnotes.org/
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=	libbotan-2.so:security/botan2
-RUN_DEPENDS=	git:devel/git
+FLAVORS=	qt6 qt5
+FLAVOR?=	${FLAVORS:[1]}
+qt5_PKGNAMESUFFIX=	-qt5
 
-USES=		gl gmake pkgconfig qmake qt:5 tar:xz xorg
+qt6_LIB_DEPENDS=	libbotan-3.so:security/botan3 \
+			libgit2.so:devel/libgit2
+qt5_RUN_DEPENDS=	git:devel/git
+
+USES=		gl pkgconfig tar:xz xorg
 USE_GL=		gl
-USE_QT=		buildtools:build linguisttools:build sql-sqlite3:run \
-		concurrent core declarative gui network printsupport \
-		sql svg websockets widgets x11extras xml xmlpatterns
 USE_XORG=	x11
 
-QMAKE_ARGS=	USE_SYSTEM_BOTAN=1
+.if ${FLAVOR:U} == qt5
+USES+=		gmake qmake qt:5
+USE_QT=		buildtools:build linguisttools:build sql-sqlite3:run \
+		concurrent core declarative gui network printsupport \
+		sql svg websockets widgets x11extras xml
+.else
+USES+=		cmake qt:6
+USE_QT=		tools:build base declarative svg websockets
+USE_XORG+=	ice sm xext
+.endif
+
+.if ${FLAVOR:U} == qt6
+CMAKE_ON=	BUILD_WITH_LIBGIT2 \
+		BUILD_WITH_SYSTEM_BOTAN \
+		QON_QT6_BUILD
+.endif
+
+post-patch:
+	@${REINPLACE_CMD} -e '/QON_QM_FILES/s,QOwnNotes,${_QT_RELNAME},' \
+		${WRKSRC}/CMakeLists.txt
 
 .include <bsd.port.mk>

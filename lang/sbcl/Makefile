@@ -3,7 +3,7 @@
 # pinned to exact versions of everything used to build them.
 
 PORTNAME=	sbcl
-DISTVERSION=	2.3.8
+DISTVERSION=	2.5.7
 DISTVERSIONSUFFIX=	-source
 PORTEPOCH=	1
 CATEGORIES=	lang lisp
@@ -13,7 +13,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	krion@FreeBSD.org
 COMMENT=	Common Lisp development system derived from the CMU CL system
-WWW=		http://sbcl.sourceforge.net/
+WWW=		https://sbcl.sourceforge.io/
 
 LICENSE=	BSD2CLAUSE PD
 LICENSE_COMB=	dual
@@ -23,11 +23,11 @@ ONLY_FOR_ARCHS=	amd64 i386
 
 LIB_DEPENDS=	libgmp.so:math/gmp \
 		libmpfr.so:math/mpfr
-RUN_DEPENDS=	cl-asdf>=0:devel/cl-asdf
+RUN_DEPENDS=	cl-freebsd-asdf-init>=0:devel/cl-freebsd-asdf-init
 
 USES=		gmake makeinfo tar:bzip2
 
-SUB_FILES=	pkg-message sbclrc
+SUB_FILES=	sbclrc
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
@@ -36,7 +36,7 @@ PORTDOCS=	*
 # All options explained into file: ${WRKSRC}/base-target-features.lisp-expr
 OPTIONS_DEFINE=		COMPRESSION GARBAGE_COLLECTOR DOCS LINKABLE_RUNTIME QSHOW SAFEPOINT SIMD \
 			THREADS UNICODE XREF
-OPTIONS_DEFAULT=	SBCL THREADS UNICODE
+OPTIONS_DEFAULT=	COMPRESSION SBCL THREADS UNICODE
 
 OPTIONS_SINGLE=			BOOTSTRAP
 OPTIONS_SINGLE_BOOTSTRAP=	ABCL CCL CMUCL SBCL
@@ -155,7 +155,7 @@ post-build-DOCS-on:
 do-install:
 	(cd ${WRKSRC} && ${SETENV} \
 	INSTALL_ROOT="${STAGEDIR}${PREFIX}" \
-	MAN_DIR="${STAGEDIR}${MANPREFIX}/man" \
+	MAN_DIR="${STAGEDIR}${PREFIX}/share/man" \
 	INFO_DIR="${STAGEDIR}${PREFIX}/${INFO_PATH}" \
 	DOC_DIR="${STAGEDIR}${DOCSDIR}" \
 	SBCL_HOME="" \
@@ -183,4 +183,10 @@ post-install-DOCS-on:
 check regression-test test: build
 	(cd ${WRKSRC}/tests && ${SH} run-tests.sh)
 
-.include <bsd.port.mk>
+.include <bsd.port.pre.mk>
+
+.if ${OSVERSION} >= 1500000
+BUILD_DEPENDS+=		${LOCALBASE}/lib/compat/libutil.so.9:misc/compat14x
+.endif
+
+.include <bsd.port.post.mk>

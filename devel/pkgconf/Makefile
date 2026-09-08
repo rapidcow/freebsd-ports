@@ -1,5 +1,5 @@
 PORTNAME=	pkgconf
-PORTVERSION=	2.0.3
+PORTVERSION=	2.4.3
 PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://distfiles.ariadne.space/${PORTNAME}/
@@ -9,7 +9,7 @@ MASTER_SITES=	https://distfiles.ariadne.space/${PORTNAME}/
 # discretion.
 MAINTAINER=	bapt@FreeBSD.org
 COMMENT=	Utility to help to configure compiler and linker flags
-WWW=		https://git.sr.ht/~kaniini/pkgconf
+WWW=		https://gitea.treehouse.systems/ariadne/${PORTNAME}
 
 LICENSE=	ISCL
 
@@ -17,13 +17,15 @@ TEST_DEPENDS=	kyua:devel/kyua
 
 USES=		cpe tar:xz libtool pathfix
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 TEST_TARGET=	check
+# eliminate PKG_CONFIG_LIBDIR from test env
+TEST_ENV=
 CONFIGURE_ARGS=	--with-pkg-config-dir=${PREFIX}/libdata/pkgconfig:/usr/libdata/pkgconfig:${PREFIX}/share/pkgconfig \
 		--with-system-libdir=/usr/lib \
 		--with-system-includedir=/usr/include
-MAKE_ARGS=	MANDIR="${MAN1PREFIX}/man/man1"
 
 OPTIONS_DEFINE=	DOCS
 

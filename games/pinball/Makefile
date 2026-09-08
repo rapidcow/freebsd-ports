@@ -1,11 +1,11 @@
 PORTNAME=	pinball
 PORTVERSION=	0.3.20230219
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Emilia Pinball is a free pinball game
-WWW=		http://pinball.sourceforge.net/
+WWW=		https://pinball.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

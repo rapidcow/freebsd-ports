@@ -1,25 +1,23 @@
 PORTNAME=	cdecl
-PORTVERSION=	13.1
 DISTVERSIONPREFIX=	${PORTNAME}-
+DISTVERSION=	18.5
 CATEGORIES=	devel
 
 MAINTAINER=	ler@FreeBSD.org
 COMMENT=	Explains complicated C/C++ declarations in plain English
-WWW=		https://github.com/paul-j-lucas/cdecl
+WWW=		https://github.com/paul-j-lucas/cdecl/
 
 LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	flex:textproc/flex
 
 USES=		autoreconf bison ncurses readline
-
-CONFLICTS=	cutils
-
 USE_GITHUB=	yes
-
 GH_ACCOUNT=	paul-j-lucas
 
 GNU_CONFIGURE=	yes
-PLIST_FILES=	bin/cdecl bin/c++decl man/man1/cdecl.1.gz man/man1/c++decl.1.gz
+
+CONFLICTS=	cutils
 
 .include <bsd.port.mk>

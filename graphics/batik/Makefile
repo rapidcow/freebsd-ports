@@ -1,10 +1,10 @@
 PORTNAME=	batik
-PORTVERSION=	1.16
+PORTVERSION=	1.18
 CATEGORIES=	graphics java
 MASTER_SITES=	APACHE/xmlgraphics/${PORTNAME}/binaries
 DISTNAME=	${PORTNAME}-bin-${PORTVERSION}
 
-MAINTAINER=	makc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java based SVG toolkit
 WWW=		https://xmlgraphics.apache.org/batik/
 
@@ -13,8 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 CPE_VENDOR=	apache
 
-USES=		cpe
-USE_JAVA=	yes
+USES=		cpe java
 
 NO_ARCH=	yes
 NO_BUILD=	yes

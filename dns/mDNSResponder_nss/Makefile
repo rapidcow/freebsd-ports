@@ -42,7 +42,7 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/mDNSPosix/nss_mdns.conf \
 		${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_MAN} ${WRKSRC}/mDNSPosix/nss_mdns.conf.5 \
-		${STAGEDIR}${MANPREFIX}/man/man5
+		${STAGEDIR}${PREFIX}/share/man/man5
 
 	${INSTALL_DATA} ${WRKSRC}/mDNSPosix/nss_mdns.conf \
 		${STAGEDIR}${PREFIX}/etc/nss_mdns.conf.sample

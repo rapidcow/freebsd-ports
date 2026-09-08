@@ -1,6 +1,6 @@
 PORTNAME=	bibview
 PORTVERSION=	2.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	print databases
 MASTER_SITES=	TEX/biblio/bibtex/utils/bibview-2.0
 
@@ -13,7 +13,7 @@ WRKSRC=		${WRKDIR}/bibview-${PORTVERSION}
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

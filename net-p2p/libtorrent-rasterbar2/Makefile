@@ -1,22 +1,24 @@
 PORTNAME=	libtorrent-rasterbar
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.0.9
+DISTVERSION=	2.0.11
+PORTREVISION=	3
 CATEGORIES=	net-p2p
 #MASTER_SITES=	https://github.com/arvidn/libtorrent/releases/download/v${DISTVERSION}/
 PKGNAMESUFFIX=	2
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	C++ library implementing a BitTorrent client
-WWW=		https://libtorrent.org/
+WWW=		https://libtorrent.org \
+		https://github.com/arvidn/libtorrent
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libboost_chrono.so:devel/boost-libs \
 		libboost_random.so:devel/boost-libs \
-		libboost_system.so:devel/boost-libs
+		libboost_thread.so:devel/boost-libs
 
-USES=		cmake:testing compiler:c++11-lib iconv:wchar_t libtool \
+USES=		cmake:testing compiler:c++11-lib iconv:wchar_t \
 		localbase:ldflags pathfix pkgconfig python:test shebangfix ssl
 USE_LDCONFIG=	yes
 
@@ -25,8 +27,8 @@ SHEBANG_GLOB=	*.py
 USE_GITHUB=	yes
 GH_ACCOUNT=	arvidn
 GH_PROJECT=	libtorrent
-GH_TUPLE=	arvidn:try_signal:751a7e5:try_signal/deps/try_signal \
-		arvidn:libsimulator:64fb5b4:libsimulator/simulation/libsimulator \
+GH_TUPLE=	arvidn:try_signal:105cce5:try_signal/deps/try_signal \
+		arvidn:libsimulator:66ac6cc:libsimulator/simulation/libsimulator \
 		paullouisageneau:boost-asio-gnutls:a57d4d3:asio/deps/asio-gnutls
 
 USE_CXXSTD=	c++17 # prevent boost-related SEGV, see bug#264278
@@ -63,5 +65,7 @@ post-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/examples/${PORTEXAMPLES} \
 		${STAGEDIR}${EXAMPLESDIR}
+
+# tests as of 2.0.11: 99% tests passed, 1 tests failed out of 106, see https://github.com/arvidn/libtorrent/issues/7837
 
 .include <bsd.port.mk>

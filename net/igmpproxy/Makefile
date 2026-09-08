@@ -1,9 +1,10 @@
 PORTNAME=	igmpproxy
 DISTVERSION=	0.4
+PORTREVISION=	3
 PORTEPOCH=	1
 CATEGORIES=	net
 
-MAINTAINER=	franco@opnsense.org
+MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Multicast forwarding IGMP proxy
 WWW=		https://github.com/pali/igmpproxy
 

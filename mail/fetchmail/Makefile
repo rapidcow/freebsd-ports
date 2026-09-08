@@ -1,10 +1,10 @@
 PORTNAME?=	fetchmail
-DISTVERSION=	6.4.37
+DISTVERSION=	6.6.1
 PORTREVISION?=	0
 CATEGORIES=	mail
 # The next line is inherited by the fetchmailconf dependent port,
 # do NOT replace fetchmail by ${PORTNAME}
-MASTER_SITES=	SF/fetchmail/branch_6.4/
+MASTER_SITES=	SF/fetchmail/branch_6.6/
 
 MAINTAINER=	chalpin@cs.wisc.edu
 COMMENT?=	Batch mail retrieval utility for IMAP/POP3/ETRN/ODMR
@@ -13,7 +13,7 @@ WWW=		https://www.fetchmail.info/
 LICENSE=	GPLv2+
 
 .if empty(MASTERDIR)
-USES=		cpe gmake tar:xz
+USES=		cpe gmake pkgconfig tar:xz
 IGNORE_SSL=	libressl libressl-devel
 IGNORE_SSL_REASON=	incompatible license/no GPLv2 clause 2b exception for LibreSSL
 # The Free Software Foundation asserts that a GPL v2 clause 2b exception is
@@ -23,12 +23,11 @@ IGNORE_SSL_REASON=	incompatible license/no GPLv2 clause 2b exception for LibreSS
 USE_RC_SUBR=	fetchmail
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 # the added PYTHON=: suppresses python builds,
 # see ../../mail/fetchmailconf/ for the configuration tool
-CONFIGURE_ARGS=	--enable-fallback=no \
-		--enable-RPA \
-		--enable-SDPS \
+CONFIGURE_ARGS=	--enable-SDPS \
 		--without-hesiod \
 		PYTHON=:
 
@@ -36,7 +35,6 @@ CONFIGURE_ARGS=	--enable-fallback=no \
 # for instance, libcom_err.so on GSSAPI_NONE builds:
 LDFLAGS+=	-L${LOCALBASE}/lib -Wl,--as-needed
 
-PATCH_STRIP=	-p1
 SUB_FILES=	pkg-message
 USERS=		${PORTNAME}
 GROUPS=		${USERS}
@@ -45,16 +43,17 @@ PORTDOCS=	FAQ FEATURES NEWS NOTES OLDNEWS README README.SSL \
 		README.SSL-SERVER design-notes.html esrs-design-notes.html \
 		fetchmail-FAQ.html fetchmail-features.html todo.html
 
-OPTIONS_DEFINE=		CA_BUNDLE DOCS NLS
-OPTIONS_DEFAULT=	CA_BUNDLE GSSAPI_BASE OPENSSL
+OPTIONS_DEFINE=		OPIE RPA DOCS NLS
+OPTIONS_DEFAULT=	GSSAPI_BASE OPENSSL RPA
 OPTIONS_SINGLE=		GSSAPI TLS
 OPTIONS_SINGLE_GSSAPI=	GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT GSSAPI_NONE
 OPTIONS_SINGLE_TLS=	OPENSSL WOLFSSL
 
 OPTIONS_SUB=	yes
 
-CA_BUNDLE_DESC=		Install CA bundle for OpenSSL
-CA_BUNDLE_RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
+OPIE_DESC=			Build with OPIE support (deprecated - weak/broken cryptography)
+
+RPA_DESC=			Build with RPA support (deprecated - weak/broken cryptography)
 
 GSSAPI_BASE_USES=		gssapi
 GSSAPI_BASE_CONFIGURE_ON=	${GSSAPI_CONFIGURE_ARGS} \
@@ -71,6 +70,10 @@ NLS_USES=		gettext
 NLS_CONFIGURE_ENABLE=	nls
 
 OPENSSL_CONFIGURE_WITH=	ssl=${OPENSSLBASE}
+
+OPIE_CONFIGURE_ON=		--enable-opie
+
+RPA_CONFIGURE_ON=		--enable-RPA
 
 WOLFSSL_LIB_DEPENDS=	libwolfssl.so:security/wolfssl
 WOLFSSL_USES_OFF=	ssl
@@ -94,7 +97,7 @@ post-install:
 	${INSTALL_DATA} ${FILESDIR}/fetchmailrc.sample \
 		${STAGEDIR}${PREFIX}/etc/fetchmailrc.sample
 	${RM} ${STAGEDIR}${PREFIX}/bin/fetchmailconf
-	${RM} ${STAGEDIR}${PREFIX}/man/man1/fetchmailconf.1*
+	${RM} ${STAGEDIR}${PREFIX}/share/man/man1/fetchmailconf.1*
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
@@ -104,14 +107,11 @@ post-install-DOCS-on:
 
 .include <bsd.port.pre.mk>
 
-.if (${OPSYS} == FreeBSD && ${OSVERSION} < 1400072) || ${OPSYS} != FreeBSD
-CONFIGURE_ARGS+=	--enable-opie
-.endif
-
-.if ${OPSYS} == FreeBSD && (${ARCH:Mpowerpc*} && ${OSREL:R} < 13)
-# as of 2019-10-02, powerpc's base compiler does not yield a working fetchmail.
-# https://svnweb.freebsd.org/ports?view=revision&revision=513614 -- pkubaj@
-USE_GCC=	yes
+.if ${PORT_OPTIONS:MOPIE} && ${MASTERDIR} == ${.CURDIR} && ${OPSYS} == FreeBSD
+. if ${OSVERSION} >= 1400072
+LIB_DEPENDS+=	libopie.so:security/opie	# moved to port (from base in 13.X)
+CPPFLAGS+=	-I${LOCALBASE}/include
+. endif
 .endif
 
 .include <bsd.port.post.mk>

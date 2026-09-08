@@ -1,4 +1,4 @@
---- src/3rdparty/chromium/base/files/dir_reader_posix.h.orig	2023-03-28 19:45:02 UTC
+--- src/3rdparty/chromium/base/files/dir_reader_posix.h.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/base/files/dir_reader_posix.h
 @@ -17,7 +17,7 @@
  // seems worse than falling back to enumerating all file descriptors so we will

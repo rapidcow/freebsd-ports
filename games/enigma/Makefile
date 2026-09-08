@@ -1,6 +1,6 @@
 PORTNAME=	enigma
 PORTVERSION=	1.30
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -10,7 +10,7 @@ WWW=		https://www.nongnu.org/enigma/
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libxerces-c.so.3:textproc/xerces-c3 \
+LIB_DEPENDS=	libxerces-c.so:textproc/xerces-c3 \
 		libpng.so:graphics/png \
 		libenet.so:net/enet \
 		libcurl.so:ftp/curl
@@ -22,6 +22,7 @@ GH_PROJECT=	Enigma
 USES=		autoreconf:build gettext gmake iconv localbase magick:build \
 		pkgconfig sdl
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 USE_SDL=	sdl2 image2 mixer2 ttf2
 CONFIGURE_ARGS=	--with-system-enet
 LDFLAGS+=	-lintl

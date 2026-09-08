@@ -1,5 +1,6 @@
 PORTNAME=	monkeysphere
 PORTVERSION=	0.43
+PORTREVISION=	2
 DISTVERSIONPREFIX=	${PORTNAME}_
 CATEGORIES=	security
 
@@ -30,13 +31,13 @@ SHEBANG_FILES=	src/monkeysphere* \
 USERS=	monkeysphere
 GROUPS=	monkeysphere
 
-MAKE_ARGS+=	ETCPREFIX=${PREFIX} MANPREFIX=${PREFIX}/man ETCSUFFIX=.sample
+MAKE_ARGS+=	ETCPREFIX=${PREFIX} MANPREFIX=${PREFIX}/share/man ETCSUFFIX=.sample
 
 OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=strict-prototypes
 .endif
 

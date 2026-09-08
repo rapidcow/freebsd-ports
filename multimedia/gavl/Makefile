@@ -6,12 +6,12 @@ MASTER_SITES=	SF/gmerlin/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Library for handling uncompressed video and audio data
-WWW=		http://gmerlin.sourceforge.net/
+WWW=		https://gmerlin.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		alias libtool localbase pathfix pkgconfig
+USES=		libtool localbase pathfix pkgconfig
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-cpuflags=none --without-doxygen

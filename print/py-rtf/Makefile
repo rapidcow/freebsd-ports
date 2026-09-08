@@ -1,5 +1,6 @@
 PORTNAME=	rtf
 PORTVERSION=	0.45
+PORTREVISION=	1
 CATEGORIES=	print python
 MASTER_SITES=	SF/py${PORTNAME}/py${PORTNAME}/${PORTVERSION}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -7,7 +8,7 @@ DISTNAME=	PyRTF-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library to create RTF documents using the Python language
-WWW=		http://pyrtf.sourceforge.net/
+WWW=		https://pyrtf.sourceforge.net/
 
 LICENSE=	GPLv1
 

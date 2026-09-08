@@ -1,6 +1,6 @@
 PORTNAME=	mybashburn
 PORTVERSION=	1.0.2
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	sysutils
 MASTER_SITES=	SF
 
@@ -36,7 +36,7 @@ FLAC_RUN_DEPENDS=	flac:audio/flac
 LAME_RUN_DEPENDS=	lame:audio/lame
 MPG123_RUN_DEPENDS=	mpg123:audio/mpg123
 NORMALIZE_RUN_DEPENDS=	normalize:audio/normalize
-SUDO_RUN_DEPENDS=	sudo:security/sudo
+SUDO_USES=		sudo
 VORBIS_RUN_DEPENDS=	ogg123:audio/vorbis-tools
 
 post-patch:
@@ -47,7 +47,7 @@ post-patch:
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
-	${INSTALL_MAN} ${WRKSRC}/man/mybashburn.1.gz ${STAGEDIR}${MAN1PREFIX}/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/man/mybashburn.1.gz ${STAGEDIR}${PREFIX}/share/man/man1/
 	${INSTALL_SCRIPT} ${WRKSRC}/MyBashBurn.sh ${STAGEDIR}${PREFIX}/bin/mybashburn
 	${INSTALL_DATA} ${WRKSRC}/etc/mybashburnrc ${STAGEDIR}${PREFIX}/etc/mybashburnrc.sample
 	@(cd ${WRKSRC}/ && ${COPYTREE_SHARE} "burning config convert lang menus misc" ${STAGEDIR}${DATADIR}/)

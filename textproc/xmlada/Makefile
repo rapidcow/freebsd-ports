@@ -1,7 +1,7 @@
 PORTNAME=	xmlada
 DISTVERSIONPREFIX=v
-DISTVERSION=	23.0.0
-PORTREVISION=	2
+DISTVERSION=	25.0.0
+PORTREVISION=	1
 CATEGORIES=	textproc
 
 MAINTAINER=	ports@FreeBSD.org
@@ -10,7 +10,7 @@ WWW=		https://github.com/AdaCore/xmlada
 
 LICENSE=	GPLv3RLE
 
-BUILD_DEPENDS=	gprbuild>=23:devel/gprbuild
+BUILD_DEPENDS=	gprbuild>=25:devel/gprbuild
 
 USES=		ada:12,run gmake
 USE_BINUTILS=	yes
@@ -20,6 +20,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	AdaCore
 GH_PROJECT=	xmlada
 
+NO_SHLIB_REQUIRES_GLOB=	libgnat-12.so
 MAKE_ARGS+=	PROCESSORS=${MAKE_JOBS_NUMBER} \
 		LIBVER=${PORTVERSION}
 TEST_TARGET=	test
@@ -30,7 +31,9 @@ OPTIONS_DEFINE=	DOCS EXAMPLES
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
-DOCS_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx
+DOCS_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx	\
+		${PYTHON_PKGNAMEPREFIX}sphinx_rtd_theme>0:textproc/py-sphinx_rtd_theme@${PY_FLAVOR}
+DOCS_USES=	python:build
 
 do-build-DOCS-on:
 	(cd ${WRKSRC}/docs && ${DO_MAKE_BUILD} html )

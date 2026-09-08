@@ -1,11 +1,11 @@
 PORTNAME=	sablotron
 PORTVERSION=	1.0.3
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	textproc
 MASTER_SITES=	SF/sablotron/sablotron-${PORTVERSION}
 DISTNAME=	Sablot-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	XML toolkit implementing XSLT 1.0, XPath 1.0 and DOM Level2
 WWW=		https://sourceforge.net/projects/sablotron/
 

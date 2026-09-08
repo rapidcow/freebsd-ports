@@ -1,5 +1,7 @@
 PORTNAME=	pydantic
-DISTVERSION=	1.10.12
+DISTVERSION=	1.10.20
+PORTREVISION=	1
+PORTEPOCH=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -19,7 +21,6 @@ USE_PYTHON=	distutils cython autoplist pytest # tests fail to run, see https://g
 
 CPE_VENDOR=	pydantic_project
 
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHON_SITELIBDIR}/pydantic/*${PYTHON_EXT_SUFFIX}.so
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

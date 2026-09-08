@@ -1,6 +1,6 @@
 PORTNAME=	pipeglade
 PORTVERSION=	4.7.0
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	x11 devel
 
 MAINTAINER=	trebbu@googlemail.com
@@ -13,14 +13,14 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	trebb
 
 USES=		gettext-runtime gnome pkgconfig
-USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30 libxml2
+USE_GNOME=	cairo gdkpixbuf glib20 gtk30 libxml2
 
 OPTIONS_DEFINE=	EXAMPLES
 OPTIONS_SUB=	yes
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/
-	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${MANPREFIX}/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/share/man/man1/
 
 post-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

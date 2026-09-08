@@ -1,6 +1,6 @@
 PORTNAME=	kicad
 DISTVERSION=	r${GIT_SRC_DATE}
-PORTREVISION=	5
+PORTREVISION=	1
 #PORTREVISION=	1
 CATEGORIES=	cad
 PKGNAMESUFFIX=	-devel
@@ -12,19 +12,26 @@ WWW=		http://kicad-pcb.org/
 
 LICENSE=	GPLv3
 
+BROKEN_i386=    doesn't buld on pkg builder
+
 BUILD_DEPENDS=	${LOCALBASE}/bin/git:devel/git \
 		${LOCALBASE}/include/glm/glm.hpp:math/glm \
 		${LOCALBASE}/bin/swig:devel/swig
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig \
+		libgit2.so:devel/libgit2 \
 		libharfbuzz.so:print/harfbuzz \
 		libngspice.so:cad/ngspice_rework@shlib \
 		libTKernel.so:cad/opencascade \
 		libpixman-1.so:x11/pixman \
 		libpng.so:graphics/png \
+		libprotobuf.so:devel/protobuf \
 		libcurl.so:ftp/curl \
 		libGLEW-wayland.so:graphics/glew-wayland \
+		libnng.so:net/nng \
+		libpoppler-glib.so:graphics/poppler-glib \
+		libspnav.so:misc/libspnav \
 		libodbc.so:databases/unixODBC
 
 CONFLICTS_INSTALL=	kicad # bin/_cvpcb.kiface
@@ -36,26 +43,29 @@ OPTIONS_DEFINE=	DOCS
 PLIST_SUB=	OPSYS=${OPSYS}	\
 		DESKTOPDIR=${DESKTOPDIR:S|^${PREFIX}/||}
 
-USES=		cmake:noninja compiler:c++11-lib desktop-file-utils gl \
+USES=		cmake:noninja compiler:c++20-lang desktop-file-utils gl \
 		gettext gnome pkgconfig python shared-mime-info shebangfix ssl \
 		tar:bzip2 xorg 
 USE_GITLAB=	yes
 GL_ACCOUNT=	kicad/code
 GL_PROJECT=	kicad
 GL_TAGNAME=	${GIT_SRC_HASH}
-USE_GL=		gl glu glut
+USE_GL=		egl gl glu glut opengl
 USE_WX=		3.2
 WX_COMPS=	wx python:lib
-USE_GNOME=	atk cairo gtk30 gdkpixbuf2 pango
+USE_GNOME=	atk cairo gtk30 gdkpixbuf pango
 USE_XORG+=	ice pixman x11 xext
 BINS=		cvpcb eeschema gerbview kicad pcbnew
 EXTRAS2RM=	linux-non_unicode linux wings3d LINUX.README	\
 		contrib_makefiles.txt running_kicad_under_W98.txt
 SHEBANG_FILES=	pcbnew/python/plugins/touch_slider_wizard.py
-CXXFLAGS+=	--std=c++11 -I${WRKSRC} -I${WRKSRC}/include -I${LOCALBASE}/include
+#CXXFLAGS+=	--std=c++14 -I${WRKSRC} -I${WRKSRC}/include -I${LOCALBASE}/include
+CXXFLAGS+=	-g -DBOOST_STACKTRACE_GNU_SOURCE_NOT_REQUIRED # error: "Boost.Stacktrace requires `_Unwind_Backtrace` function. Define `_GNU_SOURCE` macro or `BOOST_STACKTRACE_GNU_SOURCE_NOT_REQUIRED` if _Unwind_Backtrace is available without `_GNU_SOURCE`."
+# -undefined dynamic_lookup
 CXXFLAGS_powerpc=	-O0
 CMAKE_ARGS=	-DLOCALBASE="${LOCALBASE}" \
 		-DCMAKE_BUILD_TYPE="Debug" \
+		-DKICAD_BUILD_I18N=ON \
 		-DKICAD_TESTING_VERSION=ON \
 		-DKICAD_VERSION=${DISTVERSION} \
 		-DCMAKE_INCLUDE_PATH="${WRKSRC}/include ${LOCALBASE}/include" \
@@ -68,11 +78,12 @@ CMAKE_ARGS=	-DLOCALBASE="${LOCALBASE}" \
 		-DKICAD_SCRIPTING_PYTHON3=ON \
 		-DKICAD_SCRIPTING_WXPYTHON=ON \
 		-DKICAD_SCRIPTING_WXPYTHON_PHOENIX=ON \
-		-DKICAD_SKIP_BOOST=YES \
 		-DKICAD_SPICE=ON \
 		-DKICAD_USE_OCE=OFF \
 		-DKICAD_USE_OCC=ON \
 		-DKICAD_USE_EGL=ON \
+		-DKICAD_USE_BUNDLED_GLEW=ON \
+		-DNANODBC_ENABLE_BOOST=ON \
 		-DOCC_INCLUDE_DIR=${LOCALBASE}/include/OpenCASCADE
 USE_LDCONFIG=	yes
 
@@ -128,7 +139,6 @@ post-configure:
 	done
 	${REINPLACE_CMD} -e 's|/usr/local/bin/xdg-open|${LOCALBASE}/bin/xdg-open|' \
 		${WRKSRC}/common/pgm_base.cpp
-
 
 pre-install:
 	@echo "${DATADIR}, ${DOCSDIR}"

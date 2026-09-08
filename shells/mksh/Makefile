@@ -1,6 +1,7 @@
 PORTNAME=	mksh
 PORTVERSION=	59c
 DISTVERSIONPREFIX=	R
+PORTREVISION=	3
 CATEGORIES=	shells
 MASTER_SITES=	https://www.mirbsd.org/MirOS/dist/mir/mksh/ \
 		https://pub.allbsd.org/MirOS/dist/mir/mksh/
@@ -26,7 +27,9 @@ do-build:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/mksh ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/mksh.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${MV} ${WRKSRC}/mksh.1 ${WRKSRC}/mksh.1.orig
+	${CAT} ${WRKSRC}/mksh.1.orig | mandoc -T man >${WRKSRC}/mksh.1
+	${INSTALL_MAN} ${WRKSRC}/mksh.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 do-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

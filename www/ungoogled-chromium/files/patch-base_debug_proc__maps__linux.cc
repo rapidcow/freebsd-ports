@@ -1,6 +1,6 @@
---- base/debug/proc_maps_linux.cc.orig	2022-10-01 07:40:07 UTC
+--- base/debug/proc_maps_linux.cc.orig	2026-01-16 13:40:34 UTC
 +++ base/debug/proc_maps_linux.cc
-@@ -13,7 +13,7 @@
+@@ -23,7 +23,7 @@
  #include "base/strings/string_split.h"
  #include "build/build_config.h"
  

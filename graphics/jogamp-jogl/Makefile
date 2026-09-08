@@ -1,6 +1,6 @@
 PORTNAME=	jogamp-jogl
 PORTVERSION=	2.3.2
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics devel java
 MASTER_SITES=	http://jogamp.org/deployment/jogamp-current/archive/Sources/ \
 		http://jogamp.org/deployment/v${PORTVERSION}/archive/Sources/
@@ -8,7 +8,7 @@ DISTFILES=	jogl-v${PORTVERSION}.tar.xz \
 		gluegen-v${PORTVERSION}.tar.xz \
 		jcpp-v${PORTVERSION}.tar.xz
 
-MAINTAINER=	makc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java bindings for OpenGL
 WWW=		https://jogamp.org/jogl
 
@@ -17,11 +17,10 @@ RUN_DEPENDS=	${JAVALIBDIR}/swt.jar:x11-toolkits/swt
 
 ONLY_FOR_ARCHS=	i386 amd64 powerpc64 powerpc64le
 
-USES=		compiler tar:xz xorg
-
-USE_ANT=	yes
-USE_JAVA=	yes
+USES=		compiler java:ant,run tar:xz xorg
 USE_XORG=	x11 xcursor xrandr xrender xxf86vm
+# jdk11+ does not have /usr/local/openjdk8/jre/lib/rt.jar: jogamp-env.xml:186: No target.rt.jar specified not found.
+JAVA_VERSION=	8
 
 PATCH_WRKSRC=	${WRKDIR}
 BUILD_WRKSRC=	${WRKDIR}/jogl/make

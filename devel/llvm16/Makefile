@@ -1,6 +1,6 @@
 PORTNAME=	llvm
 DISTVERSION=	16.0.6
-PORTREVISION=	6
+PORTREVISION=	11
 CATEGORIES=	devel lang
 MASTER_SITES=	https://github.com/llvm/llvm-project/releases/download/llvmorg-${DISTVERSION:S/rc/-rc/}/ \
 		https://${PRE_}releases.llvm.org/${LLVM_RELEASE}${RCDIR}/
@@ -12,14 +12,7 @@ MAINTAINER=	brooks@FreeBSD.org
 COMMENT=	LLVM and Clang
 WWW=		https://llvm.org/
 
-LICENSE_DIR=	${WRKSRC}/llvm
 .include "${.CURDIR}/../llvm-devel/Makefile.LICENSE"
-LICENSE+=	LLVM2
-LICENSE_FILE_BSD3CLAUSE=	${WRKSRC}/third-party/unittest/googletest/LICENSE.TXT
-LICENSE_FILE_LLVM2=	${LICENSE_DIR}/LICENSE.TXT
-LICENSE_NAME_LLVM2=	Apache License 2.0 with LLVM Exceptions
-LICENSE_PERMS_LLVM2=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
-LICENSE:=	${LICENSE:NARM}
 
 LIB_DEPENDS=	libzstd.so:archivers/zstd
 
@@ -74,21 +67,12 @@ CMAKE_ARGS+=	-DLLVM_LINK_LLVM_DYLIB=ON
 CMAKE_ARGS+=	-DLLVM_ENABLE_RTTI=ON
 CMAKE_ARGS+=	-DLLVM_DEFAULT_TARGET_TRIPLE=${CONFIGURE_TARGET}
 CMAKE_ARGS+=	-DLLVM_HOST_TRIPLE=${CONFIGURE_TARGET}
-# Following commit https://github.com/kitware/cmake/commit/956054
-# we need to either change the whole man-shuffle below, or simply
-# redefine CMAKE_INSTALL_MANDIR
-CMAKE_ARGS+=	-DCMAKE_INSTALL_MANDIR:PATH="share/man"
 CMAKE_ARGS+=	-DLLVM_PARALLEL_LINK_JOBS=1
 CMAKE_ARGS+=	-DLLVM_ENABLE_Z3_SOLVER=OFF
 CMAKE_ARGS+=	-DLLVM_ENABLE_LIBXML2=OFF
 CMAKE_ARGS+=	-DLLVM_ENABLE_LIBEDIT=OFF
 # LLVM likes to pick up ${LOCALBASE}/lib/libtinfo.so.*
 CMAKE_ARGS+=	-DLLVM_ENABLE_TERMINFO=OFF
-
-# Disable assertions.  They should be disabled by cmake, but USES=cmake
-# overrides -DCMAKE_*_FLAGS_RELEASE.
-CFLAGS+=	-DNDEBUG
-CXXFLAGS+=	-DNDEBUG
 
 OPTIONS_DEFINE=	BE_AMDGPU BE_WASM CLANG COMPILER_RT DOCS LLD STATIC_LIBS
 OPTIONS_DEFAULT=	BE_AMDGPU BE_WASM CLANG LLD
@@ -118,7 +102,6 @@ OPTIONS_EXCLUDE_armv7+=	FLANG OPENMP
 OPTIONS_EXCLUDE_i386=	FLANG OPENMP
 OPTIONS_EXCLUDE_powerpc=	FLANG OPENMP
 OPTIONS_EXCLUDE_riscv64=	LLDB
-OPTIONS_EXCLUDE_FreeBSD_12=	OPENMP
 .endif
 
 # All non-backend options
@@ -158,14 +141,13 @@ COMPILER_RT_PLIST_FILES=${_COMPILER_RT_LIBS}
 DOCS_BUILD_DEPENDS= \
 	${PYTHON_PKGNAMEPREFIX}sphinx-markdown-tables>=0:textproc/py-sphinx-markdown-tables@${PY_FLAVOR} \
 	${PYTHON_PKGNAMEPREFIX}recommonmark>=0.0.20180530:textproc/py-recommonmark@${PY_FLAVOR}
-DOCS_CONFLICTS_BUILD=	cmark
 DOCS_PORTDOCS=		llvm
 DOCS_CMAKE_ON= \
 	-DLLVM_ENABLE_SPHINX=ON \
 	-DSPHINX_EXECUTABLE=${LOCALBASE}/bin/sphinx-build-${PYTHON_VER} \
 	-DSPHINX_WARNINGS_AS_ERRORS=OFF \
 	-DLLVM_BUILD_DOCS=ON
-DOCS_PLIST_FILES=	${MAN1SRCS:S|^|man/man1/|:S|.1$|${LLVM_SUFFIX}.1.gz|}
+DOCS_PLIST_FILES=	${MAN1SRCS:S|^|share/man/man1/|:S|.1$|${LLVM_SUFFIX}.1.gz|}
 EXTRAS_DESC=		Extra clang tools
 EXTRAS_IMPLIES=		CLANG
 EXTRAS_PLIST_DIRS=	${LLVM_DIR}/include/clang-tidy/plugin
@@ -174,8 +156,9 @@ FLANG_IMPLIES=		MLIR
 FLANG_PORTDOCS=		flang
 FLANG_PLIST_DIRS=	${LLVM_DIR}/include/flang/Config
 GOLD_DESC=		Build the LLVM Gold plugin for LTO
-GOLD_CMAKE_ON=		-DLLVM_BINUTILS_INCDIR=${LOCALBASE}/include
 GOLD_BUILD_DEPENDS=	${LOCALBASE}/bin/ld.gold:devel/binutils
+GOLD_CMAKE_ON=		-DLLVM_BINUTILS_INCDIR=${LOCALBASE}/include
+GOLD_EXTRA_PATCHES_OFF=	${PATCHDIR}/gold-off-llvm_tools_CMakeLists.txt
 GOLD_PLIST_FILES=	${LLVM_DIR}/lib/LLVMgold.so
 LIT_DESC=		Install lit and FileCheck test tools
 LIT_VARS=		_USES_PYTHON=python
@@ -279,20 +262,13 @@ CONFIGURE_TARGET:=${ARCH:C/amd64/x86_64/:C/arm64/aarch64/}-portbld-${OPSYS:tl}${
 LLVM_ENABLE_PROJECTS+=	clang
 COMMANDS+=	${CLANG_COMMANDS}
 MAN1SRCS+=	${CLANG_MAN1SRCS}
-CLANG_PATTERN=	(amdgpu-arch|c-index-test|clang|diagtool|hmaptool|intercept-|libear|libscanbuild|nvptx-arch|analyze-|scan-|Reporter.py|ScanView.py|scanview.css|sorttable.js|startfile.py|-analyzer|AnalyzerPlugin.so)
+CLANG_PATTERN=	(amdgpu-arch|c-index-test|clang|diagtool|hmaptool|intercept-|libear|libscanbuild|nvptx-arch|analyze-|scan-|Reporter.py|ScanView.py|scanview.css|sorttable.js|startfile.py|c..-analyzer|AnalyzerPlugin.so)
 USES+=		gnome
 .endif
 
 .if ${PORT_OPTIONS:MCOMPILER_RT}
 LLVM_ENABLE_PROJECTS+=	compiler-rt
 COMPILER_RT_PATTERN=	(sanitizer|include.xray|include\/(fuzzer|orc)|profile\/InstrProfData.inc)
-.if ${OSVERSION} < 1300525
-# An unwind.h is require to build.  I think an in-tree one should be used
-# but this seems to work as a workaround...
-BUILD_DEPENDS+=	libunwind>0:devel/libunwind
-# Allow unwind.h to be found reliably
-USES+=	localbase
-.endif
 .endif
 
 .if ${PORT_OPTIONS:MEXTRAS}
@@ -354,7 +330,7 @@ CMAKE_ARGS+=	-DLLVM_ENABLE_PROJECTS="${LLVM_ENABLE_PROJECTS:ts;}"
 .include "${.CURDIR}/Makefile.COMMANDS"
 .include "${.CURDIR}/Makefile.MAN1SRCS"
 
-_FREEBSD_BACKENDS=	AArch64 ARM Mips PowerPC RISCV Sparc X86
+_FREEBSD_BACKENDS=	AArch64 ARM Mips PowerPC RISCV X86
 FREEBSD_BACKENDS=	${_FREEBSD_BACKENDS}
 .if ${ARCH} == amd64
 _NATIVE_BACKENDS=	X86
@@ -381,7 +357,7 @@ FREEBSD_BACKENDS+=	WebAssembly
 NATIVE_BACKENDS+=	WebAssembly
 .endif
 STANDARD_BACKENDS=	${_FREEBSD_BACKENDS} AMDGPU AVR BPF Hexagon Lanai \
-			LoongArch MSP430 NVPTX SystemZ VE WebAssembly XCore
+			LoongArch MSP430 NVPTX Sparc SystemZ VE WebAssembly XCore
 _BE_LIBS_COMMON=	CodeGen Desc Info
 _BE_LIBS_AArch64=	AsmParser Disassembler Utils
 _BE_LIBS_BACKWARDS_AArch64=Exegesis
@@ -513,7 +489,7 @@ post-install-DOCS-on:
 	${RMDIR} ${STAGEDIR}${LLVM_PREFIX}/share/doc
 .for _man in ${MAN1SRCS}
 	${MV} ${STAGEDIR}${LLVM_PREFIX}/share/man/man1/${_man} \
-	    ${STAGEDIR}${MANPREFIX}/man/man1/${_man:R}${LLVM_SUFFIX}.1
+	    ${STAGEDIR}${PREFIX}/share/man/man1/${_man:R}${LLVM_SUFFIX}.1
 .endfor
 .if ! ${PORT_OPTIONS:MLIT}
 	${RM} ${STAGEDIR}${LLVM_PREFIX}/share/man/man1/lit.1
@@ -611,7 +587,7 @@ build-plist:
 	    ${GREP} -v '[/-]lit$$' | ${GREP} -v 'FileCheck$$' | \
 	    ${GREP} -v man/man1 | ${SED} -e 's|${STAGEDIR}${PREFIX}/||' \
 	    -e 's|${PYTHON_SITELIBDIR:C|${PREFIX}/||}|%%PYTHON_SITELIBDIR%%|' \
-	    -e 's|${PYTHON_EXT_SUFFIX:C/\./\\./g}${PYTHON_ABIVER}|%%PYTHON_EXT_SUFFIX%%%%PYTHON_ABIVER%%|' \
+	    -e 's|${PYTHON_TAG:C/\./\\./g}${PYTHON_ABIVER}|%%PYTHON_TAG%%%%PYTHON_ABIVER%%|' \
 	    -e 's|${LLVM_RELEASE}|%%LLVM_RELEASE%%|' \
 	    -e 's|release.cmake|%%CMAKE_BUILD_TYPE%%.cmake|' \
 	    -e 's|${LLVM_RELEASE:C/\./\\./g}|%%LLVM_RELEASE%%|' \

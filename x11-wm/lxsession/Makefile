@@ -1,5 +1,6 @@
 PORTNAME=	lxsession
 PORTVERSION=	0.5.5
+PORTREVISION=	1
 CATEGORIES=	x11-wm
 MASTER_SITES=	SF/lxde/LXSession%20%28session%20manager%29/LXSession%200.5.x/
 
@@ -18,10 +19,11 @@ LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib \
 		libck-connector.so:sysutils/consolekit2
 
 USES=		autoreconf gmake gnome localbase pkgconfig tar:xz vala:build xorg
-USE_GNOME=	glib20 gtk20 intltool cairo gdkpixbuf2 libxslt
+USE_GNOME=	glib20 gtk20 intltool cairo gdkpixbuf libxslt
 USE_XORG=	x11
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--enable-buildin-clipboard \
 		--enable-buildin-polkit \
 		MAKE=${GMAKE}

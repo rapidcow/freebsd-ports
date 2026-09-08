@@ -1,6 +1,6 @@
 PORTNAME=	aws-c-event-stream
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.3.2
+DISTVERSION=	0.5.9
 PORTEPOCH=	1
 CATEGORIES=	devel
 
@@ -17,14 +17,13 @@ LIB_DEPENDS=	libaws-c-cal.so:security/aws-c-cal \
 		libaws-checksums.so:devel/aws-checksums \
 		libs2n.so:security/s2n-tls
 
-USES=		cmake:testing compiler:c11 ssl
+USES=		cmake:testing ssl
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	awslabs
 
 USE_LDCONFIG=	yes
 
-CMAKE_ARGS+=	-DCMAKE_INSTALL_LIBDIR=${LOCALBASE}/lib
 CMAKE_ON=	BUILD_SHARED_LIBS
 CMAKE_OFF=	BUILD_TESTING
 

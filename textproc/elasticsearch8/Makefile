@@ -1,5 +1,5 @@
 PORTNAME=	elasticsearch
-PORTVERSION=	8.8.2
+PORTVERSION=	8.11.3
 CATEGORIES=	textproc java devel
 MASTER_SITES=	https://artifacts.elastic.co/downloads/${PORTNAME}/
 PKGNAMESUFFIX=	8
@@ -15,8 +15,7 @@ BUILD_DEPENDS=	jna>0:devel/jna
 RUN_DEPENDS=	bash:shells/bash \
 		jna>0:devel/jna
 
-USES=		cpe shebangfix
-USE_JAVA=	yes
+USES=		cpe java shebangfix
 JAVA_VERSION=	17+
 USE_RC_SUBR=	${PORTNAME}
 

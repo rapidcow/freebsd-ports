@@ -1,12 +1,12 @@
 PORTNAME=	libnss-mysql
 PORTVERSION=	1.5
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	net
 MASTER_SITES=	SF
 
 MAINTAINER=	fluffy@FreeBSD.org
 COMMENT=	NSS module using a MySQL database for backend
-WWW=		http://libnss-mysql.sourceforge.net/
+WWW=		https://libnss-mysql.sourceforge.net/
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-mysql=${LOCALBASE}

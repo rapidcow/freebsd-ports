@@ -1,6 +1,6 @@
 PORTNAME=	mdp
 PORTVERSION=	3.5
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	science python
 MASTER_SITES=	SF/${PORTNAME}-toolkit/${PORTNAME}-toolkit/${PORTVERSION}
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -8,7 +8,7 @@ DISTNAME=	${PORTNAME:tu}-${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Modular toolkit for Data Processing
-WWW=		http://mdp-toolkit.sourceforge.net/
+WWW=		https://mdp-toolkit.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 

@@ -15,7 +15,9 @@ BUILD_DEPENDS=	${ANT}:devel/apache-ant
 BROKEN_armv6=		fails to package: java/docs/*.html: No such file or directory
 BROKEN_armv7=		fails to package: java/docs/*.html: No such file or directory
 
-USE_JAVA=	YES
+USES=		java
+JAVA_VERSION=	8 11
+
 PKGMESSAGE=	${WRKSRC}/../license.txt
 
 ANT?=		${LOCALBASE}/bin/ant

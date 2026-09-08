@@ -1,7 +1,7 @@
 PORTNAME=	zbar
 DISTVERSION=	0.23.90
+PORTREVISION=	6
 CATEGORIES=	graphics
-PORTREVISION=	3
 MASTER_SITES=	https://linuxtv.org/downloads/zbar/
 
 MAINTAINER=	dev2@heesakkers.info
@@ -14,6 +14,7 @@ USES=		autoreconf gettext-tools gmake iconv libtool localbase:ldflags pathfix pk
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--without-java --without-npapi --without-python \
 		--enable-codes=ean,databar,code128,code93,code39,codabar,i25,qrcode,sqcode,pdf417
 
@@ -45,13 +46,13 @@ GIR_USE=			GNOME=introspection:build
 GIR_CONFIGURE_WITH=		gir
 
 GTK2_USES=			gnome gettext-runtime
-GTK2_USE=			GNOME=atk,cairo,gdkpixbuf2,glib20,gtk20,pango
+GTK2_USE=			GNOME=atk,cairo,gdkpixbuf,glib20,gtk20,pango
 GTK2_LIB_DEPENDS=		libfreetype.so:print/freetype2 \
 				libfontconfig.so:x11-fonts/fontconfig
 GTK2_CONFIGURE_ON=		--with-gtk=gtk2
 
 GTK3_USES=			gnome gettext-runtime
-GTK3_USE=			GNOME=atk,cairo,gdkpixbuf2,glib20,gtk30,pango
+GTK3_USE=			GNOME=atk,cairo,gdkpixbuf,glib20,gtk30,pango
 GTK3_CONFIGURE_ON=		--with-gtk=gtk3
 
 GTK_NONE_CONFIGURE_ON=		--with-gtk=no

@@ -1,16 +1,17 @@
 PORTNAME=	exaile
-DISTVERSION=	4.1.1
-PORTREVISION=	1
+DISTVERSION=	4.2.1
 CATEGORIES=	audio
 
 MAINTAINER=	rm@FreeBSD.org
 COMMENT=	Full featured python-based music player for GTK
-WWW=		https://www.exaile.org/
+WWW=		https://exaile.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+# berkeleydb now only needed for upgrade from previous versions; remove in next update
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}berkeleydb>0:databases/py-berkeleydb@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}dbus>0:devel/py-dbus@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}gstreamer1>0:multimedia/py-gstreamer1@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mutagen>0:audio/py-mutagen@${PY_FLAVOR}
@@ -21,7 +22,6 @@ USE_GNOME=	gtk30 librsvg2 pygobject3
 USE_GSTREAMER=	faad good
 
 MAKE_ENV=	EPREFIX=${PREFIX} \
-		MANPREFIX=${PREFIX} \
 		PYTHON3_CMD=${PYTHON_CMD} \
 		XDGCONFDIR=${PREFIX}/etc/xdg
 

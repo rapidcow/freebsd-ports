@@ -1,7 +1,8 @@
 PORTNAME=	pydev
-PORTVERSION=	10.2.1
+PORTVERSION=	13.1.0
+PORTREVISION=	1
 CATEGORIES=	java devel python
-MASTER_SITES=	https://github.com/fabioz/Pydev/releases/download/${PORTNAME}_10_2_1/
+MASTER_SITES=	https://github.com/fabioz/Pydev/releases/download/${PORTNAME}_13_1_0/
 PKGNAMEPREFIX=	eclipse-
 DISTNAME=	PyDev.${PORTVERSION}
 
@@ -13,27 +14,19 @@ LICENSE=	EPL
 
 RUN_DEPENDS=	${LOCALBASE}/bin/eclipse:java/eclipse
 
-USES=		python zip
-
-USE_JAVA=	YES
-JAVA_VERSION=	8+
+USES=		java python zip
 JAVA_OS=	native
-JAVA_RUN=	YES
 
 NO_BUILD=	YES
 NO_WRKSUBDIR=	YES
 
-PLIST_SUB+=     PYDEV_VER=10.2.1.202307021217
+PLIST_SUB+=     PYDEV_VER=13.1.0.202509210817
 
 OPTIONS_DEFINE=	JYTHON
 
 JYTHON_DESC=	Use Jython as Python interpreter
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MJYTHON}
-RUN_DEPENDS+=	jython:lang/jython
-.endif
+JYTHON_RUN_DEPENDS=	jython:lang/jython
 
 PLUGINDIR=	share/eclipse/dropins/${PORTNAME}/eclipse
 

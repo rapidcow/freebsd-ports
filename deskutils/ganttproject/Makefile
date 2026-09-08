@@ -1,9 +1,8 @@
 PORTNAME=	ganttproject
-DISTVERSION=	3.1.3100
-PORTREVISION=	1
+DISTVERSION=	3.2.3240
 CATEGORIES=	deskutils java
 MASTER_SITES=	https://github.com/bardsoftware/ganttproject/releases/download/ganttproject-${DISTVERSION}/ \
-		https://dl.ganttproject.biz/ganttproject-3.1.3100/
+		https://dl.ganttproject.biz/ganttproject-3.2.3240/
 
 MAINTAINER=	freebsd@ny-central.org
 COMMENT=	Gantt chart based project scheduling and management tool
@@ -14,8 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	openjfx14>=14:java/openjfx14
 
-USES=		desktop-file-utils shebangfix zip
-USE_JAVA=	yes
+USES=		desktop-file-utils java shebangfix zip
 JAVA_VERSION=	11+
 SHEBANG_FILES=	ganttproject
 bash_CMD=	/bin/sh

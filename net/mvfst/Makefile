@@ -1,5 +1,6 @@
 PORTNAME=	mvfst
-DISTVERSION=	g20230828
+DISTVERSIONPREFIX=	v
+DISTVERSION=	2026.01.05.00
 PORTREVISION=	1
 CATEGORIES=	net
 
@@ -10,7 +11,7 @@ WWW=		https://github.com/facebook/mvfst
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
+LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libdouble-conversion.so:devel/double-conversion \
 		libevent.so:devel/libevent \
 		libfizz.so:security/fizz \
@@ -31,7 +32,6 @@ USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	facebook
-GH_TAGNAME=	3b1ce5b
 
 CPE_VENDOR=	facebook
 
@@ -40,5 +40,6 @@ CMAKE_OFF=	BUILD_TESTS
 CMAKE_TESTING_ON=	BUILD_TESTS # several tests fail, see https://github.com/facebookincubator/mvfst/issues/275
 
 CXXFLAGS+=	-fPIC
+CXXFLAGS+=	-DGLOG_USE_GLOG_EXPORT
 
 .include <bsd.port.mk>

@@ -1,5 +1,6 @@
 PORTNAME=	gengetopt
 PORTVERSION=	2.23
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
@@ -10,7 +11,7 @@ WWW=		https://www.gnu.org/software/gengetopt/
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		makeinfo tar:xz
+USES=		tar:xz
 USE_CXXSTD=	c++14
 
 GNU_CONFIGURE=	yes
@@ -32,9 +33,12 @@ DOC_EXAMPLES=	README.example cmdline1.c cmdline1.h cmdline2.c cmdline2.h \
 TESTS_EXAMPLES=	test_manual_help.c test_manual_help_cmd.c \
 		test_manual_help_cmd.ggo test_manual_help_cmd.h
 
+post-patch:
+	@${REINPLACE_CMD} -e '/^SUBDIRS/s|doc||g' ${WRKSRC}/Makefile.in
+
 post-install:
 	${INSTALL_MAN} ${WRKSRC}/doc/${PORTNAME}.1 \
-		${STAGEDIR}${MAN1PREFIX}/man/man1/
+		${STAGEDIR}${PREFIX}/share/man/man1/
 	@${MKDIR} ${STAGEDIR}${PREFIX}/${INFO_PATH}
 	${INSTALL_DATA} ${WRKSRC}/doc/${PORTNAME}.info \
 		${STAGEDIR}${PREFIX}/${INFO_PATH}

@@ -1,5 +1,5 @@
 PORTNAME=	mdb
-PORTVERSION=	20230323
+PORTVERSION=	20250623
 CATEGORIES=	devel
 
 MAINTAINER=	jhb@FreeBSD.org
@@ -13,7 +13,7 @@ USES=		compiler uidfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	bsdjhb
 GH_PROJECT=	illumos-gate
-GH_TAGNAME=	80a98276db
+GH_TAGNAME=	612cd42
 
 ONLY_FOR_ARCHS=	amd64
 
@@ -29,16 +29,6 @@ CFLAGS+=	-DMDB_PREFIX=\\\"${PREFIX}\\\" -g
 
 .if !exists(${SRC_BASE}/cddl/compat) || !exists(${SRC_BASE}/sys/cddl/compat)
 IGNORE=		requires full source tree with CDDL sources
-.endif
-
-.if ${OSVERSION} < 1300015 && ${COMPILER_TYPE} == "clang" && \
-    ${COMPILER_VERSION} >= 80
-# clang 8 cannot compile due to enum redefinitions in kernel.h
-BROKEN=		Depends on removed llvm70
-# BUILD_DEPENDS+=	${LOCALBASE}/bin/clang70:devel/llvm70
-# CPP=	${LOCALBASE}/bin/clang-cpp70
-# CC=	${LOCALBASE}/bin/clang70
-# CXX=	${LOCALBASE}/bin/clang++70
 .endif
 
 pre-install:

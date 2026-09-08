@@ -1,5 +1,6 @@
 PORTNAME=	grsync
 PORTVERSION=	1.3.1
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	http://www.opbyte.it/release/ \
 		LOCAL/martymac
@@ -18,9 +19,10 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 
 USES=		desktop-file-utils gettext gmake gnome \
 		pkgconfig shared-mime-info shebangfix
-USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool
+USE_GNOME=	cairo gdkpixbuf gtk30 intltool
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS+=	--disable-unity
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib

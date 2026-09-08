@@ -9,7 +9,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Futuristic overhead shooter
-WWW=		http://www.gamecreation.org/games/shotgun-debugger
+WWW=		https://www.gamecreation.org/games/shotgun_debugger
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -41,7 +41,7 @@ OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} != "powerpc" && ${ARCH} != "powerpc64" && ${ARCH} != "sparc64"
+.if ${ARCH} != "powerpc" && ${ARCH} != "powerpc64"
 PLIST_SUB+=	MODEL_SUFFIX="md2"
 .else
 # big-endian requires different set of models

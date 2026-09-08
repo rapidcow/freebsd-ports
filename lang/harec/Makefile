@@ -1,9 +1,8 @@
 PORTNAME=	harec
-PORTVERSION=	g20230719
+DISTVERSION=	0.25.2
+PORTREVISION=	1
 CATEGORIES=	lang
-MASTER_SITES=	https://git.sr.ht/~sircmpwn/${PORTNAME}/archive/
-DISTNAME=	f16e9792
-DIST_SUBDIR=	hare
+MASTER_SITES=	https://git.sr.ht/~sircmpwn/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
 
 MAINTAINER=	se@FreeBSD.org
 COMMENT=	Hare compiler written in C11
@@ -21,20 +20,41 @@ RUN_DEPENDS=	as:devel/binutils \
 
 USES=		compiler:c11
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTNAME}
+MAKE_ARGS=	ARCH=${ARCH:S/^amd64$/x86_64/} \
+		DESTDIR=${STAGEDIR} \
+		PREFIX=${PREFIX} \
+		VERSION=${DISTVERSION}
+
+PLIST_FILES=	bin/harec
+PORTDOCS=	*
+TEST_TARGET=	check
 
 OPTIONS_DEFINE=	DOCS
 
-do-build:
-		${MKDIR} ${WRKSRC}/build
-		cd ${WRKSRC}/build && CFLAGS="${CFLAGS}" ../configure --prefix=${PREFIX} && make
+post-patch:
+	@${REINPLACE_CMD} -e '\
+	s|@$$(AS)|$$(AS)|g; \
+	s|@$$(CC)|$$(CC)|g; \
+	s|@$$(TDENV)|$$(TDENV)|g; \
+	s|@$$(QBE)|$$(QBE)|g' \
+	    ${PATCH_WRKSRC}/Makefile
+	@${REINPLACE_CMD} -e '\
+	s|@$$(AS)|$$(AS)|g; \
+	s|@$$(CC)|$$(CC)|g; \
+	s|@$$(TDENV)|$$(TDENV)|g; \
+	s|@$$(QBE)|$$(QBE)|g' \
+	    ${PATCH_WRKSRC}/makefiles/tests.mk
+	@${REINPLACE_CMD} -e '/printf/d' \
+	    ${PATCH_WRKSRC}/Makefile
+	@${REINPLACE_CMD} -e '/printf/d' \
+	    ${PATCH_WRKSRC}/makefiles/tests.mk
+
+do-configure:
+	(cd ${WRKSRC} && ${CP} configs/freebsd.mk config.mk)
 
 do-install:
-		${INSTALL_PROGRAM} ${WRKSRC}/build/harec ${STAGEDIR}${PREFIX}/bin
-		${MKDIR} ${STAGEDIR}${DOCSDIR}
-		${INSTALL_DATA} ${WRKSRC}/docs/*.txt ${STAGEDIR}${DOCSDIR}
-
-do-test:
-		cd ${WRKSRC}/build && make check
+	${INSTALL_PROGRAM} ${WRKSRC}/.bin/harec ${STAGEDIR}${PREFIX}/bin
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/docs/*.txt ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
 # discretion.
 
 PORTNAME=	gettext-runtime
-PORTREVISION=	1
+PORTREVISION=	0
 
 COMMENT=	GNU gettext runtime libraries and programs
 WWW=		https://www.gnu.org/software/gettext/
@@ -39,5 +39,8 @@ OPTIONS_DEFINE=	DOCS
 .if ${OPSYS} == DragonFly
 CONFIGURE_ARGS+=--disable-threads
 .endif
+
+post-install:
+	${RMDIR} ${STAGEDIR}${PREFIX}/lib/gettext
 
 .include <bsd.port.mk>

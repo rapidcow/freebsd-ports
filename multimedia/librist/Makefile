@@ -1,5 +1,6 @@
 PORTNAME=	librist
-DISTVERSION=	0.2.7
+DISTVERSION=	0.2.11
+PORTREVISION=	2
 CATEGORIES=	multimedia
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,7 +11,8 @@ LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcjson.so:devel/libcjson \
-		libmbedcrypto.so:security/mbedtls
+		libmbedcrypto.so:security/mbedtls3 \
+		libmicrohttpd.so:www/libmicrohttpd
 
 USES=		localbase:ldflags meson pkgconfig
 USE_GITLAB=	yes
@@ -18,7 +20,7 @@ USE_LDCONFIG=	yes
 
 GL_SITE=	https://code.videolan.org
 GL_ACCOUNT=	rist
-GL_TAGNAME=	00d1d3e33fb654d4744ce91fa838b413a4408494
+GL_TAGNAME=	c526858020ce14c1ef156c0c68a655ba8dfe8b00
 
 MESON_ARGS=	-Dtest=false
 

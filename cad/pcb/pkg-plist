@@ -1,7 +1,7 @@
 bin/MergePCBPS
 bin/Merge_dimPCBPS
 bin/pcb
-%%PORTDOCS%%man/man1/pcb.1.gz
+%%PORTDOCS%%share/man/man1/pcb.1.gz
 share/applications/pcb.desktop
 share/gEDA/scheme/gnet-pcbfwd.scm
 share/icons/hicolor/16x16/mimetypes/application-x-excellon-16.png
@@ -44,7 +44,6 @@ share/mime/application/x-pcb-footprint.xml
 share/mime/application/x-pcb-layout.xml
 share/mime/application/x-pcb-netlist.xml
 share/mime/packages/pcb.xml
-@dir %%DATADIR%%/newlib/sockets
 %%DATADIR%%/CreateLibrary.sh
 %%DATADIR%%/CreateLibraryContents.sh
 %%DATADIR%%/ListLibraryContents.sh

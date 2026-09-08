@@ -1,7 +1,7 @@
---- sendmail/sendmail.h.orig	2019-02-15 10:30:19 UTC
+--- sendmail/sendmail.h.orig	2025-10-23 19:33:31 UTC
 +++ sendmail/sendmail.h
-@@ -61,6 +61,10 @@ SM_UNUSED(static char SmailId[]) = "@(#)
- #endif /* _DEFINE */
+@@ -73,6 +73,10 @@ SM_UNUSED(static char SmailId[]) = "@(#)$Id: sendmail.
+ #endif
  
  #include "bf.h"
 +#if USE_BLACKLIST
@@ -10,15 +10,15 @@
 +#include "blacklist_client.h"
  #include "timers.h"
  #include <sm/exc.h>
- #include <sm/heap.h>
-@@ -2513,6 +2517,10 @@ EXTERN int Hacks;	/* bit field of run-ti
+ #include <sm/gen.h>
+@@ -2807,6 +2811,10 @@ EXTERN int ConnectionRateWindowSize;
+ #endif
  
  EXTERN int ConnectionRateWindowSize;
- 
++
 +#if USE_BLACKLIST
 +EXTERN bool	UseBlacklist;
 +#endif
-+
+ 
  /*
  **  Declarations of useful functions
- */

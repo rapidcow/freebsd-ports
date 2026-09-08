@@ -1,6 +1,6 @@
 PORTNAME=	xymon
 PORTVERSION=	4.3.30
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	net-mgmt www
 MASTER_SITES=	SF/xymon/Xymon/${PORTVERSION}
 PKGNAMESUFFIX=	-server${PKGNAMESUFFIX2}
@@ -18,7 +18,7 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libcares.so:dns/c-ares
 RUN_DEPENDS=	rrdtool:databases/rrdtool \
 		fping:net/fping \
-		mtr:net/mtr-nox11
+		mtr:net/mtr@nox11
 
 USERS=		xymon
 GROUPS=		xymon
@@ -36,7 +36,7 @@ MAKE_ENV+=	XYMONUSER="${XYMONUSER}"
 MAKE_ENV+=	XYMONHOSTNAME="${XYMONHOSTNAME}"
 MAKE_ENV+=	XYMONHOSTIP="${XYMONHOSTIP}"
 MAKE_ENV+=	INSTALLROOT="${STAGEDIR}"
-MANPREFIX=	${STAGEDIR}${PREFIX}
+MAKE_ENV+=	MANPREFIX="${STAGEDIR}${PREFIX}/share"
 MAKE_ARGS+=	PKGBUILD="true"
 USE_RC_SUBR=	xymon-server
 SUB_LIST+=	XYMONUSER="${XYMONUSER}"

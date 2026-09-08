@@ -12,6 +12,7 @@ share/applications/pavucontrol-qt.desktop
 %%DATADIR%%/translations/pavucontrol-qt_da.qm
 %%DATADIR%%/translations/pavucontrol-qt_de.qm
 %%DATADIR%%/translations/pavucontrol-qt_el.qm
+%%DATADIR%%/translations/pavucontrol-qt_en_GB.qm
 %%DATADIR%%/translations/pavucontrol-qt_es.qm
 %%DATADIR%%/translations/pavucontrol-qt_et.qm
 %%DATADIR%%/translations/pavucontrol-qt_fi.qm
@@ -25,13 +26,16 @@ share/applications/pavucontrol-qt.desktop
 %%DATADIR%%/translations/pavucontrol-qt_id.qm
 %%DATADIR%%/translations/pavucontrol-qt_it.qm
 %%DATADIR%%/translations/pavucontrol-qt_ja.qm
+%%DATADIR%%/translations/pavucontrol-qt_ka.qm
 %%DATADIR%%/translations/pavucontrol-qt_kn.qm
 %%DATADIR%%/translations/pavucontrol-qt_ko.qm
+%%DATADIR%%/translations/pavucontrol-qt_lg.qm
 %%DATADIR%%/translations/pavucontrol-qt_lt.qm
 %%DATADIR%%/translations/pavucontrol-qt_ml.qm
 %%DATADIR%%/translations/pavucontrol-qt_mr.qm
 %%DATADIR%%/translations/pavucontrol-qt_nb_NO.qm
 %%DATADIR%%/translations/pavucontrol-qt_nl.qm
+%%DATADIR%%/translations/pavucontrol-qt_oc.qm
 %%DATADIR%%/translations/pavucontrol-qt_or.qm
 %%DATADIR%%/translations/pavucontrol-qt_pa.qm
 %%DATADIR%%/translations/pavucontrol-qt_pl.qm

@@ -1,13 +1,13 @@
 PORTNAME=	restclient
 PORTVERSION=	0.11.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	Convenient library for writing REST clients
-WWW=		http://microapps.sourceforge.net/restclient/
+WWW=		https://microapps.sourceforge.net/restclient/
 
 LICENSE=	BSD3CLAUSE
 

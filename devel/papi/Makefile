@@ -1,6 +1,6 @@
 PORTNAME=	papi
 PORTVERSION=	5.4.3
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	devel
 MASTER_SITES=	http://icl.cs.utk.edu/projects/papi/downloads/
 
@@ -10,6 +10,10 @@ WWW=		https://code.google.com/p/papi-for-freebsd/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKDIR}/${PORTNAME}-${PORTVERSION}/LICENSE.txt
+
+BROKEN=		freebsd.c:361:92: error: too few arguments to function call, expected 6, have 5
+DEPRECATED=	Marked BROKEN 6+ months ago and outdated  
+EXPIRATION_DATE=2025-02-28
 
 TEST_TARGET=	fulltest
 
@@ -24,6 +28,7 @@ LIB_DEPENDS+=	libopa.so:net/mpich
 USES=		fortran gmake pathfix pkgconfig
 PATHFIX_MAKEFILEIN=	Makefile.inc
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/src
 WRKMAN=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/man
 INSTALL_TARGET=	install-all

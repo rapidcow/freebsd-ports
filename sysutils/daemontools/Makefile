@@ -1,6 +1,6 @@
 PORTNAME=	daemontools
 PORTVERSION=	0.76
-PORTREVISION=	18
+PORTREVISION=	20
 CATEGORIES=	sysutils
 MASTER_SITES=	http://cr.yp.to/daemontools/ \
 		http://mirror.shatow.net/freebsd/${PORTNAME}/:DEFAULT,1 \
@@ -67,7 +67,7 @@ EXTRA_PATCHES+=	${FILESDIR}/rts-skip.patch
 
 post-patch:
 	@${ECHO_CMD} "${CC} ${CFLAGS}" > ${WRKSRC}/conf-cc
-	@${ECHO_CMD} "${CC} ${STRIP}" > ${WRKSRC}/conf-ld
+	@${ECHO_CMD} "${CC} ${LDFLAGS} ${STRIP}" > ${WRKSRC}/conf-ld
 
 do-install:
 	(while read cmd; do \
@@ -79,9 +79,9 @@ do-install:
 			    ${STAGEDIR}${PREFIX}/bin; \
 		fi \
 	done) < ${WRKSRC}/../package/commands
-.if ${PORT_OPTIONS:MMAN}
+
+do-install-MAN-on:
 	${INSTALL_MAN} ${WRKDIR}/daemontools-man/*.8 \
-	    ${STAGEDIR}${MAN8PREFIX}/man/man8/
-.endif
+	    ${STAGEDIR}${PREFIX}/share/man/man8/
 
 .include <bsd.port.mk>

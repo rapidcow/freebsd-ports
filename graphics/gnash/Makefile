@@ -1,9 +1,9 @@
 PORTNAME=	gnash
-PORTVERSION=	0.8.10
-PORTREVISION=	61
+PORTVERSION=	0.8.11.20190130
+PORTREVISION=	4
 CATEGORIES=	graphics multimedia
-MASTER_SITES=	http://git.savannah.gnu.org/cgit/gnash.git/snapshot/
-DISTNAME=	gnash-2b3bdede0305c4fc3ad21a0a4197330606c9b880
+MASTER_SITES=	https://git.savannah.gnu.org/cgit/gnash.git/snapshot/
+DISTNAME=	gnash-583ccbc1275c7701dc4843ec12142ff86bb305b4
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	GNU Flash movie player
@@ -27,40 +27,42 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl \
 		libvorbis.so:audio/libvorbis \
 		libdca.so:multimedia/libdca \
 		libgsm.so:audio/gsm \
+		libcairo.so:graphics/cairo \
 		libdc1394.so:multimedia/libdc1394
-
-CONFLICTS=	gnash-devel
 
 USES=		cpe tar:bzip2 compiler:c++11-lang autoreconf gmake libtool \
 		pkgconfig jpeg gnome gl sdl desktop-file-utils xorg localbase:ldflags
 CPE_VENDOR=	gnu
 USE_CSTD=	gnu11
 USE_CXXSTD=	c++11
-USE_GL=		egl
-USE_GNOME=	atk gdkpixbuf2 gtk20 libxml2 pango
-USE_SDL=	sdl
 USE_XORG=	x11 xau xdmcp xext xi xinerama ice sm xv
+USE_GNOME=	atk gdkpixbuf gtk20 libxml2 pango
+USE_GL=		egl
+USE_SDL=	sound2
+GNU_CONFIGURE=	yes
 
 SYSCONFIGDIR=	${PREFIX}/etc
-
-GNU_CONFIGURE=	yes
 
 # jemalloc leads to infinite recursion on FreeBSD
 CFLAGS+=	-I${LOCALBASE}/ffmpeg4/include
 CPPFLAGS+=	-I${LOCALBASE}/ffmpeg4/include
 LDFLAGS+=	-L${LOCALBASE}/ffmpeg4/lib
+CONFIGURE_ENV=	SDL_CONFIG=${LOCALBASE}/bin/sdl2-config
 CONFIGURE_ARGS=	--with-boost-incl="${LOCALBASE}/include" \
 		--with-boost-lib="${LOCALBASE}/lib" \
 		--with-plugins-install=prefix \
 		--sysconfdir="${SYSCONFIGDIR}" \
 		--enable-gui=gtk \
+		--enable-renderer=cairo \
 		--enable-media=ffmpeg \
+		--enable-sound=sdl \
 		--with-ffmpeg-incl="${LOCALBASE}/ffmpeg4/include/libavcodec" \
 		--with-ffmpeg-lib=${LOCALBASE}/ffmpeg4/lib \
 		--disable-testsuite \
 		--disable-kparts3 \
 		--disable-jemalloc \
 		--without-gconf
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 #MAKE_ARGS+=	INCLUDES="-I${LOCALBASE}/include/ffmpeg"
 
 GNASHVER=	0.8.11dev
@@ -73,15 +75,11 @@ USE_LDCONFIG=	${PREFIX}/lib/gnash
 
 OPTIONS_DEFINE=	CYGNAL VAAPI DOCS NLS
 OPTIONS_SINGLE=	MEDIA RENDERER
-OPTIONS_SINGLE_RENDERER=AGG OPENGL CAIRO
-OPTIONS_DEFAULT=AGG VAAPI
+OPTIONS_DEFAULT=VAAPI
 
 NO_OPTIONS_SORT=yes
 OPTIONS_SUB=	yes
 CYGNAL_DESC=	Cygnal media server
-AGG_DESC=	AGG renderer
-OPENGL_DESC=	OpenGL renderer (experimental)
-CAIRO_DESC=	Cairo renderer
 VAAPI_DESC=	VAAPI support
 
 CYGNAL_CONFIGURE_ENABLE=	cygnal
@@ -104,36 +102,6 @@ PLIST_SUB+=	NLS="@comment "
 .endif
 
 CONFIGURE_ARGS+=	--disable-npapi --disable-kparts4
-
-#
-# Renderer options processing
-#
-GNASH_RENDERERS=
-
-.if ${PORT_OPTIONS:MAGG}
-LIB_DEPENDS+=		libagg.so:graphics/agg
-GNASH_RENDERERS+=	agg
-.endif
-
-.if ${PORT_OPTIONS:MOPENGL}
-IGNORE=		support for OpenGL is currently broken, use option AGG
-GNASH_RENDERERS+=	ogl
-LIB_DEPENDS+=		libgdkglext-x11-1.0.so:x11-toolkits/gtkglext
-. if ${PORT_OPTIONS:MVAAPI}
-LIB_DEPENDS+=		libva-glx.so:multimedia/libva-glx
-. endif
-.endif
-
-.if ${PORT_OPTIONS:MCAIRO}
-LIB_DEPENDS+=		libcairo.so:graphics/cairo
-GNASH_RENDERERS+=	cairo
-.endif
-
-.if ${GNASH_RENDERERS} == ""
-IGNORE=			needs at least one renderer enabled. Please rerun 'make config' and enable AGG, OPENGL or CAIRO
-.endif
-
-CONFIGURE_ARGS+=	--enable-renderer=${GNASH_RENDERERS:S/^ //W:S/ /,/gW}
 
 #
 # Hardware acceleration options processing

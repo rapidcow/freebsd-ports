@@ -1,13 +1,16 @@
 PORTNAME=	aubio
-PORTVERSION=	0.4.9
-PORTREVISION?=	4
+DISTVERSION=	0.4.9
+PORTREVISION?=	7
 CATEGORIES?=	audio
 MASTER_SITES=	https://aubio.org/pub/
 
 PATCH_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/commit/
-PATCHFILES+=	cdfe9cef2dcc3edf7d05ca2e9c2dbbf8dea21f1c.patch:-p1 #FFmpeg 6.x compat
-PATCHFILES+=	8a05420e5dd8c7b8b2447f82dc919765876511b3.patch:-p1 #FFmpeg 6.x compat
-PATCHFILES+=	95ff046c698156f21e2ca0d1d8a02c23ab76969f.patch:-p1 #Add const qualifiers for NumPy >= 1.19.0
+PATCHFILES=	95ff046c698156f21e2ca0d1d8a02c23ab76969f.patch:-p1 \
+		cdfe9cef2dcc3edf7d05ca2e9c2dbbf8dea21f1c.patch:-p1 \
+		8a05420e5dd8c7b8b2447f82dc919765876511b3.patch:-p1 \
+		245deeadd81afc4ec5635b65d71646490c5c19fd.patch:-p1 \
+		0b947f9634937d27589d995ec90e90d763aca86f.patch:-p1 \
+		53bc55cda4f0e106e63b8a993538fa4debf4bb66.patch:-p1
 
 MAINTAINER?=	jhale@FreeBSD.org
 COMMENT?=	Library for audio labelling
@@ -56,7 +59,7 @@ FFTW_LIB_DEPENDS=		libfftw3f.so:math/fftw3-float
 
 MANPAGES_BUILD_DEPENDS=		txt2man:textproc/txt2man
 MANPAGES_CONFIGURE_ENABLE=	manpages
-MANPAGES_CONFIGURE_ON=		--mandir=${MANPREFIX}/man
+MANPAGES_CONFIGURE_ON=		--mandir=${PREFIX}/share/man
 
 SNDFILE_LIB_DEPENDS=		libsndfile.so:audio/libsndfile
 SNDFILE_CONFIGURE_ENABLE=	sndfile

@@ -7,9 +7,10 @@ DISTNAME=	confregdecode-src-${PORTVERSION}
 
 MAINTAINER=	marcus@FreeBSD.org
 COMMENT=	Cisco Systems IOS(tm) configuration register decoder
-WWW=		http://cosi-nms.sourceforge.net/
+WWW=		https://cosi-nms.sourceforge.net/
 
-USE_JAVA=	yes
+USES=		java
+
 ALL_TARGET=	jar
 MAKE_ENV=	JAVAC="${JAVAC}" JAR="${JAR}"
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}

@@ -76,9 +76,6 @@ lib/libatrilview.so.%%GTK3_VERSION%%
 libdata/pkgconfig/atril-document-1.5.0.pc
 libdata/pkgconfig/atril-view-1.5.0.pc
 %%DBUS%%libexec/atrild
-man/man1/atril-previewer.1.gz
-man/man1/atril-thumbnailer.1.gz
-man/man1/atril.1.gz
 share/applications/atril.desktop
 %%DATADIR%%/hand-open.png
 %%DATADIR%%/icons/hicolor/16x16/actions/object-rotate-left.png
@@ -5902,10 +5899,12 @@ share/help/zu/atril/synctex-support.page
 share/help/zu/atril/synctex.page
 share/help/zu/atril/textselection.page
 share/help/zu/atril/translate.page
+share/icons/hicolor/128x128/apps/atril.png
 share/icons/hicolor/16x16/apps/atril.png
 share/icons/hicolor/22x22/apps/atril.png
 share/icons/hicolor/24x24/apps/atril.png
 share/icons/hicolor/48x48/apps/atril.png
+share/icons/hicolor/64x64/apps/atril.png
 share/icons/hicolor/scalable/apps/atril.svg
 share/locale/af/LC_MESSAGES/atril.mo
 share/locale/am/LC_MESSAGES/atril.mo
@@ -6042,5 +6041,8 @@ share/locale/zh_CN/LC_MESSAGES/atril.mo
 share/locale/zh_HK/LC_MESSAGES/atril.mo
 share/locale/zh_TW/LC_MESSAGES/atril.mo
 share/locale/zu/LC_MESSAGES/atril.mo
+share/man/man1/atril-previewer.1.gz
+share/man/man1/atril-thumbnailer.1.gz
+share/man/man1/atril.1.gz
 share/metainfo/atril.appdata.xml
 share/thumbnailers/atril.thumbnailer

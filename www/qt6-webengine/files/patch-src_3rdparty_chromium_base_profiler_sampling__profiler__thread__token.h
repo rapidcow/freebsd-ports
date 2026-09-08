@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/base/profiler/sampling_profiler_thread_token.h.orig	2023-03-28 19:45:02 UTC
+--- src/3rdparty/chromium/base/profiler/sampling_profiler_thread_token.h.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/base/profiler/sampling_profiler_thread_token.h
-@@ -11,7 +11,7 @@
+@@ -13,7 +13,7 @@
  
  #if BUILDFLAG(IS_ANDROID)
  #include <pthread.h>
@@ -9,7 +9,7 @@
  #include <stdint.h>
  #endif
  
-@@ -25,7 +25,7 @@ struct SamplingProfilerThreadToken {
+@@ -27,7 +27,7 @@ struct SamplingProfilerThreadToken {
    PlatformThreadId id;
  #if BUILDFLAG(IS_ANDROID)
    pthread_t pthread_id;

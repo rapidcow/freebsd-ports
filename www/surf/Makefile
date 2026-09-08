@@ -1,26 +1,26 @@
 PORTNAME=	surf
 DISTVERSION=	2.1
-PORTREVISION=	1
+PORTREVISION=	6
 CATEGORIES=	www
 MASTER_SITES=	http://dl.suckless.org/${PORTNAME}/
 PKGNAMESUFFIX=	-browser
 
-MAINTAINER=	dmgk@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple Web browser based on WebKit2/GTK
 WWW=		https://surf.suckless.org
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libwebkit2gtk-4.0.so:www/webkit2-gtk3 \
+LIB_DEPENDS=	libwebkit2gtk-4.0.so:www/webkit2-gtk@40 \
 		libsoup-2.4.so:devel/libsoup \
-		libgcr-base-3.so:security/gcr
+		libgcr-base-3.so:security/gcr3
 RUN_DEPENDS=	dmenu:x11/dmenu \
 		curl:ftp/curl \
 		xterm:x11/xterm
 
 USES=		compiler:c11 cpe gnome pkgconfig xorg
-USE_GNOME=	gtk30 pango cairo gdkpixbuf2
+USE_GNOME=	gtk30 pango cairo gdkpixbuf
 USE_XORG=	x11
 
 CPE_VENDOR=	suckless
@@ -31,7 +31,7 @@ DESKTOP_ENTRIES="Surf" "" "${PREFIX}/share/pixmaps/surf.png" "surf" "" true
 
 PLIST_FILES=	bin/surf \
 		lib/surf/webext-surf.so \
-		man/man1/surf.1.gz \
+		share/man/man1/surf.1.gz \
 		share/pixmaps/surf.png
 
 PORTDOCS=	README TODO.md
@@ -53,7 +53,6 @@ post-extract:
 post-patch:
 	@${REINPLACE_CMD} -e \
 		'/^PREFIX/s| =| ?=| ; \
-		/^MANPREFIX/s|/share/man|/man| ; \
 		/^X11/s|/usr/X11R6/|$${LOCALBASE}/| ; \
 		/^GTKINC/s| =| ?=| ; \
 		/^GTKLIB/s| =| ?=| ; \

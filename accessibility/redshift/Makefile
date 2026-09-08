@@ -1,7 +1,7 @@
 PORTNAME=	redshift
 PORTVERSION=	1.12
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	accessibility
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
@@ -24,6 +24,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	jonls
 USE_GNOME=	intltool
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 SHEBANG_FILES=	src/redshift-gtk/redshift-gtk.in
 
 CONFIGURE_ARGS+=	--disable-wingdi
@@ -56,9 +57,9 @@ WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland
 WAYLAND_CONFIGURE_ENABLE=	wayland
 
 GUI_USES=		python
+GUI_USE=		gnome=pygobject3:run
 GUI_CONFIGURE_ENABLE=	gui
-GUI_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}gobject3>0:devel/py-gobject3@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}xdg>0:devel/py-xdg@${PY_FLAVOR}
+GUI_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xdg>0:devel/py-xdg@${PY_FLAVOR}
 
 GEO_CONFIGURE_ON=	--enable-geoclue2
 GEO_CONFIGURE_OFF=	--disable-geoclue2

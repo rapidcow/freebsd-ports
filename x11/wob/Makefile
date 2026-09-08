@@ -1,5 +1,5 @@
 PORTNAME=	wob
-DISTVERSION=	0.15.1
+DISTVERSION=	0.16
 CATEGORIES=	x11 wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -9,7 +9,7 @@ WWW=		https://github.com/francma/wob
 LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	wayland-protocols>=1.13:graphics/wayland-protocols
+BUILD_DEPENDS=	wayland-protocols>=1.31:graphics/wayland-protocols
 LIB_DEPENDS=	libinih.so:devel/inih \
 		libwayland-client.so:graphics/wayland
 TEST_DEPENDS=	cmocka>0:sysutils/cmocka
@@ -17,7 +17,7 @@ TEST_DEPENDS=	cmocka>0:sysutils/cmocka
 USES=		meson pkgconfig
 USE_GITHUB=	yes
 GH_ACCOUNT=	francma
-MESON_ARGS=	-Dseccomp=disabled -Dtests=disabled
+MESON_DISABLED=	seccomp systemd-unit-files tests
 PLIST_FILES=	bin/${PORTNAME}
 
 OPTIONS_DEFINE=	MANPAGES
@@ -25,8 +25,8 @@ OPTIONS_DEFAULT=MANPAGES
 
 MANPAGES_BUILD_DEPENDS=	scdoc:textproc/scdoc
 MANPAGES_MESON_ENABLED=	man-pages
-MANPAGES_PLIST_FILES=	man/man1/${PORTNAME}.1.gz \
-			man/man5/${PORTNAME}.ini.5.gz
+MANPAGES_PLIST_FILES=	share/man/man1/${PORTNAME}.1.gz \
+			share/man/man5/${PORTNAME}.ini.5.gz
 
 post-patch:
 # Respect PREFIX for system-wide config

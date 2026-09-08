@@ -1,6 +1,6 @@
 PORTNAME=	vi
 PORTVERSION=	050325
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	editors
 MASTER_SITES=	SF/ex-${PORTNAME}/ex-${PORTNAME}/${PORTVERSION}
 PKGNAMEPREFIX=	2bsd-
@@ -8,15 +8,12 @@ DISTNAME=	ex-${PORTVERSION}
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	The original vi editor, updated to run on modern OSes
-WWW=		http://ex-vi.sourceforge.net/
+WWW=		https://ex-vi.sourceforge.net/
 
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_aarch64=	Fails to link: missing sbrk
-BROKEN_riscv64=	Fails to link: missing sbrk
-
-USES=		ncurses tar:bzip2
+USES=		ncurses sbrk tar:bzip2
 
 PRESERVEDIR=	/var/preserve/${PKGBASE}
 PLIST_SUB=	PRESERVEDIR="${PRESERVEDIR}"

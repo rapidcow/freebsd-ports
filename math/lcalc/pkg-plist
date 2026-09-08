@@ -1,7 +1,6 @@
 bin/lcalc
 include/lcalc/L.h
 include/lcalc/Lcommon.h
-include/lcalc/Lcomplex.h
 include/lcalc/Ldirichlet_series.h
 include/lcalc/Ldokchitser.h
 include/lcalc/Lelliptic.h
@@ -19,10 +18,9 @@ include/lcalc/Lriemannsiegel_blfi.h
 include/lcalc/Lvalue.h
 include/lcalc/config.h
 lib/libLfunction.so
-lib/libLfunction.so.1
-lib/libLfunction.so.1.0.1
+lib/libLfunction.so.2
+lib/libLfunction.so.2.0.0
 libdata/pkgconfig/lcalc.pc
-man/man1/lcalc.1.gz
 %%PORTDOCS%%%%DOCSDIR%%/CONTRIBUTORS
 %%PORTDOCS%%%%DOCSDIR%%/ChangeLog
 %%PORTDOCS%%%%DOCSDIR%%/INSTALL
@@ -36,3 +34,4 @@ man/man1/lcalc.1.gz
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/data/data_maass
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/data/data_tau
 %%PORTEXAMPLES%%%%EXAMPLESDIR%%/example.cc
+share/man/man1/lcalc.1.gz

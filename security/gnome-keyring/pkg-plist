@@ -1,7 +1,6 @@
 bin/gnome-keyring
 bin/gnome-keyring-3
 bin/gnome-keyring-daemon
-etc/pkcs11/modules/gnome-keyring.module
 etc/xdg/autostart/gnome-keyring-pkcs11.desktop
 etc/xdg/autostart/gnome-keyring-secrets.desktop
 etc/xdg/autostart/gnome-keyring-ssh.desktop
@@ -11,13 +10,11 @@ lib/gnome-keyring/devel/gkm-ssh-store-standalone.so
 lib/gnome-keyring/devel/gkm-xdg-store-standalone.so
 lib/pam_gnome_keyring.so
 lib/pkcs11/gnome-keyring-pkcs11.so
-man/man1/gnome-keyring-3.1.gz
-man/man1/gnome-keyring-daemon.1.gz
-man/man1/gnome-keyring.1.gz
 share/GConf/gsettings/org.gnome.crypto.cache.convert
 share/dbus-1/services/org.freedesktop.impl.portal.Secret.service
 share/dbus-1/services/org.freedesktop.secrets.service
 share/dbus-1/services/org.gnome.keyring.service
+share/locale/ab/LC_MESSAGES/gnome-keyring.mo
 share/locale/af/LC_MESSAGES/gnome-keyring.mo
 share/locale/ar/LC_MESSAGES/gnome-keyring.mo
 share/locale/as/LC_MESSAGES/gnome-keyring.mo
@@ -62,6 +59,7 @@ share/locale/is/LC_MESSAGES/gnome-keyring.mo
 share/locale/it/LC_MESSAGES/gnome-keyring.mo
 share/locale/ja/LC_MESSAGES/gnome-keyring.mo
 share/locale/ka/LC_MESSAGES/gnome-keyring.mo
+share/locale/kab/LC_MESSAGES/gnome-keyring.mo
 share/locale/kk/LC_MESSAGES/gnome-keyring.mo
 share/locale/km/LC_MESSAGES/gnome-keyring.mo
 share/locale/kn/LC_MESSAGES/gnome-keyring.mo
@@ -108,4 +106,8 @@ share/locale/xh/LC_MESSAGES/gnome-keyring.mo
 share/locale/zh_CN/LC_MESSAGES/gnome-keyring.mo
 share/locale/zh_HK/LC_MESSAGES/gnome-keyring.mo
 share/locale/zh_TW/LC_MESSAGES/gnome-keyring.mo
+share/man/man1/gnome-keyring-3.1.gz
+share/man/man1/gnome-keyring-daemon.1.gz
+share/man/man1/gnome-keyring.1.gz
+share/p11-kit/modules/gnome-keyring.module
 share/xdg-desktop-portal/portals/gnome-keyring.portal

@@ -1,5 +1,6 @@
 PORTNAME=	jsch
 PORTVERSION=	0.1.55
+PORTREVISION=	2
 CATEGORIES=	net java security
 MASTER_SITES=	SF
 
@@ -9,10 +10,11 @@ WWW=		http://www.jcraft.com/jsch
 
 LICENSE=	BSD3CLAUSE
 
-USES=		cpe zip
+DEPRECATED=	Upstream website does not exist. No ports depend on this. It does not compile on jdk21. See also: https://github.com/mwiede/jsch
+EXPIRATION_DATE=	2026-01-31
+
+USES=		cpe java:ant,run zip
 CPE_VENDOR=	jcraft
-USE_JAVA=	yes
-USE_ANT=	yes
 
 PLIST_FILES+=	%%JAVAJARDIR%%/${PORTNAME}.jar
 

@@ -1,10 +1,10 @@
 PORTNAME=	siren
-PORTVERSION=	0.10
-PORTREVISION=	4
+DISTVERSION=	0.11
+PORTREVISION=	1
 CATEGORIES=	audio
 MASTER_SITES=	http://www.kariliq.nl/${PORTNAME}/dist/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Text-based audio player
 WWW=		https://www.kariliq.nl/siren/
 
@@ -65,7 +65,8 @@ OPTIONS_SUB=	yes
 CONFIGURE_ARGS=	alsa=no \
 		ao=no \
 		sun=no \
-		portaudio=no
+		portaudio=no \
+		mandir=${PREFIX}/share/man
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|-lcurses|${NCURSESLIBS}|' ${WRKSRC}/configure

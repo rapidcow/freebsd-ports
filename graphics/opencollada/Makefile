@@ -1,16 +1,15 @@
 PORTNAME=	opencollada
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.6.68
-PORTREVISION=	4
+PORTVERSION=	1.6.68
+PORTREVISION=	5
 CATEGORIES=	graphics devel
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Library for reading and writing COLLADA files
-WWW=		http://opencollada.org/
+WWW=		http://opencollada.org/ \
+		https://github.com/KhronosGroup/OpenCOLLADA
 
 LICENSE=	MIT
-
-BROKEN_sparc64=	cannot build: runaway process
 
 LIB_DEPENDS=	libpcre.so:devel/pcre
 

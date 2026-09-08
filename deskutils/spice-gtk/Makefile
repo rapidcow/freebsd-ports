@@ -1,6 +1,6 @@
 PORTNAME=	spice-gtk
 PORTVERSION=	0.37
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES?=	deskutils gnome
 MASTER_SITES=	http://www.spice-space.org/download/gtk/
 
@@ -21,7 +21,7 @@ RUN_DEPENDS=	spice-protocol>=0.12.15:devel/spice-protocol
 USES=		compiler:c11 cpe gettext-tools gmake gnome gstreamer jpeg \
 		libtool localbase:ldflags pkgconfig python ssl tar:bzip2 xorg
 USE_XORG=	pixman x11
-USE_GNOME=	cairo gdkpixbuf2 gnomeprefix gtk30 intltool introspection:build
+USE_GNOME=	cairo gdkpixbuf gnomeprefix gtk30 intltool introspection:build
 
 CPE_VENDOR=	spice-gtk_project
 
@@ -31,9 +31,9 @@ CONFIGURE_ENV+=		OPENSSL_CFLAGS="${SPICE_SSL_CFLAGS}" \
 			OPENSSL_LIBS="${SPICE_SSL_LIBS}"
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 USE_LDCONFIG=	yes
 
-# we can't use pathfix with USES=autoreconf
 MAKE_ARGS=	pkgconfigdir="${PREFIX}/libdata/pkgconfig"
 
 INSTALL_TARGET=	install-strip

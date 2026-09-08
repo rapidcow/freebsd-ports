@@ -1,9 +1,9 @@
 PORTNAME=	icewm
-PORTVERSION=	3.4.2
+PORTVERSION=	4.0.0
 CATEGORIES=	x11-wm
 MASTER_SITES=	https://github.com/ice-wm/icewm/releases/download/${PORTVERSION}/
 
-MAINTAINER=	portmaster@bsdforge.com
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Window manager designed for speed and usability
 WWW=		https://ice-wm.org/
 
@@ -19,13 +19,14 @@ USES=		compiler:c++11-lang gmake gnome iconv:translit localbase \
 		perl5 pkgconfig shebangfix tar:lz xorg
 USE_GNOME=	glib20
 USE_PERL5=	build
-USE_XORG=	ice sm x11 xcomposite xdamage xext xfixes xpm xrender
+USE_XORG=	ice sm x11 xcomposite xcursor xdamage xext xfixes xrender
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-icesound=oss
 SHEBANG_FILES=	contrib/icewm-menu-xrandr
 
-OPTIONS_DEFINE=		BEASTIE DOCS IMLIB2 LIBRSVG2 NLS XFT XINERAMA XRANDR
-OPTIONS_DEFAULT=	BEASTIE IMLIB2 XFT XINERAMA XRANDR
+OPTIONS_DEFINE=		BEASTIE DOCS IMLIB2 LIBRSVG2 NLS XFT XINERAMA \
+			XRANDR XRES
+OPTIONS_DEFAULT=	BEASTIE IMLIB2 XFT XINERAMA XRANDR XRES
 OPTIONS_SUB=		yes
 
 BEASTIE_DESC=		Use Beastie'fied startup button
@@ -39,7 +40,7 @@ IMLIB2_USE_OFF=		GNOME=gdkpixbuf2xlib
 
 LIBRSVG2_BUILD_DEPENDS_OFF=	${LOCALBASE}/include/nanosvg.h:graphics/nanosvg
 LIBRSVG2_USE=		GNOME=librsvg2
-LIBRSVG2_CONFIGURE_OFF=	--disable-rsvg --enable-nanosvg
+LIBRSVG2_CONFIGURE_OFF=	--disable-librsvg --enable-nanosvg
 
 NLS_USES=		gettext
 NLS_CONFIGURE_ENABLE=	nls
@@ -48,10 +49,14 @@ XFT_LIB_DEPENDS=	libXft.so:x11-fonts/libXft
 XFT_CONFIGURE_OFF=	--enable-corefonts --disable-xfreetype
 
 XINERAMA_USE=		XORG=xinerama
-XINERAMA_CONFIGURE_ENABLE=	xinerama
+XINERAMA_CONFIGURE_OFF=	--disable-xinerama
 
 XRANDR_USE=		XORG=xrandr
-XRANDR_CONFIGURE_ENABLE=	xrandr
+XRANDR_CONFIGURE_OFF=	--disable-xrandr
+
+XRES_DESC=		X11 XResource extension support
+XRES_USE=		XORG=xres
+XRES_CONFIGURE_OFF=	--disable-xres
 
 post-extract:
 .for dir in taskbar themes/Infadel2/taskbar
@@ -65,7 +70,7 @@ post-patch-LIBRSVG2-off:
 		${LOCALBASE}/include/nanosvgrast.h ${WRKSRC}/src
 
 post-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ChangeLog NEWS README TODO doc/*.html
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}
 .endfor

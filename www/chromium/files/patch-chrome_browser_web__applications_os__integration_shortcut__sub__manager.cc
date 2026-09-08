@@ -1,6 +1,6 @@
---- chrome/browser/web_applications/os_integration/shortcut_sub_manager.cc.orig	2023-09-13 12:11:42 UTC
+--- chrome/browser/web_applications/os_integration/shortcut_sub_manager.cc.orig	2026-01-14 08:33:23 UTC
 +++ chrome/browser/web_applications/os_integration/shortcut_sub_manager.cc
-@@ -171,7 +171,7 @@ void ShortcutSubManager::Execute(
+@@ -197,7 +197,7 @@ void ShortcutSubManager::Execute(
      return;
    }
  

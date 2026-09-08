@@ -1,12 +1,12 @@
 PORTNAME=	gerbv
-PORTVERSION=	2.7.0
-PORTREVISION=	2
+DISTVERSION=	2.10.0
+DISTVERSIONPREFIX=v
 CATEGORIES=	cad
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
+MASTER_SITES=	GH
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Gerber file viewer
-WWW=		http://gerbv.geda-project.org/
+WWW=		https://gerbv.github.io/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -14,14 +14,16 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
-USES=		autoreconf compiler:c++11-lang cpe desktop-file-utils gmake gnome \
-		libtool localbase pathfix pkgconfig
+USES=		autoreconf compiler:c++11-lang cpe desktop-file-utils \
+		gmake gnome libtool localbase pkgconfig
+USE_GITHUB=	yes
 USE_GNOME=	cairo gtk20
 USE_LDCONFIG=	yes
 
 CPE_VENDOR=	gerbv_project
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ENV=	ac_aux_dir="."
 CFLAGS+=	-fcommon
 INSTALL_TARGET=	install-strip

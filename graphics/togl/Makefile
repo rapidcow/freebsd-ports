@@ -1,14 +1,14 @@
 PORTNAME=	togl
 DISTVERSION=	2.0
 DISTVERSIONSUFFIX=	-src
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics tk
 MASTER_SITES=	SF/${PORTNAME}/Togl/${PORTVERSION}
 DISTNAME=	Togl${DISTVERSIONFULL}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tk OpenGL widget
-WWW=		http://togl.sourceforge.net/
+WWW=		https://togl.sourceforge.net/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -29,7 +29,7 @@ TOGL_INSTDIR=	${PREFIX}/lib/${DISTNAME}
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

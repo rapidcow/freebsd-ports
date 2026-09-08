@@ -1,5 +1,5 @@
 PORTNAME=	ucl
-PORTVERSION=	0.8.2
+DISTVERSION=	0.9.3
 CATEGORIES=	textproc python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -13,13 +13,13 @@ LICENSE_FILE=	${WRKDIR}/libucl-${PORTVERSION}/COPYING
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 	libucl.so:textproc/libucl
 
-CFLAGS+=	-I${PREFIX}/include
-
-USES=		python
+USES=		localbase python
 USE_GITHUB=	yes
 GH_ACCOUNT=	vstakhov
 GH_PROJECT=	libucl
 USE_PYTHON=	autoplist concurrent distutils
+
+CPPFLAGS+=	-Iuthash
 
 WRKSRC_SUBDIR=	python
 

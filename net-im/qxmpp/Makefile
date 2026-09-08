@@ -1,36 +1,40 @@
 PORTNAME=	qxmpp
-DISTVERSIONPREFIX=	v
-DISTVERSION=	1.5.5
+DISTVERSION=	1.13.0
 CATEGORIES=	net-im
-PKGNAMESUFFIX=	-${FLAVOR}
+MASTER_SITES=	KDE/unstable/${PORTNAME}
+PKGNAMESUFFIX=	-qt6
+DIST_SUBDIR=	KDE/${PORTNAME}
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	XMPP client library based on Qt and C++
-WWW=		https://github.com/qxmpp-project/qxmpp/
+WWW=		https://invent.kde.org/libraries/qxmpp
 
-LICENSE=	LGPL21
+LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/LICENSES/LGPL-2.1-or-later.txt
 
-LIB_DEPENDS=	libomemo-c.so:security/libomemo-c
+LIB_DEPENDS=	libomemo-c.so:security/libomemo-c \
+		libqca-qt6.so:devel/qca@qt6
 
-FLAVORS=	qt5 qt6
-FLAVOR?=	qt5
+USES=		cmake:testing compiler:c++20-lang kde:6 pathfix pkgconfig \
+		qt:6 tar:xz
+USE_LDCONFIG=	yes
+USE_QT=		base
 
-USES=		cmake compiler:c++17-lang libtool pathfix pkgconfig qca qt:${FLAVOR:S/qt//}
-USE_GITHUB=	yes
-GH_ACCOUNT=	qxmpp-project
-USE_QT=		${_USE_QT_${FLAVOR}}
-CMAKE_ARGS=	-DQT_VERSION_MAJOR=${FLAVOR:S/qt//}
+CMAKE_ARGS=	-DQT_VERSION_MAJOR=6
 CMAKE_ON=	BUILD_OMEMO
+CMAKE_OFF=	BUILD_EXAMPLES \
+		BUILD_TESTS
+CMAKE_TESTING_ON=	BUILD_TESTS
 
-_USE_QT_qt5=	core gui network xml \
-		buildtools:build qmake:build testlib:build
-_USE_QT_qt6=	base
+PLIST_SUB=	SOVERSION=${DISTVERSION}
 
-_PLIST_QT5_qt5=
-_PLIST_QT5_qt6=	"@comment "
-PLIST_SUB=	VERSION=${PORTVERSION} \
-		QT_VER=${FLAVOR:S/qt//} \
-		QT5_ONLY=${_PLIST_QT5_${FLAVOR}}
+OPTIONS_DEFINE=		GSTREAMER
+OPTIONS_SUB=		yes
+
+GSTREAMER_DESC=		Audio/video support over Jingle via GStreamer
+GSTREAMER_USES=		gnome gstreamer
+GSTREAMER_USE=		GNOME=glib20 \
+			GSTREAMER=good,ugly
+GSTREAMER_CMAKE_BOOL=	WITH_GSTREAMER
 
 .include <bsd.port.mk>

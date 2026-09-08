@@ -1,5 +1,5 @@
 PORTNAME=	libfwnt
-PORTVERSION=	20220922
+PORTVERSION=	20240415
 DISTVERSIONPREFIX=	alpha-
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/libyal/libfwnt/releases/download/${PORTVERSION}/ \
@@ -12,7 +12,10 @@ WWW=		https://github.com/libyal/libfwnt
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BUILD_DEPENDS=	${PY_SETUPTOOLS}
+
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--enable-python
 CONFIGURE_ENV=	PYTHON_CONFIG=${PYTHON_CMD}-config
 USES=		libtool pathfix python

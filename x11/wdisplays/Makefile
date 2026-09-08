@@ -1,5 +1,5 @@
 PORTNAME=	wdisplays
-DISTVERSION=	1.1.1
+DISTVERSION=	1.1.3
 CATEGORIES=	x11 wayland
 
 MAINTAINER=	jbeich@FreeBSD.org

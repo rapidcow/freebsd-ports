@@ -1,7 +1,7 @@
 PORTNAME=	xmlroff
 PORTVERSION=	0.6.3
-PORTREVISION=	2
 DISTVERSIONPREFIX=	v
+PORTREVISION=	4
 CATEGORIES=	textproc
 
 MAINTAINER=	hrs@FreeBSD.org
@@ -17,11 +17,12 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 USES=		autoreconf gmake gnome gettext localbase libtool pkgconfig
 USE_GITHUB=	yes
 USE_GNOME=	libartlgpl2 pango glib20 \
-		libxslt libxml2 gdkpixbuf2
+		libxslt libxml2 gdkpixbuf
 GH_ACCOUNT=	xmlroff
 GH_PROJECT=	xmlroff
 WRKSRC_SUBDIR=	${PORTNAME}
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--with-html-dir=${PREFIX}/share/doc --enable-man \
 		--disable-gp
 INSTALL_TARGET=	install-strip

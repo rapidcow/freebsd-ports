@@ -1,13 +1,12 @@
 PORTNAME=	minidlna
-PORTVERSION=	1.3.2
-PORTREVISION=	4
+PORTVERSION=	1.3.3
+PORTREVISION=	10
 PORTEPOCH=	1
 CATEGORIES=	net multimedia www
-MASTER_SITES=	SF
 
 MAINTAINER=	glebius@FreeBSD.org
 COMMENT=	Media-server compatible with "Digital Life Network Alliance"
-WWW=		http://minidlna.sourceforge.net
+WWW=		https://minidlna.sourceforge.net
 
 LICENSE=	GPLv2
 
@@ -26,6 +25,10 @@ USES=		autoreconf cpe gettext-tools iconv jpeg localbase
 
 CPE_VENDOR=	minidlna_project
 
+USE_GITHUB=	yes
+GH_ACCOUNT=	glebius
+GH_TAGNAME=	cf671a7
+
 PKGMESSAGE=	${WRKSRC}/pkg-message
 SUB_FILES+=	pkg-message
 USE_RC_SUBR=	minidlna
@@ -41,8 +44,8 @@ DEBUG_CFLAGS=	-DDEBUG
 NLS_USES=	gettext-runtime
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/*.5 ${STAGEDIR}${MANPREFIX}/man/man5/
-	${INSTALL_MAN} ${WRKSRC}/*.8 ${STAGEDIR}${MANPREFIX}/man/man8/
+	${INSTALL_MAN} ${WRKSRC}/*.5 ${STAGEDIR}${PREFIX}/share/man/man5/
+	${INSTALL_MAN} ${WRKSRC}/*.8 ${STAGEDIR}${PREFIX}/share/man/man8/
 	${INSTALL_DATA} ${WRKSRC}/minidlna.conf ${STAGEDIR}${PREFIX}/etc/minidlna.conf.sample
 
 .include <bsd.port.mk>

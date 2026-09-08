@@ -1,5 +1,5 @@
 PORTNAME=	libidn
-DISTVERSION=	1.38
+DISTVERSION=	1.43
 CATEGORIES=	dns
 MASTER_SITES=	GNU
 
@@ -13,20 +13,20 @@ LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYINGv2
 LICENSE_FILE_LGPL3+ =	${WRKSRC}/COPYING.LESSERv3
 
 USES=		cpe gmake iconv libtool localbase makeinfo pathfix perl5 pkgconfig
-GNU_CONFIGURE=	yes
-INSTALL_TARGET=	install-strip
-USE_LDCONFIG=	yes
-USE_PERL5=	build
-
 CPE_VENDOR=	gnu
+USE_PERL5=	build
+USE_LDCONFIG=	yes
+
+GNU_CONFIGURE=	yes
 
 INFO=		libidn
+INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	DOCS NLS
 
 OPTIONS_SUB=	yes
 
-NLS_USES=		gettext
+NLS_USES=		gettext-runtime
 NLS_CONFIGURE_ENABLE=	nls
 
 post-install-DOCS-on:

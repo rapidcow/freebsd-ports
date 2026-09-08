@@ -1,5 +1,5 @@
 PORTNAME=	gifsicle
-PORTVERSION=	1.94
+PORTVERSION=	1.96
 CATEGORIES=	graphics
 MASTER_SITES=	https://www.lcdf.org/gifsicle/
 
@@ -25,7 +25,7 @@ GNU_CONFIGURE=	yes
 
 PORTDOCS=	NEWS.md README.md
 PLIST_FILES=	bin/gifdiff bin/gifsicle \
-		man/man1/gifdiff.1.gz man/man1/gifsicle.1.gz
+		share/man/man1/gifdiff.1.gz share/man/man1/gifsicle.1.gz
 
 .if ${FLAVOR} == x11
 USES+=			xorg
@@ -33,7 +33,7 @@ USE_XORG=		ice sm x11
 CONFIGURE_ARGS=		--enable-gifview \
 			--with-x
 PLIST_FILES+=		bin/gifview \
-			man/man1/gifview.1.gz
+			share/man/man1/gifview.1.gz
 CONFLICTS_INSTALL=	gifsicle-nox11
 .else
 CONFLICTS_INSTALL=	gifsicle

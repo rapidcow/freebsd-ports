@@ -1,29 +1,25 @@
 PORTNAME=	ktoblzcheck
-PORTVERSION=	1.53
-PORTREVISION=	8
-CATEGORIES=	finance german
-MASTER_SITES=	SF/${PORTNAME} \
-		LOCAL/jhale/${PORTNAME}:bankdata
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
-		${PORTNAME}-bankdata-${BANKDATA_DATE}${EXTRACT_SUFX}:bankdata
+PORTVERSION=	1.59
+CATEGORIES=	finance
+MASTER_SITES=	SF/${PORTNAME}
 
 MAINTAINER=	jhale@FreeBSD.org
-COMMENT=	Check bank codes of German banks
-WWW=		http://ktoblzcheck.sourceforge.net/
+COMMENT=	Check bank codes of various financial institutions
+WWW=		https://ktoblzcheck.sourceforge.net/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cmake pathfix python:build
+LIB_DEPENDS=	libcurl.so:ftp/curl
+RUN_DEPENDS=	${PORTNAME}-data>=1.0.0.20250609:finance/ktoblzcheck-data
+TEST_DEPENDS=	${PORTNAME}-data>=1.0.0.20250609:finance/ktoblzcheck-data
+
+USES=		cmake:testing localbase pathfix sqlite
 USE_LDCONFIG=	yes
 
-CMAKE_ON=	INSTALL_RAW_BANKDATA_FILE
-CMAKE_OFF=	ENABLE_BANKDATA_DOWNLOAD
+CMAKE_ON=	CMAKE_DISABLE_FIND_PACKAGE_Python3
 
-PLIST_SUB=	BANKDATA_DATE=${BANKDATA_DATE}
 PORTDOCS=	README.md
-
-BANKDATA_DATE=	20230904
 
 OPTIONS_DEFINE=	DOCS DOXYGEN
 OPTIONS_SUB=	yes
@@ -31,14 +27,6 @@ OPTIONS_SUB=	yes
 DOXYGEN_BUILD_DEPENDS=		doxygen:devel/doxygen \
 				dot:graphics/graphviz
 DOXYGEN_CMAKE_BOOL_OFF=		CMAKE_DISABLE_FIND_PACKAGE_Doxygen
-
-TEST_TARGET=			test
-
-post-patch:
-	@${REINPLACE_CMD} -e 's|$${CMAKE_INSTALL_DATADIR}\/man|$${CMAKE_INSTALL_MANDIR}|' ${WRKSRC}/doc/CMakeLists.txt
-	@(cd ${WRKSRC}/src/bankdata && ${RM} bankdata_*.txt blz_*.txt)
-	@${CP} ${WRKDIR}/${PORTNAME}-bankdata-${BANKDATA_DATE}/blz_${BANKDATA_DATE}.txt ${WRKSRC}/src/bankdata
-	@${TOUCH} ${WRKSRC}/src/bankdata/bankdata_${BANKDATA_DATE}.txt
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

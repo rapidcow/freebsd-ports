@@ -1,5 +1,5 @@
 PORTNAME=	weasyprint
-PORTVERSION=	58.0
+PORTVERSION=	61.2
 PORTREVISION=	1
 CATEGORIES=	print python
 MASTER_SITES=	PYPI
@@ -26,7 +26,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}brotli>=1.0.9:archivers/py-brotli@${PY_FLAVO
 
 USES=		gnome python
 USE_PYTHON=	autoplist pep517
-USE_GNOME=	gdkpixbuf2 pango
+USE_GNOME=	gdkpixbuf pango
 
 NO_ARCH=	yes
 

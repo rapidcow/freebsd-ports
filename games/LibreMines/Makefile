@@ -1,5 +1,5 @@
 PORTNAME=	LibreMines
-PORTVERSION=	1.9.1
+PORTVERSION=	2.2.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	games
 
@@ -10,14 +10,13 @@ WWW=		https://github.com/Bollos00/LibreMines
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake qt:5
-USE_QT=		buildtools:build core gui multimedia qmake:build svg widgets
+USES=		cmake gl qt:6
+USE_GL=		gl opengl
+USE_QT=		base multimedia svg
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Bollos00
 
-PLIST_FILES=	bin/libremines \
-		share/applications/libremines.desktop \
-		share/icons/hicolor/scalable/apps/libremines.svg
+CMAKE_ARGS+=	-DUSE_QT6=TRUE
 
 .include <bsd.port.mk>

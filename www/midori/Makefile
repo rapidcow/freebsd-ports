@@ -1,12 +1,12 @@
 PORTNAME=	midori
 PORTVERSION=	9.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	9
-CATEGORIES=	www xfce
+PORTREVISION=	14
+CATEGORIES=	www
 
-MAINTAINER=	xfce@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lightweight web browser using WebKit browser engine
-WWW=		https://www.midori-browser.org/
+WWW=		https://astian.org/midori-browser/
 
 LICENSE=	LGPL21 MIT
 LICENSE_COMB=	multi
@@ -14,9 +14,9 @@ LICENSE_COMB=	multi
 LIB_DEPENDS=	libjson-glib-1.0.so:devel/json-glib \
 		libsoup-2.4.so:devel/libsoup \
 		libp11-kit.so:security/p11-kit \
-		libgcr-base-3.so:security/gcr \
-		libpeas-1.0.so:devel/libpeas \
-		libwebkit2gtk-4.0.so:www/webkit2-gtk3 \
+		libgcr-base-3.so:security/gcr3 \
+		libpeas-1.0.so:devel/libpeas1 \
+		libwebkit2gtk-4.0.so:www/webkit2-gtk@40 \
 		libharfbuzz.so:print/harfbuzz
 RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
 

@@ -1,11 +1,11 @@
 PORTNAME=	valgrind
-PORTVERSION=	3.22.0.g20230917
 DISTVERSIONPREFIX=	freebsd-
+DISTVERSION=	3.26.0.g20250819
 PORTEPOCH=	1
 CATEGORIES=	devel
-MASTER_SITES=	https://snapshots.sourceware.org/valgrind/trunk/2023-09-17_09-18_1694942281/
+MASTER_SITES=	https://snapshots.sourceware.org/valgrind/trunk/2025-08-18_19-19_1755544741/
 PKGNAMESUFFIX=	-devel
-DISTNAME=	${PORTNAME}-3.22.0.GIT
+DISTNAME=	${PORTNAME}-${DISTVERSION:R}.GIT
 
 MAINTAINER=	pjfloyd@wanadoo.fr
 COMMENT=	Memory debugging and profiling tool
@@ -14,14 +14,18 @@ WWW=		https://www.valgrind.org/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-ONLY_FOR_ARCHS=	amd64 i386
+ONLY_FOR_ARCHS=	aarch64 amd64 i386
 
-USES=		autoreconf cpe gmake pathfix perl5 pkgconfig shebangfix python:3.9+,run tar:bz2
+USES=		autoreconf cpe gmake pathfix perl5 pkgconfig shebangfix \
+		python:run tar:bz2
 USE_PERL5=	build
-SHEBANG_FILES=	callgrind/callgrind_annotate.in callgrind/callgrind_control.in cachegrind/cg_merge.in cachegrind/cg_diff.in cachegrind/cg_annotate.in
+SHEBANG_FILES=	callgrind/callgrind_annotate.in callgrind/callgrind_control.in \
+		cachegrind/cg_merge.in cachegrind/cg_diff.in \
+		cachegrind/cg_annotate.in
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV+=	ac_cv_path_PERL=${PERL}
 
+PIE_UNSAFE=	yes
 SSP_UNSAFE=	yes
 LIB32_PATH?=	/usr/lib32/libc.so
 
@@ -33,9 +37,9 @@ CONFLICTS=	valgrind
 #   in the installation tree.  Either Valgrind won't work at all, or it
 #   will still work if you do, but will generate less helpful error
 #   messages.)
-STRIP=		# empty
+STRIP=			# empty
 
-PORTDOCS=	html
+PORTDOCS=		html
 
 OPTIONS_DEFINE=		DOCS MANPAGES MPI
 OPTIONS_DEFINE_amd64=	32BIT
@@ -56,6 +60,8 @@ MPI_LIB_DEPENDS=	libmpich.so:net/mpich
 
 .include <bsd.port.options.mk>
 
+PLIST_SUB+=	ARCH=${ARCH:S/i386/x86/:S/aarch64/arm64/}
+
 .if ${ARCH} == "amd64"
 PLIST_SUB+=		AMD64=""
 . if !${PORT_OPTIONS:M32BIT}
@@ -67,9 +73,19 @@ IGNORE=			please either install the lib32 distribution or unset the 32BIT option
 .  endif
 PLIST_SUB+=		X86=""
 . endif
-.else
+PLIST_SUB+=		AARCH64="@comment "
+.endif
+
+.if ${ARCH} == "i386"
 PLIST_SUB+=		AMD64="@comment " \
-			X86=""
+			X86="" \
+			AARCH64="@comment "
+.endif
+
+.if ${ARCH} == "aarch64"
+PLIST_SUB+=		AMD64="@comment " \
+			X86="@comment " \
+			AARCH64=""
 .endif
 
 post-patch-DOCS-off:

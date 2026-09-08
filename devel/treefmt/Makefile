@@ -1,129 +1,68 @@
 PORTNAME=	treefmt
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.5.0
-PORTREVISION=	7
+DISTVERSION=	2.1.1
+PORTREVISION=	5
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	One CLI to format the code tree
-WWW=		https://numtide.github.io/treefmt/
+WWW=		https://treefmt.com/ \
+		https://github.com/numtide/treefmt
 
 LICENSE=	MIT
-LICENSE_FILE=	${WRKSRC}/LICENSE.md
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cargo
+USES=		go:modules
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	numtide
-
-CARGO_CRATES=	aho-corasick-0.7.18 \
-		ansi_term-0.12.1 \
-		anyhow-1.0.57 \
-		atty-0.2.14 \
-		autocfg-1.1.0 \
-		bitflags-1.3.2 \
-		block-buffer-0.9.0 \
-		bstr-0.2.17 \
-		bumpalo-3.9.1 \
-		cast-0.2.7 \
-		cfg-if-1.0.0 \
-		clap-2.34.0 \
-		console-0.13.0 \
-		cpufeatures-0.2.2 \
-		criterion-0.3.5 \
-		criterion-plot-0.4.4 \
-		crossbeam-channel-0.5.4 \
-		crossbeam-deque-0.8.1 \
-		crossbeam-epoch-0.9.8 \
-		crossbeam-utils-0.8.8 \
-		csv-1.1.6 \
-		csv-core-0.1.10 \
-		digest-0.9.0 \
-		directories-3.0.2 \
-		dirs-sys-0.3.7 \
-		either-1.6.1 \
-		encode_unicode-0.3.6 \
-		fastrand-1.7.0 \
-		filetime-0.2.16 \
-		fnv-1.0.7 \
-		generic-array-0.14.5 \
-		getrandom-0.2.6 \
-		globset-0.4.8 \
-		half-1.8.2 \
-		heck-0.3.3 \
-		hermit-abi-0.1.19 \
-		ignore-0.4.18 \
-		instant-0.1.12 \
-		itertools-0.10.3 \
-		itoa-0.4.8 \
-		itoa-1.0.1 \
-		js-sys-0.3.57 \
-		lazy_static-1.4.0 \
-		libc-0.2.125 \
-		log-0.4.16 \
-		memchr-2.5.0 \
-		memoffset-0.6.5 \
-		num-traits-0.2.14 \
-		num_cpus-1.13.1 \
-		once_cell-1.10.0 \
-		oorandom-11.1.3 \
-		opaque-debug-0.3.0 \
-		path-clean-0.1.0 \
-		plotters-0.3.1 \
-		plotters-backend-0.3.2 \
-		plotters-svg-0.3.1 \
-		proc-macro-error-1.0.4 \
-		proc-macro-error-attr-1.0.4 \
-		proc-macro2-1.0.37 \
-		quote-1.0.18 \
-		rayon-1.5.2 \
-		rayon-core-1.9.2 \
-		redox_syscall-0.2.13 \
-		redox_users-0.4.3 \
-		regex-1.5.5 \
-		regex-automata-0.1.10 \
-		regex-syntax-0.6.25 \
-		remove_dir_all-0.5.3 \
-		rustc_version-0.4.0 \
-		ryu-1.0.9 \
-		same-file-1.0.6 \
-		scopeguard-1.1.0 \
-		semver-1.0.9 \
-		serde-1.0.137 \
-		serde_cbor-0.11.2 \
-		serde_derive-1.0.137 \
-		serde_json-1.0.80 \
-		sha-1-0.9.8 \
-		strsim-0.8.0 \
-		structopt-0.3.26 \
-		structopt-derive-0.4.18 \
-		syn-1.0.92 \
-		tempfile-3.3.0 \
-		terminal_size-0.1.17 \
-		textwrap-0.11.0 \
-		thiserror-1.0.31 \
-		thiserror-impl-1.0.31 \
-		thread_local-1.1.4 \
-		tinytemplate-1.2.1 \
-		toml-0.5.9 \
-		typenum-1.15.0 \
-		unicode-segmentation-1.9.0 \
-		unicode-width-0.1.9 \
-		unicode-xid-0.2.3 \
-		vec_map-0.8.2 \
-		version_check-0.9.4 \
-		walkdir-2.3.2 \
-		wasi-0.10.2+wasi-snapshot-preview1 \
-		wasm-bindgen-0.2.80 \
-		wasm-bindgen-backend-0.2.80 \
-		wasm-bindgen-macro-0.2.80 \
-		wasm-bindgen-macro-support-0.2.80 \
-		wasm-bindgen-shared-0.2.80 \
-		web-sys-0.3.57 \
-		which-4.2.5 \
-		winapi-0.3.9 \
-		winapi-i686-pc-windows-gnu-0.4.0 \
-		winapi-util-0.1.5 \
-		winapi-x86_64-pc-windows-gnu-0.4.0
+GH_TUPLE=	\
+		BurntSushi:toml:v1.4.0:burntsushi_toml/vendor/github.com/BurntSushi/toml \
+		adrg:xdg:v0.5.3:adrg_xdg/vendor/github.com/adrg/xdg \
+		aymanbagabas:go-osc52:v2.0.1:aymanbagabas_go_osc52_v2/vendor/github.com/aymanbagabas/go-osc52/v2 \
+		charmbracelet:lipgloss:v0.10.0:charmbracelet_lipgloss/vendor/github.com/charmbracelet/lipgloss \
+		charmbracelet:log:v0.4.0:charmbracelet_log/vendor/github.com/charmbracelet/log \
+		davecgh:go-spew:d8f796af33cc:davecgh_go_spew/vendor/github.com/davecgh/go-spew \
+		etcd-io:bbolt:v1.3.11:etcd_io_bbolt/vendor/go.etcd.io/bbolt \
+		fsnotify:fsnotify:v1.7.0:fsnotify_fsnotify/vendor/github.com/fsnotify/fsnotify \
+		go-check:check:10cb98267c6c:go_check_check/vendor/gopkg.in/check.v1 \
+		go-ini:ini:v1.67.0:go_ini_ini/vendor/gopkg.in/ini.v1 \
+		go-logfmt:logfmt:v0.6.0:go_logfmt_logfmt/vendor/github.com/go-logfmt/logfmt \
+		go-yaml:yaml:v3.0.1:go_yaml_yaml/vendor/gopkg.in/yaml.v3 \
+		gobwas:glob:v0.2.3:gobwas_glob/vendor/github.com/gobwas/glob \
+		golang:exp:8a7402abbf56:golang_exp/vendor/golang.org/x/exp \
+		golang:sync:v0.9.0:golang_sync/vendor/golang.org/x/sync \
+		golang:sys:v0.27.0:golang_sys/vendor/golang.org/x/sys \
+		golang:term:v0.25.0:golang_term/vendor/golang.org/x/term \
+		golang:text:v0.18.0:golang_text/vendor/golang.org/x/text \
+		hashicorp:hcl:v1.0.0:hashicorp_hcl/vendor/github.com/hashicorp/hcl \
+		inconshreveable:mousetrap:v1.1.0:inconshreveable_mousetrap/vendor/github.com/inconshreveable/mousetrap \
+		lucasb-eyer:go-colorful:v1.2.0:lucasb_eyer_go_colorful/vendor/github.com/lucasb-eyer/go-colorful \
+		magiconair:properties:v1.8.7:magiconair_properties/vendor/github.com/magiconair/properties \
+		mattn:go-isatty:v0.0.20:mattn_go_isatty/vendor/github.com/mattn/go-isatty \
+		mattn:go-runewidth:v0.0.15:mattn_go_runewidth/vendor/github.com/mattn/go-runewidth \
+		mitchellh:mapstructure:v1.5.0:mitchellh_mapstructure/vendor/github.com/mitchellh/mapstructure \
+		muesli:cancelreader:v0.2.2:muesli_cancelreader/vendor/github.com/muesli/cancelreader \
+		muesli:reflow:v0.3.0:muesli_reflow/vendor/github.com/muesli/reflow \
+		muesli:termenv:v0.15.2:muesli_termenv/vendor/github.com/muesli/termenv \
+		mvdan:sh:v3.10.0:mvdan_sh/vendor/mvdan.cc/sh/v3 \
+		otiai10:copy:v1.14.0:otiai10_copy/vendor/github.com/otiai10/copy \
+		pelletier:go-toml:v2.2.2:pelletier_go_toml_v2/vendor/github.com/pelletier/go-toml/v2 \
+		pmezard:go-difflib:5d4384ee4fb2:pmezard_go_difflib/vendor/github.com/pmezard/go-difflib \
+		rivo:uniseg:v0.4.7:rivo_uniseg/vendor/github.com/rivo/uniseg \
+		rogpeppe:go-internal:v1.13.1:rogpeppe_go_internal/vendor/github.com/rogpeppe/go-internal \
+		sagikazarmark:locafero:v0.4.0:sagikazarmark_locafero/vendor/github.com/sagikazarmark/locafero \
+		sagikazarmark:slog-shim:v0.1.0:sagikazarmark_slog_shim/vendor/github.com/sagikazarmark/slog-shim \
+		sourcegraph:conc:v0.3.0:sourcegraph_conc/vendor/github.com/sourcegraph/conc \
+		spf13:afero:v1.11.0:spf13_afero/vendor/github.com/spf13/afero \
+		spf13:cast:v1.6.0:spf13_cast/vendor/github.com/spf13/cast \
+		spf13:cobra:v1.8.1:spf13_cobra/vendor/github.com/spf13/cobra \
+		spf13:pflag:v1.0.5:spf13_pflag/vendor/github.com/spf13/pflag \
+		spf13:viper:v1.19.0:spf13_viper/vendor/github.com/spf13/viper \
+		stretchr:testify:v1.10.0:stretchr_testify/vendor/github.com/stretchr/testify \
+		subosito:gotenv:v1.6.0:subosito_gotenv/vendor/github.com/subosito/gotenv \
+		uber-go:atomic:v1.9.0:uber_go_atomic/vendor/go.uber.org/atomic \
+		uber-go:multierr:v1.9.0:uber_go_multierr/vendor/go.uber.org/multierr
 
 PLIST_FILES=	bin/${PORTNAME}
 

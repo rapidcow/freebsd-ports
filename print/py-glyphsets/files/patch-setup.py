@@ -1,20 +1,17 @@
---- setup.py.orig	2021-12-17 07:16:14 UTC
+--- setup.py.orig	2024-12-20 11:52:02 UTC
 +++ setup.py
-@@ -24,7 +24,7 @@ with open('README.md') as f:
- 
- setup(
-     name="glyphsets",
--    use_scm_version={"write_to": "Lib/glyphsets/_version.py"},
-+    use_scm_version={"fallback_version": "%%PORTVERSION%%", "write_to": "Lib/glyphsets/_version.py"},
-     url='https://github.com/googlefonts/glyphsets/',
-     description='A python API for evaluating coverage of glyph sets in font projects.',
-     long_description=long_description,
-@@ -52,7 +52,7 @@ setup(
-         'Programming Language :: Python :: 3'
+@@ -59,12 +59,12 @@ setup(
+         "Programming Language :: Python :: 3",
      ],
-     python_requires=">=3.7",
--    setup_requires=['setuptools_scm>=4,<6.1'],
-+    setup_requires=['setuptools_scm>=4'],
+     python_requires=">=3.8",
+-    setup_requires=["setuptools_scm>=8.1.0,<8.2"],
++    setup_requires=["setuptools_scm>=8.0.4,<8.2"],
      install_requires=[
-         'setuptools',
-         'FontTools[ufo]',
+         "requests",
+         "setuptools",
+         "FontTools[ufo]",
+-        "glyphsLib>=6.9.5",
++        "glyphsLib",
+         "defcon",
+         "unicodedata2",
+         "gflanguages>=0.7.1",

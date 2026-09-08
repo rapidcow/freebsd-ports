@@ -1,11 +1,12 @@
 PORTNAME=	lumina-screenshot
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.6.2
+PORTREVISION=	1
 CATEGORIES=	deskutils
 
 MAINTAINER=	jwb@FreeBSD.org
 COMMENT=	Screenshot utility from the Lumina Desktop
-WWW=		https://lumina-desktop.org/
+WWW=		https://github.com/lumina-desktop/lumina/tree/master/src-qt5/desktop-utils/lumina-screenshot
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/../../../LICENSE
@@ -23,6 +24,8 @@ USE_GL=		gl
 USE_GITHUB=	yes
 GH_ACCOUNT=	lumina-desktop
 GH_PROJECT=	lumina
+
+QMAKE_ARGS=	L_MANDIR=${PREFIX}/share/man
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes

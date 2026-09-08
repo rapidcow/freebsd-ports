@@ -1,5 +1,5 @@
 PORTNAME=	apache-ant
-DISTVERSION=	1.10.13
+DISTVERSION=	1.10.15
 CATEGORIES=	devel java
 MASTER_SITES=	APACHE/ant/binaries:bin \
 		https://deb.debian.org/debian/pool/main/a/ant/:man
@@ -13,10 +13,9 @@ WWW=		https://ant.apache.org/
 
 LICENSE=	APACHE20
 
-USES=		cpe tar:bzip2
+USES=		cpe java tar:bzip2
 CPE_VENDOR=	apache
 CPE_PRODUCT=	ant
-USE_JAVA=	yes
 
 ANT_DISTFILE=	${PORTNAME}-${DISTVERSION}-bin.tar.bz2
 MANPAGE_DISTFILE=	ant_${DISTVERSION}-${MANPAGE_VERSION}.debian.tar.xz
@@ -57,8 +56,8 @@ do-install:
 .endfor
 
 	@${ECHO_MSG} -n ">> Installing manpages..."
-	${INSTALL_MAN} ${WRKSRC}/debian/ant.1 ${STAGEDIR}${PREFIX}/man/man1
-	${INSTALL_MAN} ${WRKSRC}/debian/build.xml.5 ${STAGEDIR}${PREFIX}/man/man5
+	${INSTALL_MAN} ${WRKSRC}/debian/ant.1 ${STAGEDIR}${PREFIX}/share/man/man1
+	${INSTALL_MAN} ${WRKSRC}/debian/build.xml.5 ${STAGEDIR}${PREFIX}/share/man/man5
 	@${ECHO_MSG} " [ DONE ]"
 
 .if ${PORT_OPTIONS:MDOCS}

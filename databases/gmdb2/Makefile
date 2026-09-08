@@ -1,7 +1,7 @@
 PORTNAME=	gmdb2
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.9.1
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	databases
 
 MAINTAINER=	rhurlin@FreeBSD.org
@@ -19,9 +19,10 @@ USES=		autoreconf gettext gmake gnome iconv libtool \
 		pkgconfig readline
 USE_GITHUB=	yes
 GH_ACCOUNT=	mdbtools
-USE_GNOME=	gdkpixbuf2 glib20 gtk30 libxml2
+USE_GNOME=	gdkpixbuf glib20 gtk30 libxml2
 GLIB_SCHEMAS=	mdbtools.gmdb2.gschema.xml
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 OPTIONS_DEFINE=	DOCS
 OPTIONS_SUB=	yes

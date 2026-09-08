@@ -1,5 +1,5 @@
 PORTNAME=	cagebreak
-DISTVERSION=	2.2.1
+DISTVERSION=	3.1.0
 CATEGORIES=	x11-wm wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -10,13 +10,12 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	evdev-proto>0:devel/evdev-proto \
-		wayland-protocols>=1.14:graphics/wayland-protocols \
-		wlroots>=0.16.0<0.17.0:x11-toolkits/wlroots
+		wayland-protocols>=1.14:graphics/wayland-protocols
 LIB_DEPENDS=	libevdev.so:devel/libevdev \
 		libudev.so:devel/libudev-devd \
 		libwayland-server.so:graphics/wayland \
 		libfontconfig.so:x11-fonts/fontconfig \
-		libwlroots.so:x11-toolkits/wlroots \
+		libwlroots-0.19.so:x11-toolkits/wlroots019 \
 		libinput.so:x11/libinput \
 		libxkbcommon.so:x11/libxkbcommon
 
@@ -33,9 +32,9 @@ OPTIONS_DEFAULT=MANPAGES X11
 
 MANPAGES_BUILD_DEPENDS=	scdoc:textproc/scdoc
 MANPAGES_MESON_TRUE=	man-pages
-MANPAGES_PLIST_FILES=	man/man1/${PORTNAME}.1.gz \
-			man/man5/${PORTNAME}-config.5.gz \
-			man/man7/${PORTNAME}-socket.7.gz
+MANPAGES_PLIST_FILES=	share/man/man1/${PORTNAME}.1.gz \
+			share/man/man5/${PORTNAME}-config.5.gz \
+			share/man/man7/${PORTNAME}-socket.7.gz
 
 X11_MESON_TRUE=	xwayland
 

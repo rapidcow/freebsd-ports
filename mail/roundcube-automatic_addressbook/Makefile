@@ -1,5 +1,6 @@
 PORTNAME=	automatic_addressbook
-PORTVERSION=	0.4.3
+DISTVERSION=	0.4.3
+PORTREVISION=	1
 CATEGORIES=	mail
 PKGNAMEPREFIX=	roundcube-
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
@@ -15,7 +16,6 @@ RUN_DEPENDS=	roundcube${PHP_PKGNAMESUFFIX}>=0.8:mail/roundcube@${PHP_FLAVOR}
 USES=		php:flavors
 USE_GITHUB=	yes
 GH_ACCOUNT=	sblaisot
-IGNORE_WITH_PHP=82 83
 
 WWWDIR=		${RCDIR}/plugins/automatic_addressbook
 NO_ARCH=	yes

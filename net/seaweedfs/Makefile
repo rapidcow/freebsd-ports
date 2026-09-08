@@ -1,24 +1,21 @@
 PORTNAME=	seaweedfs
-DISTVERSION=	3.52
-PORTREVISION=	2
+DISTVERSION=	4.12
 CATEGORIES=	net sysutils
-MASTER_SITES=	https://raw.githubusercontent.com/${PORTNAME}/${PORTNAME}/${DISTVERSIONFULL}/:gomod
-DISTFILES=	go.mod:gomod
 
 MAINTAINER=	drtr0jan@yandex.ru
 COMMENT=	Distributed Object Store and Filesystem
-WWW=		https://github.com/seaweedfs/seaweedfs/wiki
+WWW=		https://seaweedfs.com/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		go:modules
 
-USE_GITHUB=	yes
 USE_RC_SUBR=	seaweedfs
 
-GO_MODULE=	github.com/seaweedfs/seaweedfs
+GO_MODULE=	github.com/seaweedfs/seaweedfs@v0.0.0-20260210021559-0b80f055c285
 GO_TARGET=	./weed
+GO_BUILDFLAGS=	-ldflags "-s -w -X github.com/seaweedfs/seaweedfs/weed/util/version.COMMIT=${GO_MODULE:C/.*-//}"
 CGO_CFLAGS=	-I.
 
 SEAWEEDFS_DIR?=		/var/db/${PORTNAME}
@@ -26,27 +23,31 @@ SEAWEEDFS_USER?=	seaweedfs
 SEAWEEDFS_GROUP?=	seaweedfs
 
 SUB_FILES=	pkg-message
-SUB_LIST=	SEAWEEDFS_DIR=${SEAWEEDFS_DIR} \
-		USER=${SEAWEEDFS_USER} \
-		GROUP=${SEAWEEDFS_GROUP}
+SUB_LIST=	GROUP=${SEAWEEDFS_GROUP} \
+		SEAWEEDFS_DIR=${SEAWEEDFS_DIR} \
+		USER=${SEAWEEDFS_USER}
 
 USERS=		${SEAWEEDFS_USER}
 GROUPS=		${SEAWEEDFS_GROUP}
 
-OPTIONS_DEFINE=		GOCDK
-OPTIONS_DEFAULT=	ELASTIC GOCDK SQLITE
+OPTIONS_DEFINE=		GOCDK RCLONE
+OPTIONS_DEFAULT=	ELASTIC GOCDK RCLONE SQLITE
 OPTIONS_GROUP=		FILERS
-OPTIONS_GROUP_FILERS=	ELASTIC SQLITE TIKV YDB
+OPTIONS_GROUP_FILERS=	ELASTIC SQLITE TARANTOOL TIKV YDB
 
 ELASTIC_DESC=	Elasticsearch support
 FILERS_DESC=	Filer store engines
 GOCDK_DESC=	Go CDK PubSub API support
+RCLONE_DESC=	rsync for cloud storage backend
+TARANTOOL_DESC=	Tarantool support
 TIKV_DESC=	TiKV database support
 YDB_DESC=	YDB support
 
 ELASTIC_VARS=	GO_TAGS+=elastic
 GOCDK_VARS=	GO_TAGS+=gocdk
+RCLONE_VARS=	GO_TAGS+=rclone
 SQLITE_VARS=	GO_TAGS+=sqlite
+TARANTOOL_VARS=	GO_TAGS+=tarantool
 TIKV_VARS=	GO_TAGS+=tikv
 YDB_VARS=	GO_TAGS+=ydb
 

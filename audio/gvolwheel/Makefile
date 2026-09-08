@@ -1,6 +1,6 @@
 PORTNAME=	gvolwheel
 PORTVERSION=	1.0.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	audio
 
 MAINTAINER=	ports@FreeBSD.org
@@ -12,7 +12,7 @@ LICENSE=	GPLv3
 USES=		autoreconf libtool gmake gnome pkgconfig
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-oss
-USE_GNOME=	cairo gdkpixbuf2 gtk30 intltool
+USE_GNOME=	cairo gdkpixbuf gtk30 intltool
 USE_GITHUB=	yes
 GH_ACCOUNT=	Junker
 

@@ -1,6 +1,6 @@
 PORTNAME=	libtpms
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.6
+DISTVERSION=	0.10.2
 CATEGORIES=	sysutils
 
 MAINTAINER=	meka@tilda.center
@@ -14,9 +14,10 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 USES=		autoreconf gmake libtool pathfix pkgconfig ssl
 USE_GITHUB=	yes
-USE_LDCONFIG=	yes
 GH_ACCOUNT=	stefanberger
+USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
+PLIST_SUB=	DISTVERSION=${DISTVERSION}
 
 .include <bsd.port.mk>

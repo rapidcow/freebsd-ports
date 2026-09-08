@@ -1,5 +1,6 @@
 PORTNAME=	libprelude
 PORTVERSION=	5.2.0
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://www.prelude-siem.org/attachments/download/1395/
 
@@ -18,6 +19,7 @@ USES=		libtool localbase pkgconfig
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--without-lua \
 		--without-python3 \
 		--without-swig \
@@ -36,7 +38,7 @@ PERL_CONFIGURE_WITH=	perl=${PERL}
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
 .endif
 

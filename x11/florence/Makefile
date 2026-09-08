@@ -1,12 +1,12 @@
 PORTNAME=	florence
 PORTVERSION=	0.6.3
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	x11
 MASTER_SITES=	SF/florence/florence/${PORTVERSION}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Extensible scalable virtual keyboard
-WWW=		http://florence.sourceforge.net/
+WWW=		https://florence.sourceforge.net/
 
 LICENSE=	GPLv2+ GFDL
 LICENSE_COMB=	multi
@@ -37,7 +37,7 @@ NLS_USES=	gettext
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

@@ -5,12 +5,12 @@ MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	DKIM (DomainKeys Identified Mail) library
-WWW=		http://dkim.org/
+WWW=		https://dkim.org/
 
 LICENSE=	APACHE20
 
 USES=		uidfix zip ssl
-CXXFLAGS+=	-std=gnu++98
+USE_CXXSTD=	gnu++98
 USE_LDCONFIG=	YES
 SHLIB_MAJOR=	1
 PLIST_SUB=	SHLIB_MAJOR="${SHLIB_MAJOR}"

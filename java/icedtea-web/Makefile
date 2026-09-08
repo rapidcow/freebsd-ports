@@ -1,7 +1,7 @@
 PORTNAME=	icedtea-web
 PORTVERSION=	1.8.8
 DISTVERSIONPREFIX=	icedtea-web-
-PORTREVISION=	9
+PORTREVISION=	31
 CATEGORIES=	java www
 
 MAINTAINER=	java@FreeBSD.org
@@ -18,9 +18,9 @@ BUILD_DEPENDS=	zip:archivers/zip \
 RUN_DEPENDS=	bash:shells/bash
 
 GNU_CONFIGURE=	yes
-USES=		autoreconf compiler:c++11-lang desktop-file-utils gmake \
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
+USES=		autoreconf compiler:c++11-lang desktop-file-utils gmake java \
 		pkgconfig shebangfix xorg
-USE_JAVA=	yes
 JAVA_VERSION=	8
 JAVA_OS=	native
 JAVA_VENDOR=	openjdk
@@ -105,8 +105,8 @@ post-install:
 	${INSTALL_DATA} ${WRKSRC}/*.desktop ${STAGEDIR}${DESKTOPDIR}
 .for lang in cs de en pl
 .for man in javaws policyeditor
-	${MV} ${STAGEDIR}${MANPREFIX}/man/${lang:Nen}/man1/${man}.1 \
-	    ${STAGEDIR}${MANPREFIX}/man/${lang:Nen}/man1/itweb-${man}.1
+	${MV} ${STAGEDIR}${PREFIX}/share/man/${lang:Nen}/man1/${man}.1 \
+	    ${STAGEDIR}${PREFIX}/share/man/${lang:Nen}/man1/itweb-${man}.1
 .endfor
 .endfor
 	@${ECHO_MSG}

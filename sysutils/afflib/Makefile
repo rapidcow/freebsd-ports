@@ -1,6 +1,5 @@
 PORTNAME=	afflib
-PORTVERSION=	3.7.16
-PORTREVISION=	1
+PORTVERSION=	3.7.20
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 
@@ -19,6 +18,7 @@ GH_ACCOUNT=	sshock
 GH_PROJECT=	AFFLIBv3
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--enable-s3=yes
 USES=		autoreconf cpe fuse libtool pathfix readline ssl
 CPE_VENDOR=	${PORTNAME}_project

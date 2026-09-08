@@ -8,21 +8,21 @@ PKGNAMESUFFIX=	_sqldriver-${FLAVOR}
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt base (${FLAVOR} sqldriver)
-WWW=		https://www.qt.io/
 
 FLAVORS=	sqlite mysql odbc psql
 FLAVOR?=	sqlite
 
 WRKSRC_SUBDIR=	src/plugins/sqldrivers
 
-USES=		cmake pkgconfig qt-dist:6 \
+USES=		cmake compiler:c++17-lang pkgconfig qt-dist:6 \
 		${${FLAVOR}_USES}
 USE_QT=		base
 
 CMAKE_ARGS=	-DCMAKE_PROJECT_NAME=Qt6${FLAVOR}
 CMAKE_ON=	FEATURE_sql_${FLAVOR} ${${FLAVOR}_CMAKE_ON}
 CMAKE_OFF=	${FLAVORS:N${FLAVOR}:S/^/FEATURE_sql_/} \
-		FEATURE_sql_ibase
+		FEATURE_sql_ibase \
+		QT_GENERATE_SBOM
 
 mysql_USES=		mysql
 odbc_LIB_DEPENDS=	libodbc.so:databases/unixODBC

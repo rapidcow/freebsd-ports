@@ -1,5 +1,6 @@
 PORTNAME=	deluge
 DISTVERSION=	2.1.1
+PORTREVISION=	6
 CATEGORIES=	net-p2p python
 MASTER_SITES=	PYPI
 PKGNAMESUFFIX=	-cli
@@ -16,13 +17,12 @@ BUILD_DEPENDS=	intltool-merge:textproc/intltool \
 		${PYTHON_PKGNAMEPREFIX}rjsmin>0:archivers/py-rjsmin@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}xdg>=0.18:devel/py-xdg@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}libtorrent-rasterbar>=0:net-p2p/py-libtorrent-rasterbar@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}openssl>=0.8:security/py-openssl@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyopenssl>=0.8:security/py-pyopenssl@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}chardet>=1.0.1:textproc/py-chardet@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}mako>=0.2.5:textproc/py-mako@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}service_identity>=0:security/py-service_identity@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}service-identity>=0:security/py-service-identity@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}twisted>=0:devel/py-twisted@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}rencode>0:converters/py-rencode@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}zope.interface>0:devel/py-zope.interface@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}distro>0:sysutils/py-distro@${PY_FLAVOR}
 
@@ -54,7 +54,7 @@ post-patch:
 post-install:
 # install man pages
 .for man in deluge.1 deluge-console.1 deluge-gtk.1 deluge-web.1 deluged.1
-	${INSTALL_MAN} ${WRKSRC}/docs/man/${man} ${STAGEDIR}${MANPREFIX}/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/docs/man/${man} ${STAGEDIR}${PREFIX}/share/man/man1/
 .endfor
 
 post-install-DOCS-on:

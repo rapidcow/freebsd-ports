@@ -1,4 +1,4 @@
---- src/3rdparty/chromium/content/browser/ppapi_plugin_process_host_receiver_bindings.cc.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/content/browser/ppapi_plugin_process_host_receiver_bindings.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/content/browser/ppapi_plugin_process_host_receiver_bindings.cc
 @@ -8,7 +8,7 @@
  

@@ -1,5 +1,6 @@
 PORTNAME=	recutils
 DISTVERSION=	1.9
+PORTREVISION=	2
 CATEGORIES=	databases
 MASTER_SITES=	GNU
 
@@ -9,11 +10,12 @@ WWW=		https://www.gnu.org/software/recutils/
 
 LICENSE=	GPLv3+
 
-LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid
+LIB_DEPENDS=	libuuid.so:misc/libuuid
 
 USES=		charsetfix cpe libtool makeinfo pkgconfig readline
 CPE_VENDOR=	gnu
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 

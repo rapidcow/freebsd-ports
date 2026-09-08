@@ -1,10 +1,10 @@
 PORTNAME=	luasql
-PORTVERSION=	2.6.0
+PORTVERSION=	2.7.0
 CATEGORIES=	databases
 PKGNAMEPREFIX=	${LUA_PKGNAMEPREFIX}
 PKGNAMESUFFIX=	-${LUASQL_DRIVER}
 
-MAINTAINER=	mbeis@xs4all.nl
+MAINTAINER=	ports@freebsd.org
 COMMENT=	LuaSQL driver
 WWW=		https://github.com/keplerproject/luasql
 

@@ -1,8 +1,9 @@
 PORTNAME=	lemonbar-xft
 DISTVERSION=	g20201213
+PORTREVISION=	1
 CATEGORIES=	x11
 
-MAINTAINER=	DtxdF@disroot.org
+MAINTAINER=	dtxdf@FreeBSD.org
 COMMENT=	Fork of lemonbar with support for Xft (fontconfig typefaces)
 WWW=		https://gitlab.com/protesilaos/lemonbar-xft
 
@@ -20,7 +21,7 @@ USE_PERL5=	build
 CONFLICTS_INSTALL=	lemonbar
 
 PLIST_FILES=	bin/lemonbar \
-		man/man1/lemonbar.1.gz
+		share/man/man1/lemonbar.1.gz
 
 USE_GITLAB=	yes
 GL_ACCOUNT=	protesilaos

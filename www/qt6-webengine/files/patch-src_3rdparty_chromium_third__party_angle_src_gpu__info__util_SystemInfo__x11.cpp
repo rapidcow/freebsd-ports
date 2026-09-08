@@ -1,4 +1,4 @@
---- src/3rdparty/chromium/third_party/angle/src/gpu_info_util/SystemInfo_x11.cpp.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/third_party/angle/src/gpu_info_util/SystemInfo_x11.cpp.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/third_party/angle/src/gpu_info_util/SystemInfo_x11.cpp
 @@ -8,6 +8,10 @@
  

@@ -1,5 +1,6 @@
 PORTNAME=	gtkdatabox
 DISTVERSION=	1.0.0
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-1
 MAINTAINER=	eduardo@FreeBSD.org
@@ -14,7 +15,7 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libharfbuzz.so:print/harfbuzz
 
 USES=		gnome libtool pathfix pkgconfig
-USE_GNOME=	cairo gdkpixbuf2 gtk30
+USE_GNOME=	cairo gdkpixbuf gtk30
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes

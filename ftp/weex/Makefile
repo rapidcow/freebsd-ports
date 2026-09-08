@@ -1,12 +1,12 @@
 PORTNAME=	weex
-PORTVERSION=	2.8.4.2
+DISTVERSION=	2.8.4.4
 CATEGORIES=	ftp
 MASTER_SITES=	DEBIAN_POOL
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Non-interactive FTP client
-WWW=		http://weex.sourceforge.net/
+WWW=		https://weex.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/doc/COPYING
@@ -15,6 +15,7 @@ USES=		autoreconf cpe gettext-tools gmake ssl
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-cafile=${LOCALBASE}/share/certs/ca-root-nss.crt
+CFLAGS_powerpc=	-D_CALL_SYSV
 CPPFLAGS+=	-I${OPENSSLINC}
 LIBS+=		-L${OPENSSLLIB}
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}

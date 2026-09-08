@@ -1,22 +1,22 @@
 PORTNAME=	kcode
-PORTVERSION=	1.0
+DISTVERSION=	1.0
+PORTREVISION=	2
 CATEGORIES=	japanese
 MASTER_SITES=	http://www.irori.org/dl/tool/
 EXTRACT_SUFX=	.gz
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	mew14930xvi@inbox.lv
 COMMENT=	Handy utility to show codepoint information of given characters
 WWW=		https://www.irori.org/tool/kcode.html
 
 USES=		shebangfix perl5
 USE_PERL5=	extract run
 NO_WRKSUBDIR=	yes
+NO_ARCH=	yes
 NO_BUILD=	yes
 SHEBANG_FILES=	kcode
 
-PLIST_FILES=	bin/kcode man/ja/man1/kcode.1.gz
-
-RUN_DEPENDS=	ja-p5-Jcode>=0:japanese/p5-Jcode
+PLIST_FILES=	bin/kcode share/man/ja/man1/kcode.1.gz
 
 do-extract:
 	${MKDIR} ${WRKSRC}
@@ -24,7 +24,8 @@ do-extract:
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/kcode ${STAGEDIR}${PREFIX}/bin
-	pod2man ${WRKSRC}/kcode ${WRKSRC}/kcode.1
-	${INSTALL_MAN} ${WRKSRC}/kcode.1 ${STAGEDIR}${MANPREFIX}/man/ja/man1
+	pod2man -u ${WRKSRC}/kcode ${WRKSRC}/kcode.1
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/man/ja/man1
+	${INSTALL_MAN} ${WRKSRC}/kcode.1 ${STAGEDIR}${PREFIX}/share/man/ja/man1
 
 .include <bsd.port.mk>

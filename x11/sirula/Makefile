@@ -1,7 +1,7 @@
 PORTNAME=	sirula
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.0
-PORTREVISION=	18
+DISTVERSION=	1.1.0
+PORTREVISION=	8
 CATEGORIES=	x11 wayland
 
 MAINTAINER=	ports@FreeBSD.org
@@ -11,13 +11,11 @@ WWW=		https://github.com/DorianRudolph/sirula
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN=	could not compile osstrtools
-
 LIB_DEPENDS=	libgtk-layer-shell.so:x11-toolkits/gtk-layer-shell
 
 USES=		cargo gnome
 USE_GITHUB=	yes
-USE_GNOME=	cairo gdkpixbuf2 gtk30
+USE_GNOME=	cairo gdkpixbuf gtk30
 GH_ACCOUNT=	DorianRudolph
 PLIST_FILES=	bin/${PORTNAME}
 

@@ -1,7 +1,7 @@
 PORTNAME=	git-town
 DISTVERSIONPREFIX=	v
-DISTVERSION=	9.0.1
-PORTREVISION=	2
+DISTVERSION=	10.0.3
+PORTREVISION=	11
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -17,7 +17,7 @@ USES=		go:modules
 USE_GITHUB=	nodefault
 GH_TUPLE=	golang:sys:v0.6.0:sys
 
-GO_MODULE=	github.com/git-town/git-town/v9
+GO_MODULE=	github.com/git-town/git-town/v10
 
 PLIST_FILES=	bin/${PORTNAME}
 

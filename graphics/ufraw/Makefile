@@ -1,11 +1,11 @@
 PORTNAME=	ufraw
 PORTVERSION=	0.22.20210424
-PORTREVISION=	9
+PORTREVISION=	11
 CATEGORIES=	graphics
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Read and manipulate raw images from various digital cameras
-WWW=		http://ufraw.sourceforge.net/
+WWW=		https://ufraw.sourceforge.net/
 
 LICENSE=	GPLv2
 
@@ -17,18 +17,19 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libpng.so:graphics/png \
 		libtiff.so:graphics/tiff
 
-USES=		autoreconf compiler:c++11-lang desktop-file-utils gettext \
-		gmake gnome jpeg pkgconfig
+USES=		autoreconf compiler:c++11-lang desktop-file-utils gettext gmake \
+		gnome jpeg pkgconfig
 USE_CXXSTD=	gnu++14
 USE_GITHUB=	yes
 GH_ACCOUNT=	sergiomb2
 GH_TAGNAME=	f34669b
-USE_GNOME+=	cairo gdkpixbuf2 glib20 gtk20
+USE_GNOME+=	cairo gdkpixbuf glib20 gtk20
 
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-extras \
-		--enable-jasper \
-		--disable-mime
+GNU_CONFIGURE=			yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
+CONFIGURE_ARGS=			--disable-mime \
+				--enable-extras \
+				--enable-jasper
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 #CXXFLAGS+=	-D_NOEXCEPT=noexcept

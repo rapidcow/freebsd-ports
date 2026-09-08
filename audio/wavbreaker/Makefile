@@ -1,9 +1,9 @@
 PORTNAME=	wavbreaker
 DISTVERSION=	0.16
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	audio
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GUI tool to split WAV and MP3 files
 WWW=		https://github.com/thp/wavbreaker
 

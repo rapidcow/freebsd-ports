@@ -1,5 +1,5 @@
 PORTNAME=	msgpack
-PORTVERSION=	6.0.0
+PORTVERSION=	6.1.0
 DISTVERSIONPREFIX=	c-
 CATEGORIES=	devel
 PKGNAMESUFFIX=	-c
@@ -11,7 +11,8 @@ WWW=		https://msgpack.org/
 LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/LICENSE_1_0.txt
 
-TEST_DEPENDS=	googletest>0:devel/googletest
+TEST_DEPENDS=	googletest>0:devel/googletest \
+		libcjson>0:devel/libcjson
 
 USES=		cmake pathfix
 USE_LDCONFIG=	yes
@@ -23,11 +24,6 @@ TEST_TARGET=	test
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == "sparc64"
-# required for __sync _* atomic operations on sparc
-USE_GCC=	yes
-.endif
-
 pre-test:
 	cd ${WRKSRC} && ${CMAKE_BIN} . && ${MAKE_CMD}
 
@@ -35,7 +31,6 @@ pre-test:
 # until upstream makes up its mind.
 post-install:
 	${LN} -sf msgpack-c.pc ${STAGEDIR}${PREFIX}/libdata/pkgconfig/msgpack.pc
-
 	${MKDIR} ${STAGEDIR}${PREFIX}/lib/cmake/msgpackc
 .for tgt in config-version config targets-${CMAKE_BUILD_TYPE:tl} targets
 	${LN} -sf ../msgpack-c/msgpack-c-${tgt}.cmake \

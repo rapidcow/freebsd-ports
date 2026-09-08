@@ -1,5 +1,5 @@
 PORTNAME=	Test-Future-IO-Impl
-PORTVERSION=	0.14
+PORTVERSION=	0.15
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -10,10 +10,10 @@ WWW=		https://metacpan.org/dist/Test-Future-IO-Impl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE_FILE_GPLv1+ =	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${RUN_DEPENDS}
-RUN_DEPENDS=	p5-Test2-Suite>=0:devel/p5-Test2-Suite
+RUN_DEPENDS=	p5-Test-Simple>=1.302200:devel/p5-Test-Simple
 
 USES=		perl5
 USE_PERL5=	modbuild

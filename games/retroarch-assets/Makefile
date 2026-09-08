@@ -1,8 +1,9 @@
 PORTNAME=	retroarch-assets
-DISTVERSION=	g20210802
+DISTVERSIONPREFIX=	v
+DISTVERSION=	1.22.0
 CATEGORIES=	games
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	tilde@ultros.pro
 COMMENT=	Graphical assets and official branding for RetroArch
 WWW=		https://github.com/libretro/retroarch-assets
 
@@ -11,6 +12,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	libretro
-GH_TAGNAME=	5f1b2caf7f635be055d03b0d23b146783a44aa6c
+
+NO_ARCH=	yes
+NO_BUILD=	yes
 
 .include <bsd.port.mk>

@@ -1,14 +1,17 @@
 # Handle dependency on lang/vala
 #
 # Valid args:
-# 	- lib:       add a lib depends
-# 	- build:     add a build depends
-# 	- no_depend: only used for lang/vala itself
+# 	- lib:		add a lib depends
+# 	- build:	add a build depends
+# 	- test:		add a test depends
+# 	- no_depend:	only used for lang/vala itself
+#
+# MAINTAINER: desktop@FreeBSD.org
 
 .if ! defined(_INCLUDE_USES_VALA_MK)
 _INCLUDE_USES_VALA_MK=	yes
 
-_VALA_VERSION=		0.56.8
+_VALA_VERSION=		0.56.18
 _VALA_LIB_VERSION=	${_VALA_VERSION:R}
 _VALA_LIBRARY=		libvala-${_VALA_LIB_VERSION}.so
 _VALA_BINARY=		valac
@@ -21,11 +24,9 @@ LIB_DEPENDS+=		${_VALA_LIBRARY}:${_VALA_PORT}
 .    if ! empty(vala_ARGS:Mbuild)
 BUILD_DEPENDS+=		${_VALA_BINARY}:${_VALA_PORT}
 .    endif
-.  endif
-
-# remove after https://gitlab.gnome.org/GNOME/vala/-/issues/1408 is fixed
-.  if ${ARCH} != powerpc
-CFLAGS+=	-Wno-error=incompatible-function-pointer-types
+.    if ! empty(vala_ARGS:Mtest)
+TEST_DEPENDS+=		${_VALA_BINARY}:${_VALA_PORT}
+.    endif
 .  endif
 
 .endif

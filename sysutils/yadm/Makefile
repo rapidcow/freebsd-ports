@@ -1,10 +1,10 @@
 PORTNAME=	yadm
-PORTVERSION=	3.1.1
+PORTVERSION=	3.3.0
 CATEGORIES=	sysutils
 
 MAINTAINER=	vendion@gmail.com
 COMMENT=	Yet Another Dotfiles Manager
-WWW=		https://thelocehiliosan.github.io/yadm/
+WWW=		https://yadm.io/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -15,10 +15,10 @@ RUN_DEPENDS=	bash:shells/bash \
 USES=		cpe
 CPE_VENDOR=	${PORTNAME}_project
 USE_GITHUB=	yes
-GH_ACCOUNT=	TheLocehiliosan
+GH_ACCOUNT=	yadm-dev
 
 PLIST_FILES=	bin/yadm \
-		man/man1/yadm.1.gz
+		share/man/man1/yadm.1.gz
 
 OPTIONS_DEFINE=	J2CTL
 
@@ -31,7 +31,7 @@ J2CTL_USES=		python
 do-install:
 	@${MKDIR} ${STAGEDIR}
 	${INSTALL_MAN} ${WRKSRC}/yadm.1 \
-		${STAGEDIR}${MAN1PREFIX}/man/man1/
+		${STAGEDIR}${PREFIX}/share/man/man1/
 	${INSTALL_SCRIPT} ${WRKSRC}/yadm \
 		${STAGEDIR}${PREFIX}/bin/
 

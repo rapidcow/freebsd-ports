@@ -24,6 +24,7 @@ include/log4cxx/fmtlayout.h
 include/log4cxx/helpers/absolutetimedateformat.h
 include/log4cxx/helpers/appenderattachableimpl.h
 include/log4cxx/helpers/aprinitializer.h
+include/log4cxx/helpers/asyncbuffer.h
 include/log4cxx/helpers/bufferedwriter.h
 include/log4cxx/helpers/bytearrayinputstream.h
 include/log4cxx/helpers/bytearrayoutputstream.h
@@ -42,6 +43,7 @@ include/log4cxx/helpers/datetimedateformat.h
 include/log4cxx/helpers/exception.h
 include/log4cxx/helpers/fileinputstream.h
 include/log4cxx/helpers/fileoutputstream.h
+include/log4cxx/helpers/filesystempath.h
 include/log4cxx/helpers/filewatchdog.h
 include/log4cxx/helpers/inetaddress.h
 include/log4cxx/helpers/inputstream.h
@@ -55,6 +57,7 @@ include/log4cxx/helpers/makeunique.h
 include/log4cxx/helpers/messagebuffer.h
 include/log4cxx/helpers/object.h
 include/log4cxx/helpers/onlyonceerrorhandler.h
+include/log4cxx/helpers/optional.h
 include/log4cxx/helpers/optionconverter.h
 include/log4cxx/helpers/outputstream.h
 include/log4cxx/helpers/outputstreamwriter.h
@@ -66,6 +69,7 @@ include/log4cxx/helpers/relativetimedateformat.h
 include/log4cxx/helpers/resourcebundle.h
 include/log4cxx/helpers/serversocket.h
 include/log4cxx/helpers/simpledateformat.h
+include/log4cxx/helpers/singletonholder.h
 include/log4cxx/helpers/socket.h
 include/log4cxx/helpers/socketoutputstream.h
 include/log4cxx/helpers/strftimedateformat.h
@@ -83,15 +87,19 @@ include/log4cxx/helpers/threadutility.h
 include/log4cxx/helpers/timezone.h
 include/log4cxx/helpers/transcoder.h
 include/log4cxx/helpers/transform.h
+include/log4cxx/helpers/widelife.h
 include/log4cxx/helpers/writer.h
 include/log4cxx/helpers/xml.h
+include/log4cxx/hexdump.h
 include/log4cxx/hierarchy.h
 include/log4cxx/htmllayout.h
 include/log4cxx/jsonlayout.h
 include/log4cxx/layout.h
 include/log4cxx/level.h
+include/log4cxx/levelchange.h
 include/log4cxx/log4cxx.h
 include/log4cxx/logger.h
+include/log4cxx/loggerinstance.h
 include/log4cxx/logmanager.h
 include/log4cxx/logstring.h
 include/log4cxx/mdc.h
@@ -138,6 +146,7 @@ include/log4cxx/private/appenderskeleton_priv.h
 include/log4cxx/private/aprdatagramsocket.h
 include/log4cxx/private/aprserversocket.h
 include/log4cxx/private/aprsocket.h
+include/log4cxx/private/atexitregistry.h
 include/log4cxx/private/boost-std-configuration.h
 include/log4cxx/private/datagramsocket_priv.h
 include/log4cxx/private/fileappender_priv.h
@@ -146,6 +155,7 @@ include/log4cxx/private/log4cxx_private.h
 include/log4cxx/private/nteventlogappender_priv.h
 include/log4cxx/private/odbcappender_priv.h
 include/log4cxx/private/patternconverter_priv.h
+include/log4cxx/private/rollingfileappender_priv.h
 include/log4cxx/private/rollingpolicybase_priv.h
 include/log4cxx/private/serversocket_priv.h
 include/log4cxx/private/socket_priv.h
@@ -195,5 +205,5 @@ lib/cmake/log4cxx/log4cxxConfig.cmake
 lib/cmake/log4cxx/log4cxxConfigVersion.cmake
 lib/liblog4cxx.so
 lib/liblog4cxx.so.15
-lib/liblog4cxx.so.15.1.0
+lib/liblog4cxx.so.15.6.0
 libdata/pkgconfig/liblog4cxx.pc

@@ -6,7 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Replacement for nss_ldap
-WWW=		http://yptransitd.sourceforge.net/
+WWW=		https://yptransitd.sourceforge.net/
 
 LICENSE=	BSD4CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -24,7 +24,7 @@ PLIST_FILES=	%%ETCDIR%%/ldap.conf %%ETCDIR%%/modules/ldap.so \
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

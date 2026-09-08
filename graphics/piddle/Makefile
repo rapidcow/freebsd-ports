@@ -1,5 +1,6 @@
 PORTNAME=	piddle
 PORTVERSION=	1.0.15
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	graphics python
 MASTER_SITES=	SF
@@ -7,7 +8,7 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Graphical Drawing library for Python
-WWW=		http://piddle.sourceforge.net/
+WWW=		https://piddle.sourceforge.net/
 
 LICENSE=	GPLv2+
 

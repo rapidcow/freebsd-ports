@@ -1,4 +1,4 @@
---- src/3rdparty/chromium/third_party/blink/renderer/platform/fonts/font_unique_name_lookup.cc.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/third_party/blink/renderer/platform/fonts/font_unique_name_lookup.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/third_party/blink/renderer/platform/fonts/font_unique_name_lookup.cc
 @@ -9,7 +9,7 @@
  #if BUILDFLAG(IS_ANDROID)

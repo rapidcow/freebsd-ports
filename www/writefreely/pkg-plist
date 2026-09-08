@@ -2,6 +2,7 @@ bin/writefreely
 %%PORTDOCS%%%%DOCSDIR%%/admin/chorus.md
 %%PORTDOCS%%%%DOCSDIR%%/admin/commands.md
 %%PORTDOCS%%%%DOCSDIR%%/admin/config.md
+%%PORTDOCS%%%%DOCSDIR%%/admin/design.md
 %%PORTDOCS%%%%DOCSDIR%%/admin/docker.md
 %%PORTDOCS%%%%DOCSDIR%%/admin/moderation.md
 %%PORTDOCS%%%%DOCSDIR%%/developer/database.md
@@ -33,6 +34,7 @@ bin/writefreely
 %%WWWDIR%%/pages/landing.tmpl
 %%WWWDIR%%/pages/login.tmpl
 %%WWWDIR%%/pages/privacy.tmpl
+%%WWWDIR%%/pages/reset.tmpl
 %%WWWDIR%%/pages/signup-oauth.tmpl
 %%WWWDIR%%/pages/signup.tmpl
 %%WWWDIR%%/static/css/.gitignore
@@ -340,6 +342,7 @@ bin/writefreely
 %%WWWDIR%%/templates/chorus-collection-post.tmpl
 %%WWWDIR%%/templates/chorus-collection.tmpl
 %%WWWDIR%%/templates/classic.tmpl
+%%WWWDIR%%/templates/collection-archive.tmpl
 %%WWWDIR%%/templates/collection-post.tmpl
 %%WWWDIR%%/templates/collection-tags.tmpl
 %%WWWDIR%%/templates/collection.tmpl
@@ -373,4 +376,5 @@ bin/writefreely
 %%WWWDIR%%/templates/user/invite.tmpl
 %%WWWDIR%%/templates/user/settings.tmpl
 %%WWWDIR%%/templates/user/stats.tmpl
+%%WWWDIR%%/templates/user/subscribers.tmpl
 @dir(writefreely,writefreely,700) %%WWWDIR%%/keys

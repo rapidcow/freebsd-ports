@@ -1,6 +1,6 @@
 PORTNAME=	ffmpeg
 PORTVERSION=	4.4.4
-PORTREVISION=	3
+PORTREVISION=	28
 CATEGORIES=	multimedia audio net
 MASTER_SITES=	https://ffmpeg.org/releases/
 PKGNAMESUFFIX=	4
@@ -53,8 +53,6 @@ OPTIONS_DEFAULT=	AOM ASM ASS DAV1D DRM FONTCONFIG FREETYPE FREI0R GMP \
 			GNUTLS ICONV LAME LIBXML2 NETWORK OPTIMIZED_CFLAGS OPUS \
 			RTCPU SVTAV1 V4L VAAPI VDPAU VMAF VORBIS VPX WEBP X264 \
 			X265 XCB
-OPTIONS_DEFAULT_amd64=	NVENC
-OPTIONS_DEFAULT_i386=	NVENC
 
 # i386 is too register-starved for LTO (PR257124)
 OPTIONS_EXCLUDE_i386=	LTO
@@ -85,7 +83,7 @@ OPTIONS_EXCLUDE+=	OPENVINO
 .endif
 
 OPTIONS_RADIO=	RTMP SSL
-OPTIONS_RADIO_RTMP=	GCRYPT GMP LIBRTMP
+OPTIONS_RADIO_RTMP=	GCRYPT GMP
 OPTIONS_RADIO_SSL=	GNUTLS MBEDTLS OPENSSL
 OPTIONS_GROUP=	LICENSE
 OPTIONS_GROUP_LICENSE=	GPL3 NONFREE
@@ -129,7 +127,6 @@ SRT_DESC=	Haivision SRT protocol via libsrt
 SVTAV1_DESC=	AV1 encoding via SVT-AV1
 SVTHEVC_DESC=	HEVC encoding via SVT-HEVC
 SVTVP9_DESC=	VP9 encoding via SVT-VP9
-LIBRTMP_DESC=	${RTMP_DESC} via librtmp
 TENSORFLOW_DESC=TensorFlow as a DNN module backend for DNN based filters like sr
 TESSERACT_DESC=	Optical Character Recognition via Tesseract
 THEORA_DESC=	Encoding support for theora via libtheora
@@ -216,6 +213,7 @@ DEBUG_CONFIGURE_OFF=	--disable-debug
 # docs
 DOCS_BUILD_DEPENDS=	texi2html:textproc/texi2html
 DOCS_CONFIGURE_ENABLE=	htmlpages
+DOCS_BINARY_ALIAS=	makeinfo=${FALSE} # force texi2html
 
 # drm
 DRM_LIB_DEPENDS=	libdrm.so:graphics/libdrm
@@ -255,6 +253,7 @@ GLSLANG_BUILD_DEPENDS=	glslang>0:graphics/glslang \
 			spirv-tools>0:graphics/spirv-tools
 GLSLANG_CONFIGURE_ENABLE=	libglslang
 GLSLANG_LDFLAGS=	-lm
+GLSLANG_IMPLIES=	VULKAN
 
 # gnutls
 GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
@@ -335,7 +334,7 @@ V4L_CONFIGURE_OFF=		--disable-indev=v4l2 \
 				--disable-outdev=v4l2
 
 # mbedtls
-MBEDTLS_LIB_DEPENDS=	libmbedtls.so:security/mbedtls
+MBEDTLS_LIB_DEPENDS=	libmbedtls.so:security/mbedtls2
 MBEDTLS_CONFIGURE_ENABLE=	mbedtls
 
 # mfx
@@ -354,6 +353,7 @@ MYSOFA_CONFIGURE_ENABLE=	libmysofa
 NETWORK_CONFIGURE_ENABLE=	network
 
 # nvenc
+NVENC_BROKEN=		Fails to configure or build with ffnvcodec-headers >= 13.0
 NVENC_BUILD_DEPENDS=	${LOCALBASE}/include/ffnvcodec/nvEncodeAPI.h:multimedia/ffnvcodec-headers
 NVENC_CONFIGURE_ENABLE=	nvenc
 
@@ -426,10 +426,6 @@ RUBBERBAND_CONFIGURE_ENABLE=	librubberband
 
 # rtcpu
 RTCPU_CONFIGURE_ENABLE=	runtime-cpudetect
-
-# rtmp
-LIBRTMP_LIB_DEPENDS=	librtmp.so:multimedia/librtmp
-LIBRTMP_CONFIGURE_ENABLE=	librtmp
 
 # sdl
 SDL_USES=		sdl
@@ -547,7 +543,6 @@ VPX_CONFIGURE_ENABLE=	libvpx
 VULKAN_BUILD_DEPENDS=	vulkan-headers>0:graphics/vulkan-headers
 VULKAN_LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader
 VULKAN_CONFIGURE_ENABLE=	vulkan
-VULKAN_IMPLIES=		GLSLANG
 
 # webp
 WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
@@ -612,7 +607,7 @@ LDFLAGS_armv7=	-Wl,-z,notext
 LDFLAGS_i386=	-Wl,-z,notext
 
 CONFIGURE_ARGS+=--prefix="${PREFIX}" \
-		--mandir="${PREFIX}/man" \
+		--mandir="${PREFIX}/share/man" \
 		--datadir="${DATADIR}" \
 		--docdir="${DOCSDIR}" \
 		--pkgconfigdir="${PREFIX}/libdata/pkgconfig" \

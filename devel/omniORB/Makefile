@@ -9,14 +9,12 @@ WWW=		http://omniorb.sourceforge.net/
 
 LICENSE=	GPLv2
 
-BROKEN_FreeBSD_15=	cannot convert 'pthread**' to 'pthread_t' {aka 'pthread*'}
+NOT_FOR_ARCHS=	armv7 i386 powerpc
+NOT_FOR_ARCHS_REASON=	use of overloaded operator '[]' is ambiguous (with operand types
 
 LIB_DEPENDS=	libzstd.so:archivers/zstd
 
-USES=		compiler:gcc-c++11-lib gmake pkgconfig python shebangfix ssl \
-		tar:bzip2
-BROKEN_SSL=	openssl
-BROKEN_SSL_REASON_openssl=	member access into incomplete type 'DH' (aka 'dh_st')
+USES=		gmake pkgconfig python shebangfix ssl tar:bzip2
 USE_LDCONFIG=	yes
 USE_PYTHON=	py3kplist
 
@@ -46,7 +44,7 @@ STATIC_CONFIGURE_OFF=	--disable-static
 
 ABI_VER=		4
 ABI_MAJOR_VER=		3
-ABI_MINOR_VER=		1
+ABI_MINOR_VER=		4
 
 post-patch:
 	@${REINPLACE_CMD} -e 's#-O2#${CFLAGS}#g' ${WRKSRC}/mk/beforeauto.mk.in
@@ -57,26 +55,13 @@ post-install:
 	@${PYTHON_CMD} -c "import compileall; compileall.compile_dir('${STAGEDIR}${PYTHON_SITELIBDIR}/omniidl')"
 	@${PYTHON_CMD} -c "import compileall; compileall.compile_dir('${STAGEDIR}${PYTHON_SITELIBDIR}/omniidl_be')"
 	${INSTALL_DATA} ${WRKSRC}/sample.cfg ${STAGEDIR}${PREFIX}/etc/omniORB.cfg.sample
-	@cd ${WRKSRC}/man/man1 && ${INSTALL_MAN} *.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
-	@cd ${WRKSRC}/man/man8 && ${INSTALL_MAN} *.8 ${STAGEDIR}${MAN8PREFIX}/man/man8
+	@cd ${WRKSRC}/man/man1 && ${INSTALL_MAN} *.1 ${STAGEDIR}${PREFIX}/share/man/man1
+	@cd ${WRKSRC}/man/man8 && ${INSTALL_MAN} *.8 ${STAGEDIR}${PREFIX}/share/man/man8
 .for i in catior convertior omniMapper omniNames omnicpp nameclt omkdepend \
 	genior
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${i}
 .endfor
-.for i in libomniConnectionMgmt4.so.${ABI_MAJOR_VER}.${ABI_MINOR_VER} \
-	libomniORB4.so.${ABI_MAJOR_VER}.${ABI_MINOR_VER} \
-	libCOSDynamic4.so.${ABI_MAJOR_VER}.${ABI_MINOR_VER} \
-	libomnihttpTP4.so.${ABI_MAJOR_VER}.${ABI_MINOR_VER} \
-	libomnihttpCrypto4.so.${ABI_MAJOR_VER}.${ABI_MINOR_VER} \
-	libomnisslTP4.so.${ABI_MAJOR_VER}.${ABI_MINOR_VER} \
-	libomniDynamic4.so.${ABI_MAJOR_VER}.${ABI_MINOR_VER} \
-	libCOS4.so.${ABI_MAJOR_VER}.${ABI_MINOR_VER} \
-	libomniCodeSets4.so.${ABI_MAJOR_VER}.${ABI_MINOR_VER} \
-	libomniZIOPDynamic4.so.${ABI_MAJOR_VER}.${ABI_MINOR_VER} \
-	libomnithread.so.${ABI_VER}.${ABI_MAJOR_VER} \
-	libomniZIOP4.so.${ABI_MAJOR_VER}.${ABI_MINOR_VER}
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/${i}
-.endfor
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lib*
 	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/*.so
 
 post-install-DOCS-on:

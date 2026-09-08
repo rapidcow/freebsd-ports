@@ -1,9 +1,15 @@
 PORTNAME=	iridium
-PORTVERSION=	2023.09.116.2
+PORTVERSION=	2026.01.144.2
+PULSEMV=	16
+PULSEV=		${PULSEMV}.1
 CATEGORIES=	www wayland
-MASTER_SITES=	https://downloads.iridiumbrowser.de/source/
+MASTER_SITES=	https://downloads.iridiumbrowser.de/source/ \
+		https://freedesktop.org/software/pulseaudio/releases/:pulseaudio
 PKGNAMESUFFIX=	-browser
+
 DISTNAME=	${PORTNAME}${PKGNAMESUFFIX}-${PORTVERSION}
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
+		pulseaudio-${PULSEV}.tar.gz:pulseaudio
 
 MAINTAINER=	chromium@FreeBSD.org
 COMMENT=	Iridium browser
@@ -12,17 +18,16 @@ WWW=		https://iridiumbrowser.de/
 LICENSE=	BSD3CLAUSE LGPL21 MPL11
 LICENSE_COMB=	multi
 
-ONLY_FOR_ARCHS=	aarch64 amd64 i386
-
-PATCH_SITES=	https://nerd.hu/distfiles/
-PATCHFILES+=	disable-privacy-sandbox-891b80bbfcdb15e8292143efd1715fa3f30662c4.patch:-p1
+ONLY_FOR_ARCHS=	aarch64 amd64
 
 BUILD_DEPENDS=	bash:shells/bash \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>0:devel/py-Jinja2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}ply>0:devel/py-ply@${PY_FLAVOR} \
+		bindgen:devel/rust-bindgen-cli \
 		gperf:devel/gperf \
 		flock:sysutils/flock \
 		node:www/node \
+		rustc:lang/rust \
 		xcb-proto>0:x11/xcb-proto \
 		${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat \
 		${LOCALBASE}/share/usbids/usb.ids:misc/usbids \
@@ -35,14 +40,12 @@ BUILD_DEPENDS=	bash:shells/bash \
 LIB_DEPENDS=	libatk-bridge-2.0.so:accessibility/at-spi2-core \
 		libatspi.so:accessibility/at-spi2-core \
 		libspeechd.so:accessibility/speech-dispatcher \
-		libsnappy.so:archivers/snappy \
 		libFLAC.so:audio/flac \
 		libopus.so:audio/opus \
 		libspeex.so:audio/speex \
 		libdbus-1.so:devel/dbus \
 		libdbus-glib-1.so:devel/dbus-glib \
 		libepoll-shim.so:devel/libepoll-shim \
-		libevent.so:devel/libevent \
 		libffi.so:devel/libffi \
 		libicuuc.so:devel/icu \
 		libjsoncpp.so:devel/jsoncpp \
@@ -78,7 +81,7 @@ USES=		bison compiler:c++17-lang cpe desktop-file-utils gl gmake gnome \
 CPE_VENDOR=	google
 CPE_PRODUCT=	chrome
 USE_GL=		gbm gl
-USE_GNOME=	atk dconf gdkpixbuf2 glib20 gtk30 libxml2 libxslt
+USE_GNOME=	atk dconf gdkpixbuf glib20 gtk30 libxml2 libxslt
 USE_LDCONFIG=	${DATADIR}
 USE_PERL5=	build
 USE_XORG=	x11 xcb xcomposite xcursor xext xdamage xfixes xi \
@@ -102,9 +105,7 @@ GN_ARGS+=	clang_use_chrome_plugins=false \
 		chrome_pgo_phase=0 \
 		enable_backup_ref_ptr_support=false \
 		enable_hangout_services_extension=true \
-		enable_nacl=false \
 		enable_remoting=false \
-		enable_rust=false \
 		fatal_linker_warnings=false \
 		icu_use_data_file=false \
 		is_clang=true \
@@ -113,16 +114,18 @@ GN_ARGS+=	clang_use_chrome_plugins=false \
 		treat_warnings_as_errors=false \
 		use_allocator_shim=false \
 		use_aura=true \
-		use_custom_libcxx=false \
+		use_custom_libcxx=true \
+		use_custom_libunwind=true \
 		use_lld=true \
 		use_partition_alloc=true \
 		use_partition_alloc_as_malloc=false \
 		use_sysroot=false \
 		use_system_freetype=false \
 		use_system_harfbuzz=true \
+		use_system_libffi=true \
 		use_system_libjpeg=true \
 		use_udev=false \
-		extra_cxxflags="${CXXFLAGS}" \
+		extra_cxxflags="${CXXFLAGS} -I${LOCALBASE}/include/libepoll-shim ${PINCLUDES}" \
 		extra_ldflags="${LDFLAGS}" \
 		ffmpeg_branding="${FFMPEG_BRAND}"
 
@@ -134,7 +137,7 @@ SUB_FILES=	iridium-browser.desktop iridium
 SUB_LIST+=	COMMENT="${COMMENT}"
 
 OPTIONS_DEFINE=		CODECS CUPS DEBUG KERBEROS LTO PIPEWIRE
-OPTIONS_DEFAULT=	CODECS CUPS KERBEROS PIPEWIRE SNDIO
+OPTIONS_DEFAULT=	CODECS CUPS KERBEROS PIPEWIRE SNDIO ALSA PULSEAUDIO
 OPTIONS_EXCLUDE_aarch64=LTO
 OPTIONS_GROUP=		AUDIO
 OPTIONS_GROUP_AUDIO=	ALSA PULSEAUDIO SNDIO
@@ -166,13 +169,15 @@ DEBUG_VARS=		BUILDTYPE=Debug \
 			GN_ARGS+=is_component_build=false \
 			GN_ARGS+=symbol_level=1 \
 			GN_BOOTSTRAP_FLAGS+=--debug \
-			WANTSPACE="21 GB"
+			WANTSPACE="60 GB" \
+			WANTMEM="32 GB"
 DEBUG_VARS_OFF=		BUILDTYPE=Release \
 			GN_ARGS+=blink_symbol_level=0 \
 			GN_ARGS+=is_debug=false \
 			GN_ARGS+=is_official_build=true \
 			GN_ARGS+=symbol_level=0 \
-			WANTSPACE="14 GB"
+			WANTSPACE="35 GB" \
+			WANTMEM="8 GB"
 
 HEIMDAL_LIB_DEPENDS=	libkrb.so.26:security/heimdal
 KERBEROS_VARS=		GN_ARGS+=use_kerberos=true
@@ -180,7 +185,8 @@ KERBEROS_VARS_OFF=	GN_ARGS+=use_kerberos=false
 
 LTO_VARS=		GN_ARGS+=use_thin_lto=true \
 			GN_ARGS+=thin_lto_enable_optimizations=true \
-			WANTSPACE="14 GB"
+			WANTSPACE="40 GB" \
+			WANTMEM="16 GB"
 LTO_VARS_OFF=		GN_ARGS+=use_thin_lto=false
 
 MIT_LIB_DEPENDS=	libkrb.so.3:security/krb5
@@ -192,14 +198,10 @@ PIPEWIRE_VARS=		GN_ARGS+=rtc_use_pipewire=true \
 PIPEWIRE_VARS_OFF=	GN_ARGS+=rtc_use_pipewire=false \
 			GN_ARGS+=rtc_link_pipewire=false
 
-PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
-PULSEAUDIO_VARS=	GN_ARGS+=use_pulseaudio=true
+PULSEAUDIO_VARS=	GN_ARGS+=use_pulseaudio=true \
+			PINCLUDES="-I${WRKDIR}/pulseaudio-${PULSEV}/src -DPA_MAJOR=${PULSEMV}"
 PULSEAUDIO_VARS_OFF=	GN_ARGS+=use_pulseaudio=false
 
-# With SNDIO=on we exclude audio_manager_linux from the build (see
-# media/audio/BUILD.gn) and use audio_manager_openbsd which does not
-# support falling back to ALSA or PulseAudio.
-SNDIO_PREVENTS=		ALSA PULSEAUDIO
 SNDIO_LIB_DEPENDS=	libsndio.so:audio/sndio
 SNDIO_VARS=		GN_ARGS+=use_sndio=true
 SNDIO_VARS_OFF=		GN_ARGS+=use_sndio=false
@@ -211,8 +213,7 @@ SNDIO_VARS_OFF=		GN_ARGS+=use_sndio=false
 IGNORE=		you have selected HEIMDAL_BASE but do not have Heimdal installed in base
 .endif
 
-.if ${COMPILER_VERSION} < 160
-LLVM_DEFAULT=		16
+LLVM_DEFAULT=		21
 BUILD_DEPENDS+=		clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
 BINARY_ALIAS+=		cpp=${LOCALBASE}/bin/clang-cpp${LLVM_DEFAULT} \
 			cc=${LOCALBASE}/bin/clang${LLVM_DEFAULT} \
@@ -220,10 +221,6 @@ BINARY_ALIAS+=		cpp=${LOCALBASE}/bin/clang-cpp${LLVM_DEFAULT} \
 			ar=${LOCALBASE}/bin/llvm-ar${LLVM_DEFAULT} \
 			nm=${LOCALBASE}/bin/llvm-nm${LLVM_DEFAULT} \
 			ld=${LOCALBASE}/bin/ld.lld${LLVM_DEFAULT}
-.else
-BINARY_ALIAS+=		ar=/usr/bin/llvm-ar \
-			nm=/usr/bin/llvm-nm
-.endif
 
 # - swiftshader/lib/{libEGL.so,libGLESv2.so} is x86 only
 # - map ffmpeg target to ${ARCH}
@@ -251,10 +248,17 @@ LDFLAGS_i386=	-Wl,-znotext
 MAKE_ENV+=	C_INCLUDE_PATH=${LOCALBASE}/include \
 		CPLUS_INCLUDE_PATH=${LOCALBASE}/include
 
+# rust
+MAKE_ENV+=	RUSTC_BOOTSTRAP=1
+GN_ARGS+=	enable_rust=true \
+		rust_sysroot_absolute="${LOCALBASE}"
+
 pre-everything::
 	@${ECHO_MSG}
-	@${ECHO_MSG} "To build Iridium, you should have around 2GB of memory"
-	@${ECHO_MSG} "and around ${WANTSPACE} of free disk space."
+	@${ECHO_MSG} "To build ${PORTNAME}, you should have at least:"
+	@${ECHO_MSG} "- ${WANTMEM} of memory"
+	@${ECHO_MSG} "- ${WANTSPACE} of free disk space"
+	@${ECHO_MSG} "- 1.5 million free inodes"
 	@${ECHO_MSG}
 
 pre-configure:
@@ -264,17 +268,22 @@ pre-configure:
 	#./build/linux/unbundle/remove_bundled_libraries.py [list of preserved]
 	cd ${WRKSRC} && ${SETENV} ${CONFIGURE_ENV} ${PYTHON_CMD} \
 		./build/linux/unbundle/replace_gn_files.py --system-libraries \
-		dav1d flac fontconfig freetype harfbuzz-ng icu libdrm libevent libpng \
-		libwebp libxml libxslt openh264 opus snappy || ${FALSE}
+		dav1d flac fontconfig harfbuzz-ng libdrm libpng \
+		libusb libwebp libxml libxslt openh264 opus || ${FALSE}
 	# Iridium uses an unreleased version of FFmpeg, so configure it
-	cd ${WRKSRC}/third_party/ffmpeg && \
-		${PYTHON_CMD} chromium/scripts/build_ffmpeg.py freebsd ${FFMPEG_TARGET} \
+	cd ${WRKSRC}/media/ffmpeg && \
+		${PYTHON_CMD} scripts/build_ffmpeg.py freebsd ${FFMPEG_TARGET} \
 		--config-only --branding=${FFMPEG_BRAND}
 	cd ${FFMPEG_BDIR} && ${GMAKE} ffversion.h
 	${MKDIR} ${FFMPEG_CDIR}
-.for _e in config.h config.asm config_components.h libavcodec libavformat libavutil
+.for _e in config.h config.asm config_components.asm config_components.h libavcodec libavformat libavutil
 	-${CP} -pR ${FFMPEG_BDIR}/${_e} ${FFMPEG_CDIR}
 .endfor
+	touch ${WRKDIR}/pulseaudio-${PULSEV}/src/pulse/version.h
+	@${REINPLACE_CMD} -e 's|$${LOCALBASE}|${LOCALBASE}|;s|$${MODCLANG_VERSION}|${LLVM_DEFAULT}|' \
+		${WRKSRC}/build/linux/strip_binary.gni \
+		${WRKSRC}/build/rust/rust_bindgen.gni \
+		${WRKSRC}/build/rust/rust_bindgen_generator.gni
 
 do-configure:
 	# GN generator bootstrapping and generating ninja files
@@ -297,9 +306,9 @@ do-configure:
 do-install:
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_MAN} ${WRKSRC}/chrome/app/resources/manpage.1.in \
-		${STAGEDIR}${MANPREFIX}/man/man1/iridium.1
+		${STAGEDIR}${PREFIX}/share/man/man1/iridium.1
 	@${SED} -i "" -e 's,\@\@PACKAGE\@\@,chromium,g;s,\@\@MENUNAME\@\@,Iridium Web Browser,g' \
-		${STAGEDIR}${MANPREFIX}/man/man1/iridium.1
+		${STAGEDIR}${PREFIX}/share/man/man1/iridium.1
 	${CP} ${WRKSRC}/chrome/app/theme/chromium/product_logo_22_mono.png ${WRKSRC}/chrome/app/theme/chromium/product_logo_22.png
 .for s in 22 24 48 64 128 256
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/${s}x${s}/apps
@@ -337,6 +346,7 @@ do-install:
 .if ${ARCH} != aarch64
 	@${MKDIR} ${STAGEDIR}${DATADIR}/swiftshader
 	${INSTALL_LIB} ${WRKSRC}/out/${BUILDTYPE}/libvk_swiftshader.so ${STAGEDIR}${DATADIR}
+	${INSTALL_DATA} ${WRKSRC}/out/${BUILDTYPE}/vk_swiftshader_icd.json ${STAGEDIR}${DATADIR}
 .endif
 
 post-install-DEBUG-on:

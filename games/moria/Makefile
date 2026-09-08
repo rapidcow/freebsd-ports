@@ -1,5 +1,6 @@
 PORTNAME=	moria
 PORTVERSION=	5.5.2
+PORTREVISION=	1
 CATEGORIES=	games
 MASTER_SITES=	ftp://ftp.funet.fi/pub/unix/games/moria/source/ \
 		ftp://ftp.greyhelm.com/pub/Games/Moria/source/
@@ -10,7 +11,7 @@ MAINTAINER=	glewis@FreeBSD.org
 COMMENT=	Dungeon exploration game
 WWW=		http://remarque.org/~grabiner/moria.html
 
-USES=		alias ncurses
+USES=		ncurses
 WRKSRC=		${WRKDIR}/umoria
 ALL_TARGET=	moria
 MAKE_ARGS=	CURSES="${LDFLAGS} -lncurses"
@@ -26,7 +27,7 @@ do-configure:
 	cd ${WRKSRC} && ${LN} -sf source/* unix/* .
 
 post-install:
-	${INSTALL_MAN} ${WRKSRC}/doc/moria.6 ${STAGEDIR}${PREFIX}/man/man6/
+	${INSTALL_MAN} ${WRKSRC}/doc/moria.6 ${STAGEDIR}${PREFIX}/share/man/man6/
 
 post-install-DOCS-on:
 	cd ${WRKSRC}/doc && ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} install

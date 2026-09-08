@@ -6,7 +6,7 @@ MASTER_SITES=	SF/${PORTNAME}/Open%20DC%20Hub/${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Unofficial Unix version of the Direct Connect Hub software
-WWW=		http://opendchub.sourceforge.net/
+WWW=		https://opendchub.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -23,7 +23,7 @@ PLIST_FILES=	bin/${PORTNAME}
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

@@ -1,8 +1,8 @@
 PORTNAME=	terminfo
-PORTVERSION=	20210816
+PORTVERSION=	20250719
 DISTVERSIONSUFFIX=	.src
 CATEGORIES=	misc
-MASTER_SITES=	ftp://ftp.invisible-island.net/ncurses/current/ \
+MASTER_SITES=	https://invisible-island.net/archives/ncurses/current/ \
 		https://invisible-mirror.net/archives/ncurses/current/
 PKGNAMESUFFIX=	-db
 EXTRACT_SUFX=	.gz
@@ -19,6 +19,7 @@ EXTRACT_CMD=	${GZIP_CMD}
 EXTRACT_BEFORE_ARGS=	-dc
 EXTRACT_AFTER_ARGS=	> ${WRKSRC}/${PORTNAME}.src
 
+NO_ARCH=	yes
 NO_WRKSUBDIR=	yes
 
 do-build:

@@ -1,5 +1,5 @@
-TIMESTAMP = 1691070166
-SHA256 (furo-2023.7.26.tar.gz) = 257f63bab97aa85213a1fa24303837a3c3f30be92901ec732fea74290800f59e
-SIZE (furo-2023.7.26.tar.gz) = 1656642
-SHA256 (furo-2023.7.26-static.tar.gz) = 8ca1326403b40a932d2db7aeefa9f160defe0053ca5ec7914aba395b4dafba50
-SIZE (furo-2023.7.26-static.tar.gz) = 177152
+TIMESTAMP = 1766953410
+SHA256 (furo-2025.12.19.tar.gz) = 188d1f942037d8b37cd3985b955839fea62baa1730087dc29d157677c857e2a7
+SIZE (furo-2025.12.19.tar.gz) = 1661473
+SHA256 (furo-2025.12.19-static.tar.gz) = 21c7babc6a9e9687b97bd0942a8fbcb9df9164edf2c6ebcea7dcc3d885ccde25
+SIZE (furo-2025.12.19-static.tar.gz) = 182784

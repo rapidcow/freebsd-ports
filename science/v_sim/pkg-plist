@@ -7,6 +7,7 @@ lib/libv_sim-3.so.8
 lib/libv_sim-3.so.8.0.0
 %%PYTHON_SITELIBDIR%%/gi/overrides/__pycache__/v_sim.cpython-%%PYTHON_SUFFIX%%.opt-1.pyc
 %%PYTHON_SITELIBDIR%%/gi/overrides/__pycache__/v_sim.cpython-%%PYTHON_SUFFIX%%.pyc
+%%PYTHON_SITELIBDIR%%/gi/overrides/__pycache__/v_sim%%PYTHON_TAG%%.opt-2.pyc
 %%PYTHON_SITELIBDIR%%/gi/overrides/v_sim.py
 %%AB%%lib/v_sim/plug-ins/libabinit.a
 %%AB%%lib/v_sim/plug-ins/libabinit.la
@@ -48,7 +49,6 @@ lib/v_sim/plug-ins/libxsf.la
 lib/v_sim/plug-ins/libxsf.so
 lib/v_sim/plug-ins/libxsf.so.8
 lib/v_sim/plug-ins/libxsf.so.8.0.0
-%%DOCS%%man/man1/v_sim.1.gz
 %%PORTDOCS%%%%DOCSDIR%%/ChangeLog.en
 %%PORTDOCS%%%%DOCSDIR%%/ChangeLog.fr
 %%PORTDOCS%%%%DOCSDIR%%/authors
@@ -95,6 +95,7 @@ share/icons/hicolor/32x32/apps/v_sim.png
 share/icons/hicolor/48x48/apps/v_sim.png
 share/icons/hicolor/scalable/apps/v_sim.svg
 %%NLS%%share/locale/fr/LC_MESSAGES/v_sim.mo
+%%DOCS%%share/man/man1/v_sim.1.gz
 share/pixmaps/v_sim.xpm
 %%AB%%%%DATADIR%%/pixmaps/abinit.png
 %%DATADIR%%/pixmaps/archives.png

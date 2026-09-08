@@ -1,9 +1,10 @@
 PORTNAME=	liblockfile
 PORTVERSION=	1.17
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	devel
 
-MAINTAINER=	yasu@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Standard lockfile library
 WWW=		https://github.com/miquels/liblockfile
 
@@ -19,6 +20,8 @@ USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-shared \
 		--with-mailgroup
+
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 PORTDOCS=	Changelog README
 

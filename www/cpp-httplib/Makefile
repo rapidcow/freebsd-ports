@@ -1,6 +1,6 @@
 PORTNAME=	cpp-httplib
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.14.0
+DISTVERSION=	0.30.0
 CATEGORIES=	www devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -9,6 +9,8 @@ WWW=		https://github.com/yhirose/cpp-httplib
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN_FreeBSD_13=	configure fails: OpenSSL is too old: Found unsuitable version "1.1.1t", but required is at least "3.0.0"
 
 TEST_DEPENDS=	gmake:devel/gmake
 
@@ -25,6 +27,7 @@ BINARY_ALIAS=	python3=${PYTHON_CMD} # only for tests
 
 PLIST_FILES=	include/httplib.h \
 		lib/cmake/httplib/FindBrotli.cmake \
+		share/doc/httplib/README.md \
 		lib/cmake/httplib/httplibConfig.cmake \
 		lib/cmake/httplib/httplibConfigVersion.cmake \
 		lib/cmake/httplib/httplibTargets.cmake
@@ -41,7 +44,12 @@ BROTLI_RUN_DEPENDS=	brotli>0:archivers/brotli
 SSL_USES=		ssl
 SSL_CMAKE_BOOL=		HTTPLIB_REQUIRE_OPENSSL HTTPLIB_USE_OPENSSL_IF_AVAILABLE
 
-do-test: # 5 test fail, see https://github.com/yhirose/cpp-httplib/issues/1339
+do-test:
 	@cd ${WRKSRC}/test && ${SETENV} ${MAKE_ENV} ${GMAKE} CXXFLAGS="${CXXFLAGS} -I${WRKSRC}/test" LDFLAGS="${LDFLAGS}"
+
+# tests as of 0.30.0:
+# [----------] Global test environment tear-down
+# [==========] 542 tests from 117 test suites ran. (203930 ms total)
+# [  PASSED  ] 542 tests.
 
 .include <bsd.port.mk>

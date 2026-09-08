@@ -1,5 +1,6 @@
 PORTNAME=	scalpel
 PORTVERSION=	2.0
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.digitalforensicssolutions.com/Scalpel/ \
 		https://fossies.org/linux/misc/
@@ -12,11 +13,12 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libtre.so:textproc/libtre
 
-USES=		alias localbase
+USES=		localbase
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 SUB_FILES=	pkg-message
 
-PLIST_FILES=	etc/scalpel.conf.sample bin/scalpel man/man1/scalpel.1.gz
+PLIST_FILES=	etc/scalpel.conf.sample bin/scalpel share/man/man1/scalpel.1.gz
 
 post-patch:
 	@${REINPLACE_CMD} -e \

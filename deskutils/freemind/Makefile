@@ -8,15 +8,14 @@ DISTNAME=	${PORTNAME}-bin-max-${PORTVERSION}
 
 MAINTAINER=	sergey.v.brunov@gmail.com
 COMMENT=	Free mind-mapping software written in Java
-WWW=		http://freemind.sourceforge.net/
+WWW=		https://freemind.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/license
 
 BUILD_DEPENDS=	zip:archivers/zip
 
-USES=		cpe zip:infozip
-USE_JAVA=	yes
+USES=		cpe java zip:infozip
 
 DATADIR=	${JAVASHAREDIR}/${PORTNAME}-${PORTVERSION}
 DATAFILES=	accessories browser doc lib plugins patterns.xml

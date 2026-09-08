@@ -1,9 +1,9 @@
 PORTNAME=	meta1
-PORTVERSION=	1.1.0a.18.0
-PORTREVISION=	0
+PORTVERSION=	1.1.1a.21.0
+PORTREVISION=	1
 CATEGORIES=	mail
-MASTER_SITES=	http://www.MeTA1.org/download/.alpha/baddns/
-DISTNAME=	${PORTNAME}-1.1.Alpha19.0
+MASTER_SITES=	http://www.MeTA1.org/download/.alpha/bdconf/
+DISTNAME=	${PORTNAME}-1.1.Alpha21.0
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Secure and efficient mail gateway
@@ -26,6 +26,7 @@ IGNORE=		your system does not support sysvipc
 USES=	libtool
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=	--disable-dependency-tracking
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CPPFLAGS+=	-DMTA_NETINET6
 MAKE_ENV+=	META1CONFDIR="${META1CONFDIR}"
 PORTDOCS=	README.dvi README.html README.pdf README.ps README.txt \
@@ -72,8 +73,8 @@ TLS_LDFLAGS=		-L${LOCALBASE}/lib
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
-CFLAGS+=	-Wno-error=int-conversion
+.if ${OPSYS} == FreeBSD
+CFLAGS+=	-Wno-error=int-conversion -Wno-incompatible-pointer-types
 .endif
 
 post-configure:

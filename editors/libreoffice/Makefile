@@ -21,9 +21,8 @@ BUILD_DEPENDS=	p5-Archive-Zip>=0:archivers/p5-Archive-Zip \
 		dmake:devel/dmake \
 		gperf>=3.1:devel/gperf \
 		${LOCALBASE}/include/libcuckoo/cuckoohash_map.hh:devel/libcuckoo \
-		libunwind>=20211201_1:devel/libunwind \
-		mdds>=2.1:devel/mdds \
-		ucpp:devel/ucpp \
+		mdds>=${MDDS_VERSION}:devel/mdds \
+		gpatch:devel/patch \
 		${LOCALBASE}/include/sane/sane.h:graphics/sane-backends \
 		vigra-config:graphics/vigra \
 		${LOCALBASE}/include/glm/glm.hpp:math/glm \
@@ -38,7 +37,7 @@ LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 		libicutu.so:devel/icu \
 		liblangtag.so:devel/liblangtag \
 		libltdl.so:devel/libltdl \
-		liborcus-0.18.so:devel/liborcus \
+		liborcus-0.20.so:devel/liborcus \
 		libplds4.so:devel/nspr \
 		libcurl.so:ftp/curl \
 		libgraphite2.so:graphics/graphite2 \
@@ -51,9 +50,10 @@ LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 		libzmf-0.0.so:graphics/libzmf \
 		libpng.so:graphics/png \
 		libpoppler.so:graphics/poppler \
+		libtiff.so:graphics/tiff \
 		libwebp.so:graphics/webp \
 		liblpsolve55.so:math/lp_solve \
-		libcmis-0.5.so:net/libcmis \
+		libcmis-0.6.so:net/libcmis \
 		libfreetype.so:print/freetype2 \
 		libharfbuzz.so:print/harfbuzz \
 		libharfbuzz-icu.so:print/harfbuzz-icu \
@@ -61,7 +61,7 @@ LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 		libpagemaker-0.0.so:print/libpagemaker \
 		libassuan.so:security/libassuan \
 		libgpgme.so:security/gpgme \
-		libgpgmepp.so:security/gpgme-cpp \
+		libgpgmepp.so:security/gpgmepp \
 		libgpg-error.so:security/libgpg-error \
 		libnss3.so:security/nss \
 		libxmlsec1-nss.so:security/xmlsec1 \
@@ -89,21 +89,30 @@ LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libxcb-icccm.so:x11/xcb-util-wm \
 		libserf-1.so:www/serf
+#		libargon2.so:security/libargon2 \
+LIB_DEPENDS+=	${LIB_DEPENDS_${ARCH}}
+LIB_DEPENDS_aarch64=	libunwind.so:devel/libunwind
+LIB_DEPENDS_amd64=	libunwind.so:devel/libunwind
+LIB_DEPENDS_i386=	libunwind.so:devel/libunwind
+LIB_DEPENDS_powerpc64=		libunwind.so:devel/libunwind
+LIB_DEPENDS_powerpc64le=	libunwind.so:devel/libunwind
 
 RUN_DEPENDS=	xdg-open:devel/xdg-utils \
 		${LOCALBASE}/share/fonts/Caladea/Caladea-Bold.ttf:x11-fonts/crosextrafonts-caladea-ttf \
 		${LOCALBASE}/share/fonts/Carlito/Carlito-Bold.ttf:x11-fonts/crosextrafonts-carlito-ttf \
 		${LOCALBASE}/share/fonts/dejavu/DejaVuSans.ttf:x11-fonts/dejavu \
 		${LOCALBASE}/share/fonts/twemoji-color-font-ttf/TwitterColorEmoji-SVGinOT.ttf:x11-fonts/twemoji-color-font-ttf \
-		${LOCALBASE}/share/fonts/GentiumBasic/GenBasI.ttf:x11-fonts/gentium-basic \
+		${LOCALBASE}/share/fonts/Gentium/Gentium-Bold.ttf:x11-fonts/gentium \
 		${LOCALBASE}/share/fonts/Liberation/LiberationMono-Bold.ttf:x11-fonts/liberation-fonts-ttf \
 		${LOCALBASE}/share/fonts/LinLibertineG/LinLibertine_DR_G.ttf:x11-fonts/linuxlibertine-g
 
 DISTFILES+=	f543e6e2d7275557a839a164941c0a86e5f2c3f2a0042bfc434c88c6dde9e140-opens___.ttf:ext
 DISTFILES+=	dtoa-20180411.tgz:src
 DISTFILES+=	dragonbox-1.1.3.tar.gz:src
-DISTFILES+=	frozen-1.1.1.tar.gz:src
-DISTFILES+=	skia-m111-a31e897fb3dcbc96b2b40999751611d029bf5404.tar.xz:src
+DISTFILES+=	frozen-1.2.0.tar.gz:src
+DISTFILES+=	phc-winner-argon2-20190702.tar.gz:src
+DISTFILES+=	skia-m136-28685d899b0a35894743e2cedad4c9f525e90e1e.tar.xz:src
+DISTFILES+=	zxcvbn-c-2.6.tar.gz:src
 
 NOT_FOR_ARCHS=		armv6 armv7
 NOT_FOR_ARCHS_REASON=	Unsupported host_cpu
@@ -112,41 +121,44 @@ NOT_FOR_ARCHS_REASON=	Unsupported host_cpu
 MASTER_SITES+=	https://dev-builds.libreoffice.org/pre-releases/src/
 .endif
 
-CONFLICTS_INSTALL=	libreoffice6
-
 INSTALL_TARGET=	distro-pack-install
 
 SHEBANG_GLOB=	*.py
 
 GNU_CONFIGURE=	yes
-USES=		autoreconf:build bison compiler:c++17-lang cpe desktop-file-utils \
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
+USES=		autoreconf:build bison compiler:c++20-lang cpe desktop-file-utils \
 		gettext gl gmake gnome jpeg ldap localbase:ldflags perl5 pkgconfig \
 		python shebangfix shared-mime-info ssl tar:xz xorg
 USE_GL=		gl glew glu
 USE_GNOME=	cairo glib20 libxml2 libxslt
 USE_PERL5=	build
 USE_XORG=	ice sm x11 xaw xcb xext xinerama xrandr xrender
+USE_LOCALE?=	en_US.UTF-8
 
 USES+=		elfctl
 ELF_FEATURES=	+wxneeded:instdir/program/soffice.bin
 
-OPTIONS_DEFINE=	COINMP CUPS DOCS GNOME GTK3 GTK4 JAVA KF5 LTO MMEDIA PDFIUM PGSQL MARIADB SDK TEST WEBDAV
-OPTIONS_RADIO=	QT
+OPTIONS_DEFINE=	COINMP CUPS DOCS GNOME GTK3 GTK4 JAVA LTO MMEDIA PDFIUM PGSQL MARIADB SDK TEST WEBDAV
+OPTIONS_RADIO=	QT KDE
 OPTIONS_RADIO_QT=	QT5 QT6
-OPTIONS_DEFAULT=	CUPS DOCS JAVA MMEDIA PDFIUM QT5
+OPTIONS_RADIO_KDE=	KF5 KF6
+OPTIONS_DEFAULT=	CUPS DOCS GTK3 JAVA MMEDIA PDFIUM QT6
 #OPTIONS_EXCLUDE=	GTK4
 
 COINMP_DESC=	Enable CoinMP (deprecated) math solver
-GTK4_DESC=	GTK 4 GUI toolkit support (experimental, broken)
+GTK4_DESC=	GTK+ 4 GUI toolkit support (experimental)
 JAVA_DESC=	Add Java support (XML filters, macros, DB connections)
 KF5_DESC=	KF5/Qt5 GUI toolkit support (implies QT5)
+KF6_DESC=	KF6/Qt6 GUI toolkit support (implies QT6)
 MMEDIA_DESC=	Enable multimedia backend for Impress
 PDFIUM_DESC=	Enable PDFium secure engine
 PGSQL_DESC=	Build with PostgreSQL-SDBC driver
 MARIADB_DESC=	Build with MariaDB/MySQL-SDBC driver
 QT_DESC=	Select Qt GUI engine version
-QT5_DESC=	Qt5 GUI toolkit support (default visual style)
-QT6_DESC=	Qt6 GUI toolkit support (experimental visual style)
+KDE_DESC=	Select KDE GUI engine version
+QT5_DESC=	Qt5 GUI toolkit support
+QT6_DESC=	Qt6 GUI toolkit support (default visual style)
 SDK_DESC=	Build with SDK
 TEST_DESC=	Run all regression tests
 WEBDAV_DESC=	Enable WebDAV protocol
@@ -170,6 +182,10 @@ GTK3_CONFIGURE_ENABLE=	gtk3
 GTK3_USE=	GNOME=gtk30
 
 GTK4_CONFIGURE_ENABLE=	gtk4
+GTK4_LIB_DEPENDS=	libepoxy.so:graphics/libepoxy \
+			libgraphene-1.0.so:graphics/graphene \
+			libharfbuzz.so:print/harfbuzz \
+			libvulkan.so:graphics/vulkan-loader
 GTK4_USE=	GNOME=gtk40
 
 JAVA_BUILD_DEPENDS=	ant:devel/apache-ant \
@@ -189,7 +205,9 @@ JAVA_CONFIGURE_ON=	--with-ant-home=${LOCALBASE}/share/java/apache-ant \
 			--with-hamcrest=${JAVAJARDIR}/hamcrest.jar \
 			--with-system-jars \
 			--without-system-beanshell \
-			--without-system-jfreereport
+			--without-system-java-websocket \
+			--without-system-jfreereport \
+			--without-system-rhino
 JAVA_CONFIGURE_WITH=	java
 # XXX jni.h from GNU classpath causes ABI conflicts.
 JAVA_CONFLICTS_BUILD=	classpath-[0-9]*
@@ -198,25 +216,35 @@ JAVA_DISTFILES=	17410483b5b5f267aa18b7e00b65e6e0-hsqldb_1_8_0.zip:src \
 		35c94d2df8893241173de1d16b6034c0-swingExSrc.zip:src \
 		39bb3fcea1514f1369fcfc87542390fd-sacjava-1.3.zip:src \
 		3bdf40c0d199af31923e900d082ca2dd-libfonts-1.1.6.zip:src \
-		798b2ffdc8bcfe7bca2cf92b62caf685-rhino1_5R5.zip:src \
-		8249374c274932a21846fa7629c2aa9b-officeotron-0.7.4-master.jar:ext \
 		8ce2fcd72becf06c41f7201d15373ed9-librepository-1.1.6.zip:src \
 		97b2d4dba862397f446b217e2b623e71-libloader-1.1.6.zip:src \
 		a084cd548b586552cb7d3ee51f1af969-odfvalidator-1.1.8-incubating-SNAPSHOT-jar-with-dependencies.jar:ext \
 		ace6ab49184e329db254e454a010f56d-libxml-1.1.7.zip:src \
 		ba2930200c9f019c2d93a8c88c651a0f-flow-engine-0.9.4.zip:src \
-		beeca87be45ec87d241ddd0e1bad80c1-bsh-2.0b6-src.zip:src \
 		d8bd5eed178db6e2b18eeed243f85aa8-flute-1.1.6.zip:src \
 		db60e4fde8dd6d6807523deb71ee34dc-liblayout-0.2.10.zip:src \
 		eeb2c7ddf0d302fba4bfc6e97eac9624-libbase-1.1.6.zip:src \
-		f94d9870737518e3b597f9265f4e9803-libserializer-1.1.6.zip:src
-JAVA_USE=	JAVA=yes
-JAVA_VARS=	JAVA_BUILD=yes JAVA_RUN=yes JAVA_VERSION=11+
+		f94d9870737518e3b597f9265f4e9803-libserializer-1.1.6.zip:src \
+		Java-WebSocket-1.6.0.tar.gz:src \
+		bsh-2.1.1-src.zip:src \
+		officeotron-0.8.4.jar:ext \
+		rhino-1.7.15.1.zip:src
+JAVA_USES=	java
+JAVA_VARS=	JAVA_VERSION=17+ NO_SHLIB_REQUIRES_GLOB=libjawt.so
 
 KF5_CONFIGURE_ENABLE=	kf5
 KF5_USE=	kde=config,coreaddons,i18n,kio,windowsystem
 KF5_USES=	kde:5
 KF5_IMPLIES=	QT5
+KF5_PREVENTS=	KF6
+KF5_PREVENTS_MSG=	KF5 cannot coexist with KF6
+
+KF6_CONFIGURE_ENABLE=	kf6
+KF6_USE=	kde=config,coreaddons,i18n,kio,windowsystem
+KF6_USES=	kde:6
+KF6_IMPLIES=	QT6
+KF6_PREVENTS=	KF5
+KF6_PREVENTS_MSG=	KF6 cannot coexist with KF5
 
 LTO_CONFIGURE_ENABLE=	lto
 
@@ -224,7 +252,7 @@ MMEDIA_USES=		gstreamer
 MMEDIA_CONFIGURE_ENABLE=	gstreamer-1-0
 
 PDFIUM_CONFIGURE_ENABLE=	pdfium
-PDFIUM_DISTFILES=	pdfium-5778.tar.bz2:src
+PDFIUM_DISTFILES=	pdfium-7012.tar.bz2:src
 PDFIUM_LIB_DEPENDS=	libabsl_strings.so:devel/abseil \
 			libopenjp2.so:graphics/openjpeg
 
@@ -236,6 +264,8 @@ MARIADB_CONFIGURE_ENABLE=	mariadb-sdbc
 MARIADB_USES=	mysql:client
 
 QT5_CONFIGURE_ENABLE=	qt5
+QT5_PREVENTS=	KF6
+QT5_PREVENTS_MSG=	KF6 support require Qt6 engine
 QT5_USE=	qt=buildtools:build,core,gui,network,qmake:build,widgets,x11extras
 QT5_USES=	qt:5
 
@@ -243,7 +273,7 @@ QT6_CONFIGURE_ENABLE=	qt6
 QT6_CONFIGURE_ENV=	QMAKE6=${QMAKE} MOC6=${MOC} PATH="${QT_TOOLDIR}:${PATH}"
 QT6_PREVENTS=	KF5
 QT6_PREVENTS_MSG=	KF5 support require Qt5 engine
-QT6_USE=	qt=base,declarative:build,tools:build
+QT6_USE=	qt=base,declarative,multimedia,tools:build
 QT6_USES=	qt:6
 
 SDK_BUILD_DEPENDS=	doxygen:devel/doxygen
@@ -271,7 +301,6 @@ CONFIGURE_ARGS=	--disable-dependency-tracking \
 		--enable-release-build \
 		--enable-extension-integration \
 		--disable-mpl-subset \
-		--disable-report-builder \
 		--exec-prefix=${PREFIX} \
 		--with-boost=${LOCALBASE} \
 		--with-build-version="FreeBSD ports ${PKGVERSION}" \
@@ -279,9 +308,11 @@ CONFIGURE_ARGS=	--disable-dependency-tracking \
 		--with-external-hyph-dir=${LOCALBASE}/share/hyphen \
 		--with-external-tar=${DISTDIR}/${DIST_SUBDIR} \
 		--with-external-thes-dir=${LOCALBASE}/share/mythes \
+		--with-gnu-patch=${LOCALBASE}/bin/gpatch \
 		--with-os-version=${OSVERSION} \
 		--with-parallelism=${MAKE_JOBS_NUMBER} \
 		--with-system-abseil \
+		--with-system-argon2=no \
 		--with-system-cppunit \
 		--with-system-cuckoo \
 		--with-system-curl \
@@ -297,8 +328,8 @@ CONFIGURE_ARGS=	--disable-dependency-tracking \
 		--with-system-nss \
 		--with-system-openjpeg \
 		--with-system-orcus \
-		--with-system-ucpp \
 		--with-system-zlib \
+		--with-system-zxcvbn=no \
 		--with-system-zxing \
 		--with-tls=nss \
 		--with-vendor="FreeBSD ports" \
@@ -329,7 +360,9 @@ MAKE_ENV+=	verbose=1
 
 BINARY_ALIAS=	sed=gsed
 
+PIE_UNSAFE=	yes
 #MAKE_JOBS_UNSAFE=	yes
+MDDS_VERSION=	3.1
 
 .include <bsd.port.options.mk>
 
@@ -364,7 +397,13 @@ CXXFLAGS_WARN=	-Woverloaded-virtual -Wno-c++11-narrowing \
 CXXFLAGS_WARN=	-Wshadow -Woverloaded-virtual
 .endif
 
+LDFLAGS+=	-Wl,--undefined-version
+
 post-patch:
+	${REINPLACE_CMD} \
+		-e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
+		-e 's|mdds-3.0|mdds-${MDDS_VERSION}|g' \
+		${WRKSRC}/configure
 .if ${COMPILER_FEATURES:Mlibstdc++}
 	${REINPLACE_CMD} -e 's/gb_CC/gb_CXX/' ${WRKSRC}/solenv/gbuild/platform/unxgcc.mk
 .endif
@@ -380,13 +419,18 @@ post-install:
 	${FIND} -s lib/libreoffice -type d -empty \
 	    -exec ${ECHO_CMD} "@dir {}" \; >> ${TMPPLIST}
 	@cd ${STAGEDIR}${PREFIX} && \
-	${FIND} -s bin lib man -not -type d >> ${TMPPLIST}
-.for subdir in applications bash-completion icons metainfo mime
+	${FIND} -s bin lib -not -type d >> ${TMPPLIST}
+.for subdir in applications bash-completion icons man metainfo mime
 	@cd ${STAGEDIR}${PREFIX} && \
 	${FIND} -s share/${subdir} -not -type d >> ${TMPPLIST}
 .endfor
 
 post-install-SDK-on:
+.for subdir in share share/doc
+	@cd ${STAGEDIR}${PREFIX} && \
+	${FIND} -s ${subdir}/libreoffice -type d -empty \
+	    -exec ${ECHO_CMD} "@dir {}" \; >> ${TMPPLIST}
+.endfor
 .for subdir in include share share/doc
 	@cd ${STAGEDIR}${PREFIX} && \
 	${FIND} -s ${subdir}/libreoffice -not -type d >> ${TMPPLIST}

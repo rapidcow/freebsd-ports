@@ -1,6 +1,6 @@
 PORTNAME=	ghemical
 PORTVERSION=	3.0.0
-PORTREVISION=	25
+PORTREVISION=	29
 CATEGORIES=	science
 MASTER_SITES=	http://bioinformatics.org/ghemical/download/%SUBDIR%/
 MASTER_SITE_SUBDIR=	release20111012 current
@@ -17,10 +17,10 @@ LIB_DEPENDS=	libblas.so:math/blas \
 		libfreetype.so:print/freetype2 \
 		libghemical.so:science/libghemical \
 		libgtkglext-x11-1.0.so:x11-toolkits/gtkglext \
+		libharfbuzz.so:print/harfbuzz \
 		libint.so:science/libint \
 		liblapack.so:math/lapack \
 		liboglappth.so:science/liboglappth \
-		libmopac.so:science/mopac \
 		libmpqc.so:science/mpqc
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
@@ -28,7 +28,7 @@ USES=		compiler:c++11-lang fortran gettext gl gmake gnome pathfix \
 		pkgconfig xorg
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-gtk --enable-threads --disable-openbabel # not compatible with OpenBabel-3 so it is disabled
-USE_GNOME=	cairo gdkpixbuf2 gtk20 libglade2 intltool pangox-compat
+USE_GNOME=	cairo gdkpixbuf gtk20 libglade2 intltool pangox-compat
 USE_GL=		gl glu
 USE_XORG=	x11
 

@@ -1,6 +1,6 @@
 PORTNAME=	hybrid-bar
 DISTVERSION=	0.4.9
-PORTREVISION=	4
+PORTREVISION=	25
 CATEGORIES=	x11 wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -14,14 +14,14 @@ LIB_DEPENDS=	libgtk-layer-shell.so:x11-toolkits/gtk-layer-shell
 
 USES=		cargo gnome
 USE_GITHUB=	yes
-USE_GNOME=	cairo gdkpixbuf2 gtk30
+USE_GNOME=	cairo gdkpixbuf gtk30
 GH_ACCOUNT=	vars1ty
 GH_PROJECT=	HybridBar
 PLIST_FILES=	bin/${PORTNAME}
 
 post-patch:
 # Generic nodes are not supported by procfs(5)
-	@${REINPLACE_CMD} -e 's,/proc,/compat/linux&,g' \
+	@${REINPLACE_CMD} -e 's,/proc,${LINUXBASE}&,g' \
 		${WRKSRC_crate_lxinfo}/src/info.rs
 
 .include <bsd.port.mk>

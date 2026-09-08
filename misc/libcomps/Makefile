@@ -1,5 +1,5 @@
 PORTNAME=	libcomps
-DISTVERSION=	0.1.19
+DISTVERSION=	0.1.23
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,7 +11,7 @@ LICENSE_FILE=	${WRKSRC}/../COPYING
 
 LIB_DEPENDS=	libexpat.so:textproc/expat2
 
-USES=		cmake cpe gnome
+USES=		cmake:testing cpe gnome localbase:ldflags
 CPE_VENDOR=	rpm
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
@@ -22,6 +22,7 @@ GH_ACCOUNT=	rpm-software-management
 WRKSRC_SUBDIR=	${PORTNAME}
 
 CMAKE_OFF=	ENABLE_TESTS ENABLE_DOCS
+CMAKE_TESTING_ON=	ENABLE_TESTS
 
 OPTIONS_DEFINE=		PYTHON
 OPTIONS_DEFAULT=	PYTHON
@@ -31,5 +32,9 @@ PYTHON_CMAKE_BOOL=	BUILD_PYTHON_MODULE
 PYTHON_USES=		python
 PYTHON_BUILD_DEPENDS=	${PY_SETUPTOOLS}
 PYTHON_CMAKE_ON=	-DPYTHON_DESIRED=${PYTHON_MAJOR_VER}
+
+# tests as of 0.1.23:
+# 100%: Checks: 5, Failures: 0, Errors: 0
+# 100%: Checks: 8, Failures: 0, Errors: 0
 
 .include <bsd.port.mk>

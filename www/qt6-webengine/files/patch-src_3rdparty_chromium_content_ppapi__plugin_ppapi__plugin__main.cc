@@ -1,18 +1,18 @@
---- src/3rdparty/chromium/content/ppapi_plugin/ppapi_plugin_main.cc.orig	2023-03-28 19:45:02 UTC
+--- src/3rdparty/chromium/content/ppapi_plugin/ppapi_plugin_main.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/content/ppapi_plugin/ppapi_plugin_main.cc
-@@ -53,6 +53,11 @@
+@@ -52,6 +52,11 @@
  #include "gin/v8_initializer.h"
  #endif
  
-+#if BUILDFLAG(IS_OPENBSD)
-+#include "sandbox/policy/openbsd/sandbox_openbsd.h"
++#if BUILDFLAG(IS_BSD)
++#include "sandbox/policy/sandbox.h"
 +#include "sandbox/policy/sandbox_type.h"
 +#endif
 +
  #if BUILDFLAG(IS_POSIX) && !BUILDFLAG(IS_ANDROID)
  #include <stdlib.h>
  #endif
-@@ -146,7 +151,7 @@ int PpapiPluginMain(MainFunctionParams parameters) {
+@@ -139,7 +144,7 @@ int PpapiPluginMain(MainFunctionParams parameters) {
    gin::V8Initializer::LoadV8Snapshot();
  #endif
  

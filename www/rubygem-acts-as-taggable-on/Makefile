@@ -1,5 +1,5 @@
 PORTNAME=	acts-as-taggable-on
-PORTVERSION=	9.0.1
+PORTVERSION=	13.0.0
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -10,7 +10,8 @@ WWW=		https://github.com/mbleigh/acts-as-taggable-on
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-RUN_DEPENDS=	rubygem-activerecord61>=6.0<7.1:databases/rubygem-activerecord61
+RUN_DEPENDS=	rubygem-activerecord81>=7.1<8.2:databases/rubygem-activerecord81 \
+		rubygem-zeitwerk>=2.4<3.0:devel/rubygem-zeitwerk
 
 USES=		gem
 

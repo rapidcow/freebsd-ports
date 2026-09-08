@@ -1,6 +1,6 @@
 PORTNAME=	gsa
 DISTVERSIONPREFIX=	v
-DISTVERSION=	22.7.1
+DISTVERSION=	26.4.1
 CATEGORIES=	security
 
 MAINTAINER=	acm@FreeBSD.org
@@ -9,16 +9,18 @@ WWW=		https://github.com/greenbone/gsa
 
 LICENSE=	AGPLv3+
 
-BUILD_DEPENDS=	yarn:www/yarn
+ONLY_FOR_ARCHS=	aarch64 amd64
+
+BUILD_DEPENDS=	npm-node20>0:www/npm-node20
 RUN_DEPENDS=	${LOCALBASE}/sbin/gsad:security/gsad
 
-USES=		nodejs:build
+USES=		nodejs:20,build
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	greenbone
 GH_PROJECT=	gsa
 
-YARN_BIN=	${LOCALBASE}/bin/yarn
+NPM_BIN=	${LOCALBASE}/bin/npm
 
 # to rebuild the deps archive:
 #   1. set DEV_UPDATE_MODE=yes
@@ -28,27 +30,28 @@ YARN_BIN=	${LOCALBASE}/bin/yarn
 #   5. make clean makesum
 
 DEV_UPDATE_MODE=	no
-DEPS_CACHE_DIR=		${WRKDIR}
+DEPS_CACHE_DIR=		${WRKSRC}
 
 .if (${DEV_UPDATE_MODE} == "yes")
-post-build:
-	@cd ${DEPS_CACHE_DIR} && ${TAR} czf ${DISTDIR}/${DIST_SUBDIR}/${PORTNAME}-cache-${DISTVERSION}${EXTRACT_SUFX} yarn-offline-cache
-	@${ECHO} "(!!!) Please upload the cache archive: ${DISTDIR}/${DIST_SUBDIR}/${PORTNAME}-cache-${DISTVERSION}${EXTRACT_SUFX}"
-.else
-MASTER_SITES+=	LOCAL/acm/gsa/:yarn_cache
-DISTFILES+=	${PORTNAME}-cache-${DISTVERSION}${EXTRACT_SUFX}:yarn_cache
-YARN_ARGS=	--offline
-.endif
-
+NPM_ARGS=	install
 post-patch:
-	${ECHO_CMD} 'yarn-offline-mirror "${WRKDIR}/yarn-offline-cache"' >> \
-		${WRKSRC}/.yarnrc
+	@${RM} ${WKRSRC}/package-lock.json
+
+post-build:
+	@cd ${DEPS_CACHE_DIR} && ${TAR} czf ${DISTDIR}/${DIST_SUBDIR}/${PORTNAME}-cache-${ARCH}-${DISTVERSION}${EXTRACT_SUFX} node_modules
+	@${ECHO} "(!!!) Please upload the cache archive: ${DISTDIR}/${DIST_SUBDIR}/${PORTNAME}-cache-${ARCH}-${DISTVERSION}${EXTRACT_SUFX}"
+.else
+MASTER_SITES+=	LOCAL/acm/gsa/:npm_cache
+DISTFILES+=	${PORTNAME}-cache-${ARCH}-${DISTVERSION}${EXTRACT_SUFX}:npm_cache
+NPM_ARGS=	run build
+
+post-extract:
+	@${MV} ${WRKDIR}/node_modules ${WRKSRC}
+.endif
 
 do-build:
 	@cd ${WRKSRC} && \
-		${YARN_BIN} ${YARN_ARGS}
-	@cd ${WRKSRC} && \
-		${YARN_BIN} ${YARN_ARGS} build
+		${NPM_BIN} ${NPM_ARGS}
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/gvm/gsad/web
@@ -60,7 +63,7 @@ post-install:
 	@${ECHO_CMD} "share/gvm/gsad/web/index.html" >> ${TMPPLIST}
 	@${ECHO_CMD} "share/gvm/gsad/web/robots.txt" >> ${TMPPLIST}
 	@cd ${WRKSRC}/build && \
-		${FIND} -s img locales static -not -type d \
+		${FIND} -s img locales assets -not -type d \
 			-exec ${ECHO_CMD} "share/gvm/gsad/web/{}" \; >> ${TMPPLIST}
 
 .include <bsd.port.mk>

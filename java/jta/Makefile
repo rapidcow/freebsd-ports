@@ -14,8 +14,10 @@ LICENSE_NAME=	jta
 LICENSE_TEXT=	See the license
 LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
-USES=		zip
-USE_JAVA=	yes
+DEPRECATED=	manual download, no users in the ports tree, newer version is at https://github.com/jakartaee/transactions
+EXPIRATION_DATE=	2026-01-17
+
+USES=		java zip
 
 NO_BUILD=	yes
 DOWNLOAD_URL=	http://download.oracle.com/otndocs/jcp/7286-jta-${PORTVERSION}-spec-oth-JSpec/?submit=Download

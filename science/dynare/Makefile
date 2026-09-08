@@ -1,6 +1,6 @@
 PORTNAME=	dynare
 DISTVERSION=	5.4
-PORTREVISION=	3
+PORTREVISION=	14
 CATEGORIES=	science # economics
 MASTER_SITES=	https://www.dynare.org/release/source/
 
@@ -12,6 +12,9 @@ LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 BROKEN_aarch64=	cannot open module file 'ieee_arithmetic.mod' for reading at (1): No such file or directory
+.if !exists(/usr/include/omp.h)
+BROKEN=		requires OpenMP support that is missing on this architecture
+.endif
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/tokenizer.hpp:devel/boost-libs
 LIB_DEPENDS=	libhdf5.so:science/hdf5 \
@@ -23,7 +26,7 @@ RUN_DEPENDS=	epstool:graphics/epstool \
 		pstoedit:graphics/pstoedit \
 		xfig:graphics/xfig # README says that these executables are required for the test suite
 
-USES=		bison compiler:c++17-lang fortran gmake localbase tar:xz tex
+USES=		bison compiler:c++17-lang fortran gmake localbase:ldflags tar:xz tex
 USE_TEX=	pdftex
 
 GNU_CONFIGURE=	yes

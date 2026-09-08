@@ -1,28 +1,17 @@
---- src/3rdparty/chromium/base/linux_util.cc.orig	2023-03-28 19:45:02 UTC
+--- src/3rdparty/chromium/base/linux_util.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/base/linux_util.cc
-@@ -15,6 +15,7 @@
- 
- #include <iomanip>
- #include <memory>
-+#include <sstream>
- 
- #include "base/base_export.h"
- #include "base/files/dir_reader_posix.h"
-@@ -135,6 +136,9 @@ bool GetThreadsForProcess(pid_t pid, std::vector<pid_t
+@@ -164,10 +164,14 @@ bool GetThreadsForProcess(pid_t pid, std::vector<pid_t
  }
  
  bool GetThreadsForProcess(pid_t pid, std::vector<pid_t>* tids) {
-+#if defined(OS_BSD)
++#if BUILDFLAG(IS_BSD)
 +  return false;
 +#else
-   // 25 > strlen("/proc//task") + strlen(std::to_string(INT_MAX)) + 1 = 22
+   // 25 > strlen("/proc//task") + strlen(base::NumberToString(INT_MAX)) + 1 = 22
    char buf[25];
    strings::SafeSPrintf(buf, "/proc/%d/task", pid);
-@@ -152,6 +156,7 @@ bool GetThreadsForProcess(pid_t pid, std::vector<pid_t
-   }
- 
-   return true;
+   return GetThreadsFromProcessDir(buf, tids);
 +#endif
  }
  
- pid_t FindThreadIDWithSyscall(pid_t pid, const std::string& expected_data,
+ bool GetThreadsForCurrentProcess(std::vector<pid_t>* tids) {

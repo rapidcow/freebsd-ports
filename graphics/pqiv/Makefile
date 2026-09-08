@@ -1,6 +1,6 @@
 PORTNAME=	pqiv
-PORTVERSION=	2.12
-PORTREVISION=	22
+PORTVERSION=	2.13.3
+PORTREVISION=	2
 CATEGORIES=	graphics
 
 MAINTAINER=	danilo@FreeBSD.org
@@ -13,6 +13,8 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 BUILD_DEPENDS=	bash:shells/bash
 
+USES=		compiler gettext-runtime gmake gnome pkgconfig xorg
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	phillipberndt
 
@@ -21,18 +23,17 @@ OPTIONS_DEFINE=	DOCS
 OPTIONS_SINGLE=		GTK
 OPTIONS_SINGLE_GTK=	GTK2 GTK3
 
-OPTIONS_GROUP=		BACKENDS
-OPTIONS_GROUP_BACKENDS=	LIBARCHIVE LIBAV PIXBUF POPPLER SPECTRE WAND WEBP
+OPTIONS_MULTI=		BACKENDS
+OPTIONS_MULTI_BACKENDS=	LIBARCHIVE LIBAV PIXBUF POPPLER SPECTRE WAND WEBP
 LIBARCHIVE_DESC=	Libarchive formats support
 LIBAV_DESC=		Video support
 SPECTRE_DESC=		PS/EPS support
 WAND_DESC=		ImageMagick image processing support
 
-OPTIONS_DEFAULT=	GTK2 PIXBUF
+OPTIONS_DEFAULT=	GTK3 LIBARCHIVE LIBAV PIXBUF POPPLER WEBP
 
-USES=		compiler gettext-runtime gmake gnome pkgconfig xorg
 USE_XORG=	x11
-USE_GNOME=	cairo gdkpixbuf2
+USE_GNOME=	cairo gdkpixbuf
 HAS_CONFIGURE=	yes
 
 LIBARCHIVE_CONFIGURE_WITH=	archive archive_cbx
@@ -64,7 +65,7 @@ GTK3_USE=		GNOME=gtk30
 MAKEFILE=	GNUmakefile
 
 PORTDOCS=	README.markdown
-PLIST_FILES=	bin/pqiv man/man1/pqiv.1.gz
+PLIST_FILES=	bin/pqiv share/man/man1/pqiv.1.gz
 
 .include <bsd.port.pre.mk>
 
@@ -78,7 +79,7 @@ post-patch:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/pqiv ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/pqiv.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/pqiv.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/README.markdown ${STAGEDIR}${DOCSDIR}
 

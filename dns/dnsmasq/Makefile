@@ -1,7 +1,7 @@
 PORTNAME=	dnsmasq
-DISTVERSION=	2.89
+DISTVERSION=	2.91
 # Leave the PORTREVISION in even if 0 to avoid accidental PORTEPOCH bumps:
-PORTREVISION=	1
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	dns
 MASTER_SITES=	https://www.thekelleys.org.uk/dnsmasq/ \
@@ -13,7 +13,7 @@ WWW=		https://www.thekelleys.org.uk/dnsmasq/doc.html
 
 LICENSE=	GPLv2
 
-USES=		cpe shebangfix tar:xz
+USES=		compiler cpe shebangfix tar:xz
 CPE_VENDOR=	thekelleys
 
 SHEBANG_FILES=	contrib/dnslist/dnslist.pl \
@@ -25,13 +25,32 @@ MAKE_ARGS=	CC="${CC}" \
 		LIBS="${LDFLAGS}" \
 		PREFIX="${PREFIX}" \
 		RPM_OPT_FLAGS="${CPPFLAGS}"
-CFLAGS+=	-Wall -Wno-unused-function -Wno-unused-parameter \
-		-Wno-unused-value -Wno-unused-variable
+CFLAGS+=	-Wall
+# https://best.openssf.org/Compiler-Hardening-Guides/Compiler-Options-Hardening-Guide-for-C-and-C++.html
+# Note there are ${ARCH}-dependent options below after .include <bsd.port.pre.mk>
+# Note that these are enforced for now (2025-09-16), and we can't subject them to PIE/FORTIFY/SSP_UNSAFE or WITHOUT_ options for now.
+CFLAGS+=	-Wall -Wformat -Wformat=2 \
+		-Werror=format-security \
+		-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3 \
+		-fstrict-flex-arrays=3 \
+		-fstack-clash-protection -fstack-protector-strong \
+		-fno-delete-null-pointer-checks -fno-strict-overflow \
+		-fno-strict-aliasing -ftrivial-auto-var-init=zero
+LDFLAGS+=	-Wl,-z,nodlopen -Wl,-z,noexecstack \
+		-Wl,-z,relro -Wl,-z,now \
+		-Wl,--as-needed -Wl,--no-copy-dt-needed-entries
+CFLAGS+=	-fPIE
+LDFLAGS+=	-pie
+# error on obsolete C constructs
+CFLAGS+=	-Werror=implicit -Werror=incompatible-pointer-types \
+		-Werror=int-conversion
+# tune down harmless warnings due to coding style
+CFLAGS+=	-Wno-unused-function -Wno-unused-parameter \
+		-Wno-unused-value -Wno-unused-variable -Wno-format-nonliteral
 CPPFLAGS+=	-I${LOCALBASE}/include
 
 CONFLICTS_INSTALL=	dnsmasq-devel
 
-PATCH_STRIP=	-p1
 SUB_FILES=	pkg-message
 
 PORTDOCS=	CHANGELOG CHANGELOG.archive FAQ doc.html setup.html
@@ -98,10 +117,21 @@ USE_RC_SUBR=	dnsmasq
 
 .include <bsd.port.pre.mk>
 
+# https://best.openssf.org/Compiler-Hardening-Guides/Compiler-Options-Hardening-Guide-for-C-and-C++.html
+.if ${ARCH} == "amd64"
+CFLAGS+=	-fcf-protection=full
+.endif
+.if ${ARCH} == "aarch64"
+CFLAGS+=	-mbranch-protection=standard
+.endif
+.if ${CHOSEN_COMPILER_TYPE} == "gcc"
+CFLAGS+=	-Wtrampolines
+.endif
+
 LDFLAGS+=	-L${LOCALBASE}/lib ${_intllibs} ${ICONV_LIB}
 
 post-patch:
-	${REINPLACE_CMD} -e '/^lua_/s/lua5\.2/lua-${LUA_VER}/' ${WRKSRC}/Makefile
+	${REINPLACE_CMD} -e '/^LUA /s/lua/lua-${LUA_VER}/' ${WRKSRC}/Makefile
 
 pre-configure: pretty-print-config
 .if ${PORT_OPTIONS:MIDN}
@@ -120,7 +150,7 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/dnsmasq ${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_DATA} ${WRKSRC}/dnsmasq.conf.example ${STAGEDIR}${PREFIX}/etc/dnsmasq.conf.sample
 	${REINPLACE_CMD} -i '' 's}%%PREFIX%%}${PREFIX}}' ${STAGEDIR}${PREFIX}/etc/dnsmasq.conf.sample
-	${INSTALL_MAN} ${WRKSRC}/man/${PORTNAME}.8 ${STAGEDIR}${PREFIX}/man/man8
+	${INSTALL_MAN} ${WRKSRC}/man/${PORTNAME}.8 ${STAGEDIR}${PREFIX}/share/man/man8
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_DATA} ${WRKSRC}/trust-anchors.conf ${STAGEDIR}${DATADIR}/
 .if ${PORT_OPTIONS:MDOCS}

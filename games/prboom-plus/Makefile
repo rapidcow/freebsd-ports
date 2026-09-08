@@ -1,6 +1,6 @@
 PORTNAME=	prboom-plus
 PORTVERSION=	2.5.1.3
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	games
 MASTER_SITES=	SF
 
@@ -22,6 +22,7 @@ USE_GL=		gl
 USE_SDL=	image mixer net sdl
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-waddir=${DATADIR}
 
 DATADIR=	${DMDIR}
@@ -35,7 +36,7 @@ OPENGL_CONFIGURE_ENABLE=	gl
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

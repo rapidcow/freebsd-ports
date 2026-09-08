@@ -1,5 +1,3 @@
-TIMESTAMP = 1695999861
-SHA256 (AlizaMedicalImaging-AlizaMS-v1.9.3_GH0.tar.gz) = 2f45f04cb13b7513b14d033f1ef73f13cdb79230ffd0052b2a129dd1843ec11f
-SIZE (AlizaMedicalImaging-AlizaMS-v1.9.3_GH0.tar.gz) = 5029095
-SHA256 (dff6bb9bbba97dcf67793712d589ce3cedf8876f.patch) = a89d4c2232fc6d5a09dad80617564369157feb07f6ef7c9fa471a1d3d2d5c978
-SIZE (dff6bb9bbba97dcf67793712d589ce3cedf8876f.patch) = 1273
+TIMESTAMP = 1718391454
+SHA256 (AlizaMedicalImaging-AlizaMS-v1.9.10_GH0.tar.gz) = 8fe607fc5e234d1d89f87c04f9cab7fb256e43a71f9f7bc893a70eeca5f713ac
+SIZE (AlizaMedicalImaging-AlizaMS-v1.9.10_GH0.tar.gz) = 4767308

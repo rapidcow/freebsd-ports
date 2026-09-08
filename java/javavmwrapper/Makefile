@@ -1,5 +1,5 @@
 PORTNAME=	javavmwrapper
-PORTVERSION=	2.7.9
+PORTVERSION=	2.7.10
 CATEGORIES=	java
 MASTER_SITES=	# none
 DISTFILES=	# none
@@ -21,7 +21,7 @@ PKGINSTALL=	${WRKDIR}/pkg-install
 
 SRC=		${.CURDIR}/src
 SCRIPTS=	classpath javavmwrapper
-# This is normally defined by bsd.java.mk when USE_JAVA is defined, but
+# This is normally defined by bsd.java.mk when USES=java is defined, but
 # we can't do that here since it would result in a circular dependency
 JAVALIBDIR=	${LOCALBASE}/share/java/classes
 
@@ -47,10 +47,10 @@ do-install:
 	${LN} -sf javavm ${STAGEDIR}${PREFIX}/bin/manvm
 	${LN} -sf javavm ${STAGEDIR}${PREFIX}/bin/registervm
 	${LN} -sf javavm ${STAGEDIR}${PREFIX}/bin/unregistervm
-	${INSTALL_MAN} ${WRKSRC}/*.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/*.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	${INSTALL_MAN} ${WRKSRC}/registervm.1 \
-		${STAGEDIR}${MAN1PREFIX}/man/man1/unregistervm.1
-	${INSTALL_MAN} ${WRKSRC}/*.5 ${STAGEDIR}${MAN5PREFIX}/man/man5
+		${STAGEDIR}${PREFIX}/share/man/man1/unregistervm.1
+	${INSTALL_MAN} ${WRKSRC}/*.5 ${STAGEDIR}${PREFIX}/share/man/man5
 	${INSTALL_DATA} ${FILESDIR}/javavm_opts.conf.dist \
 		${STAGEDIR}${PREFIX}/etc/javavm_opts.conf.dist
 

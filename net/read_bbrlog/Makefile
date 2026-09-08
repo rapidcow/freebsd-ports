@@ -1,5 +1,5 @@
 PORTNAME=	read_bbrlog
-PORTVERSION=	1.0
+PORTVERSION=	1.5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net
 
@@ -18,7 +18,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	Netflix
 
 PLIST_FILES=	bin/read_bbrlog \
-		man/man1/read_bbrlog.1.gz
+		share/man/man1/read_bbrlog.1.gz
 
 CFLAGS+=	-I${PREFIX}/include
 LDFLAGS+=	-L${PREFIX}/lib
@@ -26,13 +26,13 @@ MAKE_ENV+=	WITHOUT_PIE=true
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1400093
-IGNORE=	builds only on FreeBSD head with minimum version 1400093
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1500057
+IGNORE=	builds only on FreeBSD head with minimum version 1500057
 .endif
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_PROGRAM} ${WRKSRC}/read_bbrlog ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/read_bbrlog.1.gz ${STAGEDIR}${PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/read_bbrlog.1.gz ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

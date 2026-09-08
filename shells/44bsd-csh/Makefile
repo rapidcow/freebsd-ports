@@ -1,14 +1,11 @@
 PORTNAME=	44bsd-csh
 PORTVERSION=	20001106
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	shells
 MASTER_SITES=	LOCAL/cy
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	The traditional 4.4BSD /bin/csh C-shell
-
-BROKEN_aarch64=	Fails to link: missing sbrk
-BROKEN_riscv64=	Fails to link: missing sbrk
 
 EXTRACT_DEPENDS=	rcs:devel/rcs57
 
@@ -28,7 +25,7 @@ post-build:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/csh ${STAGEDIR}${PREFIX}/bin/44bsd-csh
-	${INSTALL_MAN} ${WRKSRC}/csh.1 ${STAGEDIR}${PREFIX}/man/man1/44bsd-csh.1
+	${INSTALL_MAN} ${WRKSRC}/csh.1 ${STAGEDIR}${PREFIX}/share/man/man1/44bsd-csh.1
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/USD.doc/paper.ascii.gz ${STAGEDIR}${DOCSDIR}
 

@@ -1,6 +1,6 @@
 PORTNAME=	nethack32
 PORTVERSION=	3.2.3
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	games
 MASTER_SITES=	SF/${TRUEPORTNAME}/${TRUEPORTNAME}/3.2.2
 DISTNAME=	nethack-322
@@ -40,7 +40,7 @@ PLIST_SUB+=	HACKLINK=""
 PLIST_SUB+=	HACKLINK="@comment "
 .endif
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

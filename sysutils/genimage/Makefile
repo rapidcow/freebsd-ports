@@ -1,7 +1,6 @@
 PORTNAME=	genimage
 DISTVERSIONPREFIX=	v
-DISTVERSION=	16-10
-DISTVERSIONSUFFIX=	-g2b9d870
+DISTVERSION=	18
 #MASTER_SITES=	https://github.com/pengutronix/genimage/releases/download/v${DISTVERSION}/
 CATEGORIES=	sysutils
 
@@ -20,6 +19,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	pengutronix
 
 GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--disable-silent-rules
 
 PLIST_FILES=	bin/genimage
 

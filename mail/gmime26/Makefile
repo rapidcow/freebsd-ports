@@ -1,13 +1,13 @@
 PORTNAME=	gmime
 PORTVERSION=	2.6.23
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES?=	mail
 MASTER_SITES=	GNOME
 PKGNAMESUFFIX?=	26
 
 MAINTAINER?=	bofh@FreeBSD.org
 COMMENT?=	Library (written in C) for parsing and creating messages using MIME
-WWW=		http://spruce.sourceforge.net/gmime/
+WWW=		https://spruce.sourceforge.net/gmime/
 
 LICENSE=	LGPL21
 

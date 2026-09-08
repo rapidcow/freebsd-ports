@@ -1,12 +1,12 @@
 PORTNAME=	portfwd
 PORTVERSION=	0.29
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	SF
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Port Forwarding Daemon
-WWW=		http://portfwd.sourceforge.net/
+WWW=		https://portfwd.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -14,6 +14,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 USES=		autoreconf gmake
 USE_RC_SUBR=	${PORTNAME}
 

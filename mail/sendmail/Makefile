@@ -1,5 +1,5 @@
 PORTNAME=	sendmail
-PORTVERSION=	8.17.2
+PORTVERSION=	8.18.2
 PORTREVISION=	0
 CATEGORIES=	mail
 MASTER_SITES=	ftp://ftp.sendmail.org/pub/sendmail/
@@ -31,7 +31,7 @@ WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 DOCS=		KNOWNBUGS LICENSE PGPKEYS README RELEASE_NOTES \
 		sendmail/TRACEFLAGS sendmail/SECURITY sendmail/TUNING
 PLIST_SUB+=	PREFIX=${PREFIX:S=${PREFIX}/==} \
-		MANPREFIX=${MANPREFIX:S=$=/=:S=${PREFIX}==:S=^/==}
+		MANPREFIX=${PREFIX}/share/
 SUB_FILES=	pkg-message
 
 WCONF=		${WRKSRC}/devtools/Site
@@ -80,6 +80,7 @@ CYRUSLOOKUP_IMPLIES=	SOCKETMAP
 SMTPUTF8_LIB_DEPENDS=	libidn2.so:dns/libidn2 libicui18n.so:devel/icu
 MTA_STS_IMPLIES=	SOCKETMAP TLS
 TLS_CERT_CHAIN_IMPLIES=	TLS
+BLACKLISTD_EXTRA_PATCHES= ${FILESDIR}/extra-patch-proto.m4
 
 .include <bsd.port.options.mk>
 
@@ -217,7 +218,10 @@ post-build:
 	 ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_FLAGS} ${MAKEFILE} op.txt)
 
 pre-install:
-	${MKDIR} ${STAGEDIR}/etc/mail
+	${MKDIR} ${STAGEDIR}/etc/mail \
+		${STAGEDIR}${PREFIX}/share/man/cat1 \
+		${STAGEDIR}${PREFIX}/share/man/cat5 \
+		${STAGEDIR}${PREFIX}/share/man/cat8
 	@${CAT} ${PKGDIR}/pkg-plist >${PLIST}
 	@cd ${WRKSRC} && ${FIND} cf -type f | \
 	${AWK} '{print "share/sendmail/" $$1}' >>${PLIST}
@@ -244,18 +248,18 @@ post-install:
 	(cd ${WRKSRC}/rmail && \
 	 ${SETENV} ${MAKE_ENV} ${MAKE} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} force-install)
 .for i in ${LMAN8}
-	${INSTALL_MAN} ${WRKSRC}/*/${i} ${STAGEDIR}${MANPREFIX}/man/man8/
+	${INSTALL_MAN} ${WRKSRC}/*/${i} ${STAGEDIR}${PREFIX}/share/man/man8/
 .endfor
 .for i in ${LMAN5}
-	${INSTALL_MAN} ${WRKSRC}/*/${i} ${STAGEDIR}${MANPREFIX}/man/man5/
+	${INSTALL_MAN} ${WRKSRC}/*/${i} ${STAGEDIR}${PREFIX}/share/man/man5/
 .endfor
 .for i in ${LMAN1}
-	${INSTALL_MAN} ${WRKSRC}/*/${i} ${STAGEDIR}${MANPREFIX}/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/*/${i} ${STAGEDIR}${PREFIX}/share/man/man1/
 .endfor
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/sendmail
 	${TAR} -C ${WRKSRC} -cf - cf | \
 		${TAR} -C ${STAGEDIR}${PREFIX}/share/sendmail -xf -
-	${RM} ${STAGEDIR}${PREFIX}/man/cat*/*
+	${RM} -rfv ${STAGEDIR}${PREFIX}/share/man/cat*
 # final perm of sendmail is 2555 (see plist), needed for strip cmd
 	${CHMOD} 755 ${STAGEDIR}${PREFIX}/sbin/sendmail
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/vacation

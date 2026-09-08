@@ -1,5 +1,5 @@
 PORTNAME=	courier-unicode
-PORTVERSION=	2.2.6
+PORTVERSION=	2.4.0
 CATEGORIES=	devel mail
 MASTER_SITES=	SF/courier/${PORTNAME}/${PORTVERSION}
 
@@ -14,6 +14,7 @@ USES=		compiler:c++11-lang iconv libtool localbase:ldflags \
 USE_PERL5=	build
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 
 post-patch:

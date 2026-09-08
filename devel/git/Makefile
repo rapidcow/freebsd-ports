@@ -1,5 +1,5 @@
 PORTNAME=	git
-DISTVERSION=	2.42.0
+DISTVERSION=	2.52.0
 CATEGORIES=	devel
 MASTER_SITES=	KERNEL_ORG/software/scm/git
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
@@ -54,24 +54,22 @@ MAKE_ENV+=	V=1
 .if ${SUBPORT} == core
 USE_RC_SUBR=	git_daemon
 .endif
-SHEBANG_FILES=	*.perl */*.perl */*/*.perl */*.pl */*/*.pl */*/*/*.pl \
-		t/*/*/pre t/*/*/post t/Git-SVN/Utils/*.t \
-		git-p4.py \
-		contrib/hg-to-git/hg-to-git.py \
-		contrib/hooks/update-paranoid \
+SHEBANG_FILES=	Documentation/*.perl \
+		contrib/*/*.perl \
+		contrib/*/*.pl \
+		contrib/*/*/*.perl \
+		contrib/*/*/*.pl \
+		contrib/contacts/git-contacts \
 		contrib/fast-import/import-zips.py \
-		contrib/remote-helpers/git-remote-bzr \
-		contrib/remote-helpers/git-remote-hg \
-		contrib/credential/netrc/git-credential-netrc.perl \
-		contrib/buildsystems/generate contrib/contacts/git-contacts \
-		templates/hooks--fsmonitor-watchman.sample
+		git-p4.py \
+		templates/hooks/fsmonitor-watchman.sample
 TEST_TARGET=	test
 
 CONFIGURE_ARGS=	--enable-pthreads=-pthread ac_cv_header_libcharset_h=no
 
 .if ${SUBPORT} == core
 
-OPTIONS_DEFINE=	CONTRIB CURL GITWEB HTMLDOCS ICONV NLS PCRE2 PERL SEND_EMAIL \
+OPTIONS_DEFINE=	CONTRIB CURL DOCS GITWEB ICONV NLS PCRE2 PERL SEND_EMAIL \
 		SUBTREE
 OPTIONS_DEFAULT=CONTRIB CURL GITWEB ICONV PCRE2 PERL SEND_EMAIL SUBTREE
 
@@ -91,7 +89,6 @@ OPTIONS_FILE=		${PORT_DBDIR}/${OPTIONS_NAME}/${FLAVOR}-options
 CONTRIB_DESC=	Install contributed scripts
 CURL_DESC=	Install curl support (provides HTTPS transport)
 GITWEB_DESC=	Install gitweb
-HTMLDOCS_DESC=	Install additional documentation
 PCRE2_DESC=	Use Perl Compatible Regular Expressions (v2)
 SEND_EMAIL_DESC=Enable the git-send-email(1) script
 SUBTREE_DESC=	Install git-subtree
@@ -106,7 +103,6 @@ PERL_RUN_DEPENDS=	p5-Error>=0:lang/p5-Error
 PERL_MAKE_ARGS_OFF=	NO_PERL=1
 
 GITWEB_IMPLIES=		PERL
-GITWEB_RUN_DEPENDS=	p5-CGI>=0:www/p5-CGI
 GITWEB_MAKE_ARGS_OFF=	NO_GITWEB=1
 
 PCRE2_LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
@@ -124,9 +120,9 @@ CURL_RUN_DEPENDS=	curl:ftp/curl
 CURL_LIB_DEPENDS=	libexpat.so:textproc/expat2
 CURL_MAKE_ARGS_OFF=	NO_CURL=1 NO_EXPAT=1
 
-HTMLDOCS_DISTFILES=	${PORTNAME}-htmldocs-${DISTVERSION}${EXTRACT_SUFX}
+DOCS_DISTFILES=	${PORTNAME}-htmldocs-${DISTVERSION}${EXTRACT_SUFX}
 
-SUBTREE_BUILD_DEPENDS=	asciidoctor:textproc/rubygem-asciidoctor\
+SUBTREE_BUILD_DEPENDS=	asciidoctor:textproc/rubygem-asciidoctor \
 			xmlto:textproc/xmlto
 
 .else
@@ -190,13 +186,15 @@ RMMAN1+=	git-cvsimport.1 \
 RMMAN7+=	gitcvs-migration.7
 .endif
 
-post-extract-HTMLDOCS-on:
+post-extract-DOCS-on:
 	@${MKDIR} ${WRKDIR}/htmldocs
 	@cd ${WRKDIR}/htmldocs && ${EXTRACT_CMD} ${EXTRACT_BEFORE_ARGS} \
 		${DISTDIR}/${PORTNAME}-htmldocs-${DISTVERSION}${EXTRACT_SUFX} \
 		${EXTRACT_AFTER_ARGS}
 
 post-patch:
+	@${REINPLACE_CMD} -e '/^mandir/s/\?=/=/' \
+		${WRKSRC}/contrib/subtree/Makefile
 .for FILE in ${RMMAN1}
 	@${RM} ${WRKDIR}/man1/${FILE}
 .endfor
@@ -221,7 +219,7 @@ post-patch:
 .if ${SUBPORT} == gui
 	@${REINPLACE_CMD} -e "/exec wish/s,wish,${WISH}," \
 		${WRKSRC}/gitk-git/gitk \
-		${WRKSRC}/git-gui/git-gui--askpass
+		${WRKSRC}/git-gui/git-gui--askpass.sh
 .endif
 
 post-patch-CONTRIB-on:
@@ -239,28 +237,24 @@ post-build:
 
 .if ${SUBPORT} == core
 post-build-CONTRIB-on:
-	${SETENV} ${MAKE_ENV} ${MAKE_CMD} -C ${WRKSRC}/contrib/diff-highlight
+	${SETENVI} ${WRK_ENV} ${MAKE_ENV} ${MAKE_CMD} \
+		-C ${WRKSRC}/contrib/diff-highlight
 	${RM} ${WRKSRC}/contrib/diff-highlight/shebang.perl
 
 post-install:
 	(cd ${WRKDIR}/man1/ && \
-		${COPYTREE_SHARE} . ${STAGEDIR}${MANPREFIX}/man/man1)
+		${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/share/man/man1)
 	(cd ${WRKDIR}/man5/ && \
-		${COPYTREE_SHARE} . ${STAGEDIR}${MANPREFIX}/man/man5)
+		${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/share/man/man5)
 	(cd ${WRKDIR}/man7/ && \
-		${COPYTREE_SHARE} . ${STAGEDIR}${MANPREFIX}/man/man7)
-	${MKDIR} ${STAGEDIR}${PREFIX}/share/emacs/site-lisp/git
-	${INSTALL_DATA} ${WRKSRC}/contrib/emacs/git.el \
-		${STAGEDIR}${PREFIX}/share/emacs/site-lisp/git/
-	${INSTALL_DATA} ${WRKSRC}/contrib/emacs/git-blame.el \
-		${STAGEDIR}${PREFIX}/share/emacs/site-lisp/git/
+		${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/share/man/man7)
 	@${MKDIR} ${STAGEDIR}${PREFIX}/etc/bash_completion.d
 	${INSTALL_SCRIPT} ${WRKSRC}/contrib/completion/git-completion.bash \
 		${STAGEDIR}${PREFIX}/etc/bash_completion.d/
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/scalar \
 		${STAGEDIR}${PREFIX}/libexec/git-core/scalar
 
-post-install-HTMLDOCS-on:
+post-install-DOCS-on:
 	# Manually remove the index.html symlink before installing, and then
 	# recreate it after. This is necessary because the distfile is
 	# extracted with --no-same-owner. If the distfile is extracted as a
@@ -271,7 +265,10 @@ post-install-HTMLDOCS-on:
 	${LN} -s git.html ${STAGEDIR}${DOCSDIR}/index.html
 
 post-install-SUBTREE-on:
-	cd ${WRKSRC}/contrib/subtree && ${SETENV} ${MAKE_ENV} \
+	cd ${WRKSRC}/Documentation && ${SETENVI} ${WRK_ENV} ${MAKE_ENV} \
+		${MAKE_CMD} ${MAKE_FLAGS} Makefile USE_ASCIIDOCTOR=1 \
+		${MAKE_ARGS} asciidoctor-extensions.rb
+	cd ${WRKSRC}/contrib/subtree && ${SETENVI} ${WRK_ENV} ${MAKE_ENV} \
 		${MAKE_CMD} ${MAKE_FLAGS} Makefile USE_ASCIIDOCTOR=1 \
 		${MAKE_ARGS} install install-doc
 
@@ -298,8 +295,8 @@ do-install:
 		${STAGEDIR}${PREFIX}/libexec/git-core/
 	${LN} ${STAGEDIR}${PREFIX}/libexec/git-core/git-gui \
 		${STAGEDIR}${PREFIX}/libexec/git-core/git-citool
-	${INSTALL_SCRIPT} ${WRKSRC}/git-gui/git-gui--askpass \
-		${STAGEDIR}${PREFIX}/libexec/git-core/
+	${INSTALL_SCRIPT} ${WRKSRC}/git-gui/git-gui--askpass.sh \
+		${STAGEDIR}${PREFIX}/libexec/git-core/git-gui--askpass
 	${INSTALL_DATA} ${WRKSRC}/git-gui/lib/tclIndex \
 		${STAGEDIR}${PREFIX}/share/git-gui/lib/
 	${INSTALL_DATA} ${WRKSRC}/git-gui/lib/*.ico \
@@ -313,11 +310,11 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/gitk-git/po/*.msg \
 		${STAGEDIR}${PREFIX}/share/gitk/lib/msgs/
 	${INSTALL_DATA} ${WRKDIR}/man1/git-citool.1 \
-		${STAGEDIR}${MANPREFIX}/man/man1/
+		${STAGEDIR}${PREFIX}/share/man/man1/
 	${INSTALL_DATA} ${WRKDIR}/man1/git-gui.1 \
-		${STAGEDIR}${MANPREFIX}/man/man1/
+		${STAGEDIR}${PREFIX}/share/man/man1/
 	${INSTALL_DATA} ${WRKDIR}/man1/gitk.1 \
-		${STAGEDIR}${MANPREFIX}/man/man1/
+		${STAGEDIR}${PREFIX}/share/man/man1/
 
 .elif ${SUBPORT} == cvs
 
@@ -331,13 +328,13 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/git-cvsserver \
 		${STAGEDIR}${PREFIX}/libexec/git-core/
 	${INSTALL_DATA} ${WRKDIR}/man1/git-cvsimport.1 \
-		${STAGEDIR}${MANPREFIX}/man/man1/
+		${STAGEDIR}${PREFIX}/share/man/man1/
 	${INSTALL_DATA} ${WRKDIR}/man1/git-cvsexportcommit.1 \
-		${STAGEDIR}${MANPREFIX}/man/man1/
+		${STAGEDIR}${PREFIX}/share/man/man1/
 	${INSTALL_DATA} ${WRKDIR}/man1/git-cvsserver.1 \
-		${STAGEDIR}${MANPREFIX}/man/man1/
+		${STAGEDIR}${PREFIX}/share/man/man1/
 	${INSTALL_DATA} ${WRKDIR}/man7/gitcvs-migration.7 \
-		${STAGEDIR}${MANPREFIX}/man/man7/
+		${STAGEDIR}${PREFIX}/share/man/man7/
 
 .elif ${SUBPORT} == p4
 
@@ -346,7 +343,7 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/git-p4.py \
 		${STAGEDIR}${PREFIX}/libexec/git-core/git-p4
 	${INSTALL_DATA} ${WRKDIR}/man1/git-p4.1 \
-		${STAGEDIR}${MANPREFIX}/man/man1/
+		${STAGEDIR}${PREFIX}/share/man/man1/
 
 .elif ${SUBPORT} == svn
 
@@ -355,7 +352,7 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/git-svn \
 		${STAGEDIR}${PREFIX}/libexec/git-core/
 	${INSTALL_DATA} ${WRKDIR}/man1/git-svn.1 \
-		${STAGEDIR}${MANPREFIX}/man/man1/
+		${STAGEDIR}${PREFIX}/share/man/man1/
 .endif
 
 .include <bsd.port.mk>

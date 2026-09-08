@@ -1,7 +1,7 @@
---- chrome/app/chrome_main.cc.orig	2023-07-24 14:27:53 UTC
+--- chrome/app/chrome_main.cc.orig	2025-12-10 15:04:57 UTC
 +++ chrome/app/chrome_main.cc
-@@ -27,11 +27,11 @@
- #include "chrome/app/notification_metrics.h"
+@@ -28,11 +28,11 @@
+ #include "chrome/app/chrome_main_mac.h"
  #endif
  
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
@@ -14,7 +14,25 @@
  #include "chrome/app/chrome_main_linux.h"
  #endif
  
-@@ -136,7 +136,7 @@ int ChromeMain(int argc, const char** argv) {
+@@ -57,7 +57,7 @@
+ // sometime after old headless code is removed from Chrome.
+ // See https://crbug.com/373672160.
+ #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC) || \
+-    BUILDFLAG(IS_WIN)
++    BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
+ #define ENABLE_OLD_HEADLESS_INFO
+ #endif
+ 
+@@ -115,7 +115,7 @@ int ChromeMain(int argc, const char** argv) {
+ #error Unknown platform.
+ #endif
+ 
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+   PossiblyDetermineFallbackChromeChannel(argv[0]);
+ #endif
+ 
+@@ -180,7 +180,7 @@ int ChromeMain(int argc, const char** argv) {
    SetUpBundleOverrides();
  #endif
  
@@ -23,12 +41,3 @@
    AppendExtraArgumentsToCommandLine(command_line);
  #endif
  
-@@ -164,7 +164,7 @@ int ChromeMain(int argc, const char** argv) {
-     headless::SetUpCommandLine(command_line);
-   } else {
- #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_MAC) || \
--    BUILDFLAG(IS_WIN)
-+    BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
-     if (headless::IsOldHeadlessMode()) {
- #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
-       command_line->AppendSwitch(::headless::switches::kEnableCrashReporter);

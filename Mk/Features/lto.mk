@@ -14,6 +14,8 @@ LTO_Include_MAINTAINER=	pkubaj@FreeBSD.org
    CARGO_ENV+=	CARGO_PROFILE_RELEASE_LTO="true" \
 		CARGO_PROFILE_RELEASE_PANIC="abort" \
 		CARGO_PROFILE_RELEASE_CODEGEN_UNITS=1
+.    elif defined(_INCLUDE_USES_CMAKE_MK)
+   CMAKE_ON+=  CMAKE_INTERPROCEDURAL_OPTIMIZATION
 .    elif defined(_INCLUDE_USES_MESON_MK)
    MESON_ARGS+=	-Db_lto=true
 .    elif defined(_INCLUDE_USES_CABAL_MK)
@@ -26,6 +28,10 @@ LTO_Include_MAINTAINER=	pkubaj@FreeBSD.org
    CFLAGS+=	${LTO_FLAGS}
    CXXFLAGS+=	${LTO_FLAGS}
    LDFLAGS+=	${LTO_FLAGS}
+.    endif
+.  else
+.    if defined(_INCLUDE_USES_CARGO_MK)
+   RUSTFLAGS+=	-C lto=no
 .    endif
 .  endif
 .endif

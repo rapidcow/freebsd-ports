@@ -1,11 +1,11 @@
 PORTNAME=	grig
 PORTVERSION=	0.9.0
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	comms hamradio
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Amateur Radio control front-end
-WWW=		http://groundstation.sourceforge.net/
+WWW=		https://groundstation.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -22,8 +22,9 @@ GH_ACCOUNT=	fillods
 GH_PROJECT=	grig
 GH_TAGNAME=	9d79adb
 
-USE_GNOME=	cairo gdkpixbuf2 gtk20 intltool
+USE_GNOME=	cairo gdkpixbuf gtk20 intltool
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 LIBS+=		-lm
 

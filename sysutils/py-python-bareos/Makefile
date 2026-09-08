@@ -1,8 +1,9 @@
 PORTNAME=	python-bareos
-PORTVERSION=	22.0.3
+PORTVERSION=	25.0.1
 CATEGORIES=	sysutils python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+DISTNAME=	${PORTNAME:S/-/_/}-${PORTVERSION}
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	client library and tools for Bareos console access

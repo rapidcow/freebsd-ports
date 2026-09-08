@@ -1,9 +1,9 @@
---- chrome/browser/extensions/api/webstore_private/webstore_private_api.cc.orig	2023-09-13 12:11:42 UTC
+--- chrome/browser/extensions/api/webstore_private/webstore_private_api.cc.orig	2026-01-14 08:33:23 UTC
 +++ chrome/browser/extensions/api/webstore_private/webstore_private_api.cc
-@@ -913,7 +913,7 @@ void WebstorePrivateBeginInstallWithManifest3Function:
-         RequestExtensionApproval(contents);
-         return;
-       }
+@@ -920,7 +920,7 @@ void WebstorePrivateBeginInstallWithManifest3Function:
+ #if BUILDFLAG(IS_CHROMEOS)
+       RequestExtensionApproval(contents);
+       return;
 -#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
 +#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_BSD)
        // Shows a parental permission dialog directly bypassing the extension

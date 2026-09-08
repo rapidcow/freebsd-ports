@@ -2,16 +2,16 @@
 
 PORTNAME=	plan
 PORTVERSION=	1.12
+PORTREVISION?=	1
 CATEGORIES+=	deskutils
 MASTER_SITES=	https://cschubert.com/distfiles/plan/ \
-		ftp://ftp.bitrot.de/pub/plan/ \
-		ftp://plan.ftp.fu-berlin.de/
+		LOCAL/cy \
+		https://plan.ftp.fu-berlin.de/
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	X/Motif schedule planner with calendar
 WWW=		https://www.bitrot.de/plan.html
 
-FETCH_ARGS=	-Fr --no-passive
 USES=		motif
 USE_XORG=	xt sm ice x11 xext
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/src
@@ -29,8 +29,8 @@ do-install:
 	cd ${WRKSRC} \
 	   && ${INSTALL_PROGRAM} plan pland netplan notifier ${STAGEDIR}${PREFIX}/bin		\
 	   && ${INSTALL_SCRIPT}  ../misc/Killpland ${STAGEDIR}${PREFIX}/bin			\
-	   && ${INSTALL_MAN} ../misc/netplan.1 ../misc/plan.1 ${STAGEDIR}${MAN1PREFIX}/man/man1	\
-	   && ${INSTALL_MAN} ../misc/plan.4 ${STAGEDIR}${MAN4PREFIX}/man/man4
+	   && ${INSTALL_MAN} ../misc/netplan.1 ../misc/plan.1 ${STAGEDIR}${PREFIX}/share/man/man1	\
+	   && ${INSTALL_MAN} ../misc/plan.4 ${STAGEDIR}${PREFIX}/share/man/man4
 
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	cd ${WRKSRC}/.. \

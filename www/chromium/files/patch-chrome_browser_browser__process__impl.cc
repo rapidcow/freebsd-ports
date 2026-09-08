@@ -1,29 +1,38 @@
---- chrome/browser/browser_process_impl.cc.orig	2023-09-13 12:11:42 UTC
+--- chrome/browser/browser_process_impl.cc.orig	2026-01-14 08:33:23 UTC
 +++ chrome/browser/browser_process_impl.cc
-@@ -216,7 +216,7 @@
+@@ -257,7 +257,7 @@ void OnLocalStatePrefsLoaded();
  #include "components/enterprise/browser/controller/chrome_browser_cloud_management_controller.h"
  #endif
  
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
- #include "chrome/browser/error_reporting/chrome_js_error_report_processor.h"  // nogncheck
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+ #include "chrome/browser/browser_features.h"
+ #include "components/os_crypt/async/browser/freedesktop_secret_key_provider.h"
+ #include "components/os_crypt/async/browser/secret_portal_key_provider.h"
+@@ -1192,7 +1192,7 @@ void BrowserProcessImpl::RegisterPrefs(PrefRegistrySim
+   registry->RegisterBooleanPref(prefs::kDevToolsRemoteDebuggingAllowed, true);
+   registry->RegisterBooleanPref(prefs::kDevToolsRemoteDebuggingEnabled, false);
+ 
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+   os_crypt_async::SecretPortalKeyProvider::RegisterLocalPrefs(registry);
  #endif
+ }
+@@ -1382,7 +1382,7 @@ void BrowserProcessImpl::PreMainMessageLoopRun() {
+           local_state())));
+ #endif  // BUILDFLAG(IS_WIN)
  
-@@ -1207,7 +1207,7 @@ void BrowserProcessImpl::PreMainMessageLoopRun() {
+-#if BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
+   base::CommandLine* cmd_line = base::CommandLine::ForCurrentProcess();
+   const auto password_store =
+       cmd_line->GetSwitchValueASCII(password_manager::kPasswordStore);
+@@ -1721,7 +1721,7 @@ void BrowserProcessImpl::Unpin() {
+ }
  
-   ApplyMetricsReportingPolicy();
- 
--#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
-+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
-   ChromeJsErrorReportProcessor::Create();
- #endif
- 
-@@ -1463,7 +1463,7 @@ void BrowserProcessImpl::Unpin() {
  // Mac is currently not supported.
- // TODO(crbug.com/1052397): Revisit once build flag switch of lacros-chrome is
- // complete.
--#if BUILDFLAG(IS_WIN) || (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS))
-+#if BUILDFLAG(IS_WIN) || (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) || BUILDFLAG(IS_BSD)
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  
  bool BrowserProcessImpl::IsRunningInBackground() const {
    // Check if browser is in the background.

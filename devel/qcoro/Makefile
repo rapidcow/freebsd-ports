@@ -1,8 +1,8 @@
 PORTNAME=	qcoro
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.0
+DISTVERSION=	0.12.0
 CATEGORIES=	devel kde
-PKGNAMESUFFIX=	-${FLAVOR}
+PKGNAMESUFFIX=	-qt6
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Coroutines for Qt
@@ -11,26 +11,19 @@ WWW=		https://github.com/danvratil/qcoro
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSES/MIT.txt
 
-FLAVORS=	qt5 qt6
-FLAVOR?=	qt5
-
-USES=		cmake compiler:c++17-lang pkgconfig qt:${FLAVOR:S/qt//}
+USES=		cmake:testing compiler:c++20-lang gl pkgconfig qt:6
 USE_GITHUB=	yes
 GH_ACCOUNT=	danvratil
-_USE_QT_qt5=	concurrent core dbus declarative network testlib websockets \
-		buildtools:build qmake:build
-_USE_QT_qt6=	base websockets
-USE_QT=		${_USE_QT_${FLAVOR}}
+USE_GL=		opengl
+USE_QT=		base declarative websockets
 
-CMAKE_OFF=	QCORO_BUILD_EXAMPLES
-CMAKE_ARGS=	-DUSE_QT_VERSION=${FLAVOR:S/qt//}
+CMAKE_ARGS=		-DUSE_QT_VERSION="6"
+CMAKE_ON=		BUILD_SHARED_LIBS
+CMAKE_OFF=		QCORO_BUILD_EXAMPLES \
+			QCORO_BUILD_TESTING
+CMAKE_TESTING_ON=	QCORO_BUILD_TESTING
 
-PLIST_SUB=	QT_VER=${FLAVOR:S/qt//}
-
-.include <bsd.port.options.mk>
-
-.if ${ARCH:Mpowerpc*}
-USES+=		llvm:min=16
-.endif
+PLIST_SUB=	SHORTVER=${DISTVERSION:R:R} \
+		FULLVER=${DISTVERSION}
 
 .include <bsd.port.mk>

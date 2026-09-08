@@ -1,4 +1,4 @@
---- sha512.c.orig	2016-12-28 21:17:50 UTC
+--- sha512.c.orig	2024-08-22 17:41:01 UTC
 +++ sha512.c
 @@ -13,13 +13,14 @@
  #endif
@@ -14,5 +14,5 @@
 -#include <endian.h>
 +#include <machine/endian.h>
  
- /*
- Note 1: All variables are 64 bit unsigned integers and addition is calculated modulo 2^64 
+ #ifdef HAVE_SYS_REG_H
+ #include <sys/reg.h>

@@ -15,11 +15,16 @@ LIB_DEPENDS=	libevent.so:devel/libevent
 TEST_DEPENDS=	memcached:databases/memcached \
 		onetbb>=0:devel/onetbb
 
-USES=		bison compiler:c++11-lang pathfix pkgconfig ssl
+USES=		bison compiler:c++11-lang pkgconfig ssl
 
-CMAKE_OFF=	BUILD_DOCSONLY BUILD_DOCS_MANGZ BUILD_DOCS_HTML BUILD_TESTING ENABLE_DTRACE
-CMAKE_ON=	BUILD_SHARED_LIBS ENABLE_MEMASLAP ENABLE_OPENSSL_CRYPTO
-CMAKE_TESTING_ON=	BUILD_TESTING
+CMAKE_OFF=	BUILD_DOCSONLY \
+		BUILD_DOCS_MANGZ \
+		BUILD_DOCS_HTML \
+		BUILD_TESTING \
+		ENABLE_DTRACE
+CMAKE_ON=	BUILD_SHARED_LIBS \
+		ENABLE_MEMASLAP \
+		ENABLE_OPENSSL_CRYPTO
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
@@ -45,11 +50,4 @@ MURMUR_CMAKE_BOOL=	ENABLE_HASH_MURMUR
 SASL_CMAKE_BOOL=	ENABLE_SASL
 SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 
-.include <bsd.port.pre.mk>
-
-# Skip libcrypto.pc while using OpenSSL from base system on older FreeBSD versions which does not skip this file
-.if ${SSL_DEFAULT} == base && !exists(/usr/libdata/pkgconfig/libcrypto.pc)
-EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-openssl
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

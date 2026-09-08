@@ -1,13 +1,10 @@
 PORTNAME=	serf
-PORTVERSION=	1.3.9
-PORTREVISION=	7
+PORTVERSION=	1.3.10
+PORTREVISION=	1
 CATEGORIES=	www
 MASTER_SITES=	APACHE/serf
 
-PATCH_SITES=	https://salsa.debian.org/jamessan/serf/-/raw/f6a5256b2de696c2527524d9b1a695ec5aaa17b0/debian/patches/
-PATCHFILES=	py3-compat:-p1
-
-MAINTAINER=	lev@FreeBSD.org
+MAINTAINER=	michaelo@apache.org
 COMMENT=	Serf HTTP client library
 WWW=		https://serf.apache.org/
 

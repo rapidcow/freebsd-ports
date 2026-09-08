@@ -1,8 +1,8 @@
---- ui/gfx/x/xlib_support.cc.orig	2023-09-17 07:59:53 UTC
+--- ui/gfx/x/xlib_support.cc.orig	2024-02-25 20:22:18 UTC
 +++ ui/gfx/x/xlib_support.cc
-@@ -38,10 +38,18 @@ void InitXlib() {
-   if (xlib_loader->loaded())
+@@ -39,10 +39,18 @@ void InitXlib() {
      return;
+   }
  
 +#if BUILDFLAG(IS_BSD)
 +  CHECK(xlib_loader->Load("libX11.so"));

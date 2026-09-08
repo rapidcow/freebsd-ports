@@ -1,6 +1,6 @@
 PORTNAME=	eukleides
 PORTVERSION=	1.5.4
-PORTREVISION=	6
+PORTREVISION=	9
 CATEGORIES=	math
 MASTER_SITES=	http://www.eukleides.org/files/
 

@@ -1,12 +1,12 @@
 PORTNAME=	ario
 PORTVERSION=	1.6
-PORTREVISION=	3
+PORTREVISION=	7
 CATEGORIES=	audio
 MASTER_SITES=	SF/ario-player/ario-player/${PORTVERSION}
 
 MAINTAINER=	alfix86@gmail.com
 COMMENT=	GTK client for MPD
-WWW=		http://ario-player.sourceforge.net/
+WWW=		https://ario-player.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,7 +17,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl
 GNU_CONFIGURE=	yes
 USES=		gmake gnome libtool pkgconfig
 USE_LDCONFIG=	yes
-USE_GNOME=	gtk30 pango atk cairo gdkpixbuf2 glib20 libxml2
+USE_GNOME=	gtk30 pango atk cairo gdkpixbuf glib20 libxml2
 INSTALL_TARGET=	install-strip
 
 OPTIONS_DEFINE=	AVAHI DBUS DEBUG LIBMPDCLIENT2 MPDIDLE NLS PLAYLISTS SEARCH TAGLIB

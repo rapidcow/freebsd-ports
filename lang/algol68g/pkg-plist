@@ -2,6 +2,7 @@ bin/a68g
 include/algol68g/a68g-common.h
 include/algol68g/a68g-config.h
 include/algol68g/a68g-config.win32.h
+include/algol68g/a68g-config.win64.h
 include/algol68g/a68g-defines.h
 include/algol68g/a68g-diagnostics.h
 include/algol68g/a68g-double.h
@@ -37,4 +38,4 @@ include/algol68g/a68g-torrix.h
 include/algol68g/a68g-transput.h
 include/algol68g/a68g-types.h
 include/algol68g/a68g.h
-man/man1/a68g.1.gz
+share/man/man1/a68g.1.gz

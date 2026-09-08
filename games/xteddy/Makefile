@@ -1,10 +1,10 @@
 PORTNAME=	xteddy
 PORTVERSION=	2.2
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	games
 MASTER_SITES=	http://webstaff.itn.liu.se/~stegu/xteddy/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Cuddlesome teddy for the X desktop
 WWW=		http://webstaff.itn.liu.se/~stegu/xteddy/
 
@@ -15,11 +15,12 @@ LIB_DEPENDS=	libImlib2.so:graphics/imlib2
 
 USES=		localbase pkgconfig
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 
 LDFLAGS+=	-lXext
 
 PLIST_FILES=	bin/xteddy bin/xteddy_test bin/xtoys \
-		man/man6/xteddy.6.gz \
+		share/man/man6/xteddy.6.gz \
 		%%DATADIR%%/teddy.png %%DATADIR%%/xalex.png \
 		%%DATADIR%%/xbobo.png %%DATADIR%%/xbrummi.png \
 		%%DATADIR%%/xcherubino.png %%DATADIR%%/xduck.png \

@@ -1,5 +1,6 @@
 PORTNAME=	python-libsbml
-DISTVERSION=	5.20.1
+DISTVERSION=	5.20.4
+PORTREVISION=	1
 CATEGORIES=	biology python
 #MASTER_SITES=	PYPI # no tarballs on PYPI
 MASTER_SITES=	https://github.com/sbmlteam/python-libsbml/releases/download/v${DISTVERSION}/
@@ -14,7 +15,7 @@ LICENSE=	LGPL21
 BUILD_DEPENDS=	cmake:devel/cmake-core \
 		swig:devel/swig
 
-USES=		python:3.8-3.9
+USES=		python
 USE_PYTHON=	autoplist distutils # autoplist produces incomplete plist, missing files are in pkg-plist. Reported to the upstream author fbergman@caltech.edu on 2021-08-17
 
 MAKE_ENV=	CMAKE_BUILD_PARALLEL_LEVEL=${MAKE_JOBS_NUMBER}

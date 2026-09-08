@@ -1,12 +1,12 @@
 PORTNAME=	tfel
 DISTVERSION=	3.2.1-1
-PORTREVISION=	4
+PORTREVISION=	9
 CATEGORIES=	science
 PKGNAMESUFFIX=	-mfront-edf
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Code generation tool dedicated to material knowledge
-WWW=		http://tfel.sourceforge.net/
+WWW=		https://tfel.sourceforge.net/
 
 LICENSE=	GPLv3
 

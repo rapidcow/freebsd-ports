@@ -14,7 +14,7 @@
 
 PORTNAME=	ksh93
 DISTVERSION=	93u
-PORTREVISION=	3
+PORTREVISION=	4
 PORTEPOCH=	2
 CATEGORIES=	shells
 DIST_SUBDIR=	ksh93
@@ -46,6 +46,8 @@ CFLAGS+=	-DMAP_TYPE
 LDFLAGS+=	-lm
 MAKE_ENV=	CCFLAGS="-Wno-unused-value -Wno-parentheses -Wno-logical-op-parentheses -Wno-int-conversion" CFLAGS="${CFLAGS}"
 
+PIE_UNSAFE=	yes
+
 STATIC_MAKE_ENV=	LDFLAGS+=-static
 
 KSH_PLIST_SUB=		93=""
@@ -75,7 +77,7 @@ do-build:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/ksh ${STAGEDIR}${PREFIX}/bin/${PNAME}
-	${INSTALL_MAN} ${WRKSRC}/man/man1/sh.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/${PNAME}.1
+	${INSTALL_MAN} ${WRKSRC}/man/man1/sh.1 ${STAGEDIR}${PREFIX}/share/man/man1/${PNAME}.1
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}${PSUFFIX}/
 	cd ${WRKSRC}/fun/ && ${INSTALL_SCRIPT} dirs popd pushd ${STAGEDIR}${EXAMPLESDIR}${PSUFFIX}/
 

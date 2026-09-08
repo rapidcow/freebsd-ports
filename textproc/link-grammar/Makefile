@@ -1,14 +1,16 @@
 PORTNAME=	link-grammar
-DISTVERSION=	5.10.5
+DISTVERSION=	5.12.6
 CATEGORIES=	textproc
-MASTER_SITES=	http://www.abisource.com/downloads/${PORTNAME}/${PORTVERSION}/
+MASTER_SITES=	https://www.gnucash.org/${PORTNAME}/downloads/${PORTVERSION}/
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Grammar checking library
-WWW=		https://www.abisource.com/projects/link-grammar/
+WWW=		https://opencog.github.io/link-grammar-website/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
 
 USES=		compiler:c++11-lib dos2unix gmake libtool localbase ncurses \
 		pathfix pkgconfig sqlite
@@ -20,12 +22,10 @@ CONFIGURE_ARGS=	--disable-maintainer-mode \
 
 INSTALL_TARGET=	install-strip
 
-LIB_DEPENDS=	libpcre2-8.so:devel/pcre2
-
 PLIST_SUB=	VERSION=${PORTVERSION}
 
 OPTIONS_SUB=		yes
-OPTIONS_DEFINE=		EDITLINE JAVA PERL SAT_SOLVER PYTHON
+OPTIONS_DEFINE=		EDITLINE JAVA PERL SAT_SOLVER
 OPTIONS_DEFAULT=	EDITLINE HUNSPELL SAT_SOLVER
 
 OPTIONS_MULTI=			SPELL
@@ -42,7 +42,7 @@ HUNSPELL_CONFIGURE_ENABLE=	hunspell
 HUNSPELL_LIB_DEPENDS=		libhunspell-1.7.so:textproc/hunspell
 
 JAVA_CONFIGURE_ENABLE=		java-bindings
-JAVA_USE=			JAVA
+JAVA_USES=			java
 JAVA_CPPFLAGS=			-I${JAVA_HOME}/include -I${JAVA_HOME}/include/freebsd
 
 PERL_CONFIGURE_ENABLE=		perl-bindings
@@ -52,8 +52,5 @@ PERL_USES=			perl5
 SAT_SOLVER_CONFIGURE_ENABLE=	sat-solver
 SAT_SOLVER_DESC=		Use boolean SAT parser
 SAT_SOLVER_LIB_DEPENDS=		libminisat.so:math/minisat
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/liblink-grammar.so.${DISTVERSION}  # see https://github.com/opencog/link-grammar/issues/645
 
 .include <bsd.port.mk>

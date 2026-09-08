@@ -1,11 +1,11 @@
---- src/plugins/multimedia/ffmpeg/qv4l2camera_p.h.orig	2022-12-12 19:36:40 UTC
+--- src/plugins/multimedia/ffmpeg/qv4l2camera_p.h.orig	2025-03-09 20:10:22 UTC
 +++ src/plugins/multimedia/ffmpeg/qv4l2camera_p.h
-@@ -23,6 +23,8 @@
- #include <qsocketnotifier.h>
- #include <qmutex.h>
+@@ -18,6 +18,8 @@
+ #include <QtMultimedia/private/qplatformcamera_p.h>
+ #include <sys/time.h>
  
 +#include <sys/time.h> // timeval
 +
  QT_BEGIN_NAMESPACE
  
- class QV4L2CameraDevices : public QObject,
+ class QV4L2FileDescriptor;

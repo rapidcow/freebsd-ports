@@ -1,9 +1,9 @@
 PORTNAME=	postfix
-DISTVERSION=	3.8.2
+DISTVERSION=	3.10.6
 PORTREVISION?=	0
 PORTEPOCH=	1
 CATEGORIES=	mail
-MASTER_SITES=	http://cdn.postfix.johnriley.me/mirrors/postfix-release/ \
+MASTER_SITES=	https://postfix-mirror.horus-it.com/postfix-release/ \
 		http://ftp.porcupine.org/mirrors/postfix-release/ \
 		http://de.postfix.org/ftpmirror/ \
 		http://www.artfiles.org/postfix.org/postfix-release/ \
@@ -22,39 +22,52 @@ LICENSE_NAME_IPL10=	IBM PUBLIC LICENSE VERSION 1.0
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS_IPL10=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-FLAVORS=			default ldap mysql pgsql sasl sqlite
+FLAVORS=			default ldap mongo mysql pgsql sasl sqlite
 default_CONFLICTS_INSTALL=	postfix-base-ldap postfix-base-sasl \
 				postfix-ldap postfix-sasl \
+				postfix-mongo postfix-base-mongo \
 				postfix-mysql postfix-base-mysql \
 				postfix-pgsql postfix-base-pgsql \
 				postfix-sqlite postfix-base-sqlite
 ldap_PKGNAMESUFFIX=		-ldap
 ldap_CONFLICTS_INSTALL=		postfix postfix-base \
 				postfix-base-sasl postfix-sasl \
+				postfix-mongo postfix-base-mongo \
 				postfix-mysql postfix-base-mysql \
 				postfix-pgsql postfix-base-pgsql \
+				postfix-sqlite postfix-base-sqlite
+mongo_PKGNAMESUFFIX=		-mongo
+mongo_CONFLICTS_INSTALL=	postfix postfix-base \
+				postfix-ldap postfix-base-ldap \
+				postfix-mysql postfix-base-mysql \
+				postfix-pgsql postfix-base-pgsql \
+				postfix-sasl postfix-base-sasl \
 				postfix-sqlite postfix-base-sqlite
 mysql_PKGNAMESUFFIX=		-mysql
 mysql_CONFLICTS_INSTALL=	postfix postfix-base \
 				postfix-ldap postfix-base-ldap \
+				postfix-mongo postfix-base-mongo \
 				postfix-pgsql postfix-base-pgsql \
 				postfix-sasl postfix-base-sasl \
 				postfix-sqlite postfix-base-sqlite
 pgsql_PKGNAMESUFFIX=		-pgsql
 pgsql_CONFLICTS_INSTALL=	postfix postfix-base \
 				postfix-ldap postfix-base-ldap \
+				postfix-mongo postfix-base-mongo \
 				postfix-mysql postfix-base-mysql \
 				postfix-sasl postfix-base-sasl \
 				postfix-sqlite postfix-base-sqlite
 sasl_PKGNAMESUFFIX=		-sasl
 sasl_CONFLICTS_INSTALL=		postfix postfix-base \
 				postfix-base-ldap postfix-ldap \
+				postfix-mongo postfix-base-mongo \
 				postfix-mysql postfix-base-mysql \
 				postfix-pgsql postfix-base-pgsql \
 				postfix-sqlite postfix-base-sqlite
 sqlite_PKGNAMESUFFIX=		-sqlite
 sqlite_CONFLICTS_INSTALL=	postfix postfix-base \
 				postfix-ldap postfix-base-ldap \
+				postfix-mongo postfix-base-mongo \
 				postfix-mysql postfix-base-mysql \
 				postfix-pgsql postfix-base-pgsql \
 				postfix-sasl postfix-base-sasl
@@ -73,16 +86,17 @@ SHEBANG_FILES=	auxiliary/qshape/qshape.pl
 
 SCRIPTS_ENV+=	POSTFIX_DEFAULT_MTA="${POSTFIX_DEFAULT_MTA}"
 
-CONFLICTS_INSTALL=	courier-0.* opensmtpd opensmtpd-devel \
-			postfix-current sendmail sendmail-devel
+PORTSCOUT=	limit:^3\.9\.
 
-PORTSCOUT=	limit:^3\.7\.
+CONFLICTS_INSTALL=	courier-0.* opensmtpd opensmtpd-devel \
+			postfix postfix-base postfix-ldap-sasl \
+			postfix-sasl sendmail sendmail-devel
 
 USERS=		postfix
 GROUPS=		mail maildrop postfix
 
-OPTIONS_DEFINE=		BDB BLACKLISTD CDB DOCS EAI INST_BASE LDAP LMDB MYSQL \
-			NIS PCRE2 PGSQL SASL SQLITE TEST TLS
+OPTIONS_DEFINE=		BDB BLACKLISTD CDB DOCS EAI INST_BASE LDAP LMDB MONGO \
+			MYSQL NIS PCRE2 PGSQL SASL SQLITE TEST TLS TLSRPT
 OPTIONS_DEFAULT?=	BLACKLISTD EAI PCRE2 TLS
 OPTIONS_RADIO=		RG1
 OPTIONS_RADIO_RG1=	SASLKMIT SASLKRB5
@@ -106,7 +120,7 @@ BLACKLISTD_DESC=	Enable blacklistd support
 CDB_DESC=		CDB maps lookups
 EAI_DESC=		Email Address Internationalization (SMTPUTF8) support
 INST_BASE_DESC=		Install into /usr and /etc/postfix
-LDAP_DESC=		LDAP maps
+LDAP_DESC=		LDAP maps (uses WITH_OPENLDAP_VER)
 LMDB_DESC=		LMDB maps
 PCRE2_DESC=		Use Perl Compatible Regular Expressions, version 2
 RG1_DESC=		Kerberos network authentication protocol type
@@ -114,6 +128,7 @@ SASLKMIT_DESC=		If your SASL req. MIT Kerberos5, select this
 SASLKRB5_DESC=		If your SASL req. Kerberos5, select this
 SASL_DESC=		Cyrus SASL support (Dovecot SASL is always built in)
 TEST_DESC=		SMTP/LMTP test server and generator
+TLSRPT_DESC=		Enable sending RFC 8460 TLS reports
 
 BDB_USES=			bdb
 BLACKLISTD_EXTRA_PATCHES=	${FILESDIR}/extra-patch-blacklistd
@@ -121,12 +136,17 @@ CDB_LIB_DEPENDS=		libcdb.so:databases/tinycdb
 EAI_LIB_DEPENDS=		libicuuc.so:devel/icu
 LDAP_USES=			ldap
 LMDB_LIB_DEPENDS=		liblmdb.so:databases/lmdb
+MONGO_LIB_DEPENDS=		libbson-1.0.so:devel/libbson \
+				libmongoc-1.0.so:devel/mongo-c-driver
 MYSQL_USES?=			mysql
 PCRE2_LIB_DEPENDS=		libpcre2-8.so:devel/pcre2
 PGSQL_USES=			pgsql
 SASLKMIT_LIB_DEPENDS=		libkrb5.so:security/krb5
 SASL_LIB_DEPENDS=		libsasl2.so:security/cyrus-sasl2
 SQLITE_USES=			sqlite
+TLSRPT_LIB_DEPENDS=		libtlsrpt.so:mail/libtlsrpt
+
+ALL_TARGET=		default
 
 .include <bsd.port.options.mk>
 
@@ -144,7 +164,7 @@ MAKEFILEFLAGS+=	DEBUG=
 
 MAKEFILEFLAGS+=	pie=yes CC="${CC}" OPT="${CFLAGS}"
 
-.if ${SSL_DEFAULT} == libressl
+.if defined(TLS) && ${SSL_DEFAULT} == libressl
 BROKEN=		error: OpenSSL-1.1.1 is the minimum supported version. LibreSSL is not supported
 .endif
 
@@ -164,9 +184,6 @@ PKGNAMESUFFIX=	-base
 .endif
 PREFIX=		/usr
 ETCDIR=		/etc/postfix
-PLIST_SUB+=	BMAN="share/"
-.else
-PLIST_SUB+=	BMAN=""
 .endif
 
 PLIST_SUB+=	PFETC=${ETCDIR}
@@ -187,17 +204,14 @@ READMEDIR=	${DOCSDIR}
 READMEDIR=	no
 .endif
 
-# dynamic direcory location
+# dynamic directory location
 DAEMONDIR=		${PREFIX}/libexec/postfix
 SHLIB_DIRECTORY=	${PREFIX}/lib/postfix
 # new proposed location is ETCDIR (see README_FILES/INSTALL)
 # keep compatiblity with Postfix 2.6 .. 2.11 and use DAEMOMDIR
 META_DIRECTORY=		${DAEMONDIR}
 
-SUB_LIST+=	DAEMONDIR="${DAEMONDIR}" \
-		META_DIRECTORY="${META_DIRECTORY}" \
-		READMEDIR="${READMEDIR}" \
-		REQUIRE="${_REQUIRE}"
+SUB_LIST+=	REQUIRE="${_REQUIRE}"
 SUB_FILES+=	mailer.conf.postfix pkg-install pkg-message
 
 POSTFIX_CCARGS+=	-DDEF_CONFIG_DIR=\\\"${ETCDIR}\\\" \
@@ -207,7 +221,7 @@ POSTFIX_CCARGS+=	-DDEF_CONFIG_DIR=\\\"${ETCDIR}\\\" \
 			-DDEF_SENDMAIL_PATH=\\\"${PREFIX}/sbin/sendmail\\\" \
 			-DDEF_NEWALIAS_PATH=\\\"${PREFIX}/bin/newaliases\\\" \
 			-DDEF_MAILQ_PATH=\\\"${PREFIX}/bin/mailq\\\" \
-			-DDEF_MANPAGE_DIR=\\\"${MANPREFIX}/man\\\" \
+			-DDEF_MANPAGE_DIR=\\\"${PREFIX}/share/man\\\" \
 			-DDEF_README_DIR=\\\"${READMEDIR}\\\" \
 			-DDEF_HTML_DIR=\\\"${READMEDIR}\\\" \
 			-DDEF_QUEUE_DIR=\\\"/var/spool/postfix\\\" \
@@ -248,8 +262,10 @@ POSTFIX_CCARGS+=	-DDEF_SERVER_SASL_TYPE=\\\"dovecot\\\"
 .endif
 
 .if ${PORT_OPTIONS:MSASLKRB5}
-POSTFIX_AUXLIBS+=	-lkrb5 -lhx509 -lcrypto -lcrypt -lcom_err -lasn1 \
-			-lroken
+POSTFIX_AUXLIBS+=      -lkrb5 -lcrypto -lcrypt -lcom_err
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1500000
+POSTFIX_AUXLIBS+=      -lasn1 -lhx509 -lroken
+.endif
 .endif
 
 .if ${PORT_OPTIONS:MSASLKMIT}
@@ -265,6 +281,11 @@ POSTFIX_AUXLIBS+=	-L${OPENSSLLIB} ${LDFLAGS} -lssl -lcrypto
 POSTFIX_CCARGS+=	-DNO_TLS
 .endif
 
+.if ${PORT_OPTIONS:MTLSRPT}
+POSTFIX_CCARGS+=	-DUSE_TLSRPT -I${LOCALBASE}/include
+POSTFIX_AUXLIBS+=	-L${LOCALBASE}/lib -Wl,-rpath,${LOCALBASE}/lib -ltlsrpt
+.endif
+
 .if ${PORT_OPTIONS:MBDB}
 POSTFIX_CCARGS+=	-I${BDB_INCLUDE_DIR}
 POSTFIX_AUXLIBS+=	-L${BDB_LIB_DIR} -l${BDB_LIB_NAME}
@@ -276,6 +297,13 @@ POSTFIX_AUXLIBS+=	-lblacklist
 . else
 IGNORE=		blacklistd is only supported on FreeBSD
 . endif
+.endif
+
+.if ${PORT_OPTIONS:MMONGO}
+DYN_EXT+=		mongodb
+POSTFIX_CCARGS+=	-DHAS_MONGODB -I${LOCALBASE}/include/libmongoc-1.0 \
+			-I${LOCALBASE}/include/libbson-1.0
+POSTFIX_DYN_AUXLIBS+=	"AUXLIBS_MONGODB=-L${LOCALBASE}/lib -lmongoc-1.0 -lbson-1.0"
 .endif
 
 .if ${PORT_OPTIONS:MMYSQL}
@@ -337,7 +365,7 @@ REINPLACE=	s!^PATH=.*!PATH=/bin:/sbin:/usr/bin:/usr/sbin:${PREFIX}/bin:${PREFIX}
 		s!^(newaliases_path =)!\1 ${PREFIX}/bin/newaliases!g;\
 		s!^(mailq_path =)!\1 ${PREFIX}/bin/mailq!g;\
 		s!^(setgid_group =)!\1 maildrop!g;\
-		s!^(manpage_directory =)!\1 ${MANPREFIX}/man!g;\
+		s!^(manpage_directory =)!\1 ${PREFIX}/share/man!g;\
 		s!^((html|readme)_directory =)!\1 ${READMEDIR}!g;\
 		\!^\#alias_database = dbm:/etc/mail/aliases$$!d;\
 		s!(:|= )/etc/postfix!\1$$config_directory!g;\
@@ -376,19 +404,18 @@ post-patch:
 		>> ${WRKSRC}/conf/postfix-files
 
 do-configure:
-	(cd ${WRKSRC} && ${MAKE} -f Makefile.init makefiles \
+	${MAKE} -C ${WRKSRC} -f Makefile.init makefiles \
 	${MAKEFILEFLAGS} CCARGS="${POSTFIX_CCARGS}" \
 	shared=yes shlib_directory=${SHLIB_DIRECTORY} \
 	dynamicmaps=yes \
 	${POSTFIX_DYN_AUXLIBS} \
-	AUXLIBS="${POSTFIX_AUXLIBS}" && \
-	${ECHO_CMD} "all: default" >> Makefile)
+	AUXLIBS="${POSTFIX_AUXLIBS}"
 
 pre-install-INST_BASE-on:
 	${MKDIR} ${STAGEDIR}/etc/rc.d
 
 do-install:
-	@(cd ${WRKSRC} && ${MAKE} non-interactive-package \
+	${MAKE} -C ${WRKSRC} non-interactive-package \
 		install_root=${STAGEDIR} tempdir=${WRKDIR} \
 		shlib_directory=${SHLIB_DIRECTORY} \
 		config_directory=${ETCDIR} \
@@ -397,14 +424,14 @@ do-install:
 		meta_directory=${META_DIRECTORY} \
 		html_directory=${READMEDIR} \
 		mailq_path=${PREFIX}/bin/mailq \
-		manpage_directory=${MANPREFIX}/man \
+		manpage_directory=${PREFIX}/share/man \
 		newaliases_path=${PREFIX}/bin/newaliases \
 		readme_directory=${READMEDIR} \
-		sendmail_path=${PREFIX}/sbin/sendmail )
+		sendmail_path=${PREFIX}/sbin/sendmail
 
 	${INSTALL_SCRIPT} ${WRKSRC}/auxiliary/rmail/rmail ${STAGEDIR}${PREFIX}/bin/rmail
 	${INSTALL_SCRIPT} ${WRKSRC}/auxiliary/qshape/qshape.pl ${STAGEDIR}${PREFIX}/bin/qshape
-	${INSTALL_MAN} ${WRKSRC}/man/man1/qshape.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/man/man1/qshape.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 # == do not overwrite existing config
 	${MV} ${STAGEDIR}${ETCDIR}/main.cf ${STAGEDIR}${ETCDIR}/main.cf.sample
@@ -440,6 +467,6 @@ do-install:
 
 do-install-TEST-on:
 	${INSTALL_PROGRAM} ${BINTEST:S|^|${WRKSRC}/bin/|} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${MANTEST:S|^|${WRKSRC}/man/man1/|} ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${MANTEST:S|^|${WRKSRC}/man/man1/|} ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

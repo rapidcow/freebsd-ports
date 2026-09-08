@@ -1,5 +1,6 @@
 PORTNAME=	Glib
 PORTVERSION=	1.3294
+PORTREVISION=	1
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN \
 		SF/gtk2-perl/Glib/${PORTVERSION}
@@ -8,7 +9,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Interface to Glib and GObject libraries
-WWW=		http://gtk2-perl.sourceforge.net/
+WWW=		https://gtk2-perl.sourceforge.net/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/LICENSE

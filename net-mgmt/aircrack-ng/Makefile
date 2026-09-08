@@ -21,6 +21,7 @@ USE_GCC=	yes
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--with-experimental
 CPE_VERSION=	${DISTVERSION:C/-.*//}
 CPE_UPDATE=	${DISTVERSION:C/^[^-]*$//:C/.*-//}
@@ -48,6 +49,12 @@ PCRE_CONFIGURE_OFF=	--disable-pcre
 SQLITE_DESC=	Use SQLite for storing pre-computed key tables
 SQLITE_USES=	sqlite
 SQLITE_CONFIGURE_OFF=	--without-sqlite3
+
+.include <bsd.port.options.mk>
+
+.if ${ARCH} == powerpc64 && !defined(CPUTYPE)
+CFLAGS+=	-mcpu=power8
+.endif
 
 .include <bsd.port.pre.mk>
 

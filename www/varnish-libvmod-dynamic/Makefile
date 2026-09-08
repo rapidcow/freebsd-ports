@@ -1,5 +1,6 @@
 PORTNAME=	libvmod-dynamic
-PORTVERSION=	20230321
+PORTVERSION=	20250521
+PORTREVISION=	1
 CATEGORIES=	www
 PKGNAMEPREFIX=	varnish-
 
@@ -18,6 +19,7 @@ USES=		autoreconf compiler:c11 gmake libtool pkgconfig \
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-static
 INSTALL_TARGET=	install-strip
 DOCSDIR=	${PREFIX}/share/doc/vmod-dynamic
@@ -27,7 +29,7 @@ CFLAGS+=	-I${WRKSRC}/src
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	nigoroll
-GH_TAGNAME=	af9c51c
+GH_TAGNAME=	490068b
 
 OPTIONS_DEFINE=	DOCS
 

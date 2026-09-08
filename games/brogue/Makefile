@@ -1,6 +1,7 @@
 PORTNAME=	brogue
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.12
+DISTVERSION=	1.14.1
+PORTREVISION=	1
 CATEGORIES=	games
 
 MAINTAINER=	fuz@FreeBSD.org
@@ -61,9 +62,11 @@ post-patch:
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/brogue ${STAGEDIR}${PREFIX}/libexec
 	${INSTALL_SCRIPT} ${WRKDIR}/brogue.sh ${STAGEDIR}${PREFIX}/bin/brogue
-	${MKDIR} ${STAGEDIR}${DATADIR}
+	${MKDIR} ${STAGEDIR}${DATADIR}/assets
 	${INSTALL_DATA} ${WRKSRC}/bin/keymap.txt ${STAGEDIR}${DATADIR}
-	${CP} -r ${WRKSRC}/bin/assets ${STAGEDIR}${DATADIR}
+.for f in ${PORTDATA:Massets/*}
+	${INSTALL_DATA} ${WRKSRC}/bin/$f ${STAGEDIR}${DATADIR}/assets/
+.endfor
 	${INSTALL_DATA} ${WRKDIR}/brogue.desktop ${STAGEDIR}${PREFIX}/share/applications
 
 .include <bsd.port.mk>

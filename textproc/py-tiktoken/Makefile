@@ -1,5 +1,6 @@
 PORTNAME=	tiktoken
-PORTVERSION=	0.5.1
+PORTVERSION=	0.12.0
+PORTREVISION=	2
 CATEGORIES=	textproc python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -28,8 +29,5 @@ OPTIONS_DEFINE=	BLOBFILE
 BLOBFILE_DESC=	Blob file support
 
 BLOBFILE_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}blobfile>=2:net/py-blobfile@${PY_FLAVOR}
-
-post-install:
-	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
 .include <bsd.port.mk>

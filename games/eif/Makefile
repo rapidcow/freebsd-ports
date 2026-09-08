@@ -1,6 +1,6 @@
 PORTNAME=	eif
 PORTVERSION=	1.3.4
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	games
 MASTER_SITES=	http://www.stack.nl/~marcolz/empire/ \
 		ftp://ftp.stack.nl/pub/users/johans/eif/
@@ -9,7 +9,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Empire text client
 WWW=		https://www.stack.nl/~marcolz/empire/
 
+CPPFLAGS+=	-DWANT_OBSOLETE_TYPEDEFS
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 USES=		ncurses readline shebangfix
 SHEBANG_FILES=	contrib/*.pl
 

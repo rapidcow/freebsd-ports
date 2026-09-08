@@ -4,9 +4,9 @@
 
 PORTNAME=	compat5x
 PORTVERSION=	5.4.0.8.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	misc
-MASTER_SITES=	LOCAL/amdmi3/compat5x
+MASTER_SITES=	LOCAL/bapt
 PKGNAMESUFFIX=	-${ARCH}
 DISTNAME=	${PORTNAME}-${ARCH}-${PORTVERSION}
 
@@ -19,7 +19,7 @@ WRKSRC=		${WRKDIR}/${PORTNAME}
 
 USES=	tar:bzip2
 NO_BUILD=	yes
-ONLY_FOR_ARCHS=	amd64 i386 sparc64
+ONLY_FOR_ARCHS=	amd64 i386
 TARGET_DIR=	${PREFIX}/lib/compat
 TARGET32_DIR=	${PREFIX}/lib32/compat
 USE_LDCONFIG=	${TARGET_DIR}
@@ -37,12 +37,6 @@ PLIST_SUB+=	AMD64="@comment "
 PLIST_SUB+=	I386=""
 .else
 PLIST_SUB+=	I386="@comment "
-.endif
-
-.if ${ARCH} == sparc64
-PLIST_SUB+=	SPARC64=""
-.else
-PLIST_SUB+=	SPARC64="@comment "
 .endif
 
 do-install:

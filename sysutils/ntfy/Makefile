@@ -1,6 +1,7 @@
 PORTNAME=	ntfy
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.7.0-14
+PORTREVISION=	1
 DISTVERSIONSUFFIX=	-g0e922fa
 CATEGORIES=	sysutils deskutils
 
@@ -20,6 +21,13 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	dschep
 USE_PYTHON=	distutils noflavors autoplist
 
+CONFLICTS_INSTALL=	sysutils/go-ntfy
+
 NO_ARCH=	yes
+
+post-patch:
+# Fix build with Python 3.11
+	@${REINPLACE_CMD} -e 's|getargspec|getfullargspec|' \
+		${WRKSRC}/ntfy/__init__.py
 
 .include <bsd.port.mk>

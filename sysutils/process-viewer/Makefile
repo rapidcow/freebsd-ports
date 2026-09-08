@@ -1,6 +1,6 @@
 PORTNAME=	process-viewer
 DISTVERSION=	g20220909
-PORTREVISION=	8
+PORTREVISION=	28
 CATEGORIES=	sysutils
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -13,7 +13,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libgraphene-1.0.so:graphics/graphene
 
 USES=		cargo gnome
-USE_GNOME=	cairo gdkpixbuf2 glib20 gtk40 pango
+USE_GNOME=	cairo gdkpixbuf glib20 gtk40 pango
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	guillaumegomez
@@ -102,8 +102,5 @@ CARGO_CRATES=	anyhow-1.0.57 \
 		winapi-x86_64-pc-windows-gnu-0.4.0
 
 PLIST_FILES=	bin/process_viewer
-
-post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/process_viewer
 
 .include <bsd.port.mk>

@@ -1,8 +1,9 @@
 PORTNAME=	lynx
-PORTVERSION=	2.9.0d12
+PORTVERSION=	2.9.2
+PORTREVISION=	1
 CATEGORIES=	www
-MASTER_SITES=	http://invisible-mirror.net/archives/lynx/tarballs/ \
-		ftp://ftp.invisible-island.net/lynx/tarballs/
+MASTER_SITES=	https://invisible-mirror.net/archives/lynx/tarballs/ \
+		https://invisible-island.net/archives/lynx/tarballs/
 PKGNAMESUFFIX=	-current
 DISTNAME=	${PORTNAME}${PORTVERSION:S/p/pre./:S/d/dev./}
 
@@ -24,6 +25,7 @@ SHEBANG_FILES=	samples/mailto-form.pl
 MAKE_JOBS_UNSAFE=	yes
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--libdir="${PREFIX}/etc" \
 		--with-bzlib --with-zlib \
 		--with-mime-libdir=${PREFIX}/etc \
@@ -51,7 +53,7 @@ GNUTLS_LIB_DEPENDS=	libgnutls.so:security/gnutls
 GNUTLS_USES_OFF=	ssl
 
 IDN_CONFIGURE_ENABLE=	idna
-IDN_LIB_DEPENDS=	libidn.so:dns/libidn
+IDN_LIB_DEPENDS=	libidn2.so:dns/libidn2
 
 NLS_CONFIGURE_ENABLE=	nls
 NLS_USES=		gettext

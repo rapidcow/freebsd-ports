@@ -1,6 +1,6 @@
 --- src/makjunix.mak.orig	2014-08-30 01:12:22.000000000 +0900
 +++ src/makjunix.mak	2014-08-30 01:19:58.000000000 +0900
-@@ -72,19 +72,20 @@
+@@ -72,19 +72,19 @@
  
  
  ### Prefix for location of files
@@ -17,8 +17,7 @@
  
  ### Location of man page
 -MANLOC = $(PREFIX)/man/man1
-+MAN1PREFIX?=	${PREFIX}
-+MANLOC = $(DESTDIR)$(MAN1PREFIX)/man/man1
++MANLOC = $(DESTDIR)$(PREFIX)/share/man/man1
  
  ### Location of help file
 -HELPLOC = $(PREFIX)/lib

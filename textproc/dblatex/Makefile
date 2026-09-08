@@ -1,12 +1,13 @@
 PORTNAME=	dblatex
 DISTVERSION=	0.3.12
+PORTREVISION=	1
 CATEGORIES=	textproc
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 DISTNAME=	${PORTNAME}3-${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	DocBook to LaTeX/ConTeXt Publishing
-WWW=		http://dblatex.sourceforge.net/
+WWW=		https://dblatex.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT

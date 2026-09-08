@@ -1,10 +1,10 @@
 PORTNAME=	bbe
 PORTVERSION=	0.2.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	textproc
 MASTER_SITES=	SF/${PORTNAME}-/${PORTNAME}/${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Sed-like editor for binary files
 WWW=		https://sourceforge.net/projects/bbe-/
 
@@ -15,7 +15,7 @@ GNU_CONFIGURE=	yes
 
 INFO=		${PORTNAME}
 
-PLIST_FILES=	bin/${PORTNAME} man/man1/${PORTNAME}.1.gz
+PLIST_FILES=	bin/${PORTNAME} share/man/man1/${PORTNAME}.1.gz
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS

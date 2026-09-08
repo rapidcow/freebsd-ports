@@ -1,5 +1,6 @@
 PORTNAME=	qico
 PORTVERSION=	0.59.1
+PORTREVISION=	1
 CATEGORIES=	comms
 
 MAINTAINER=	admin@5034.ru
@@ -51,7 +52,7 @@ QCC_CONFIGURE_OFF=--disable-qcc
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 
@@ -75,7 +76,7 @@ do-install:
 	${INSTALL_DATA} ${WRKSRC}/stuff/${i} ${STAGEDIR}${EXAMPLESDIR}/${i}
 .endfor
 .for i in ${MANS}
-	${INSTALL_MAN} ${WRKSRC}/man/${i} ${STAGEDIR}${PREFIX}/man/man8/${i}
+	${INSTALL_MAN} ${WRKSRC}/man/${i} ${STAGEDIR}${PREFIX}/share/man/man8/${i}
 .endfor
 
 do-install-QCC-on:

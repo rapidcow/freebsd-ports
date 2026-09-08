@@ -1,7 +1,7 @@
 PORTNAME=	deutex
-PORTVERSION=	5.2.2
-DISTVERSIONPREFIX=	v
+DISTVERSION=	5.2.3
 CATEGORIES=	archivers games
+MASTER_SITES=	https://github.com/Doom-Utils/${PORTNAME}/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	kai@FreeBSD.org
 COMMENT=	WAD file manipulator for Doom, Heretic, Hexen, and Strife
@@ -14,14 +14,12 @@ LICENSE_FILE_LGPL20=	${WRKSRC}/COPYING.LIB
 
 BUILD_DEPENDS=	a2x:textproc/asciidoc
 
-USES=		autoreconf pkgconfig
-USE_GITHUB=	yes
-GH_ACCOUNT=	Doom-Utils
+USES=		autoreconf pkgconfig tar:zst
 
 GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/deutex \
-		man/man6/${PORTNAME}.6.gz
+		share/man/man6/${PORTNAME}.6.gz
 PORTDOCS=	*
 
 OPTIONS_DEFINE=		DOCS PNG

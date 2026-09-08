@@ -1,6 +1,6 @@
 PORTNAME=	neovim
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.2
+DISTVERSION=	0.11.5
 CATEGORIES=	editors
 
 MAINTAINER=	adamw@FreeBSD.org
@@ -9,28 +9,39 @@ WWW=		https://neovim.io/
 
 LICENSE=	APACHE20
 
-BUILD_DEPENDS=	gperf:devel/gperf \
-		${LUA_MODLIBDIR}/bit.so:devel/lua-bitop@${LUA_FLAVOR} \
-		${LUA_MODLIBDIR}/lpeg.so:devel/lua-lpeg@${LUA_FLAVOR}
+BUILD_DEPENDS=	${LUA_REFMODLIBDIR}/bit.so:devel/lua-bitop@${LUA_FLAVOR} \
+		${LUA_REFMODLIBDIR}/lpeg.so:devel/lua-lpeg@${LUA_FLAVOR}
 LIB_DEPENDS=	libluv.so:devel/luv \
-		libmsgpackc.so:devel/msgpack-c \
-		libtermkey.so:devel/libtermkey \
+		libmsgpack-c.so:devel/msgpack-c \
 		libtree-sitter.so:devel/tree-sitter \
 		libunibilium.so:devel/unibilium \
+		libutf8proc.so:textproc/utf8proc \
 		libuv.so:devel/libuv \
 		libvterm.so:devel/libvterm
+RUN_DEPENDS=	${LUA_REFMODLIBDIR}/bit.so:devel/lua-bitop@${LUA_FLAVOR} \
+		${LUA_REFMODLIBDIR}/lpeg.so:devel/lua-lpeg@${LUA_FLAVOR}
+TEST_DEPENDS=	gmake:devel/gmake
 
-USES=		cmake cpe gettext iconv lua:52,build luajit pathfix pkgconfig
+USES=		cmake cpe gettext iconv lua:51,build luajit \
+		pathfix pkgconfig
+
 USE_GITHUB=	yes
-GH_TUPLE=	libmpack:libmpack:1.0.5:libmpack \
-		libmpack:libmpack-lua:1.0.9:libmpack_lua
-PORTSCOUT=	limit:^[0-9\.v]+$$
+GH_TUPLE=	tree-sitter:tree-sitter-c:v0.24.1:treesitter_c \
+		tree-sitter-grammars:tree-sitter-lua:v0.4.0:treesitter_lua \
+		tree-sitter-grammars:tree-sitter-markdown:v0.5.1:treesitter_markdown \
+		tree-sitter-grammars:tree-sitter-query:v0.7.0:treesitter_query \
+		tree-sitter-grammars:tree-sitter-vim:v0.7.0:treesitter_vim \
+		neovim:tree-sitter-vimdoc:v4.0.0:treesitter_vimdoc
 
 CMAKE_ARGS=	-DLUA_PRG:FILEPATH="${LUA_CMD}" \
-		-DCMAKE_INSTALL_MANDIR:PATH="${MANPREFIX}/man" \
-		-DDEPS_PREFIX:PATH="${LOCALBASE}"
+		-DCMAKE_INSTALL_MANDIR:PATH="${PREFIX}/share/man" \
+		-DDEPS_PREFIX:PATH="${LOCALBASE}" \
+		-DCMAKE_LIBRARY_PATH:PATH="${LOCALBASE}/lib/lua/${LUA_VER}"
+
+CFLAGS+=	-I${LOCALBASE}/include
 
 DATADIR=	${PREFIX}/share/nvim
+PORTSCOUT=	limit:^[0-9\.v]+$$
 PORTDATA=	runtime
 
 OPTIONS_DEFINE=	NLS PYNVIM
@@ -38,20 +49,31 @@ OPTIONS_SUB=	yes
 
 PYNVIM_DESC=	Enable support for plugins written in python
 
-NLS_CMAKE_BOOL=		ENABLE_LIBINTL
+NLS_CMAKE_BOOL=		ENABLE_LIBINTL ENABLE_TRANSLATIONS
+
 PYNVIM_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pynvim>=0.3.0:editors/py-pynvim@${PY_FLAVOR}
 PYNVIM_USES=		python:run
 
-post-patch-NLS-off:
-	${REINPLACE_CMD} -e '/add_subdirectory(po)/d' ${WRKSRC}/src/nvim/CMakeLists.txt
+post-configure:
+	${MKDIR} ${BUILD_WRKSRC}/.deps/build/src
+	${MV} ${WRKSRC_treesitter_c} ${BUILD_WRKSRC}/.deps/build/src/treesitter_c
+	${MV} ${WRKSRC_treesitter_lua} ${BUILD_WRKSRC}/.deps/build/src/treesitter_lua
+	${MV} ${WRKSRC_treesitter_markdown} ${BUILD_WRKSRC}/.deps/build/src/treesitter_markdown
+	${MV} ${WRKSRC_treesitter_query} ${BUILD_WRKSRC}/.deps/build/src/treesitter_query
+	${MV} ${WRKSRC_treesitter_vim} ${BUILD_WRKSRC}/.deps/build/src/treesitter_vim
+	${MV} ${WRKSRC_treesitter_vimdoc} ${BUILD_WRKSRC}/.deps/build/src/treesitter_vimdoc
+	${MAKE_ENV} ${CMAKE_BIN} -S ${WRKSRC}/cmake.deps -B ${BUILD_WRKSRC}/.deps ${CMAKE_ARGS} \
+		-DUSE_BUNDLED:BOOL=OFF -DUSE_BUNDLED_TS_PARSERS:BOOL=ON \
+		-DUSE_EXISTING_SRC_DIR:BOOL=ON
 
-pre-build:
-	${LN} -s ${WRKSRC_libmpack} ${WRKSRC_libmpack_lua}/mpack-src
-	${MKDIR} ${BUILD_WRKSRC}/src/nvim
-	(cd ${WRKSRC_libmpack_lua} && ${CC} ${CFLAGS} -fPIC \
-		-I${LUA_INCDIR} -shared lmpack.c -o \
-		${BUILD_WRKSRC}/src/nvim/mpack.so \
-		${LUA_LIBDIR}/liblua-${LUA_VER}.so)
-	${LN} -s ${BUILD_WRKSRC}/src/nvim/mpack.so ${BUILD_WRKSRC}/runtime/mpack.so
+post-build:
+	${CMAKE_BIN} --build ${BUILD_WRKSRC}/.deps
+
+post-stage:
+	cd ${BUILD_WRKSRC}/.deps/usr/lib/nvim && ${COPYTREE_SHARE} parser ${STAGEDIR}${PREFIX}/lib/nvim
+	${FIND} ${STAGEDIR}${PREFIX}/lib/nvim -name "*.so" -exec ${STRIP_CMD} {} +
+
+do-test:
+	${GMAKE} -C ${WRKSRC} test
 
 .include <bsd.port.mk>

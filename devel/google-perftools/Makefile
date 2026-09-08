@@ -1,7 +1,6 @@
 PORTNAME=	google-perftools
 DISTVERSIONPREFIX=	gperftools-
-DISTVERSION=	2.10
-PORTREVISION=	3
+DISTVERSION=	2.17.2
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/gperftools/gperftools/releases/download/gperftools-${PORTVERSION}/
 DISTNAME=	gperftools-${PORTVERSION}
@@ -13,13 +12,19 @@ WWW=		https://github.com/gperftools/gperftools
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN_aarch64=	link fails: ld: error: undefined symbol: brk, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=278009
 BROKEN_armv7=	error: use of undeclared identifier '_URC_NO_REASON', see https://github.com/gperftools/gperftools/issues/1360
 BROKEN_riscv64=	error: Cannot calculate stack trace: will need to write for your environment, see https://github.com/gperftools/gperftools/issues/1359
 
-USES=		compiler:c11 gmake libtool localbase:ldflags
-GNU_CONFIGURE=	yes
+USES=		compiler:c11 gmake libtool localbase:ldflags perl5 # tests also require c++17 compiler
 USE_LDCONFIG=	yes
-TEST_TARGET=	check
+USE_PERL5=	test
+
+GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
+
+TEST_TARGET=	check # 7 tests are failing, see https://github.com/gperftools/gperftools/issues/1572
+TESTING_UNSAFE=	yes
 
 LIBS+=		-lexecinfo
 
@@ -85,7 +90,8 @@ post-build:
 	@${ECHO}
 
 post-install:
-	${MV} ${STAGEDIR}${PREFIX}/bin/pprof ${STAGEDIR}${PREFIX}/bin/perftools-pprof
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/lib*.so.*
+
+# tests as of 2.17.2: PASS:  48 (all pass)
 
 .include <bsd.port.post.mk>

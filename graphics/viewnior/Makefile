@@ -1,7 +1,7 @@
 PORTNAME=	viewnior
 DISTVERSIONPREFIX=	${PORTNAME}-
 DISTVERSION=	1.8
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	graphics
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -19,7 +19,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	hellosiyan
 GH_PROJECT=	Viewnior
 
-USE_GNOME=	gdkpixbuf2 glib20 gtk20 intlhack intltool
+USE_GNOME=	gdkpixbuf glib20 gtk20 intlhack intltool
 
 PORTDOCS=	AUTHORS NEWS README.md
 

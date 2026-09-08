@@ -1,5 +1,5 @@
 PORTNAME=	GiNaC
-PORTVERSION=	1.8.7
+PORTVERSION=	1.8.9
 CATEGORIES=	math
 MASTER_SITES=	ftp://ftpthep.physik.uni-mainz.de/pub/GiNaC/ \
 		http://www.ginac.de/
@@ -17,6 +17,7 @@ LIB_DEPENDS=	libcln.so:math/cln
 USES=		compiler:c++11-lib gmake libtool makeinfo ncurses pathfix \
 		pkgconfig python:build readline tar:bzip2
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	check

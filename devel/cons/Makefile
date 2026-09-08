@@ -1,29 +1,28 @@
 PORTNAME=	cons
-PORTVERSION=	2.2.0
-PORTREVISION=	3
+PORTVERSION=	2.2.1
 CATEGORIES=	devel
-MASTER_SITES=	http://www.dsmit.com/cons/stable/ \
-		http://www.gnu.org/software/cons/stable/ \
-		ftp://ftp.gnu.org/pub/gnu/cons/ \
-		http://www.baldmt.com/cons/stable/
+MASTER_SITES=	https://codeberg.org/BSDforge/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
 
 MAINTAINER=	rv@gnu.org
 COMMENT=	Perl-based Make Replacement
-WWW=		http://www.dsmit.com/cons/
+WWW=		https://codeberg.org/BSDforge/${PORTNAME}/
 
-USES=		perl5 tar:tgz
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+USES=		perl5
+DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${PORTVERSION}
 NO_BUILD=	yes
-PLIST_SUB=	CONS_VER=${PORTVERSION}
+WRKSRC=		${WRKDIR}/${PORTNAME}
 
 DOCS=		CHANGES COPYING COPYRIGHT INSTALL MANIFEST README RELEASE \
 		cons.html TODO
-DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${PORTVERSION}
 
 OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/cons ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/cons.1.gz ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/cons.1.gz ${STAGEDIR}${PREFIX}/share/man/man1
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ${DOCS}
 	${INSTALL_DATA} ${WRKSRC}/${f} ${STAGEDIR}${DOCSDIR}

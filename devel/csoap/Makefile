@@ -1,13 +1,13 @@
 PORTNAME=	csoap
 PORTVERSION=	1.1.0
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	devel net www
 MASTER_SITES=	SF/${PORTNAME}/libsoap/${PORTVERSION}
 DISTNAME=	libsoap-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Client/server SOAP library written in pure C
-WWW=		http://csoap.sourceforge.net/
+WWW=		https://csoap.sourceforge.net/
 
 GNU_CONFIGURE=	yes
 USES=		gnome libtool pathfix

@@ -1,6 +1,6 @@
 PORTNAME=	lizard
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0
+DISTVERSION=	2.1
 CATEGORIES=	archivers
 
 MAINTAINER=	tagattie@FreeBSD.org
@@ -20,8 +20,10 @@ GH_ACCOUNT=	inikep
 
 USE_LDCONFIG=	yes
 
+PLIST_SUB=	DISTVERSION=${DISTVERSION}
+
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/lizard \
-		${STAGEDIR}/${PREFIX}/lib/liblizard.so.1.0.0
+	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/lizard \
+		${STAGEDIR}${PREFIX}/lib/liblizard.so.${DISTVERSION}.0
 
 .include <bsd.port.mk>

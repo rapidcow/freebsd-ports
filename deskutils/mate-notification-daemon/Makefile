@@ -1,5 +1,5 @@
 PORTNAME=	mate-notification-daemon
-PORTVERSION=	1.26.0
+PORTVERSION=	1.28.3
 PORTREVISION=	2
 CATEGORIES=	deskutils mate
 MASTER_SITES=	MATE
@@ -23,11 +23,12 @@ LIB_DEPENDS=	libcanberra-gtk3.so:audio/libcanberra-gtk3 \
 
 PORTSCOUT=	limitw:1,even
 
-USES=		gettext gmake gnome libtool localbase pathfix pkgconfig tar:xz \
+USES=		gettext gmake gnome libtool localbase pkgconfig tar:xz \
 		xorg
 USE_XORG=	x11
 USE_GNOME=	cairo glib20 gtk30 intlhack librsvg2 libwnck3
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-static \
 		--with-dbus-services=${PREFIX}/share/dbus-1/services
 INSTALL_TARGET=	install-strip

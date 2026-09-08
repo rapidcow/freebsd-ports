@@ -1,6 +1,6 @@
 PORTNAME=	twolame
 PORTVERSION=	0.4.0
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	audio
 MASTER_SITES=	SF \
 		http://www.ecs.soton.ac.uk/~njh/twolame/
@@ -14,9 +14,10 @@ LIB_DEPENDS=	libsndfile.so:audio/libsndfile \
 		libvorbis.so:audio/libvorbis \
 		libogg.so:audio/libogg
 
-USES=		gmake pathfix pkgconfig libtool
+USES=		gmake pkgconfig libtool
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INSTALL_TARGET=	install-strip
 
 post-patch:

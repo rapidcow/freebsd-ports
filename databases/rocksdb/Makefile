@@ -1,6 +1,7 @@
 PORTNAME=	rocksdb
-PORTVERSION=	8.5.4
+PORTVERSION=	10.7.5
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	databases
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -13,17 +14,15 @@ LICENSE_COMB=	dual
 LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE.Apache
 LICENSE_FILE_GPLv2=	${WRKSRC}/COPYING
 
-#BROKEN=		fails to build
 BROKEN_DragonFly=	does not build on DragonFly BSD using GCC with -Werror
 BROKEN_armv6=	does not build: db/c.cc:2281:44: implicit conversion loses integer precision: 'uint64_t' (aka 'unsigned long long') to 'size_t' (aka 'unsigned int')
 BROKEN_armv7=	does not build: /nxb-bin/usr/bin/ld: undefined reference to symbol `__gnu_Unwind_Find_exidx@@FBSD_1.4' (try adding -lc) #'`
-BROKEN_FreeBSD_12_powerpc64=	does not build: util/crc32c.cc:435:22: 'arch_ppc_probe' was not declared in this scope
 
 BUILD_DEPENDS=	bash:shells/bash
 LIB_DEPENDS=	libgflags.so:devel/gflags \
 		libsnappy.so:archivers/snappy
 
-USES=		compiler:c++17-lang gmake localbase:ldflags perl5
+USES=		compiler:c++20-lang gmake localbase:ldflags perl5
 USE_PERL5=	build
 
 ALL_TARGET=	shared_lib static_lib all
@@ -33,7 +32,7 @@ CONFIGURE_ENV=	PORTABLE=0 ROCKSDB_ROOT=${WRKSRC}
 CONFIGURE_SCRIPT=	build_tools/build_detect_platform
 HAS_CONFIGURE=	yes
 MAKE_ENV=	CXX=${CXX} INSTALL_PATH=${STAGEDIR}${PREFIX} USE_RTTI=1 V=1
-USE_CXXSTD=	c++17
+USE_CXXSTD=	c++20
 USE_LDCONFIG=	yes
 TEST_TARGET=	check
 
@@ -42,8 +41,6 @@ PORTDATA=	make_config.mk
 
 GH_ACCOUNT=	facebook
 USE_GITHUB=	yes
-
-CONFLICTS_INSTALL=	rocksdb-lite
 
 BENCHMARKS=	cache_bench db_bench memtablerep_bench persistent_cache_bench range_del_aggregator_bench table_reader_bench
 TOOLS=		blob_dump db_repl_stress db_sanity_test db_stress ldb rocksdb_dump rocksdb_undump sst_dump trace_analyzer write_stress
@@ -61,7 +58,7 @@ ZSTD_MAKE_ENV_OFF=	ROCKSDB_DISABLE_ZSTD=yes
 .include <bsd.port.pre.mk>
 
 .if ${CHOSEN_COMPILER_TYPE} == clang
-CXXFLAGS+=	-Wno-inconsistent-missing-override -Wno-unused-parameter -Wno-unused-variable -Wno-unused-private-field
+CXXFLAGS+=	-Wno-sync-alignment -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable
 .endif
 
 post-patch:

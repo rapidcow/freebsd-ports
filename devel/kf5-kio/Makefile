@@ -1,13 +1,12 @@
 PORTNAME=	kio
 DISTVERSION=	${KDE_FRAMEWORKS_VERSION}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel kde kde-frameworks
-
-PATCH_SITES=	https://invent.kde.org/frameworks/kio/-/commit/
-PATCHFILES=	48322f44323a1fc09305d66d9093fe6c3780709e.diff:-p1
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KF5 resource and network access abstraction
+
+DEPRECATED=	has its functionality stripped compared to a kf6 variant
 
 USES=		cmake compiler:c++11-lib desktop-file-utils \
 		gettext gnome kde:5 cpe qt:5 ssl tar:xz xorg
@@ -22,5 +21,8 @@ USE_QT=		concurrent core dbus declarative gui network \
 		widgets x11extras xml \
 		buildtools:build qmake:build testlib:build
 USE_XORG=	x11
+
+# KF6 coinstallability
+CMAKE_ON=	KF6_COMPAT_BUILD
 
 .include <bsd.port.mk>

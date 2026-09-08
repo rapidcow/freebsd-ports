@@ -7,7 +7,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-source
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	CVS repository activity report generator
-WWW=		http://statcvs.sourceforge.net/
+WWW=		https://statcvs.sourceforge.net/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/etc/LICENSE
@@ -15,10 +15,9 @@ LICENSE_FILE=	${WRKSRC}/etc/LICENSE
 BROKEN_armv6=		fails to compile: build.xml: compilation failed
 BROKEN_armv7=		fails to compile: build.xml: compilation failed
 
-USES=		zip
-USE_JAVA=	yes
+USES=		java:ant zip
 JAVA_VERSION=	8
-USE_ANT=	yes
+
 NO_ARCH=	yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}

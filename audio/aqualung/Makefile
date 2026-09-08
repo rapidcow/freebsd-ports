@@ -1,42 +1,51 @@
 PORTNAME=	aqualung
-PORTVERSION=	1.0
-PORTREVISION=	25
+DISTVERSION=	1.2
+PORTREVISION=	10
 CATEGORIES=	audio
-MASTER_SITES=	SF
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	Music player with rich features
 WWW=		https://aqualung.jeremyevans.net/
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	a991c13d0df734a5d0fea7db6b181176858f3e58.patch:-p1 # Support newer audio/mac
+PATCHFILES+=	d2c88317b6042a05c236faf3c09f600337c6379e.patch:-p1 # Support newer audio/mac
+PATCHFILES+=	1c2a295a72e1e3abc6df40714d9753e311541550.patch:-p1 # Support newer audio/mac
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libFLAC.so:audio/flac \
 		libmp3lame.so:audio/lame \
-		libcddb.so:audio/libcddb \
 		libmad.so:audio/libmad \
 		libmodplug.so:audio/libmodplug \
+		libogg.so:audio/libogg \
 		liboggz.so:audio/liboggz \
 		libsamplerate.so:audio/libsamplerate \
 		libsndfile.so:audio/libsndfile \
 		libvorbis.so:audio/libvorbis \
-		libmac.so:audio/mac \
-		libmpcdec.so:audio/musepack \
+		libMAC.so:audio/mac \
 		libspeex.so:audio/speex \
 		libwavpack.so:audio/wavpack \
-		libavcodec.so.58:multimedia/ffmpeg4 \
+		libavcodec.so:multimedia/ffmpeg \
+		libfreetype.so:print/freetype2 \
+		libharfbuzz.so:print/harfbuzz \
+		libcdio.so:sysutils/libcdio \
 		libcdio_paranoia.so:sysutils/libcdio-paranoia \
-		liblrdf.so:textproc/liblrdf
+		liblrdf.so:textproc/liblrdf \
+		libfontconfig.so:x11-fonts/fontconfig
 
-USES=		compiler:c++11-lang cpe gettext gnome localbase lua:52 pkgconfig
-USE_GNOME=	gtk20 libxml2 libxslt
+USES=		autoreconf compiler:c++11-lang cpe gettext gnome localbase lua:52 pkgconfig
+USE_GNOME=	cairo gdkpixbuf gtk20 libxml2 libxslt
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	jeremyevans
+
 GNU_CONFIGURE=	yes
 
-LDFLAGS+=	-L${LOCALBASE}/ffmpeg4/lib
-CONFIGURE_ENV+=	PKG_CONFIG_PATH="${LOCALBASE}/ffmpeg4/libdata/pkgconfig"
-MAKE_ENV+=	PKG_CONFIG_PATH="${LOCALBASE}/ffmpeg4/libdata/pkgconfig"
-
-CONFIGURE_ARGS=	--with-ifp=no
+CONFIGURE_ARGS=	--with-cddb=no \
+		--with-ifp=no \
+		--with-mpc=no
 
 DESKTOP_ENTRIES="Aqualung" "" "${DATADIR}/general.png" "aqualung" \
 		"Audio;AudioVideo;GTK;" ""
@@ -59,7 +68,9 @@ SNDIO_CONFIGURE_OFF=	--with-sndio=no
 post-patch:
 # Remove unused duplicate global symbols (-fno-common)
 	@${REINPLACE_CMD} -E '/^g?char command/d' \
-		${WRKSRC}/src/gui_main.c \
-		${WRKSRC}/src/playlist.c
+		${WRKSRC}/src/gui_main.c
+# avcodec_close deprecated in ffmpeg 4
+	@${REINPLACE_CMD} -e 's/avcodec_close/avcodec_free_context/g' \
+		${WRKSRC}/src/decoder/dec_lavc.c
 
 .include <bsd.port.mk>

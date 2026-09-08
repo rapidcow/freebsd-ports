@@ -1,6 +1,6 @@
---- device/bluetooth/bluetooth_adapter.cc.orig	2023-04-28 17:01:32 UTC
+--- device/bluetooth/bluetooth_adapter.cc.orig	2025-08-07 06:57:29 UTC
 +++ device/bluetooth/bluetooth_adapter.cc
-@@ -31,7 +31,7 @@ namespace device {
+@@ -33,7 +33,7 @@ namespace device {
  BluetoothAdapter::ServiceOptions::ServiceOptions() = default;
  BluetoothAdapter::ServiceOptions::~ServiceOptions() = default;
  

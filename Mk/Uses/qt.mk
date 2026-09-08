@@ -11,9 +11,9 @@
 #   Versions:		5, 6
 #
 # Port variables:
-# USE_QT		- List of Qt modules to depend on, with optional ':build'
-#			  and ':run' suffixes. Define it empty to include this file
-#			  without depending on Qt ports.
+# USE_QT		- List of Qt modules to depend on, with optional ':build',
+#			  ':run', and ':test' suffixes. Define it empty to include
+#			  this file without depending on Qt ports.
 #
 # MAINTAINER:	kde@FreeBSD.org
 
@@ -22,9 +22,18 @@ _QT_MK_INCLUDED=	qt.mk
 
 # Qt versions currently supported by the framework.
 _QT_SUPPORTED?=		5 6
-QT5_VERSION?=		5.15.10
-QT6_VERSION?=		6.5.3
-PYSIDE6_VERSION?=	6.5.3
+QT5_VERSION?=		5.15.18
+QT6_VERSION?=		6.10.1
+PYSIDE6_VERSION?=	6.10.1
+
+# Support for intermediate Qt6 releases. This partially defines
+# _QT6_MASTER_SITE_SUBDIR and would probably be better in qt-dist.mk,
+# but misc/qt6-examples needs this too.
+.  if ${QT6_VERSION:M*beta*} || ${QT6_VERSION:M*rc*}
+_QT6_RELEASE_TYPE=		development
+.  else
+_QT6_RELEASE_TYPE=		official
+.  endif
 
 # We accept the Qt version to be passed by either or all of the three mk files.
 .  if empty(qt_ARGS) && empty(qmake_ARGS) && empty(qt-dist_ARGS)
@@ -65,6 +74,7 @@ QT_DESCRIPTIONSDIR_REL?=${QT_DATADIR_REL}/modules
 QT_LIBEXECDIR_REL?=	libexec/${_QT_RELNAME}
 QT_IMPORTDIR_REL?=	${QT_ARCHDIR_REL}/imports
 QT_QMLDIR_REL?=		${QT_ARCHDIR_REL}/qml
+QT_SBOMDIR_REL?=	${QT_ARCHDIR_REL}/sbom
 QT_DATADIR_REL?=	share/${_QT_RELNAME}
 QT_DOCDIR_REL?=		share/doc/${_QT_RELNAME}
 QT_L10NDIR_REL?=	${QT_DATADIR_REL}/translations
@@ -102,7 +112,7 @@ QMAKESPEC?=		${QT_MKSPECDIR}/${QMAKESPECNAME}
 QMAKE_COMPILER=	$$(ccver="$$(${CXX} --version)"; case "$$ccver" in *clang*) echo clang ;; *) echo g++ ;; esac)
 
 .  for dir in BIN INC LIB ARCH PLUGIN LIBEXEC IMPORT \
-	QML DATA DOC L10N ETC EXAMPLE TEST MKSPEC \
+	QML SBOM DATA DOC L10N ETC EXAMPLE TEST MKSPEC \
 	CMAKE TOOL
 QT_${dir}DIR=	${PREFIX}/${QT_${dir}DIR_REL}
 # Export all directories to the plist substituion for QT_DIST ports.
@@ -112,6 +122,11 @@ PLIST_SUB+=		QT_${dir}DIR="${QT_${dir}DIR_REL}"
 .    endif
 .  endfor
 
+# Suppress warnings from rcc about not using a UTF-8 locale.
+.  if ${_QT_VER:M6}
+USE_LOCALE?=		C.UTF-8
+.  endif
+
 CONFIGURE_ENV+=		QT_SELECT=${_QT_RELNAME}
 MAKE_ENV+=		QT_SELECT=${_QT_RELNAME}
 
@@ -119,6 +134,12 @@ MAKE_ENV+=		QT_SELECT=${_QT_RELNAME}
 # found, with the ones from the port being built having preference.
 CONFIGURE_ENV+=		QMAKEMODULES="${WRKSRC}/mkspecs/modules:${LOCALBASE}/${QT_MKSPECDIR_REL}/modules"
 MAKE_ENV+=		QMAKEMODULES="${WRKSRC}/mkspecs/modules:${LOCALBASE}/${QT_MKSPECDIR_REL}/modules"
+
+# Qt uses generated linker version scripts which always have a qt_version_tag
+# symbol, but that symbol is only defined in the main Qt shared library. For
+# other Qt components, this leads to lld >= 17 erroring out due to the symbol
+# being undefined. Supress these errors.
+LDFLAGS+=		-Wl,--undefined-version
 
 _USES_POST+=		qt
 .endif # _QT_MK_INCLUDED
@@ -131,27 +152,26 @@ _USES_POST+=		qt
 _QT_MK_POST_INCLUDED=	qt.mk
 
 # The Qt components supported by qt.mk: list of shared, and version specific ones
-_USE_QT_COMMON=		3d charts connectivity datavis3d declarative doc examples imageformats location \
-			multimedia networkauth quick3d quicktimeline remoteobjects scxml \
-			sensors serialbus serialport speech svg virtualkeyboard wayland \
+_USE_QT_COMMON=		3d charts connectivity datavis3d declarative doc \
+			examples imageformats location multimedia networkauth \
+			quick3d quicktimeline remoteobjects scxml sensors \
+			serialbus serialport speech svg virtualkeyboard wayland \
 			webchannel webengine websockets webview
 
 _USE_QT5_ONLY=		assistant buildtools concurrent core dbus \
 			declarative-test designer diag gamepad \
 			graphicaleffects gui help l10n linguist linguisttools \
-			network opengl paths phonon4 pixeltool plugininfo printsupport \
+			network opengl paths pixeltool plugininfo printsupport \
 			qdbus qdbusviewer qdoc qdoc-data qev qmake quickcontrols \
 			quickcontrols2 script scripttools sql sql-mysql sql-odbc \
 			sql-pgsql sql-sqlite2 sql-sqlite3 sql-tds testlib uiplugin \
-			uitools webglplugin webkit websockets-qml \
+			uitools webglplugin websockets-qml \
 			widgets x11extras xml xmlpatterns
-.  if ${ARCH} == amd64 || ${ARCH} == i386
-_USE_QT5_ONLY+=		sql-ibase
-.  endif
 
-_USE_QT6_ONLY=		5compat base httpserver languageserver lottie positioning \
-			quickeffectmaker shadertools tools translations \
-			sqldriver-sqlite sqldriver-mysql sqldriver-psql sqldriver-odbc
+_USE_QT6_ONLY=		5compat base coap graphs grpc httpserver languageserver \
+			lottie mqtt pdf positioning quick3dphysics quickeffectmaker \
+			shadertools tools translations sqldriver-sqlite \
+			sqldriver-mysql sqldriver-psql sqldriver-odbc
 
 # Dependency tuples: _LIB should be preferred if possible.
 qt-3d_PORT=		graphics/${_QT_RELNAME}-3d
@@ -172,6 +192,9 @@ qt-base_LIB=		libQt${_QT_LIBVER}Core.so
 
 qt-charts_PORT=		x11-toolkits/${_QT_RELNAME}-charts
 qt-charts_LIB=		libQt${_QT_LIBVER}Charts.so
+
+qt-coap_PORT=		net/${_QT_RELNAME}-coap
+qt-coap_LIB=		libQt${_QT_LIBVER}Coap.so
 
 qt-concurrent_PORT=	devel/${_QT_RELNAME}-concurrent
 qt-concurrent_LIB=	libQt${_QT_LIBVER}Concurrent.so
@@ -212,6 +235,12 @@ qt-gamepad_LIB=		libQt${_QT_LIBVER}Gamepad.so
 qt-graphicaleffects_PORT=	graphics/${_QT_RELNAME}-graphicaleffects
 qt-graphicaleffects_PATH=	${LOCALBASE}/${QT_QMLDIR_REL}/QtGraphicalEffects/qmldir
 
+qt-graphs_PORT=		x11-toolkits/${_QT_RELNAME}-graphs
+qt-graphs_LIB=		libQt${_QT_LIBVER}Graphs.so
+
+qt-grpc_PORT=		devel/${_QT_RELNAME}-grpc
+qt-grpc_LIB=		libQt${_QT_LIBVER}Grpc.so
+
 qt-gui_PORT=		x11-toolkits/${_QT_RELNAME}-gui
 qt-gui_LIB=		libQt${_QT_LIBVER}Gui.so
 
@@ -225,10 +254,10 @@ qt-imageformats_PORT=	graphics/${_QT_RELNAME}-imageformats
 qt-imageformats_PATH=	${LOCALBASE}/${QT_PLUGINDIR_REL}/imageformats/libqtiff.so
 
 qt-languageserver_PORT=	devel/${_QT_RELNAME}-languageserver
-qt-languageserver_LIB=	libQt${_QT_LIBVER}LanguageServer.so
+qt-languageserver_PATH=	${LOCALBASE}/${QT_LIBDIR_REL}/libQt6LanguageServer.a
 
 qt-lottie_PORT=		graphics/${_QT_RELNAME}-lottie
-qt-lottie_LIB=		libQt${_QT_LIBVER}Bodymovin.so
+qt-lottie_LIB=		libQt${_QT_LIBVER}Lottie.so
 
 qt-linguist_PORT=	devel/${_QT_RELNAME}-linguist
 qt-linguist_PATH=	${LOCALBASE}/${QT_BINDIR_REL}/linguist
@@ -241,6 +270,9 @@ qt-location_LIB=	libQt${_QT_LIBVER}Location.so
 
 qt-l10n_PORT=		misc/${_QT_RELNAME}-l10n
 qt-l10n_PATH=		${_QT_RELNAME}-l10n>=${_QT_VERSION:R:R}
+
+qt-mqtt_PORT=		net/${_QT_RELNAME}-mqtt
+qt-mqtt_LIB=		libQt${_QT_LIBVER}Mqtt.so
 
 qt-multimedia_PORT=	multimedia/${_QT_RELNAME}-multimedia
 qt-multimedia_LIB=	libQt${_QT_LIBVER}Multimedia.so
@@ -257,11 +289,11 @@ qt-opengl_LIB=		libQt${_QT_LIBVER}OpenGL.so
 qt-paths_PORT=		sysutils/${_QT_RELNAME}-qtpaths
 qt-paths_PATH=		${LOCALBASE}/${QT_BINDIR_REL}/qtpaths
 
+qt-pdf_PORT=		print/${_QT_RELNAME}-pdf
+qt-pdf_LIB=		libQt${_QT_LIBVER}Pdf.so
+
 qt-pixeltool_PORT=	graphics/${_QT_RELNAME}-pixeltool
 qt-pixeltool_PATH=	${LOCALBASE}/${QT_BINDIR_REL}/pixeltool
-
-qt-phonon4_PORT=	multimedia/phonon
-qt-phonon4_LIB=		libphonon4${_QT_RELNAME}.so
 
 qt-positioning_PORT=	devel/${_QT_RELNAME}-positioning
 qt-positioning_LIB=	libQt${_QT_LIBVER}Positioning.so
@@ -293,6 +325,9 @@ qt-qmake_PATH=		${_QT_RELNAME}-qmake>=${_QT_VERSION:R}
 
 qt-quick3d_PORT=	x11-toolkits/${_QT_RELNAME}-quick3d
 qt-quick3d_LIB=		libQt${_QT_LIBVER}Quick3D.so
+
+qt-quick3dphysics_PORT=	science/${_QT_RELNAME}-quick3dphysics
+qt-quick3dphysics_LIB=	libQt${_QT_LIBVER}Quick3DPhysics.so
 
 qt-quickcontrols_PORT=	x11-toolkits/${_QT_RELNAME}-quickcontrols
 qt-quickcontrols_PATH=	${LOCALBASE}/${QT_QMLDIR_REL}/QtQuick/Controls/qmldir
@@ -340,7 +375,7 @@ qt-sql-pgsql_PATH=	${LOCALBASE}/${QT_PLUGINDIR_REL}/sqldrivers/libqsqlpsql.so
 
 qt-sql-sqlite3_PATH=	${LOCALBASE}/${QT_PLUGINDIR_REL}/sqldrivers/libqsqlite.so
 
-.  for db in ibase mysql odbc pgsql sqlite2 sqlite3 tds
+.  for db in mysql odbc pgsql sqlite2 sqlite3 tds
 qt-sql-${db}_PORT=	databases/${_QT_RELNAME}-sqldrivers-${db}
 qt-sql-${db}_PATH?=	${LOCALBASE}/${QT_PLUGINDIR_REL}/sqldrivers/libqsql${db:C/^sql//}.so
 .  endfor
@@ -372,7 +407,7 @@ qt-virtualkeyboard_PORT=	x11-toolkits/${_QT_RELNAME}-virtualkeyboard
 qt-virtualkeyboard_PATH=	${LOCALBASE}/${QT_PLUGINDIR_REL}/platforminputcontexts/libqtvirtualkeyboardplugin.so
 
 qt-wayland_PORT=	graphics/${_QT_RELNAME}-wayland
-qt-wayland_LIB=		libQt${_QT_LIBVER}WaylandClient.so
+qt-wayland_LIB=		libQt${_QT_LIBVER}WaylandCompositor.so
 
 qt-webchannel_PORT=	www/${_QT_RELNAME}-webchannel
 qt-webchannel_LIB=	libQt${_QT_LIBVER}WebChannel.so
@@ -388,9 +423,6 @@ qt-websockets_LIB=	libQt${_QT_LIBVER}WebSockets.so
 
 qt-websockets-qml_PORT=	www/${_QT_RELNAME}-websockets-qml
 qt-websockets-qml_PATH=	${LOCALBASE}/${QT_QMLDIR_REL}/QtWebSockets/qmldir
-
-qt-webkit_PORT=		www/${_QT_RELNAME}-webkit
-qt-webkit_LIB=		libQt${_QT_LIBVER}WebKit.so
 
 qt-webview_PORT=	www/${_QT_RELNAME}-webview
 qt-webview_LIB=		libQt${_QT_LIBVER}WebView.so
@@ -412,7 +444,7 @@ _USE_QT_ALL=		${_USE_QT_COMMON} \
 			${_USE_QT${_QT_VER}_ONLY}
 _USE_QT=		${USE_QT}
 # Iterate through components deprived of suffix.
-.  for component in ${_USE_QT:O:u:C/:(build|run)$//}
+.  for component in ${_USE_QT:O:u:C/:(build|run|test)$//}
 # Check that the component is valid.
 .    if ${_USE_QT_ALL:M${component}} != ""
 # Skip meta-components (currently none).
@@ -425,6 +457,9 @@ qt-${component}_TYPE+=		build
 .          endif
 .          if ${_USE_QT:M${component}\:run} != ""
 qt-${component}_TYPE+=		run
+.          endif
+.          if ${_USE_QT:M${component}\:test} != ""
+qt-${component}_TYPE+=		test
 .          endif
 .        endif # ${_USE_QT:M${component}_*} != "" && ${_USE_QT:M${component}} == ""
 # If no dependency type is set, default to full dependency.
@@ -442,6 +477,9 @@ BUILD_DEPENDS+=			${qt-${component}_DEPENDS}
 .          endif
 .          if ${qt-${component}_TYPE:Mrun} != ""
 RUN_DEPENDS+=			${qt-${component}_DEPENDS}
+.          endif
+.          if ${qt-${component}_TYPE:Mtest} != ""
+TEST_DEPENDS+=			${qt-${component}_DEPENDS}
 .          endif
 .        endif # ${qt-${component}_LIB} && ${qt-${component}_TYPE:Mbuild} && ${qt-${component}_TYPE:Mrun}
 .      endif # defined(qt-${component}_PORT) && defined(qt-${component}_PATH)

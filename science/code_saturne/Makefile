@@ -1,5 +1,6 @@
 PORTNAME=	code_saturne
-PORTVERSION=	8.0.0
+PORTVERSION=	8.1.1
+PORTREVISION=	5
 CATEGORIES=	science parallel
 MASTER_SITES=	https://www.code-saturne.org/releases/
 
@@ -10,7 +11,7 @@ WWW=		https://www.code-saturne.org/
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mpi4py>0:net/py-mpi4py@${PY_FLAVOR}	\
+BUILD_DEPENDS=	${MPI4PY}	\
 		gsed:textproc/gsed
 LIB_DEPENDS=	libsysinfo.so:devel/libsysinfo	\
 		libcgns.so:science/cgnslib	\
@@ -22,8 +23,7 @@ LIB_DEPENDS=	libsysinfo.so:devel/libsysinfo	\
 		libcblas.so:math/cblas		\
 		libmedC.so:french/med
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib@${PY_FLAVOR}	\
-		${PYTHON_PKGNAMEPREFIX}mpi4py>0:net/py-mpi4py@${PY_FLAVOR}	\
-		pbs-config:sysutils/torque	\
+		${MPI4PY}	\
 		xmgrace:math/grace	\
 		bash:shells/bash	\
 		xterm:x11/xterm
@@ -31,7 +31,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib@${PY_FLAVOR}
 USES=		autoreconf bison blaslapack compiler:c11 fortran gettext gnome gmake \
 		iconv localbase libtool mpi pyqt:5 python shebangfix xorg
 USE_GNOME=	libxml2
-USE_PYQT=	pyqt5 sip
+USE_PYQT=	pyqt5
 USE_XORG=	x11
 SHEBANG_FILES=	install_saturne.py tests/unittests.py build-aux/*.py
 CFLAGS+=	-D__XSI_VISIBLE -Wno-error=incompatible-function-pointer-types
@@ -47,6 +47,7 @@ CONFIGURE_ARGS=	--without-salome --without-salome-yacs --without-salome-kernel	\
 		--with-scotch-include="${LOCALBASE}/include"
 CONFIGURE_ENV=	ac_cv_path_SED=${LOCALBASE}/bin/gsed ldflags_rpath="-R"	\
 		MUMPS_LIBS="-lmpiseq -llapack"
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
 BINARY_ALIAS=	python=${PYTHON_CMD} \
@@ -64,7 +65,7 @@ METIS_CONFIGURE_ON=	--with-metis-include="${LOCALBASE}/include"
 PARMETIS_DESC=		Support of ParMETIS
 PARMETIS_LIB_DEPENDS=	libparmetis.so:math/parmetis
 PARMETIS_CONFIGURE_ON=	--with-metis-include="${LOCALBASE}/include/parmetis"	\
-			--with-metis-lib="${LOCALBASE}/lib/parmetis"
+			--with-metis-lib="${LOCALBASE}/lib"
 PARMETIS_CONFIGURE_ENV=	LIBS=-lexecinfo
 
 TEST_TARGET=	check
@@ -82,6 +83,8 @@ TERM?=		vt100	# Default value needed for tput in jail or tinderbox
 # /libsaturne.so:
 # undefined reference to `__atomic_compare_exchange'
 CONFIGURE_ARGS+=	--disable-openmp
+.else
+CONFIGURE_ARGS+=	--enable-openmp
 .endif
 
 .if ${PORT_OPTIONS:MDOCS}
@@ -95,12 +98,16 @@ BUILD_DEPENDS+=	fig2dev:print/fig2dev		\
 BINARY_ALIAS+=	sphinx-build=sphinx-build-${PYTHON_VER}
 ALL_TARGET=	all pdf
 DOCS=		AUTHORS ChangeLog README
+PORTDOCS=	*
 .endif
 
 pre-configure:
 	${REINPLACE_CMD} -e 's|/usr/bin/env python|${PYTHON_CMD}|'	\
 		${WRKSRC}/Makefile.am
 	${REINPLACE_CMD} -e 's|make -s|${GMAKE} -s|' ${WRKSRC}/m4/cs_petsc.m4
+.for cs in config/cs_auto_flags.sh libple/config/ple_auto_flags.sh
+	${REINPLACE_CMD} -e 's|fopenmp=libomp|fopenmp|' ${WRKSRC}/${cs}
+.endfor
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/libexec/code_saturne/cs_solver

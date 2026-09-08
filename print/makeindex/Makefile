@@ -1,13 +1,19 @@
 PORTNAME=	makeindex
-PORTVERSION=	3.0.8
-PORTREVISION=	1
+DISTVERSION=	3.0.8
+PORTREVISION=	3
 CATEGORIES=	print
 MASTER_SITES=	http://ftp.linux.cz/pub/tex/local/indexing/makeindex3/ \
 		http://ftp.cstug.cz/pub/tex/local/indexing/makeindex3/
-EXTRACT_SUFX=	.tar.Z
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	General purpose, formatter-independent index processor
+
+LICENSE=	LicenseRef-makeindex
+LICENSE_NAME=	makeindex License
+LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+
+USES=		tar:Z
 
 CONFLICTS=	teTeX-base
 
@@ -29,6 +35,6 @@ do-install:
 	@(cd ${WRKSRC}/src-3.0/regexp; ${MAKE})
 	@(cd ${WRKSRC}/src-3.0; ${MAKE} install ${MAKE_ARGS})
 	@(cd ${WRKSRC}/doc; \
-	  ${INSTALL_DATA} makeindex.1 ${STAGEDIR}${MANPREFIX}/man/man1)
+	  ${INSTALL_DATA} makeindex.1 ${STAGEDIR}${PREFIX}/share/man/man1)
 
 .include <bsd.port.mk>

@@ -1,5 +1,5 @@
 PORTNAME=	bsdisks
-DISTVERSION=	0.30
+DISTVERSION=	0.38
 CATEGORIES=	sysutils
 
 MAINTAINER=	arrowd@FreeBSD.org
@@ -8,13 +8,15 @@ WWW=		https://foss.heptapod.net/bsdutils/bsdisks
 
 LICENSE=	BSD3CLAUSE
 
-USES=		cmake compiler:c++11-lang qt:5
+LIB_DEPENDS=	libpolkit-qt6-core-1.so:sysutils/polkit-qt-1@qt6
 
-USE_QT=		qmake:build buildtools:build core dbus
+USES=		cmake compiler:c++11-lang qt:6
 
-USE_GITLAB=		yes
-GL_SITE=		https://foss.heptapod.net
-GL_ACCOUNT=		bsdutils
-GL_TAGNAME=		732ac95883643f31701ade5805e27ce1adc98030
+USE_QT=		base
+CMAKE_ARGS=	-DQT_MAJOR_VERSION=6
+
+USE_GITLAB=	yes
+GL_SITE=	https://foss.heptapod.net
+GL_ACCOUNT=	bsdutils
 
 .include <bsd.port.mk>

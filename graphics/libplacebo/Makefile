@@ -1,7 +1,11 @@
 PORTNAME=	libplacebo
 DISTVERSIONPREFIX=	v
-DISTVERSION=	6.338.0
+DISTVERSION=	7.351.0
+PORTREVISION=	1
 CATEGORIES=	graphics
+
+PATCH_SITES=	${GL_SITE}/${GL_ACCOUNT}/${GL_PROJECT}/-/commit/
+PATCHFILES+=	12509c0f1ee8.patch:-p1 # https://code.videolan.org/videolan/libplacebo/-/merge_requests/727
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Reusable library for GPU-accelerated video/image rendering
@@ -17,7 +21,8 @@ USE_LDCONFIG=	yes
 GL_SITE=	https://code.videolan.org
 GL_ACCOUNT=	videolan
 GH_TUPLE=	fastfloat:fast_float:v5.2.0:fast_float/3rdparty/fast_float
-MESON_ARGS=	-Dd3d11=disabled -Dlibdovi=disabled -Ddemos=false
+MESON_DISABLED=	d3d11 libdovi
+MESON_FALSE=	demos
 
 OPTIONS_DEFINE=	LCMS2 LIBUNWIND OPENGL TEST VULKAN XXHASH
 OPTIONS_DEFAULT=LCMS2 LIBUNWIND OPENGL SHADERC XXHASH

@@ -1,4 +1,8 @@
-Qiskit [quiss-kit] is an open-source SDK for working with quantum computers
-at the level of pulses, circuits, and application modules.
+Qiskit is an open-source SDK for working with quantum computers at the
+level of extended quantum circuits, operators, and primitives.
 
-This is a meta-package that installs Qiskit submodules.
+This library is the core component of Qiskit, which contains the building
+blocks for creating and working with quantum circuits, quantum operators,
+and primitive functions (Sampler and Estimator). It also contains a
+transpiler that supports optimizing quantum circuits, and a quantum
+information toolbox for creating advanced operators.

@@ -1,6 +1,7 @@
 PORTNAME=	hugo
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.119.0
+DISTVERSION=	0.154.5
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	www
 PKGNAMEPREFIX=	go
@@ -42,7 +43,7 @@ EXTENDED_VARS_OFF=	CGO_ENABLED=0
 PORTMANS=	hugo-completion-bash.1 hugo-completion-fish.1 hugo-completion-powershell.1 \
 		hugo-completion-zsh.1 hugo-completion.1 hugo-config-mounts.1 \
 		hugo-config.1 hugo-convert-toJSON.1 hugo-convert-toTOML.1 hugo-convert-toYAML.1 \
-		hugo-convert.1 hugo-deploy.1 hugo-env.1 hugo-gen-chromastyles.1 hugo-gen-doc.1 \
+		hugo-convert.1 hugo-env.1 hugo-gen-chromastyles.1 hugo-gen-doc.1 \
 		hugo-gen-man.1 hugo-gen.1 hugo-import-jekyll.1 hugo-import.1 hugo-list-all.1 \
 		hugo-list-drafts.1 hugo-list-expired.1 hugo-list-future.1 hugo-list.1 \
 		hugo-mod-clean.1 hugo-mod-get.1 hugo-mod-graph.1 hugo-mod-init.1 \
@@ -60,7 +61,7 @@ do-build-MANPAGES-on:
 
 do-install-MANPAGES-on:
 .for i in ${PORTMANS}
-	${INSTALL_MAN} ${WRKSRC}/man/man1/$i ${STAGEDIR}/${PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/man/man1/$i ${STAGEDIR}/${PREFIX}/share/man/man1
 .endfor
 
 .include <bsd.port.post.mk>

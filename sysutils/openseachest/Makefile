@@ -1,6 +1,7 @@
 PORTNAME=	openseachest
-PORTVERSION=	23.03.1
 DISTVERSIONPREFIX=	v
+DISTVERSION=	23.12
+PORTREVISION=	2
 CATEGORIES=	sysutils
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -15,10 +16,10 @@ DOS2UNIX_FILES=	src/openseachest_util_options.c
 USE_GITHUB=	yes
 GH_ACCOUNT=	Seagate
 GH_PROJECT=	openSeaChest
-GH_TUPLE=	Seagate:opensea-common:5b65caa:common/subprojects/opensea-common \
-		Seagate:opensea-operations:187570b:operations/subprojects/opensea-operations \
-		Seagate:opensea-transport:cca4059:transport/subprojects/opensea-transport \
-		Seagate:wingetopt:92c217a:wingetopt/subprojects/wingetopt
+GH_TUPLE=	Seagate:opensea-common:fb04a1a:common/subprojects/opensea-common \
+		Seagate:opensea-operations:3dffce6:operations/subprojects/opensea-operations \
+		Seagate:opensea-transport:443c719:transport/subprojects/opensea-transport \
+		Seagate:wingetopt:c68019b:wingetopt/subprojects/wingetopt
 
 MAKE_JOBS_UNSAFE=	yes
 ALL_TARGET=	release
@@ -28,7 +29,7 @@ BUILD_WRKSRC=	${WRKSRC}/Make/gcc
 INSTALL_WRKSRC=	${WRKSRC}/Make/gcc
 
 EXES=		openSeaChest_Basics openSeaChest_Configure openSeaChest_Erase \
-		openSeaChest_Firmware openSeaChest_GenericTests \
+		openSeaChest_Firmware openSeaChest_Format openSeaChest_GenericTests \
 		openSeaChest_Info openSeaChest_Logs openSeaChest_NVMe \
 		openSeaChest_PassthroughTest openSeaChest_PowerControl \
 		openSeaChest_Security openSeaChest_SMART openSeaChest_ZBD

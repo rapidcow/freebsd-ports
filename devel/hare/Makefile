@@ -1,16 +1,15 @@
 PORTNAME=	hare
-PORTVERSION=	g20230719
+DISTVERSION=	0.25.2
+PORTREVISION=	1
 CATEGORIES=	devel
-MASTER_SITES=	https://git.sr.ht/~sircmpwn/${PORTNAME}/archive/
+MASTER_SITES=	https://git.sr.ht/~sircmpwn/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
 PKGNAMESUFFIX=	-lang
-DISTNAME=	0919412b
-DIST_SUBDIR=	hare
 
 MAINTAINER=	se@FreeBSD.org
 COMMENT=	Hare language build system and standard library
 WWW=		https://harelang.org/
 
-LICENSE=	MPL20 GPLv3
+LICENSE=	GPLv3 MPL20
 LICENSE_COMB=	multi
 LICENSE_FILE=	${WRKSRC}/COPYING
 
@@ -21,30 +20,30 @@ BUILD_DEPENDS=	harec:lang/harec \
 		scdoc:textproc/scdoc
 RUN_DEPENDS=	harec:lang/harec
 
-MAKE_ARGS=	ARCH=${ARCH:S/^amd64$/x86_64/} PREFIX=${PREFIX}
-
-WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTNAME}
+MAKE_ARGS=	ARCH=${ARCH:S/^amd64$/x86_64/} \
+		DESTDIR=${STAGEDIR} \
+		HARECACHE=${WRKDIR}/.cache/hare \
+		PREFIX=${PREFIX}
+TEST_TARGET=	check
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.pre.mk>
+post-patch:
+	@${REINPLACE_CMD} -e '\
+	s|@$$(AS)|$$(AS)|g; \
+	s|@$$(LD)|$$(LD)|g; \
+	s|@$$(QBE)|$$(QBE)|g' \
+	    ${PATCH_WRKSRC}/Makefile
+	@${REINPLACE_CMD} -e '/printf/d' \
+	    ${PATCH_WRKSRC}/Makefile
 
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1300000
-BROKEN=		pre-FreeBSD-13 assembler is not compatible with generated files
-.endif
+do-configure:
+	(cd ${WRKSRC} && ${CP} configs/freebsd.mk config.mk)
 
-do-build:
-		${CP} ${WRKSRC}/config.example.mk ${WRKSRC}/config.mk
-		cd ${WRKSRC} && ${MAKE} ${MAKE_ARGS}
+post-install:
+	${STRIP_CMD} ${STAGEDIR}${LOCALBASE}/bin/*
+	${MKDIR} ${STAGEDIR}${DATADIR}/third-party
+	${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/docs/*.md ${STAGEDIR}${DOCSDIR}
 
-post-stage:
-		${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/*
-		${MV} ${STAGEDIR}${DATADIR}/src/hare/* ${STAGEDIR}${DATADIR}/
-		${MKDIR} ${STAGEDIR}${DOCSDIR}
-		${INSTALL_DATA} ${WRKSRC}/README.md ${STAGEDIR}${DOCSDIR}/
-		${INSTALL_DATA} ${WRKSRC}/docs/*.md ${STAGEDIR}${DOCSDIR}/
-
-do-test:
-		cd ${WRKSRC} && ${MAKE} ${MAKE_ARGS} check
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

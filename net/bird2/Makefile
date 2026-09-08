@@ -1,22 +1,21 @@
 PORTNAME=	bird
-DISTVERSION=	2.13.1
+DISTVERSION=	2.18
 CATEGORIES=	net
-MASTER_SITES=	https://bird.network.cz/download/
+MASTER_SITES=	https://bird.nic.cz/download/
 PKGNAMESUFFIX=	2
 
 MAINTAINER=	olivier@FreeBSD.org
 COMMENT=	Dynamic IP routing daemon
-WWW=		https://bird.network.cz/
+WWW=		https://bird.nic.cz/
 
 LICENSE=	GPLv2
 
-FLAVORS=	base netlink
-netlink_PKGNAMESUFFIX=	2-netlink
+FLAVORS=	netlink rtsock
+rtsock_PKGNAMESUFFIX=	2-rtsock
 
 USES=		bison cpe gmake ncurses readline
 
-CONFLICTS=	bird
-CONFLICTS+=	bird6
+CONFLICTS=	bird3
 
 CPE_VENDOR=	nic
 
@@ -32,12 +31,13 @@ MAKE_JOBS_UNSAFE=	yes
 
 OPTIONS_MULTI=	RP
 RP_DESC=	Routing Protocols
-OPTIONS_MULTI_RP=	BFD BABEL BGP MRT OSPF PIPE RADV RIP RPKI STATIC
-OPTIONS_DEFAULT=	${OPTIONS_MULTI_RP}
+OPTIONS_MULTI_RP=	BFD BABEL BMP BGP MRT OSPF PIPE RADV RIP RPKI STATIC
+OPTIONS_DEFAULT=	BFD BABEL BGP MRT OSPF PIPE RADV RIP RPKI STATIC
 
 BFD_DESC=	Bidirectional Forwarding Detection
 BABEL_DESC=	Babel routing protocol
 BGP_DESC=	Border Gateway Protocol
+BMP_DESC=	BGP Monitoring Protocol
 MRT_DESC=	Dumping Routing Information in MRT Format
 OSPF_DESC=	Open Short Path First
 PIPE_DESC=	PIPE routing
@@ -49,6 +49,7 @@ STATIC_DESC=	Static routing
 BFD_VARS=	rt_prot+=bfd
 BABEL_VARS=	rt_prot+=babel
 BGP_VARS=	rt_prot+=bgp
+BMP_VARS=	rt_prot+=bmp
 MRT_VARS=	rt_prot+=mrt
 OSPF_VARS=	rt_prot+=ospf
 PIPE_VARS=	rt_prot+=pipe
@@ -62,11 +63,18 @@ RPKI_LIB_DEPENDS=	libssh.so:security/libssh
 
 .include <bsd.port.options.mk>
 
-.if ${FLAVOR:U} == netlink
+.if ${FLAVOR:U} != rtsock
 CONFIGURE_ARGS+=--with-sysconfig=bsd-netlink
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1302000
-IGNORE=	No netlink support
 .endif
+
+.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1400000
+FLAVORS=	rtsock netlink
+netlink_PKGNAMESUFFIX=	2-netlink
+rtsock_PKGNAMESUFFIX=	2
+.endif
+
+.if ${OPSYS} == FreeBSD && (${OSVERSION} >= 1500000 && ${OSVERSION} < 1500017)
+EXTRA_PATCHES=	${PATCHDIR}/extra-patch-netlink-route
 .endif
 
 .include <bsd.port.mk>

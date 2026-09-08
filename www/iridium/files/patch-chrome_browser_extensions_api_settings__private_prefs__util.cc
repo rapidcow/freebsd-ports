@@ -1,20 +1,29 @@
---- chrome/browser/extensions/api/settings_private/prefs_util.cc.orig	2023-08-28 20:17:35 UTC
+--- chrome/browser/extensions/api/settings_private/prefs_util.cc.orig	2026-01-16 14:21:21 UTC
 +++ chrome/browser/extensions/api/settings_private/prefs_util.cc
-@@ -195,7 +195,7 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlist
-   (*s_allowlist)[::prefs::kSidePanelHorizontalAlignment] =
-       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+@@ -198,7 +198,7 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlist
+   (*s_allowlist)[autofill::prefs::kAutofillPaymentCardBenefits] =
+       settings_api::PrefType::kBoolean;
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+   (*s_allowlist)[autofill::prefs::kAutofillBnplEnabled] =
+       settings_api::PrefType::kBoolean;
+   (*s_allowlist)[autofill::prefs::kAutofillAiIdentityEntitiesEnabled] =
+@@ -224,7 +224,7 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlist
+   (*s_allowlist)[tab_groups::prefs::kAutoPinNewTabGroups] =
+       settings_api::PrefType::kBoolean;
  
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
    (*s_allowlist)[::prefs::kUseCustomChromeFrame] =
-       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+       settings_api::PrefType::kBoolean;
  #endif
-@@ -207,7 +207,7 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlist
-       settings_api::PrefType::PREF_TYPE_STRING;
-   (*s_allowlist)[::prefs::kPolicyThemeColor] =
-       settings_api::PrefType::PREF_TYPE_NUMBER;
+@@ -243,7 +243,7 @@ const PrefsUtil::TypedPrefMap& PrefsUtil::GetAllowlist
+   (*s_allowlist)[::prefs::kPinnedActions] = settings_api::PrefType::kList;
+   (*s_allowlist)[themes::prefs::kPolicyThemeColor] =
+       settings_api::PrefType::kNumber;
 -#if BUILDFLAG(IS_LINUX)
 +#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
-   (*s_allowlist)[::prefs::kUsesSystemThemeDeprecated] =
-       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-   (*s_allowlist)[::prefs::kSystemTheme] =
+   (*s_allowlist)[::prefs::kSystemTheme] = settings_api::PrefType::kNumber;
+ #endif
+   (*s_allowlist)[::prefs::kHomePage] = settings_api::PrefType::kUrl;

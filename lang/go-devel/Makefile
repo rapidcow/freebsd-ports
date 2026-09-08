@@ -1,6 +1,6 @@
 PORTNAME=	go
-DISTVERSION?=	g20230808
-PORTREVISION?=	0
+DISTVERSION?=	g20240208
+PORTREVISION?=	2
 CATEGORIES=	lang
 MASTER_SITES?=	https://github.com/dmgk/go-bootstrap/releases/download/${BOOTSTRAP_TAG}/:bootstrap \
 		LOCAL/dmgk:bootstrap
@@ -20,6 +20,7 @@ IGNORE=		fails to build with qemu-user-static
 
 ONLY_FOR_ARCHS=	aarch64 amd64 armv6 armv7 i386 riscv64
 
+BUILD_DEPENDS?=	bash:shells/bash
 RUN_DEPENDS=	${RUN_DEPENDS_${ARCH}}
 # ld.bfd from devel/binutils is needed for working cgo on aarch64
 RUN_DEPENDS_aarch64=	binutils>0:devel/binutils
@@ -31,20 +32,25 @@ TEST_DEPENDS_aarch64=	binutils>0:devel/binutils
 USES=		cpe shebangfix
 
 CPE_VENDOR=	golang
+NO_SHLIB_REQUIRES_GLOB=	*
 
 .ifndef MASTERDIR
 USE_GITHUB=	yes
 GH_ACCOUNT=	golang
-# go1.21.0
-GH_TAGNAME=	c19c4c566c63818dfd059b352e52c4710eecf14d
+# go1.22
+GH_TAGNAME=	20107e05a609b8f2e61a6b5e8dc258237ad046e7
 .endif
 
-SHEBANG_FILES=	misc/wasm/go_js_wasm_exec \
-		src/net/http/cgi/testdata/test.cgi
+SHEBANG_FILES?=	misc/wasm/go_js_wasm_exec misc/wasm/go_wasip1_wasm_exec
 SHEBANG_GLOB=	*.bash *.pl *.sh
+
+REINPLACE_ARGS=	-i''
+# Example: 1.24.2 matches go124, 1.25.2 matches go125, etc.
+PORTSCOUT?=	limit:^${DISTVERSION:R:S/./\./g}\.
 
 # Upstream archive contains files with UTF-8 names
 EXTRACT_CMD=	${SETENV} LC_ALL=en_US.UTF-8 ${TAR}
+BASH?=		${LOCALBASE}/bin/bash
 
 OPTIONS_DEFINE_i386=	SOFTFLOAT
 OPTIONS_DEFAULT_amd64=	V1
@@ -77,10 +83,6 @@ GOARM_armv7=	7
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == riscv64 && ${OSREL:R} < 13
-IGNORE=		go/riscv64 requires FreeBSD 13 or later
-.endif
-
 post-extract:
 	@[ -z "${GH_TAGNAME}" ] || \
 		${ECHO_CMD} "devel ${DISTVERSION}-${GH_TAGNAME} ${OPSYS:tl}/${GOARCH_${ARCH}}" > ${WRKSRC}/VERSION
@@ -109,7 +111,7 @@ do-build:
 		GOARM=${GOARM_${ARCH}} \
 		GOAMD64=${GOAMD64} \
 		CC=${CC} \
-		${SH} make.bash -v
+		${BASH} make.bash -v
 
 do-install:
 	@cd ${WRKSRC} ; \
@@ -127,6 +129,7 @@ do-install:
 
 do-test:
 	cd ${WRKSRC}/src && ${SETENV} \
+		${TEST_ENV} \
 		GOROOT=${WRKSRC} \
 		PATH=${WRKSRC}/bin:${PATH} \
 		GOOS=${OPSYS:tl} \

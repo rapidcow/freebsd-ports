@@ -1,6 +1,15 @@
---- barman/config.py.orig	2021-12-01 11:09:36 UTC
+--- barman/config.py.orig	2026-01-07 14:55:50 UTC
 +++ barman/config.py
-@@ -661,8 +661,8 @@ class Config(object):
+@@ -1379,15 +1379,15 @@ class Config(object):
+ class Config(object):
+     """This class represents the barman configuration.
+ 
+-    Default configuration files are /etc/barman.conf,
+-    /etc/barman/barman.conf
++    Default configuration files are %%PREFIX%%/etc/barman.conf,
++    %%PREFIX%%/etc/barman/barman.conf
+     and ~/.barman.conf for a per-user configuration
+     """
  
      CONFIG_FILES = [
          "~/.barman.conf",

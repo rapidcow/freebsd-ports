@@ -10,14 +10,13 @@ WWW=		https://github.com/jinput/jutils
 
 LICENSE=	BSD2CLAUSE
 
-BUILD_DEPENDS=	mvn:devel/maven
+BUILD_DEPENDS=	maven>0:devel/maven
 
+USES=		java
 # Using a fork because of maven dependencies
 USE_GITLAB=	yes
 GL_ACCOUNT=	voidanix
 GL_TAGNAME=	f950e23e42081308b4be3b0fc4b57d4dbab70dac
-
-USE_JAVA=	8+
 
 PLIST_FILES=	${JAVAJARDIR}/${PORTNAME}/${PORTNAME}.jar
 PLIST_DIRS=	${JAVAJARDIR}/${PORTNAME}

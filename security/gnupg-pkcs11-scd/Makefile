@@ -1,9 +1,9 @@
 PORTNAME=	gnupg-pkcs11-scd
-DISTVERSION=	0.10.0
+DISTVERSION=	0.11.0
 CATEGORIES=	security
 MASTER_SITES=	https://github.com/alonbl/${PORTNAME}/releases/download/${DISTNAME}/
 
-MAINTAINER=	mat@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PKCS\#11 enabled gnupg scd
 WWW=		https://github.com/alonbl/gnupg-pkcs11-scd
 
@@ -19,6 +19,7 @@ LIB_DEPENDS=	libassuan.so:security/libassuan \
 USES=		pkgconfig ssl tar:bz2
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 CONFIGURE_ARGS=	--with-libassuan-prefix=${LOCALBASE} \
 		--with-libgcrypt-prefix=${LOCALBASE} \

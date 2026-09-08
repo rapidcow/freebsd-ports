@@ -1,6 +1,5 @@
 PORTNAME=	mahjong
-PORTVERSION=	1.16
-PORTREVISION=	1
+PORTVERSION=	1.17.2
 CATEGORIES=	games net
 MASTER_SITES=	http://mahjong.julianbradfield.org/Source/%SUBDIR%/
 DISTNAME=	mj-${PORTVERSION}-src
@@ -17,8 +16,8 @@ USE_PERL5=	build
 MAKE_ENV=	CCLINK="${CC}" CDEBUGFLAGS="${CFLAGS}" PERL="${PERL}"
 
 PLIST_FILES=	bin/mj-server bin/mj-player bin/xmj \
-		man/man1/mj-player.1.gz man/man1/mj-server.1.gz \
-		man/man1/xmj.1.gz
+		share/man/man1/mj-player.1.gz share/man/man1/mj-server.1.gz \
+		share/man/man1/xmj.1.gz
 
 post-patch:
 	@${REINPLACE_CMD} -e \
@@ -45,9 +44,9 @@ do-install:
 		${STAGEDIR}${PREFIX}/bin/${i})
 .endfor
 	(cd ${WRKSRC} && ${INSTALL_MAN} xmj.man \
-		${STAGEDIR}${MANPREFIX}/man/man1/xmj.1)
+		${STAGEDIR}${PREFIX}/share/man/man1/xmj.1)
 .for i in mj-player.1 mj-server.1
-	${LN} -sf xmj.1 ${STAGEDIR}${MANPREFIX}/man/man1/${i}
+	${LN} -sf xmj.1 ${STAGEDIR}${PREFIX}/share/man/man1/${i}
 .endfor
 
 .include <bsd.port.mk>

@@ -17,7 +17,7 @@ LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz \
 
 USES=		gmake gnome localbase:ldflags pkgconfig ssl tar:bzip2 xorg
 USE_XORG=	x11 xext xpm
-USE_GNOME=	cairo gdkpixbuf2 gtk20
+USE_GNOME=	cairo gdkpixbuf gtk20
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix=${PREFIX}
 CFLAGS+=	-fcommon
@@ -26,7 +26,8 @@ LDFLAGS+=	-L${OPENSSLLIB}
 MAKE_ENV=	DEBUG_CFLAGS="" DEBUG_LDFLAGS=""
 
 PLIST_FILES=	bin/wmmaiload bin/wmmaiload-config \
-		man/man1/wmmaiload.1.gz man/man1/wmmaiload-config.1.gz
+		share/man/man1/wmmaiload.1.gz \
+		share/man/man1/wmmaiload-config.1.gz
 
 post-patch:
 	@${FIND} ${WRKSRC} -name "Makefile" | ${XARGS} ${REINPLACE_CMD} -e \
@@ -35,7 +36,7 @@ post-patch:
 do-install:
 .for i in wmmaiload wmmaiload-config
 	${INSTALL_PROGRAM} ${WRKSRC}/${i}/${i} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/doc/${i}.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/doc/${i}.1 ${STAGEDIR}${PREFIX}/share/man/man1
 .endfor
 
 .include <bsd.port.mk>

@@ -1,5 +1,5 @@
 PORTNAME=	cmark
-DISTVERSION=	0.30.2
+DISTVERSION=	0.31.1
 CATEGORIES=	textproc
 
 MAINTAINER=	adridg@FreeBSD.org
@@ -9,15 +9,15 @@ WWW=		https://github.com/commonmark/cmark
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cmake python:test
-USE_GITHUB=	yes
-GH_ACCOUNT=	commonmark
+USES=		cmake:testing pathfix python:test
 USE_LDCONFIG=	yes
 
-CONFLICTS_INSTALL=	 py*-CommonMark # bin/cmark
+USE_GITHUB=	yes
+GH_ACCOUNT=	commonmark
 
-CMAKE_ARGS=	-DCMAKE_INSTALL_LIBDIR:STRING="lib"
-PLIST_SUB=	VERSION=${PORTVERSION}
-TEST_TARGET=	test
+PLIST_SUB=	VERSION=${DISTVERSION}
+
+CMAKE_OFF=	BUILD_TESTING
+CMAKE_ON=	BUILD_SHARED_LIBS
 
 .include <bsd.port.mk>

@@ -1,11 +1,11 @@
 PORTNAME=	libdv
 DISTVERSION=	1.0.0
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	multimedia
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Quasar DV codec (libdv) is a software codec for DV video
-WWW=		http://libdv.sourceforge.net/
+WWW=		https://libdv.sourceforge.net/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,21 +1,23 @@
 PORTNAME=	chrpath
-PORTVERSION=	0.16
+PORTVERSION=	0.18
 CATEGORIES=	devel sysutils
 MASTER_SITES=	DEBIAN_POOL
 DISTNAME=	${PORTNAME}_${PORTVERSION}.orig
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Tool to modify DT_RPATH in existing ELF binaries
-
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+WWW=		https://codeberg.org/pere/chrpath/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake
+USES=		autoreconf gmake
 GNU_CONFIGURE=	yes
 
-PLIST_FILES=	bin/chrpath man/man1/chrpath.1.gz
+DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}
+
+WRKSRC=		${WRKDIR}/${PORTNAME}
+
 PORTDOCS=	AUTHORS ChangeLog NEWS README
 
 OPTIONS_DEFINE=	DOCS
@@ -25,5 +27,8 @@ post-install-DOCS-on:
 .for i in ${PORTDOCS}
 	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
+
+do-test:
+	cd ${BUILD_WRKSRC} && ${DO_MAKE_BUILD} check
 
 .include <bsd.port.mk>

@@ -1,7 +1,7 @@
 PORTNAME=	frp
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.51.3
-PORTREVISION=	1
+DISTVERSION=	0.65.0
+PORTREVISION=	6
 CATEGORIES=	net
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -11,7 +11,7 @@ WWW=		https://github.com/fatedier/frp
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		go:modules
+USES=		go:1.24+,modules
 USE_GITHUB=	nodefault
 GH_TUPLE=	golang:net:v0.8.0:net \
 		golang:sys:v0.6.0:sys \
@@ -42,6 +42,8 @@ pre-patch:
 .endfor
 
 post-install:
-	${INSTALL_DATA} ${WRKSRC}/conf/frps.ini ${STAGEDIR}${PREFIX}/etc/frps.ini.sample
+.for f in frpc.toml frps.toml
+	${INSTALL_DATA} ${WRKSRC}/conf/${f} ${STAGEDIR}${PREFIX}/etc/${f}.sample
+.endfor
 
 .include <bsd.port.mk>

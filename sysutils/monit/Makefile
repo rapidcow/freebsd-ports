@@ -1,5 +1,5 @@
 PORTNAME=	monit
-DISTVERSION=	5.33.0
+DISTVERSION=	5.35.2
 CATEGORIES=	sysutils
 MASTER_SITES=	https://mmonit.com/monit/dist/
 
@@ -20,7 +20,7 @@ SUB_FILES=	pkg-message
 
 PLIST_FILES=	bin/monit \
 		etc/monitrc.sample \
-		man/man1/monit.1.gz
+		share/man/man1/monit.1.gz
 
 PORTDOCS=	CHANGES COPYING
 

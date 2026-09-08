@@ -1,6 +1,6 @@
 PORTNAME=	archiveopteryx
 PORTVERSION=	3.2.99.20181030
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	mail
 PKGNAMESUFFIX=	-devel
 
@@ -19,7 +19,6 @@ GH_TAGNAME=	96ab17e
 
 USES=		compiler perl5 ssl
 USE_PERL5=	build
-WITH_PGSQL=	client
 
 CONFLICTS_INSTALL=	archiveopteryx # bin/aox bin/aoxdeliver bin/aoxexport bin/aoximport
 

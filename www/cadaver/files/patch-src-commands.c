@@ -1,6 +1,7 @@
---- src/commands.c	2008-11-11 03:40:54.000000000 -0500
-+++ src/commands.c	2010-04-16 14:31:42.000000000 -0400
-@@ -71,6 +71,5 @@
+--- src/commands.c.orig	2025-05-02 18:23:47 UTC
++++ src/commands.c
+@@ -74,8 +74,7 @@
+ #include <ne_dates.h>
  
  #include "i18n.h"
 -#include "basename.h"
@@ -8,57 +9,57 @@
 +#include <libgen.h>
  #include "cadaver.h"
  #include "commands.h"
-@@ -765,9 +764,9 @@
-     src_is_coll = (src[strlen(src)-1] == '/');
-     if (strcmp(dest, ".") == 0) {
--	ret = resolve_path(p, base_name(src), false);
-+	ret = resolve_path(p, basename(src), false);
-     } else if (strcmp(dest, "..") == 0) {
- 	char *parent;
- 	parent = ne_path_parent(p);
--	ret = resolve_path(parent, base_name(src), false);
-+	ret = resolve_path(parent, basename(src), false);
- 	free(parent);
-     } else if (!src_is_coll && dest_is_coll) {
-@@ -775,5 +774,5 @@
- 	 * be the basename of file concated with the collection. */
- 	char *tmp = resolve_path(p, dest, true);
--        char *enc = escape_path(base_name(src));
-+        char *enc = escape_path(basename(src));
- 	ret = ne_concat(tmp, enc, NULL);
-         free(enc);
-@@ -950,5 +949,5 @@
- 	struct stat st;
- 	/* Choose an appropriate local filename */
--	if (stat(base_name(remote), &st) == 0) {
-+	if (stat(basename(remote), &st) == 0) {
- 	    char buf[BUFSIZ];
- 	    /* File already exists... don't overwrite */
-@@ -962,5 +961,5 @@
- 	    }
- 	} else {
--	    filename = ne_strdup(base_name(remote));
-+	    filename = ne_strdup(basename(remote));
- 	}
-     } else {
-@@ -1004,5 +1003,5 @@
-     char *real_remote;
-     if (remote == NULL) {
--	real_remote = resolve_path(session.uri.path, base_name(local), false);
-+	real_remote = resolve_path(session.uri.path, basename(local), false);
-     } else {
- 	real_remote = resolve_path(session.uri.path, remote, false);
---- src/edit.c	2008-10-24 07:36:41.000000000 -0400
-+++ src/edit.c	2010-04-16 14:37:24.000000000 -0400
-@@ -117,5 +117,5 @@
+ #include "options.h"
+@@ -956,7 +955,7 @@ static void do_copymove(int argc, const char *argv[],
+         else if (dest_is_coll && src_is_coll) {
+             /* Case 1. */
+             char *tmp = ne_strndup(ops[n].src, strlen(ops[n].src)-1);
+-            ops[n].dest = ne_concat(uri_dest, base_name(tmp), NULL);
++            ops[n].dest = ne_concat(uri_dest, basename(tmp), NULL);
+             ne_free(tmp);
+         }
+         else if (src_is_coll && !dest_is_coll) {
+@@ -966,7 +965,7 @@ static void do_copymove(int argc, const char *argv[],
+         }
+         else if (dest_is_coll) {
+             /* Case 2. */
+-            ops[n].dest = ne_concat(uri_dest, base_name(ops[n].src), NULL);
++            ops[n].dest = ne_concat(uri_dest, basename(ops[n].src), NULL);
+         }
+         else {
+             /* Case 3. */
+@@ -1030,7 +1029,7 @@ static void execute_get(const char *native_remote, con
+     else {
+         struct stat st;
+ 
+-        filename = ne_strdup(base_name(native_remote));
++        filename = ne_strdup(basename(native_remote));
+ 
+         /* Choose an appropriate local filename */
+         if (stat(filename, &st) == 0) {
+@@ -1084,7 +1083,7 @@ static void execute_put(const char *local, const char 
+ 
+ static void execute_put(const char *local, const char *remote)
+ {
+-    char *uri_path = uri_resolve_native(remote ? remote : base_name(local));
++    char *uri_path = uri_resolve_native(remote ? remote : basename(local));
+     simple_put(local, uri_path);
+     free(uri_path);
+ }
+--- src/edit.c.orig	2025-05-02 18:26:58 UTC
++++ src/edit.c
+@@ -116,7 +116,7 @@ void execute_edit(const char *native_path)
+     struct ne_lock *lock = NULL;
      char fname[PATH_MAX] = "/tmp/cadaver-edit-XXXXXX";
      const char *pnt;
 -    int fd;
 +    int fd, sufx_len;
      int is_checkout, is_checkin;
      
-@@ -141,7 +141,9 @@
- 	strncat(fname, pnt, PATH_MAX);
+     uri_path = uri_resolve_native(native_path);
+@@ -140,9 +140,11 @@ void execute_edit(const char *native_path)
+     if (pnt != NULL && strchr(pnt, '/') == NULL) {
+ 	strncat(fname, pnt, PATH_MAX-1);
  	fname[PATH_MAX-1] = '\0';
 -    }
 +	sufx_len = strlen(pnt);
@@ -69,3 +70,4 @@
 +    fd = mkstemps(fname, sufx_len);
      if (fd == -1) {
  	printf(_("Could not create temporary file %s:\n%s\n"), fname,
+ 	       strerror(errno));

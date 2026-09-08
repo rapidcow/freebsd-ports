@@ -1,18 +1,21 @@
 PORTNAME=	xmlindent
-PORTVERSION=	0.2.17
-PORTREVISION=	1
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.2.18
 CATEGORIES=	textproc
-MASTER_SITES=	SF
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	XML stream reformatter
-WWW=		http://xmlindent.sourceforge.net
+WWW=		https://xmlindent.sourceforge.net
 
 LICENSE=	GPLv2
 
+USE_GITHUB=	yes
+GH_ACCOUNT=	penberg
+
 SOURCES=	error.c indent.c buffer.c main.c
 
-PLIST_FILES=	bin/xmlindent man/man1/xmlindent.1.gz
+PLIST_FILES=	bin/xmlindent \
+		share/man/man1/xmlindent.1.gz
 
 do-build:
 	@cd ${WRKSRC}; flex xmlindent.yy
@@ -21,6 +24,6 @@ do-build:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

@@ -4,7 +4,7 @@
 
 [reticulum]
 
-# Define the DB directory
+# Define database directory
 dbdir = "/var/db/reticulum"
 
 # If you enable Transport, your system will route traffic
@@ -14,7 +14,7 @@ dbdir = "/var/db/reticulum"
 # always-on. This directive is optional and can be removed
 # for brevity.
 
-enable_transport = False
+enable_transport = No
 
 
 # By default, the first program to launch the Reticulum
@@ -31,12 +31,48 @@ share_instance = Yes
 
 # If you want to run multiple *different* shared instances
 # on the same system, you will need to specify different
-# shared instance ports for each. The defaults are given
-# below, and again, these options can be left out if you
-# don't need them.
+# instance names for each. On platforms supporting domain
+# sockets, this can be done with the instance_name option:
 
-shared_instance_port = 37428
-instance_control_port = 37429
+instance_name = default
+
+# Some platforms don't support domain sockets, and if that
+# is the case, you can isolate different instances by
+# specifying a unique set of ports for each:
+
+# shared_instance_port = 37428
+# instance_control_port = 37429
+
+
+# If you want to explicitly use TCP for shared instance
+# communication, instead of domain sockets, this is also
+# possible, by using the following option:
+
+# shared_instance_type = tcp
+
+
+# On systems where running instances may not have access
+# to the same shared Reticulum configuration directory,
+# it is still possible to allow full interactivity for
+# running instances, by manually specifying a shared RPC
+# key. In almost all cases, this option is not needed, but
+# it can be useful on operating systems such as Android.
+# The key must be specified as bytes in hexadecimal.
+
+# rpc_key = e5c032d3ec4e64a6aca9927ba8ab73336780f6d71790
+
+
+# It is possible to allow remote management of Reticulum
+# systems using the various built-in utilities, such as
+# rnstatus and rnpath. You will need to specify one or
+# more Reticulum Identity hashes for authenticating the
+# queries from client programs. For this purpose, you can
+# use existing identity files, or generate new ones with
+# the rnid utility.
+
+# enable_remote_management = yes
+# remote_management_allowed = 9fb6d773498fb3feda407ed8ef2c3229, 2d882c5586e548d79b5af27bca1776dc
+
 
 # You can configure Reticulum to panic and forcibly close
 # if an unrecoverable interface error occurs, such as the
@@ -44,7 +80,18 @@ instance_control_port = 37429
 # an optional directive, and can be left out for brevity.
 # This behaviour is disabled by default.
 
-panic_on_interface_error = No
+# panic_on_interface_error = No
+
+
+# When Transport is enabled, it is possible to allow the
+# Transport Instance to respond to probe requests from
+# the rnprobe utility. This can be a useful tool to test
+# connectivity. When this option is enabled, the probe
+# destination will be generated from the Identity of the
+# Transport Instance, and printed to the log at startup.
+# Optional, and disabled by default.
+
+# respond_to_probes = No
 
 
 [logging]
@@ -185,6 +232,23 @@ loglevel = 4
 
     # Serial port for the device
     port = /dev/ttyUSB0
+
+    # It is also possible to use BLE devices
+    # instead of wired serial ports. The
+    # target RNode must be paired with the
+    # host device before connecting. BLE
+    # devices can be connected by name,
+    # BLE MAC address or by any available.
+    
+    # Connect to specific device by name
+    # port = ble://RNode 3B87
+
+    # Or by BLE MAC address
+    # port = ble://F4:12:73:29:4E:89
+
+    # Or connect to the first available,
+    # paired device
+    # port = ble://
 
     # Set frequency to 867.2 MHz
     frequency = 867200000

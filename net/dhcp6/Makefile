@@ -1,12 +1,12 @@
 PORTNAME=	dhcp6
 PORTVERSION=	20080615.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	net
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	KAME DHCP6 client, server, and relay
-WWW=		http://wide-dhcpv6.sourceforge.net/
+WWW=		https://wide-dhcpv6.sourceforge.net/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
@@ -15,6 +15,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	hrs-allbsd
 GH_PROJECT=	wide-dhcpv6
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CONFIGURE_ARGS=	--sysconfdir=${LOCALBASE}/etc \
 		--with-localdbdir=/var/db
 USE_RC_SUBR=	dhcp6c dhcp6relay dhcp6s

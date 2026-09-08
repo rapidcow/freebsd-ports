@@ -1,6 +1,7 @@
 PORTNAME=	openjdk
 DISTVERSIONPREFIX=	jdk-
 DISTVERSION=	${JDK_MAJOR_VERSION}.${JDK_MINOR_VERSION}.${JDK_PATCH_VERSION}+${JDK_BUILD_NUMBER}-${BSD_JDK_VERSION}
+PORTREVISION=	3
 CATEGORIES=	java devel
 PKGNAMESUFFIX?=	${JDK_MAJOR_VERSION}
 
@@ -9,6 +10,9 @@ COMMENT?=	Java Development Kit ${JDK_MAJOR_VERSION}
 WWW=		https://openjdk.java.net/projects/jdk/20/
 
 LICENSE=	GPLv2
+
+DEPRECATED=	No longer supported by upstream
+EXPIRATION_DATE=	2026-03-12
 
 ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc64 powerpc64le
 
@@ -38,6 +42,8 @@ GH_PROJECT=	jdk20u
 
 NO_CCACHE=	yes
 
+# Suppress passing -j to do-build target via Mk/bsd.port.mk
+# In the JDK build the number of parallel jobs is passed in via configure --with-num-cores=N
 _MAKE_JOBS=	#
 MAKE_ENV=	LANG="C" \
 		LC_ALL="C" \
@@ -47,6 +53,7 @@ MAKE_ENV=	LANG="C" \
 		CC=${CC} \
 		CXX=${CXX} \
 		CPP=${CPP} \
+		LOG=cmdlines \
 		MAKEFLAGS=""
 
 JDK_OSARCH=	bsd-${ARCH:S/amd64/x86_64/:S/i386/x86/:S/powerpc64/ppc64/}
@@ -88,6 +95,7 @@ CONFIGURE_ARGS=	--with-boot-jdk=${BOOTSTRAPJDKDIR} \
 		--with-giflib-lib=${LOCALBASE}/lib \
 		--with-harfbuzz=system \
 		--with-libpng=system \
+		--with-num-cores=${MAKE_JOBS_NUMBER} \
 		--with-zlib=system \
 		--with-lcms=system \
 		--x-includes=${LOCALBASE}/include \
@@ -130,6 +138,7 @@ JDK_BUILD_JVM=	server
 
 MAKE_ENV+=		--with-toolchain-type=${COMPILER_TYPE}
 CONFIGURE_ARGS+=	--with-toolchain-type=${COMPILER_TYPE}
+CONFIGURE_ARGS+=	--disable-warnings-as-errors
 
 .if ${COMPILER_TYPE} == gcc
 USE_GCC=	yes
@@ -138,32 +147,16 @@ CONFIGURE_ARGS+=	--with-extra-ldflags="-Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFA
 			--with-extra-cxxflags="-Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFAULT}"
 .else
 MAKE_ENV+=	USE_CLANG=true
-.if ${COMPILER_VERSION} >= 130
 EXTRA_CFLAGS+=		-Wno-unused-but-set-parameter
-.if ${COMPILER_VERSION} >= 140
 EXTRA_CFLAGS+=		-Wno-bitwise-instead-of-logical
-.endif
-.if ${COMPILER_VERSION} >= 160
 EXTRA_CFLAGS+=		-Wno-error=deprecated-non-prototype
-.endif
 CONFIGURE_ARGS+=	--with-extra-cflags="${EXTRA_CFLAGS}"
 CONFIGURE_ARGS+=	--with-extra-cxxflags="${EXTRA_CFLAGS}"
 .endif
-.endif
 
-.if ${ARCH} == aarch64 || ${ARCH:Mpowerpc64*}
-CONFIGURE_ARGS+=	--disable-warnings-as-errors
-.endif
-.if ${ARCH} == aarch64 || (defined(PPC_ABI) && ${PPC_ABI} == ELFv1)
-CONFIGURE_ARGS+=	--disable-dtrace
-.endif
-.if ${ARCH} == powerpc64 && ${OSREL:C/\.[0-9]//} == 12
-EXTRA_PATCHES=		${PATCHDIR}/extra-patch-src_hotspot_cpu_ppc_vm__version__ppc.hpp
-.endif
 .if ${ARCH} == aarch64
-CONFIGURE_ARGS+=	--with-boot-jdk-jvmargs=-XX:-UseCompressedClassPointers
+CONFIGURE_ARGS+=	--with-boot-jdk-jvmargs=-XX:-UseCompressedClassPointers --disable-dtrace
 MAKE_ENV+=		JAVA_TOOL_OPTIONS="-XX:-UseCompressedClassPointers"
-EXTRA_PATCHES=		${PATCHDIR}/extra-patch-src_hotspot_share_runtime_arguments.cpp
 .endif
 
 .if empty(ICONV_LIB)

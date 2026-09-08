@@ -1,6 +1,6 @@
---- chrome/test/chromedriver/chrome_launcher.cc.orig	2023-09-17 07:59:53 UTC
+--- chrome/test/chromedriver/chrome_launcher.cc.orig	2025-09-10 13:22:16 UTC
 +++ chrome/test/chromedriver/chrome_launcher.cc
-@@ -69,6 +69,7 @@
+@@ -75,6 +75,7 @@
  #include <fcntl.h>
  #include <sys/stat.h>
  #include <sys/types.h>

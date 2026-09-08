@@ -1,10 +1,10 @@
 PORTNAME=	dq
-PORTVERSION=	20230101
+PORTVERSION=	20250201
 CATEGORIES=	dns
 
 MAINTAINER=	pkubaj@FreeBSD.org
 COMMENT=	Recursive DNS/DNSCurve server
-WWW=		https://mojzis.com/software/dq/
+WWW=		https://github.com/janmojzis/dq
 
 LICENSE=	CC0
 LICENSE_FILE=	${WRKSRC}/LICENCE
@@ -28,7 +28,7 @@ post-install:
 	${ECHO_CMD} "${ETCDIR}cache/root" > ${STAGEDIR}${ETCDIR}cache/env/ROOT
 	${CP} files/root-servers-list ${STAGEDIR}${ETCDIR}cache/root/servers/@
 	${CP} ${WRKDIR}/run ${STAGEDIR}${ETCDIR}cache/run
-	${INSTALL_MAN} ${WRKSRC}/man/dq*.1 ${STAGEDIR}${MANPREFIX}/man/man1
-	${INSTALL_MAN} ${WRKSRC}/man/dq*.8 ${STAGEDIR}${MANPREFIX}/man/man8
+	${INSTALL_MAN} ${WRKSRC}/man/dq*.1 ${STAGEDIR}${PREFIX}/share/man/man1
+	${INSTALL_MAN} ${WRKSRC}/man/dq*.8 ${STAGEDIR}${PREFIX}/share/man/man8
 
 .include <bsd.port.mk>

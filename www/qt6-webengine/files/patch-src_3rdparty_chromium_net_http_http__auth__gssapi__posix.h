@@ -1,4 +1,4 @@
---- src/3rdparty/chromium/net/http/http_auth_gssapi_posix.h.orig	2023-03-28 19:45:02 UTC
+--- src/3rdparty/chromium/net/http/http_auth_gssapi_posix.h.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/net/http/http_auth_gssapi_posix.h
 @@ -21,6 +21,9 @@
  #if BUILDFLAG(IS_APPLE)

@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/ui/base/ime/fake_text_input_client.h.orig	2023-03-28 19:45:02 UTC
+--- src/3rdparty/chromium/ui/base/ime/fake_text_input_client.h.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/ui/base/ime/fake_text_input_client.h
-@@ -71,7 +71,7 @@ class FakeTextInputClient : public TextInputClient {
+@@ -107,7 +107,7 @@ class FakeTextInputClient : public TextInputClient {
    void SetTextEditCommandForNextKeyEvent(TextEditCommand command) override;
    ukm::SourceId GetClientSourceForMetrics() const override;
    bool ShouldDoLearning() override;

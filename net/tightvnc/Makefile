@@ -1,6 +1,6 @@
 PORTNAME=	tightvnc
 PORTVERSION=	1.3.10
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	net java
 MASTER_SITES=	SF/vnc-tight/TightVNC-unix/${PORTVERSION}
 DISTNAME=	${PORTNAME}-${PORTVERSION}_unixsrc
@@ -40,8 +40,7 @@ MAKE_ARGS=	CC=${CC}
 OPTIONS_DEFINE=	JVNC_VIEWER
 OPTIONS_SUB=	yes
 JVNC_VIEWER_DESC=	Install Java-based vnc viewer
-JVNC_VIEWER_USE=	JAVA=yes
-JVNC_VIEWER_VARS=	JAVA_RUN=yes
+JVNC_VIEWER_USES=	java
 
 .ifdef(TIGHTVNC_BASE)
 PREFIX=${TIGHTVNC_BASE}
@@ -67,7 +66,7 @@ post-patch:
 		s|%%CFLAGS%%|${CFLAGS}|g" ${WRKSRC}/Xvnc/config/cf/FreeBSD.cf
 
 do-install:
-	@(cd ${WRKSRC}; ./vncinstall ${STAGEDIR}${PREFIX}/bin ${STAGEDIR}${PREFIX}/man)
+	@(cd ${WRKSRC}; ./vncinstall ${STAGEDIR}${PREFIX}/bin ${STAGEDIR}${PREFIX}/share/man)
 .if defined(STRIP) && ${STRIP} != ""
 .for FILE in Xvnc vncviewer vncpasswd vncconnect
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${FILE}

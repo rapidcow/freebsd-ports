@@ -1,9 +1,10 @@
 PORTNAME=	xnotify
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.9.3
+PORTREVISION=	3
 CATEGORIES=	x11
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Read notifications from stdin and display them on the screen
 WWW=		https://github.com/phillbush/xnotify
 
@@ -18,7 +19,7 @@ USE_GITHUB=	yes
 USE_XORG=	x11 xft xinerama
 GH_ACCOUNT=	phillbush
 EXTRA_PATCHES=	${${PORTNAME:tu}_PATCHES}
-MANPREFIX=	${PREFIX}/share/man
+MAKE_ARGS=	MANPREFIX="${PREFIX}/share/man"
 MAKE_ENV=	LOCALINC="${LOCALBASE}/include" \
 		LOCALLIB="${LOCALBASE}/lib" \
 		X11INC="${LOCALBASE}/include" \

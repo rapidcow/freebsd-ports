@@ -1,20 +1,22 @@
 PORTNAME=	gnubiff
 PORTVERSION=	2.2.13
-PORTREVISION=	13
+PORTREVISION=	16
 CATEGORIES=	mail
 MASTER_SITES=	SF
 
 MAINTAINER=	tdb@FreeBSD.org
 COMMENT=	Mail notification program for Gnome
-WWW=		http://gnubiff.sourceforge.net/
+WWW=		https://gnubiff.sourceforge.net/
 
-LIB_DEPENDS=	libpopt.so:devel/popt
+LIB_DEPENDS=	libfam.so.0:devel/gamin \
+		libpopt.so:devel/popt
 
 OPTIONS_DEFINE=	NLS
 
-USES=		compiler:c++11-lang cpe fam gmake gnome pathfix pkgconfig
+USES=		compiler:c++11-lang cpe gmake gnome pkgconfig
 USE_GNOME=	intlhack libglade2
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib -lX11
 
@@ -41,6 +43,5 @@ PLIST_SUB+=		NLS="@comment "
 .endif
 
 CONFIGURE_ARGS+=	--disable-gnome
-PLIST_SUB+=		BONOBODIR="libdata/bonobo"
 
 .include <bsd.port.mk>

@@ -1,7 +1,7 @@
 PORTNAME=	redeclipse
 PORTVERSION=	1.6.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games
 PKGNAMESUFFIX=	16
 
@@ -13,8 +13,6 @@ LICENSE=	MIT ZLIB
 LICENSE_COMB=	multi
 
 CONFLICTS_INSTALL=redeclipse
-
-BROKEN_sparc64=	does not build on sparc64
 
 RUN_DEPENDS=	redeclipse-data16>=${PORTVERSION}:games/redeclipse-data16
 

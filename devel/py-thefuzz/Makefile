@@ -1,5 +1,6 @@
 PORTNAME=	thefuzz
-PORTVERSION=	0.19.0
+PORTVERSION=	0.20.0
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -9,6 +10,8 @@ COMMENT=	Fuzzy string matching in Python
 WWW=		https://github.com/seatgeek/thefuzz
 
 LICENSE=	GPLv2
+
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}rapidfuzz>=0:devel/py-rapidfuzz@${PY_FLAVOR}
 
 USES=	python
 USE_PYTHON=	distutils autoplist

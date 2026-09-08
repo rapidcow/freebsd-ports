@@ -1,15 +1,16 @@
 PORTNAME=	pam_xdg
-DISTVERSION=	0.8.1
+DISTVERSION=	0.8.5
 CATEGORIES=	sysutils wayland
 MASTER_SITES=	https://ftp.sdaoden.eu/
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	PAM module to manage XDG Base Directories
-WWW=		https://www.sdaoden.eu/code.html #s-toolbox
+WWW=		https://www.sdaoden.eu/code.html#s-toolbox
 
 LICENSE=	ISCL
 
 USES=		uidfix
+SUB_FILES=	pkg-message
 PLIST_FILES=	lib/${PORTNAME}.so \
 		share/man/man8/${PORTNAME}.8.gz
 
@@ -21,6 +22,7 @@ MAKE_ARGS+=	SHLIB_NAME="${PORTNAME}.so" MAN="${PORTNAME}.8" \
 CFLAGS+=	-DXDG_CONFIG_DIR="${PREFIX}/etc" \
 		-DXDG_DATA_DIR_LOCAL="${PREFIX}" \
 		-DXDG_RUNTIME_DIR_OUTER="/var/run"
-LDFLAGS+=	-Wl,-z,defs
+# https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=263265
+#LDFLAGS+=	-Wl,-z,defs
 
 .include <bsd.port.mk>

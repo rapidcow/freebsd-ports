@@ -6,7 +6,7 @@
 # -- Olivier Certner <olce.freebsd.ports@certner.fr>
 PORTNAME=	tauthon
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.8.5
+DISTVERSION=	2.8.5-20240706
 CATEGORIES=	lang python
 
 MAINTAINER=	olce.freebsd.ports@certner.fr
@@ -23,10 +23,11 @@ PATHFIX_MAKEFILEIN=	Makefile.pre.in
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	naftaliharris
-GH_PROJECT=	tauthon
+GH_TAGNAME=	b787044f7c9a3728604471119e6d6220d09d6d94
 
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 # Piggyback on Python support in shebangfix
 python_CMD=	${PREFIX}/bin/${NAME_VERSION}
 # Better be safe than sorry
@@ -134,10 +135,6 @@ PLIST_SUB+=	X86_ONLY="@comment "
 PLIST_SUB+=	32BIT_ONLY="@comment "
 .else
 PLIST_SUB+=	32BIT_ONLY=""
-.endif
-
-.if ${ARCH} == sparc64
-CFLAGS+=	-DPYTHON_DEFAULT_RECURSION_LIMIT=900
 .endif
 
 # See https://bugs.freebsd.org/115940 and https://bugs.freebsd.org/193650

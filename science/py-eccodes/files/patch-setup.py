@@ -1,15 +1,10 @@
---- setup.py.orig	2023-07-11 10:42:35 UTC
+--- setup.py.orig	2025-07-25 10:03:25 UTC
 +++ setup.py
-@@ -37,12 +37,6 @@ def parse_version_from(path):
+@@ -90,7 +90,6 @@ install_requires += [
+     "attrs",
+     "cffi",
+     "findlibs",
+-    "eccodeslib;platform_system!='Windows'",
+ ]
  
- 
- install_requires = ["numpy"]
--if sys.version_info < (3, 7):
--    install_requires = ["numpy<1.20"]
--elif sys.version_info < (3, 8):
--    install_requires = ["numpy<1.22"]
--elif sys.version_info < (3, 9):
--    install_requires = ["numpy<1.25"]
- 
- install_requires += ["attrs", "cffi", "findlibs"]
- 
+ setuptools.setup(

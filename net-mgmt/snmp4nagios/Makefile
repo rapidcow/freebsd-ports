@@ -1,13 +1,13 @@
 PORTNAME=	SNMP4Nagios
 PORTVERSION=	0.4
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net-mgmt
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME}/${PORTVERSION} \
 		ZI
 
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Vendor specific SNMP plugins for Nagios
-WWW=		http://snmp4nagios.sourceforge.net/
+WWW=		https://snmp4nagios.sourceforge.net/
 
 BUILD_DEPENDS=	snmpcheck:net-mgmt/net-snmp
 RUN_DEPENDS=	snmpcheck:net-mgmt/net-snmp

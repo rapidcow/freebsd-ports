@@ -3,7 +3,7 @@ PORTVERSION=	${SFSUBDIR:S/snapshot_//:S/-//g}
 CATEGORIES=	math lang
 MASTER_SITES=	SF/reduce-algebra/${SFSUBDIR}/
 PKGNAMESUFFIX=	-psl
-DISTNAME=	Reduce-svn6547-src
+DISTNAME=	Reduce-svn6860-src
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Portable Standard Lisp REDUCE general-purpose algebra system
@@ -15,7 +15,7 @@ ONLY_FOR_ARCHS=	amd64 i386
 
 USES=		autoreconf:build libtool gmake ncurses
 
-SFSUBDIR=	snapshot_2023-03-08
+SFSUBDIR=	snapshot_2024-08-12
 
 TARGET_SDIR=	${ARCH:S/amd64/x86_64/}-unknown-${OPSYS:tl}${OSREL}
 CPPFLAGS+=	-I${NCURSESINC}
@@ -37,7 +37,7 @@ OPTIONS_DEFINE=	DOCS
 do-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	${INSTALL_SCRIPT} ${FILESDIR}/runpsl.sh ${STAGEDIR}${PREFIX}/bin/redpsl
-	${INSTALL_MAN} ${FILESDIR}/redpsl.1 ${STAGEDIR}${MANPREFIX}/man/man1/
+	${INSTALL_MAN} ${FILESDIR}/redpsl.1 ${STAGEDIR}${PREFIX}/share/man/man1/
 	${MKDIR} ${STAGEDIR}${DATADIR}/psl
 	${INSTALL_PROGRAM} ${REDUCE_BINS}/psl/bpsl ${STAGEDIR}${DATADIR}/psl/
 	(cd ${REDUCE_BINS}/psl && ${COPYTREE_SHARE} . \

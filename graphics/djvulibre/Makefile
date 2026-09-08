@@ -1,12 +1,11 @@
 PORTNAME=	djvulibre
-PORTVERSION=	3.5.28
-PORTREVISION=	2
+PORTVERSION=	3.5.29
 CATEGORIES=	graphics www
 MASTER_SITES=	SF/djvu/DjVuLibre/${PORTVERSION}
 
 MAINTAINER=	nc@FreeBSD.org
 COMMENT=	DjVu base libraries and utilities
-WWW=		http://djvu.sourceforge.net/
+WWW=		https://djvu.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -23,6 +22,7 @@ PORTDOCS=	*.djvu *.pdf *.txt
 
 INSTALL_TARGET=	install-strip
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ENV=	JPEG_CFLAGS="-I${LOCALBASE}/include" \
 		JPEG_LIBS="-L${LOCALBASE}/lib -ljpeg" \
 		TIFF_CFLAGS="-I${LOCALBASE}/include" \

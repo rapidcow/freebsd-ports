@@ -1,17 +1,17 @@
 PORTNAME=	codespell
-PORTVERSION=	2.2.5
+PORTVERSION=	2.4.1
 CATEGORIES=	textproc
 MASTER_SITES=	PYPI
 
 MAINTAINER=	sunpoet@FreeBSD.org
-COMMENT=	Source code spelling checker
+COMMENT=	Fix common misspellings in text files
 WWW=		https://github.com/codespell-project/codespell
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	${PY_SETUPTOOLS} \
-		${PYTHON_PKGNAMEPREFIX}setuptools_scm>=6.2:devel/py-setuptools_scm@${PY_FLAVOR} \
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=61:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}setuptools-scm>=6.2:devel/py-setuptools-scm@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 
 USES=		python

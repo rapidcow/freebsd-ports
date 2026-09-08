@@ -1,5 +1,5 @@
 PORTNAME=	github-backup-utils
-PORTVERSION=	3.10.0
+PORTVERSION=	3.18.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/github/backup-utils/releases/download/v${PORTVERSION}/
@@ -25,11 +25,11 @@ SUB_FILES=	pkg-message
 SHEBANG_FILES=	bin/* share/github-backup-utils/*
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|/etc/github-backup-utils/backup.config|${PREFIX}/etc/github.backup.config|g' ${WRKSRC}/share/github-backup-utils/ghe-backup-config
+	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|' ${WRKSRC}/share/github-backup-utils/ghe-backup-config
 
 do-install:
 	cd ${WRKSRC}/bin && ${COPYTREE_BIN} . ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_DATA} ${WRKSRC}/backup.config-example ${STAGEDIR}${PREFIX}/etc/github.backup.config.sample
+	${INSTALL_DATA} ${WRKSRC}/docs/backup.config-example ${STAGEDIR}${PREFIX}/etc/github.backup.config.sample
 	cd ${WRKSRC}/share/github-backup-utils && ${COPYTREE_BIN} . ${STAGEDIR}${DATADIR}
 
 .include <bsd.port.mk>

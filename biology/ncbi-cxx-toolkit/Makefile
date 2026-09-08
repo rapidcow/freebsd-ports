@@ -1,17 +1,17 @@
 PORTNAME=	ncbi-cxx-toolkit
-DISTVERSIONPREFIX=	release-
-DISTVERSION=	27.0.0
-PORTREVISION=	1
+DISTVERSIONPREFIX=	release/
+DISTVERSION=	29.7.0
 CATEGORIES=	biology science devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	NCBI C++ Toolkit
-WWW=		https://ncbi.github.io/cxx-toolkit/
+WWW=		https://ncbi.github.io/cxx-toolkit/ \
+		https://github.com/ncbi/ncbi-cxx-toolkit-public
 
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/doc/public/LICENSE
 
-BROKEN_armv6=	platform not defined for FreeBSD arm, see https://github.com/ncbi/ncbi-cxx-toolkit-public/issues/2
+BROKEN_i386=	compilation fails: Only 64-bit Intel and ARM architectures are supported (in src/util/compress/zlib_cloudflare/deflate.c:149)
 
 LIB_DEPENDS=	libcdd.so:math/cddlib \
 		liblmdb.so:databases/lmdb \

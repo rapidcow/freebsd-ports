@@ -1,29 +1,38 @@
 PORTNAME=	spirv-tools
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2023.4.rc2
-PORTREVISION=	1
+DISTVERSION=	2025.5 # please always bump all dependencies when updated because at least graphics/shaderc links in static libraries
 CATEGORIES=	graphics
 
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	6520d83effb2.patch:-p1 # https://github.com/KhronosGroup/SPIRV-Tools/pull/5376
-PATCHFILES+=	714966003d58.patch:-p1 # https://github.com/KhronosGroup/SPIRV-Tools/pull/5375
-PATCHFILES+=	ee7598d49798.patch:-p1 # https://github.com/KhronosGroup/SPIRV-Tools/pull/5355
-
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	tagattie@FreeBSD.org
 COMMENT=	Tools for processing SPIR-V intermediate shader language modules
 WWW=		https://github.com/KhronosGroup/SPIRV-Tools
 
 LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake compiler:c++11-lib python:build shebangfix
-USE_LDCONFIG=	yes
-SHEBANG_FILES=	tools/lesspipe/spirv-lesspipe.sh
+USES=		cmake:testing compiler:c++11-lib python:build shebangfix
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	KhronosGroup
 GH_PROJECT=	SPIRV-Tools
-GH_TUPLE=	KhronosGroup:SPIRV-Headers:1.5.4.raytracing.fixed-292-gf1ba373:headers/external/spirv-headers
+# for GH_TAGNAME in GH_TUPLE
+# git clone --quiet https://github.com/KhronosGroup/SPIRV-Headers.git && git -C SPIRV-Headers describe <COMMIT_HASH>
+# for COMMIT_HASH see ${WRKSRC}/DEPS
+GH_TUPLE=	KhronosGroup:SPIRV-Headers:1.5.4.raytracing.fixed-454-gb824a46:headers/external/spirv-headers
 
-CMAKE_ON=	SPIRV_SKIP_TESTS
+USE_LDCONFIG=	yes
+
+SHEBANG_FILES=	tools/lesspipe/spirv-lesspipe.sh
+
+CMAKE_ON=		SPIRV_SKIP_TESTS
+CMAKE_TESTING_OFF=	SPIRV_SKIP_TESTS
+
+PORTDOCS=	CHANGES CONTRIBUTING.md README.md SECURITY.md
+
+OPTIONS_DEFINE=	DOCS
+
+post-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_MAN} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

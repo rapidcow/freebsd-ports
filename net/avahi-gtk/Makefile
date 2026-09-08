@@ -1,4 +1,4 @@
-PORTREVISION=	1
+PORTREVISION=	2	# don't delete, reset to 0
 CATEGORIES=	net
 PKGNAMESUFFIX=	-gtk
 
@@ -21,7 +21,7 @@ PLIST=		${.CURDIR}/pkg-plist
 AVAHI_SLAVE=	gtk
 AVAHI_PKGCONFIG=avahi-ui.pc
 
-USE_GNOME+=	atk cairo gdkpixbuf2 gtk20 pango
+USE_GNOME+=	atk cairo gdkpixbuf gtk20 pango
 
 do-build:
 	@${DO_MAKE_BUILD} -C ${WRKSRC}/avahi-common

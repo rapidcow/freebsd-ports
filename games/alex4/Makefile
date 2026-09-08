@@ -9,7 +9,7 @@ EXTRACT_ONLY=	alex4src_data.zip
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Classic platformer with Alex the Allegator
-WWW=		http://allegator.sourceforge.net/
+WWW=		https://allegator.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/license.txt
@@ -37,7 +37,7 @@ post-patch:
 
 pre-install:
 	${STRIP_CMD} ${WRKSRC}/alex4
-	${INSTALL_DATA} ${_DISTDIR}${PORTNAME}.png \
+	${INSTALL_DATA} ${_DISTDIR}/${PORTNAME}.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps
 
 .include <bsd.port.mk>

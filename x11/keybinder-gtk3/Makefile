@@ -1,7 +1,7 @@
 PORTNAME=	keybinder
 PORTVERSION=	0.3.2
 DISTVERSIONPREFIX=	3.0-
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11
 MASTER_SITES=	https://github.com/kupferlauncher/${PORTNAME}/releases/download/${PORTNAME}-${DISTVERSIONPREFIX}v${DISTVERSION}/
 PKGNAMESUFFIX=	-gtk3
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		autoreconf gettext-runtime gmake gnome libtool pathfix \
 		pkgconfig xorg
-USE_GNOME=	gtk30 introspection:build cairo gdkpixbuf2
+USE_GNOME=	gtk30 introspection:build cairo gdkpixbuf
 USE_LDCONFIG=	yes
 USE_XORG=	x11 xext xrender
 

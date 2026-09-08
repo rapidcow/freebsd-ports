@@ -1,12 +1,12 @@
 PORTNAME=	pdfviewer
 PORTVERSION=	0.0.2
-PORTREVISION=	46
+PORTREVISION=	52
 CATEGORIES=	print
 MASTER_SITES=	http://www.defora.org/os/download/download/4431/
 PKGNAMEPREFIX=	deforaos-
 DISTNAME=	PDFViewer-${PORTVERSION}
 
-MAINTAINER=	olivier@FreeBSD.org
+MAINTAINER=	khorben@defora.org
 COMMENT=	DeforaOS desktop PDF viewer
 WWW=		https://www.defora.org/
 
@@ -20,8 +20,8 @@ LIB_DEPENDS=	libSystem.so:devel/deforaos-libsystem \
 
 MAKE_ARGS+=	PREFIX=${PREFIX}
 USES=		desktop-file-utils gnome pkgconfig
-USE_GNOME=	gtk20 gdkpixbuf2 cairo
-MAKE_ENV+=	MANDIR=${STAGEDIR}${MANPREFIX}/man
+USE_GNOME=	gtk20 gdkpixbuf cairo
+MAKE_ENV+=	MANDIR=${STAGEDIR}${PREFIX}/share/man
 
 OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_SUB=	yes

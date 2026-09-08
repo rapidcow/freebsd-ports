@@ -1,7 +1,7 @@
 PORTNAME=	toxic
-PORTVERSION=	0.11.3
+PORTVERSION=	0.16.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	3
+PORTREVISION=	2
 CATEGORIES=	net-im
 
 MAINTAINER=	thierry@FreeBSD.org
@@ -21,7 +21,9 @@ LIB_DEPENDS=	libvpx.so:multimedia/libvpx		\
 		libconfig.so:devel/libconfig
 RUN_DEPENDS=	${LOCALBASE}/lib/libtoxcore.a:net-im/tox
 
-USES=		compiler:c11 desktop-file-utils gettext-runtime gmake ncurses openal:al,alut pkgconfig
+USES=		compiler:c11 desktop-file-utils gettext-runtime gmake ncurses	\
+		openal:al,alut pkgconfig
+MAKE_ARGS=	ENABLE_RELEASE=1
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	JFreegman
@@ -33,7 +35,7 @@ GAMES_DESC=	Includes a games module
 GAMES_MAKE_ARGS_OFF=	DISABLE_GAMES=1
 
 X11_USES=	gnome xorg
-X11_USE=	GNOME=gdkpixbuf2,glib20 XORG=x11
+X11_USE=	GNOME=gdkpixbuf,glib20 XORG=x11
 X11_MAKE_ARGS_OFF=	DISABLE_X11=1 DISABLE_DESKTOP_NOTIFY=1
 X11_LIB_DEPENDS=libnotify.so:devel/libnotify
 
@@ -44,7 +46,7 @@ CFLAGS+=	-I${NCURSESINC} -pthread
 LDFLAGS+=	-L${NCURSESLIB}
 LDFLAGS_i386=	-Wl,-znotext
 MAKE_ENV=	USER_CFLAGS="${CFLAGS}" USER_LDFLAGS="${LDFLAGS}"	\
-		MANDIR="${MANPREFIX}/man"
+		MANDIR="${PREFIX}/share/man"
 SUB_FILES=	pkg-message
 
 pre-configure-PYTHON-on:
@@ -58,7 +60,7 @@ pre-configure:
 		${WRKSRC}/cfg/global_vars.mk
 
 post-install:
-	${RM} ${STAGEDIR}${MANPREFIX}/man/man1/toxic.1-e ${STAGEDIR}${MANPREFIX}/man/man5/toxic.conf.5-e
+	${RM} ${STAGEDIR}${PREFIX}/share/man/man1/toxic.1-e ${STAGEDIR}${PREFIX}/share/man/man5/toxic.conf.5-e
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/toxic
 
 .include <bsd.port.mk>

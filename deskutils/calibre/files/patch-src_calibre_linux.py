@@ -1,24 +1,24 @@
---- src/calibre/linux.py.orig	2020-11-13 01:58:49 UTC
+--- src/calibre/linux.py.orig	2025-04-18 03:14:01 UTC
 +++ src/calibre/linux.py
-@@ -1103,7 +1103,7 @@ Name=E-book viewer
+@@ -1111,7 +1111,7 @@ TryExec=ebook-viewer
  GenericName=Viewer for E-books
  Comment=Viewer for E-books in all the major formats
  TryExec=ebook-viewer
 -Exec=ebook-viewer --detach %f
 +Exec=ebook-viewer %f
  Icon=calibre-viewer
- Categories=Graphics;Viewer;
- '''
-@@ -1116,7 +1116,7 @@ Name=E-book editor
+ Categories=Office;Viewer;
+ Keywords=epub;ebook;viewer;
+@@ -1125,7 +1125,7 @@ TryExec=ebook-edit
  GenericName=Editor for E-books
  Comment=Edit E-books in various formats
  TryExec=ebook-edit
 -Exec=ebook-edit --detach %f
 +Exec=ebook-edit %f
  Icon=calibre-ebook-edit
- Categories=Office;
- '''
-@@ -1129,7 +1129,7 @@ Name=calibre
+ Categories=Office;WordProcessor
+ Keywords=epub;ebook;editor;
+@@ -1139,7 +1139,7 @@ TryExec=calibre
  GenericName=E-book library management
  Comment=E-book library management: Convert, view, share, catalogue all your e-books
  TryExec=calibre

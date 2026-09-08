@@ -1,20 +1,23 @@
 PORTNAME=	cutmp3
-PORTVERSION=	3.0.1
-PORTREVISION=	2
+DISTVERSIONPREFIX=	v
+DISTVERSION=	4.0
 CATEGORIES=	audio
-MASTER_SITES=	http://www.puchalla-online.de/ \
-		http://mirror.mcx2.org/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	matthew@matthewphillips.info
 COMMENT=	Small and fast command line MP3 editor
-WWW=		https://www.puchalla-online.de/cutmp3.html
+WWW=		https://github.com/tarjanm-movidius/cutmp3
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		tar:bzip2 readline
+USES=		gmake localbase:ldflags readline
 
-PLIST_FILES=	bin/cutmp3 man/man1/cutmp3.1.gz
+MAKE_ARGS=	CC="${CC}" LDFLAGS="${LDFLAGS} -lm -lreadline"
+USE_GITHUB=	yes
+GH_ACCOUNT=	tarjanm-movidius
+
+PLIST_FILES=	bin/cutmp3 \
+		share/man/man1/cutmp3.1.gz
 
 PORTDOCS=	README README.timetable USAGE
 

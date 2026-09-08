@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/net/http/http_auth_gssapi_posix.cc.orig	2023-03-28 19:45:02 UTC
+--- src/3rdparty/chromium/net/http/http_auth_gssapi_posix.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/net/http/http_auth_gssapi_posix.cc
-@@ -368,8 +368,9 @@ base::NativeLibrary GSSAPISharedLibrary::LoadSharedLib
+@@ -375,8 +375,9 @@ base::NativeLibrary GSSAPISharedLibrary::LoadSharedLib
      static const char* const kDefaultLibraryNames[] = {
  #if BUILDFLAG(IS_APPLE)
        "/System/Library/Frameworks/GSS.framework/GSS"

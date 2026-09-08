@@ -1,13 +1,10 @@
 PORTNAME=	turnserver
-PORTVERSION=	4.6.2
+DISTVERSION=	4.6.3
 CATEGORIES=	net
 MASTER_SITES=	http://turnserver.open-sys.org/downloads/extradocs/:xdocs \
 		http://coturn.net/turnserver/extradocs/:xdocs
 PKGNAMEPREFIX=
 DISTFILES=	turn.extra.docs-2.0.0.1.tar.gz:xdocs
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES+=	eea46e0b8526c38f6219fe62569be53469932464.patch:-p1 # https://github.com/coturn/coturn/pull/1198
 
 MAINTAINER=	portmaster@BSDforge.com
 COMMENT=	STUN/TURN Server; IPv6, DTLS support; RFCs 5389, 5766, 6062, 6156
@@ -105,7 +102,7 @@ do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/bin/turnutils_${f} ${STAGEDIR}${PREFIX}/bin/
 .endfor
 	(cd ${WRKSRC}/man/man1 && ${INSTALL_MAN} ${MANPAGES} \
-		${STAGEDIR}${PREFIX}/man/man1)
+		${STAGEDIR}${PREFIX}/share/man/man1)
 	${MKDIR} ${STAGEDIR}${DATADIR}
 	(cd ${WRKSRC}/turndb && ${INSTALL_DATA} schema.sql schema.userdb.redis \
 		schema.stats.redis ${STAGEDIR}${DATADIR})

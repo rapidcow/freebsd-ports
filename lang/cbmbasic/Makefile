@@ -1,18 +1,18 @@
 PORTNAME=	cbmbasic
-PORTVERSION=	20180708
+DISTVERSION=	20221219
+PORTREVISION=	1
 CATEGORIES=	lang
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Portable version of Commodore 64 BASIC
 WWW=		https://github.com/mist64/cbmbasic
 
-LICENSE=	BSD NONE
-# Not really sure about the legal status
-LICENSE_COMB=	multi
+# Check files cbmbasic.c, plugin.c and runtime.c
+LICENSE=	BSD2CLAUSE
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mist64
-GH_TAGNAME=	89093eba090d6e1c2d2b6e1cb1616dba0ce9c7f6
+GH_TAGNAME=	352a313
 
 CFLAGS+=	-fcommon
 

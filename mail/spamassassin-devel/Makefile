@@ -10,8 +10,8 @@ WWW=		https://spamassassin.apache.org/
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	apache
-GH_TAGNAME=	0cf02768e
-SA_COMMIT_DATE=	2023.09.26
+GH_TAGNAME=	e46086e60
+SA_COMMIT_DATE=	2025.11.17
 
 LICENSE=	APACHE20
 
@@ -30,7 +30,7 @@ RUN_DEPENDS:=	${BUILD_DEPENDS} \
 		p5-IO-Socket-INET6>=0:net/p5-IO-Socket-INET6 \
 		re2c>=.12.0:devel/re2c
 
-.for dep in DCC DKIM MYSQL PGSQL PYZOR RAZOR RELAY_COUNTRY RLIMIT SPF_QUERY SSL
+.for dep in DCC DKIM DMARC MYSQL PGSQL PYZOR RAZOR RELAY_COUNTRY RLIMIT SPF_QUERY SSL
 TEST_DEPENDS+=	${${dep}_RUN_DEPENDS}
 .endfor
 
@@ -58,10 +58,10 @@ CONFIGURE_ARGS=	SYSCONFDIR="${PREFIX}/etc" \
 OPTIONS_DEFINE=		AS_ROOT DOCS SSL
 OPTIONS_GROUP=		DATABASE GPG PLUGINS
 OPTIONS_GROUP_DATABASE=	MYSQL PGSQL
-OPTIONS_GROUP_PLUGINS=	DCC DKIM PYZOR RAZOR RELAY_COUNTRY RLIMIT SPF_QUERY
+OPTIONS_GROUP_PLUGINS=	DCC DKIM DMARC PYZOR RAZOR RELAY_COUNTRY RLIMIT SPF_QUERY
 OPTIONS_SINGLE=		GPG
 OPTIONS_SINGLE_GPG=	GNUPG_NONE GNUPG GNUPG2
-OPTIONS_DEFAULT=	AS_ROOT DKIM GNUPG SSL SPF_QUERY
+OPTIONS_DEFAULT=	AS_ROOT DKIM GNUPG2 SSL SPF_QUERY
 
 AS_ROOT_DESC=		Run spamd as root (recommended)
 
@@ -75,6 +75,7 @@ GNUPG2_DESC=		GnuPG 2 (security/gnupg)
 PLUGINS_DESC=		Optional SpamAssassin plugins
 DCC_DESC=		DCC digest list support (mail/dcc-dccd)
 DKIM_DESC=		Verify DKIM records (mail/p5-Mail-DKIM)
+DMARC_DESC=		Verify DMARC records (mail/p5-Mail-DMARC)
 PYZOR_DESC=		Pyzor digest list support (mail/pyzor)
 RAZOR_DESC=		Vipul's Razor digest list support (mail/razor-agents)
 RELAY_COUNTRY_DESC=	Location-based scoring (net/p5-GeoIP2)
@@ -92,9 +93,39 @@ DCC_RUN_DEPENDS=	dcc-dccd>=1.3.111:mail/dcc-dccd
 DKIM_RUN_DEPENDS=	p5-IO-Socket-SSL>=0:security/p5-IO-Socket-SSL \
 			p5-Mail-DKIM>=0.37:mail/p5-Mail-DKIM \
 			p5-Crypt-OpenSSL-RSA>=0.26_1:security/p5-Crypt-OpenSSL-RSA
+DMARC_RUN_DEPENDS=	p5-Mail-DMARC>=0:mail/p5-Mail-DMARC \
+			p5-Crypt-OpenSSL-RSA>=0:security/p5-Crypt-OpenSSL-RSA \
+			p5-Regexp-Common>=0:textproc/p5-Regexp-Common \
+			p5-Config-Tiny>=0:devel/p5-Config-Tiny \
+			p5-File-ShareDir-Install>=0:devel/p5-File-ShareDir-Install \
+			p5-Net-IP>=0:net-mgmt/p5-Net-IP \
+			p5-Socket6>=0:net/p5-Socket6 \
+			p5-Email-MIME>=0:mail/p5-Email-MIME \
+			p5-HTTP-Message>=0:www/p5-HTTP-Message \
+			p5-HTTP-Tiny>=0:www/p5-HTTP-Tiny \
+			p5-IO-Socket-SSL>=0:security/p5-IO-Socket-SSL \
+			p5-JSON>=0:converters/p5-JSON \
+			p5-Net-SMTPS>=0:mail/p5-Net-SMTPS \
+			p5-Net-SSLeay>=0:security/p5-Net-SSLeay \
+			p5-XML-LibXML>=0:textproc/p5-XML-LibXML \
+			p5-DBD-SQLite>=0:databases/p5-DBD-SQLite \
+			p5-DBIx-Simple>=0:databases/p5-DBIx-Simple \
+			p5-Test-File-ShareDir>=0:devel/p5-Test-File-ShareDir \
+			p5-CGI>=0:www/p5-CGI \
+			p5-Email-Simple>=0:mail/p5-Email-Simple \
+			p5-Mail-DKIM>=0:mail/p5-Mail-DKIM \
+			p5-Net-IMAP-Simple>=0:mail/p5-Net-IMAP-Simple \
+			p5-Net-Server>=0:net/p5-Net-Server \
+			p5-Net-HTTP>=0:net/p5-Net-HTTP \
+			p5-Test-Output>=0:devel/p5-Test-Output \
+			p5-Net-DNS>=0:dns/p5-Net-DNS \
+			p5-Net-IDN-Encode>=0:textproc/p5-Net-IDN-Encode \
+			p5-libwww>=0:www/p5-libwww \
+			p5-URI>=0:net/p5-URI
 GNUPG_RUN_DEPENDS=	gnupg1>=1.4.7:security/gnupg1
 GNUPG2_RUN_DEPENDS=	gpg2:security/gnupg
-MYSQL_RUN_DEPENDS=	p5-DBD-mysql>=0:databases/p5-DBD-mysql
+MYSQL_RUN_DEPENDS=	${DBD_MYSQL}
+MYSQL_USES=		mysql
 PGSQL_RUN_DEPENDS=	p5-DBD-Pg>=0:databases/p5-DBD-Pg
 PYZOR_RUN_DEPENDS=	pyzor:mail/pyzor
 RAZOR_RUN_DEPENDS=	razor-agents>=2.84:mail/razor-agents \
@@ -112,6 +143,7 @@ SSL_CONFIGURE_OFF=	ENABLE_SSL=no
 # plugin names in rules/*.pre, for enabling/disabling
 DCC_INITVAR=		DCC
 DKIM_INITVAR=		DKIM
+DMARC_INITVAR=		DMARC
 PYZOR_INITVAR=		Pyzor
 RAZOR_INITVAR=		Razor2
 RELAY_COUNTRY_INITVAR=	RelayCountry
@@ -154,6 +186,7 @@ post-patch::
 		-e 's,B_CONFDIR)/v343.pre,B_CONFDIR)/v343.pre.sample,g' \
 		-e 's,B_CONFDIR)/v400.pre,B_CONFDIR)/v400.pre.sample,g' \
 		-e 's,B_CONFDIR)/v401.pre,B_CONFDIR)/v401.pre.sample,g' \
+		-e 's,B_CONFDIR)/v402.pre,B_CONFDIR)/v402.pre.sample,g' \
 		-e 's/require DBI/0/' \
 		${WRKSRC}/Makefile.PL
 	${REINPLACE_CMD} -e '/^CC =/d; \
@@ -179,7 +212,7 @@ pre-su-install:
 
 post-install::
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/spamc
-	@${MKDIR} ${STAGEDIR}/var/lib/spamassassin ${STAGEDIR}${DBDIR}/spamassassin ${STAGEDIR}/var/run/spamd
+	@${MKDIR} ${STAGEDIR}${DBDIR}/spamassassin ${STAGEDIR}/var/run/spamd
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${COPYTREE_SHARE} "sql ldap" ${STAGEDIR}${DOCSDIR})

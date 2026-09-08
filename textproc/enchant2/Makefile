@@ -1,13 +1,12 @@
 PORTNAME=	enchant
-PORTVERSION=	2.2.15
-PORTREVISION=	3
+DISTVERSION=	2.8.10
 CATEGORIES=	textproc gnome
-MASTER_SITES=	https://github.com/AbiWord/enchant/releases/download/v${PORTVERSION}/
+MASTER_SITES=	https://github.com/rrthomas/${PORTNAME}/releases/download/v${DISTVERSION}/
 PKGNAMESUFFIX=	2
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Dictionary/spellchecking framework
-WWW=		https://abiword.github.io/enchant/
+WWW=		https://rrthomas.github.io/enchant/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB
@@ -55,7 +54,8 @@ ZEMBEREK_CONFIGURE_WITH=	zemberek
 PLIST_SUB+=	LIBVERSION="${PORTVERSION}"
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|MKDIRPROG-mkdir|MKDIRPROG-mkdir -p|g' \
-		${WRKSRC}/install-sh
+	@${REINPLACE_CMD} -e 's|groff -mandoc|mandoc -mdoc|' \
+		${WRKSRC}/src/Makefile.in \
+		${WRKSRC}/lib/Makefile.in
 
 .include <bsd.port.mk>

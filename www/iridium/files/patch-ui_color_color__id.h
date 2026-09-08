@@ -1,11 +1,11 @@
---- ui/color/color_id.h.orig	2023-08-28 20:17:35 UTC
+--- ui/color/color_id.h.orig	2026-01-16 14:21:21 UTC
 +++ ui/color/color_id.h
-@@ -509,7 +509,7 @@
-   E_CPONLY(kColorNativeColor6) \
-   E_CPONLY(kColorNativeBaseColor) \
-   E_CPONLY(kColorNativeSecondaryColor)
+@@ -657,7 +657,7 @@
+   E_CPONLY(kColorCrosSysPositive) \
+   E_CPONLY(kColorCrosSysComplementVariant) \
+   E_CPONLY(kColorCrosSysInputFieldOnBase)
 -#elif BUILDFLAG(IS_LINUX)
 +#elif BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_BSD)
  #define PLATFORM_SPECIFIC_COLOR_IDS \
-   E_CPONLY(kColorNativeButtonBorder)\
+   E_CPONLY(kColorNativeBoxFrameBorder)\
    E_CPONLY(kColorNativeHeaderButtonBorderActive) \

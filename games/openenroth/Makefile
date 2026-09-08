@@ -1,11 +1,13 @@
 PORTNAME=	${GH_PROJECT:[1]:tl}
 PORTVERSION=	g20230128
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	games
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Open reimplementation of Might and Magic VI-VIII game engine
 WWW=		https://github.com/OpenEnroth/OpenEnroth
+
+BROKEN=		Does not build with ffmpeg > 6
 
 LICENSE=	LGPL3
 

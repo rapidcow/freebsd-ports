@@ -8,7 +8,7 @@ DISTNAME=	${PORTNAME}_${PORTVERSION:S/.p/pre/}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multibody Dynamic Simulation Library
-WWW=		http://dynamechs.sourceforge.net/
+WWW=		https://dynamechs.sourceforge.net/
 
 USES=		gl gmake perl5 shebangfix tar:bzip2
 USE_CXXSTD=	c++14
@@ -20,7 +20,7 @@ SHEBANG_FILES=	make/*.pl
 
 MAKE_ENV=	OPENGLINCDIR="${LOCALBASE}/include" \
 		OPENGLLIBDIR="${LOCALBASE}/lib"
-
+MAKE_JOBS_UNSAFE=yes
 ALL_TARGET=	freebsd
 
 post-patch:

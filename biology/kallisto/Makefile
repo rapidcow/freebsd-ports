@@ -1,7 +1,7 @@
 PORTNAME=		kallisto
 DISTVERSIONPREFIX=	v
-DISTVERSION=		0.50.0
-PORTREVISION=		2
+DISTVERSION=		0.51.1
+PORTREVISION=		1
 PORTEPOCH=		1
 CATEGORIES=		biology
 
@@ -23,6 +23,8 @@ USES=		cmake:noninja compiler:c++11-lang gmake localbase:ldflags
 USE_GITHUB=	yes
 GH_ACCOUNT=	pachterlab
 
+EXTRACT_AFTER_ARGS=	--exclude ${GH_PROJECT_DEFAULT}-${GH_TAGNAME_EXTRACT}/ext/htslib --no-same-owner --no-same-permissions
+
 SUB_FILES=	kallisto-test
 
 PORTEXAMPLES=		*
@@ -36,12 +38,10 @@ CMAKE_ARGS+=		-DUSE_HDF5:BOOL=ON -DUSE_BAM:BOOL=ON
 # WIP: Remove before committing
 CMAKE_ARGS+=		-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
 MAKE_JOBS_UNSAFE=	yes
+CXXFLAGS+=		-Wno-unqualified-std-cast-call
 LDFLAGS+=		-lhts -lz
 
 OPTIONS_DEFINE=	EXAMPLES
-
-post-extract:
-	${RM} -rf ${WRKSRC}/ext/htslib
 
 post-install-EXAMPLES-on:
 	${INSTALL_SCRIPT} ${WRKDIR}/kallisto-test ${STAGEDIR}${PREFIX}/bin

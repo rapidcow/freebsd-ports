@@ -1,6 +1,6 @@
 PORTNAME=	mcjoin
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.11
+DISTVERSION=	2.12
 CATEGORIES=	net
 
 MAINTAINER=	john@saltant.com
@@ -11,9 +11,9 @@ LICENSE=	ISCL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		autoreconf
-GNU_CONFIGURE=	yes
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	troglobit
+
+GNU_CONFIGURE=	yes
 
 .include <bsd.port.mk>

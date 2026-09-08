@@ -1,11 +1,11 @@
 PORTNAME=	grub2-pcbsd
 PORTVERSION=	2.02q
-PORTREVISION=	18
+PORTREVISION=	19
 CATEGORIES=	sysutils
 MASTER_SITES=	LOCAL/kevlo
 DISTNAME=	grub-2.02_8
 
-MAINTAINER=	kevlo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multiboot boot loader
 WWW=		https://www.gnu.org/software/grub/
 
@@ -23,6 +23,7 @@ CONFLICTS=	grub2-2*
 SSP_UNSAFE=	yes
 USE_GCC=	yes
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 INFO=		grub grub-dev
 MAKE_JOBS_UNSAFE=	yes
 
@@ -62,11 +63,13 @@ CONFIGURE_ARGS+=	--disable-grub-mkfont
 .endif
 
 .if ${PORT_OPTIONS:MFUSE}
-LIB_DEPENDS+=	libfuse.so:sysutils/fusefs-libs
+LIB_DEPENDS+=	libfuse.so:filesystems/fusefs-libs
 CONFIGURE_ARGS+=	--enable-grub-mount
 .else
 CONFIGURE_ARGS+=	--disable-grub-mount
 .endif
+
+CFLAGS+=	-fpermissive
 
 post-patch:
 	@${TOUCH} -t 200001010000 ${WRKSRC}/Makefile.util.def

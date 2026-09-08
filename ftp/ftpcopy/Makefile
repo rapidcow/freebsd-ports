@@ -1,5 +1,6 @@
 PORTNAME=	ftpcopy
 PORTVERSION=	0.6.7
+PORTREVISION=	2
 CATEGORIES=	ftp
 MASTER_SITES=	http://www.ohse.de/uwe/ftpcopy/
 
@@ -18,10 +19,6 @@ OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} != amd64 && ${ARCH} != i386
-USES+=		compiler:gcc-c++11-lib
-.endif
-
 pre-build:
 	${ECHO} "${CC}" >${WRKSRC}/src/conf-cc
 	${ECHO} "${CPPFLAGS} ${CFLAGS}" >${WRKSRC}/src/conf-cflags
@@ -30,7 +27,7 @@ pre-build:
 do-install:
 	cd ${WRKSRC}/compile && \
 		${INSTALL_PROGRAM} ftpcopy ftpls ${STAGEDIR}${PREFIX}/bin && \
-		${INSTALL_MAN} *.1 ${STAGEDIR}${PREFIX}/man/man1 && \
+		${INSTALL_MAN} *.1 ${STAGEDIR}${PREFIX}/share/man/man1 && \
 		${INSTALL_SCRIPT} ftpcp ${STAGEDIR}${PREFIX}/bin
 	${MKDIR} ${STAGEDIR}${DOCSDIR} && \
 	cd ${WRKSRC}/compile && \

@@ -7,11 +7,12 @@ EXTRACT_ONLY=
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	View and/or control a remote PC
-WWW=		http://jrdesktop.sourceforge.net/
+WWW=		https://jrdesktop.sourceforge.net/
 
 LICENSE=	GPLv3
 
-USE_JAVA=	yes
+USES=		java
+
 NO_BUILD=	yes
 
 SUB_FILES=	jrdesktop

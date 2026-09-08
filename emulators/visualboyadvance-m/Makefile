@@ -1,6 +1,6 @@
 PORTNAME=	visualboyadvance-m
 PORTVERSION=	2.0.0b2
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	emulators
 
 MAINTAINER=	ports@FreeBSD.org
@@ -58,6 +58,7 @@ GVBAM_USE=		GNOME=gtkmm24,pangox-compat
 GVBAM_CMAKE_BOOL=	ENABLE_GTK
 LINK_LIB_DEPENDS=	libsfml-system.so:devel/sfml
 LINK_CMAKE_BOOL=	ENABLE_LINK
+LINK_BROKEN=		Does not build
 LIRC_LIB_DEPENDS=	liblirc_client.so:comms/lirc
 LIRC_RUN_DEPENDS=	lircd:comms/lirc
 LIRC_CMAKE_BOOL=	ENABLE_LIRC
@@ -75,8 +76,8 @@ USES+=		compiler:c++11-lang
 .endif
 
 post-patch:
-	@${REINPLACE_CMD} -e '/SET.*LIRC_CLIENT_LIBRARY/ s|lirc_client|${LOCALBASE}/lib/lib&.so|; \
-		s|share/man|man|' ${WRKSRC}/CMakeLists.txt
+	@${REINPLACE_CMD} -e '/SET.*LIRC_CLIENT_LIBRARY/ s|lirc_client|${LOCALBASE}/lib/lib&.so|' \
+		${WRKSRC}/CMakeLists.txt
 
 maint-gen-distfile:
 	@if [ -f ${DISTDIR}/${DISTNAME}${EXTRACT_SUFX} ]; then \

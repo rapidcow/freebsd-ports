@@ -7,7 +7,7 @@ DISTFILES=	${PORTNAME}-${PORTVERSION}.jar:0 \
 		${PORTNAME}-fop-${PORTVERSION}.jar:1
 EXTRACT_ONLY=	# none
 
-MAINTAINER=	makc@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Java API to display mathematical formulas written in LaTeX
 WWW=		https://wiki.scilab.org/JLaTeXMath
 
@@ -15,7 +15,7 @@ LICENSE=	GPLv2
 
 RUN_DEPENDS=	${JAVALIBDIR}/xmlgraphics-commons.jar:graphics/xmlgraphics-commons
 
-USE_JAVA=	yes
+USES=		java
 
 NO_ARCH=	yes
 NO_BUILD=	yes

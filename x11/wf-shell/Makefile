@@ -1,10 +1,9 @@
 PORTNAME=	wf-shell
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.7.0
-PORTREVISION=	6
+DISTVERSION=	0.10.0
 CATEGORIES=	x11 wayland
 
-MAINTAINER=	jbeich@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GTK3-based panel for wayfire
 WWW=		https://wayfire.org/
 
@@ -14,7 +13,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	wayland-protocols>0:graphics/wayland-protocols \
 		wf-config>=0.7.0:devel/wf-config \
 		wayfire>0:x11-wm/wayfire
-LIB_DEPENDS=	libinotify.so:devel/libinotify \
+LIB_DEPENDS=	libdbusmenu-gtk3.so:devel/libdbusmenu \
+		libinotify.so:devel/libinotify \
 		libwf-config.so:devel/wf-config \
 		libwayland-client.so:graphics/wayland \
 		libgtk-layer-shell.so:x11-toolkits/gtk-layer-shell

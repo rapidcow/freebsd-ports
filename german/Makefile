@@ -3,12 +3,10 @@
     SUBDIR += BBBike
     SUBDIR += alt-aspell
     SUBDIR += aspell
-    SUBDIR += bugzilla44
     SUBDIR += dict
     SUBDIR += ding
     SUBDIR += dtaus
     SUBDIR += eric6
-    SUBDIR += geonext
     SUBDIR += hunspell
     SUBDIR += hyphen
     SUBDIR += jdictionary-eng-ger

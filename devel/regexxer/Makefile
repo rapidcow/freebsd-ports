@@ -4,9 +4,9 @@ PORTREVISION=	9
 CATEGORIES=	devel textproc gnome
 MASTER_SITES=	GNOME
 
-MAINTAINER=	kwm@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Interactive tool for performing search and replace operations
-WWW=		http://regexxer.sourceforge.net/
+WWW=		https://regexxer.sourceforge.net/
 
 USES=		compiler:c++11-lang gettext gmake gnome localbase pathfix \
 		pkgconfig tar:xz

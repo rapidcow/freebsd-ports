@@ -1,5 +1,5 @@
 PORTNAME=	level-zero
-PORTVERSION=	1.14.0
+PORTVERSION=	1.26.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -11,8 +11,18 @@ WWW=		https://spec.oneapi.io/versions/latest/elements/l0/source/index.html \
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake compiler:c++14-lang pathfix
+LIB_DEPENDS=	libfmt.so:devel/libfmt \
+		libspdlog.so:devel/spdlog
 
+USES=		cmake compiler:c++14-lang localbase:ldflags
+
+CMAKE_OFF=	BUILD_INSTALLER \
+		BUILD_L0_LOADER_TESTS \
+		BUILD_STATIC \
+		USE_ASAN
+CMAKE_ON=	SYSTEM_SPDLOG
+CXXFLAGS+=	-Wno-extern-c-compat
+LDFLAGS+=	-lfmt
 USE_LDCONFIG=	yes
 
 PLIST_SUB=	PORTVERSION=${PORTVERSION}
@@ -22,5 +32,7 @@ GH_ACCOUNT=	oneapi-src
 
 post-patch:
 	@${ECHO_CMD} ${PORTVERSION:E} > ${WRKSRC}/VERSION_PATCH
+# Clean up bundled libraries
+	@${RM} -r ${WRKSRC}/third_party/spdlog_headers
 
 .include <bsd.port.mk>

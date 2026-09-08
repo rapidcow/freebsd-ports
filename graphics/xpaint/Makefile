@@ -1,12 +1,12 @@
 PORTNAME=	xpaint
 DISTVERSION=	3.1.4
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	graphics
 MASTER_SITES=	SF/sf-${PORTNAME}/sf-${PORTNAME}/${PORTNAME}-${DISTVERSION}
 
 MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Simple paint program
-WWW=		http://sf-xpaint.sourceforge.net/
+WWW=		https://sf-xpaint.sourceforge.net/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

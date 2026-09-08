@@ -1,6 +1,6 @@
 PORTNAME=	matplotlib
-PORTVERSION=	3.7.1
-PORTREVISION=	3
+DISTVERSION=	3.8.0
+PORTREVISION=	2
 CATEGORIES=	math python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,6 +12,9 @@ WWW=		https://matplotlib.org/
 LICENSE=	PSFL
 
 BUILD_DEPENDS=	${PYNUMPY} \
+		${PY_SETUPTOOLS} \
+		${PYTHON_PKGNAMEPREFIX}wheel>0:devel/py-wheel@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}setuptools-scm>0:devel/py-setuptools-scm@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pillow>=6.2:graphics/py-pillow@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyparsing>=0:devel/py-pyparsing@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}certifi>=0.10:security/py-certifi@${PY_FLAVOR} \
@@ -25,7 +28,7 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 RUN_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}contourpy>=1.0.1:math/py-contourpy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}cycler>=0.10:devel/py-cycler@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dateutil>=2.7:devel/py-dateutil@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}python-dateutil>=2.7:devel/py-python-dateutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}importlib-resources>=0:devel/py-importlib-resources@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytz>=0:devel/py-pytz@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyparsing>=2.3.1:devel/py-pyparsing@${PY_FLAVOR} \
@@ -40,7 +43,7 @@ RUN_DEPENDS=	${PYNUMPY} \
 
 USES=		compiler:c++11-lib gettext gnome localbase pkgconfig python shebangfix uniquefiles:dirs
 USE_CXXSTD=	c++14
-USE_PYTHON=	distutils
+USE_PYTHON=	pep517
 
 PLIST_SUB=	VER=${PORTVERSION}
 PORTEXAMPLES=	*
@@ -55,7 +58,7 @@ post-install:
 		| ${XARGS} ${STRIP_CMD}
 
 post-install-EXAMPLES-on:
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	${CP} -R ${WRKSRC}/examples/ ${STAGEDIR}${EXAMPLESDIR}
+	#@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	#${CP} -R ${WRKSRC}/examples/ ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

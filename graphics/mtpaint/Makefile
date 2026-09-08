@@ -1,11 +1,11 @@
 PORTNAME=	mtpaint
 DISTVERSION=	3.50.09
-PORTREVISION=	4
+PORTREVISION=	6
 CATEGORIES=	graphics
 
 MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Simple painting program
-WWW=		http://mtpaint.sourceforge.net/
+WWW=		https://mtpaint.sourceforge.net/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -19,7 +19,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	wjaguar
 GH_PROJECT=	mtPaint
 GH_TAGNAME=	4ea607e
-USE_GNOME=	cairo gdkpixbuf2 gtk30
+USE_GNOME=	cairo gdkpixbuf gtk30
 USE_XORG=	x11
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix=${PREFIX} --mandir=${PREFIX}/share/man/man1 \

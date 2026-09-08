@@ -1,6 +1,6 @@
 PORTNAME=	apertium
-PORTVERSION=	3.8.3
 DISTVERSIONPREFIX=	v
+DISTVERSION=	3.9.12
 PORTREVISION=	1
 CATEGORIES=	textproc
 
@@ -11,13 +11,10 @@ WWW=		https://www.apertium.org/
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_FreeBSD_12_powerpc64=	fails to configure on powerpc64 elfv1: *** unable to locate pcrecpp library ***
-
 BUILD_DEPENDS=	bash:shells/bash \
-		utf8cpp>0:devel/utf8cpp
+		utf8cpp>=4.0.0:devel/utf8cpp
 LIB_DEPENDS=	libicudata.so:devel/icu \
-		liblttoolbox.so:textproc/lttoolbox \
-		libpcre.so:devel/pcre
+		liblttoolbox.so:textproc/lttoolbox
 RUN_DEPENDS=	bash:shells/bash
 
 USES=		autoreconf gmake gnome libtool localbase:ldflags pathfix \
@@ -31,7 +28,7 @@ USE_GNOME=	libxml2 libxslt
 USE_LDCONFIG=	yes
 
 SHEBANG_FILES=	apertium/apertium-get/apertium-get.sh scripts/apertium-editdist \
-		scripts/apertium-filter-dix.in scripts/apertium-filter-rules.in \
+		scripts/apertium-filter-dix.in scripts/apertium-filter-rules \
 		scripts/apertium-filter-xml scripts/apertium-genvdix \
 		scripts/apertium-genvldix scripts/apertium-genvrdix \
 		scripts/apertium-metalrx scripts/apertium-metalrx-to-lrx.in \
@@ -43,13 +40,5 @@ MAKE_JOBS_UNSAFE=	yes
 INSTALL_TARGET=	install-strip
 
 CFLAGS+=	-I${LOCALBASE}/include/utf8cpp
-
-.include <bsd.port.options.mk>
-
-post-patch:
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
-	@${REINPLACE_CMD} -e 's|std::unary_function|std::__unary_function|' \
-		${WRKSRC}/apertium/perceptron_spec.h
-.endif
 
 .include <bsd.port.mk>

@@ -1,5 +1,5 @@
 PORTNAME=	yac
-PORTVERSION=	2.2.1
+PORTVERSION=	2.3.1
 PORTEPOCH=	1
 CATEGORIES=	devel
 
@@ -18,7 +18,7 @@ MSGPACK_RUN_DEPENDS=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/msgpack.so:devel/pecl-m
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

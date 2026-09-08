@@ -1,33 +1,36 @@
---- v8/BUILD.gn.orig	2023-09-17 18:22:45 UTC
+--- v8/BUILD.gn.orig	2026-01-14 08:33:23 UTC
 +++ v8/BUILD.gn
-@@ -1404,6 +1404,14 @@ config("toolchain") {
-   } else if (target_os == "chromeos") {
-     defines += [ "V8_HAVE_TARGET_OS" ]
-     defines += [ "V8_TARGET_OS_CHROMEOS" ]
-+  } else if (target_os == "openbsd") {
-+    defines += [ "V8_HAVE_TARGET_OS" ]
-+    defines += [ "V8_TARGET_OS_OPENBSD" ]
-+    defines += [ "V8_TARGET_OS_BSD" ]
-+  } else if (target_os == "freebsd") {
-+    defines += [ "V8_HAVE_TARGET_OS" ]
-+    defines += [ "V8_TARGET_OS_FREEBSD" ]
-+    defines += [ "V8_TARGET_OS_BSD" ]
-   }
+@@ -999,6 +999,8 @@ external_v8_defines = [
+   "V8_TARGET_OS_MACOS",
+   "V8_TARGET_OS_WIN",
+   "V8_TARGET_OS_CHROMEOS",
++  "V8_TARGET_OS_OPENBSD",
++  "V8_TARGET_OS_FREEBSD",
+ ]
  
-   # TODO(infra): Support v8_enable_prof on Windows.
-@@ -2331,6 +2339,11 @@ template("run_mksnapshot") {
-         "--turbo-log-builtins-count-input",
-         v8_log_builtins_block_count_input,
-       ]
-+      if (v8_current_cpu == "x86") {
-+        args -= [
-+          "--abort-on-bad-builtin-profile-data",
-+        ]
-+      }
+ enabled_external_v8_defines = [
+@@ -1079,6 +1081,12 @@ if (target_os == "android") {
+ } else if (target_os == "chromeos") {
+   enabled_external_v8_defines += [ "V8_HAVE_TARGET_OS" ]
+   enabled_external_v8_defines += [ "V8_TARGET_OS_CHROMEOS" ]
++} else if (target_os == "openbsd") {
++  enabled_external_v8_defines += [ "V8_HAVE_TARGET_OS" ]
++  enabled_external_v8_defines += [ "V8_TARGET_OS_OPENBSD" ]
++} else if (target_os == "freebsd") {
++  enabled_external_v8_defines += [ "V8_HAVE_TARGET_OS" ]
++  enabled_external_v8_defines += [ "V8_TARGET_OS_FREEBSD" ]
+ }
+ 
+ disabled_external_v8_defines = external_v8_defines - enabled_external_v8_defines
+@@ -1810,7 +1818,6 @@ config("strict_warnings") {
      }
- 
-     if (v8_enable_builtins_profiling) {
-@@ -2353,6 +2366,12 @@ template("run_mksnapshot") {
+     cflags += [
+       "-Wmissing-field-initializers",
+-      "-Wunnecessary-virtual-specifier",
+     ]
+   }
+ }
+@@ -2657,6 +2664,12 @@ template("run_mksnapshot") {
        if (!v8_enable_builtins_profiling && v8_enable_builtins_reordering) {
          args += [ "--reorder-builtins" ]
        }
@@ -40,7 +43,7 @@
      }
  
      # This is needed to distinguish between generating code for the simulator
-@@ -6081,7 +6100,7 @@ v8_component("v8_libbase") {
+@@ -6934,7 +6947,7 @@ v8_component("v8_libbase") {
      }
    }
  
@@ -49,7 +52,7 @@
      sources += [
        "src/base/debug/stack_trace_posix.cc",
        "src/base/platform/platform-linux.cc",
-@@ -6092,6 +6111,18 @@ v8_component("v8_libbase") {
+@@ -6945,6 +6958,18 @@ v8_component("v8_libbase") {
        "dl",
        "rt",
      ]

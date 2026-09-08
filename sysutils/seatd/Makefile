@@ -1,5 +1,5 @@
 PORTNAME=	seatd
-DISTVERSION=	0.8.0
+DISTVERSION=	0.9.2
 CATEGORIES=	sysutils
 MASTER_SITES=	https://git.sr.ht/~kennylevinsen/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
 
@@ -14,7 +14,7 @@ USES=		compiler:c11 cpe meson pkgconfig
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	${PORTNAME}
 CPE_VENDOR=	${PORTNAME}_project
-MESON_ARGS=	-Dlibseat-logind=disabled
+MESON_DISABLED=	libseat-logind
 SUB_FILES=	pkg-message
 PLIST_FILES=	bin/${PORTNAME} \
 		"@(,video,4750) bin/${PORTNAME}-launch" \
@@ -39,7 +39,7 @@ BASU_MESON_ON=		-Dlibseat-consolekit2=enabled
 
 MANPAGES_BUILD_DEPENDS=	scdoc:textproc/scdoc
 MANPAGES_MESON_ENABLED=	man-pages
-MANPAGES_PLIST_FILES=	man/man1/${PORTNAME}.1.gz \
-			man/man1/${PORTNAME}-launch.1.gz
+MANPAGES_PLIST_FILES=	share/man/man1/${PORTNAME}.1.gz \
+			share/man/man1/${PORTNAME}-launch.1.gz
 
 .include <bsd.port.mk>

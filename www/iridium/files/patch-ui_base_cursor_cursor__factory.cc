@@ -1,6 +1,6 @@
---- ui/base/cursor/cursor_factory.cc.orig	2023-08-28 20:17:35 UTC
+--- ui/base/cursor/cursor_factory.cc.orig	2025-12-10 15:04:57 UTC
 +++ ui/base/cursor/cursor_factory.cc
-@@ -89,7 +89,7 @@ void CursorFactory::ObserveThemeChanges() {
+@@ -97,7 +97,7 @@ void CursorFactory::ObserveThemeChanges() {
    NOTIMPLEMENTED();
  }
  

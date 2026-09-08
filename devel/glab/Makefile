@@ -1,15 +1,16 @@
 PORTNAME=	glab
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.33.0
+DISTVERSION=	1.85.1
 CATEGORIES=	devel
 
-MAINTAINER=	lcook@FreeBSD.org
+MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	GitLab CLI tool bringing GitLab to your command line
 WWW=		https://gitlab.com/gitlab-org/cli
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+BUILD_DEPENDS=	git:devel/git
 RUN_DEPENDS=	git:devel/git
 
 USES=		go:modules
@@ -17,14 +18,16 @@ USES=		go:modules
 _BUILD_VERSION=		${DISTVERSION}
 _BUILD_PLATFORM=	${OPSYS:tl}
 _BUILD_DATE=		$$(date +%Y-%m-%d)
+# Find here: https://gitlab.com/gitlab-org/cli/-/tags
+_TAG=			cbc454067c503122c86615e24b629dc0ee275f28
 
 GO_MODULE=	gitlab.com/gitlab-org/cli
 GO_TARGET=	./cmd/${PORTNAME}
 GO_BUILDFLAGS=	-ldflags "\
 		-s -w \
-		-X main.buildDate=${_BUILD_DATE} \
-		-X main.version=${_BUILD_VERSION} \
-		-X main.platform=${_BUILD_PLATFORM}"
+		-X 'main.commit=${_TAG}' \
+		-X 'main.version=${_BUILD_VERSION}' \
+		-X 'main.platform=${_BUILD_PLATFORM}'"
 
 PORTDOCS=	CONTRIBUTING.md README.md SECURITY.md
 
@@ -36,6 +39,16 @@ COMPLETIONS_DESC=		Build and install bash, fish and zsh shell completions
 COMPLETIONS_PLIST_FILES=	share/bash-completion/completions/${PORTNAME} \
 				share/fish/vendor_completions.d/${PORTNAME}.fish \
 				share/zsh/site-functions/_${PORTNAME}
+
+# add a git tag, as that is required to build the manpages
+pre-build:
+	cd ${WRKSRC} && \
+		git init && \
+		git config user.email "${MAINTAINER}" && \
+		git config user.name "FreeBSD Port" && \
+		git add . && \
+		git commit -m "tag" && \
+		git tag v${PORTVERSION}
 
 post-install-COMPLETIONS-on:
 .for _shell in bash fish zsh
@@ -50,6 +63,6 @@ post-install-DOCS-on:
 
 post-install-MANPAGES-on:
 	(cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${GO_ENV} ${GO_CMD} run \
-		./cmd/gen-docs --manpage --path ${STAGEDIR}${MAN1PREFIX}/man/man1)
+		./cmd/gen-docs --manpage --path ${STAGEDIR}${PREFIX}/share/man/man1)
 
 .include <bsd.port.mk>

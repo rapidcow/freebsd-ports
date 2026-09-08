@@ -1,6 +1,6 @@
---- chrome/browser/first_run/first_run_internal.h.orig	2022-11-30 08:12:58 UTC
+--- chrome/browser/first_run/first_run_internal.h.orig	2025-10-02 04:28:32 UTC
 +++ chrome/browser/first_run/first_run_internal.h
-@@ -54,7 +54,7 @@ FirstRunState DetermineFirstRunState(bool has_sentinel
+@@ -72,7 +72,7 @@ FirstRunState DetermineFirstRunState(bool has_sentinel
                                       bool force_first_run,
                                       bool no_first_run);
  

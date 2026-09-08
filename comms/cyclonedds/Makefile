@@ -1,15 +1,16 @@
 PORTNAME=	CycloneDDS
-DISTVERSION=	0.10.2
+DISTVERSION=	0.10.5
 CATEGORIES=	comms
 
 MAINTAINER=	flo@purplekraken.com
 COMMENT=	Eclipse Cyclone DDS middleware
-WWW=		https://cyclonedds.io/
+WWW=		https://cyclonedds.io/ \
+		https://github.com/eclipse-cyclonedds/cyclonedds/
 
 LICENSE=	EPL
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libiceoryx_posh.so:comms/iceoryx
+LIB_DEPENDS=	libiceoryx_binding_c.so:comms/iceoryx
 
 USES=		bison cmake
 

@@ -2,27 +2,32 @@ PORTNAME=	certbot
 PORTVERSION=	${ACME_VERSION}
 PORTEPOCH=	1
 CATEGORIES=	security python
-MASTER_SITES=	PYPI
+MASTER_SITES=	PYPI \
+		https://github.com/certbot/certbot/releases/download/v${PORTVERSION}/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Let's Encrypt client #'
-WWW=		https://github.com/certbot/certbot
+WWW=		https://certbot.eff.org/ \
+		https://github.com/certbot/certbot \
+		https://github.com/certbot/certbot/tree/master/certbot
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools>=0:devel/py-setuptools@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}acme>=${ACME_VERSION},1:security/py-acme@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}configargparse>=0.9.3:devel/py-configargparse@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}configargparse>=1.5.3:devel/py-configargparse@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}configobj>=5.0.6:devel/py-configobj@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}distro>=1.0.1:sysutils/py-distro@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}josepy>=1.13.0:security/py-josepy@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}josepy>=2.0.0:security/py-josepy@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}parsedatetime>=2.4:devel/py-parsedatetime@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pyrfc3339>=0:devel/py-pyrfc3339@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pytz>=2019.3,1:devel/py-pytz@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}setuptools>=41.6.0:devel/py-setuptools@${PY_FLAVOR}
 
 USES=		python
-USE_PYTHON=	autoplist concurrent cryptography distutils pytest
+USE_PYTHON=	autoplist concurrent cryptography pep517 pytest
 
 NO_ARCH=	yes
 
@@ -35,14 +40,12 @@ OPTIONS_DEFAULT=MANPAGES
 
 MANPAGES_BUILD_DEPENDS=	${RUN_DEPENDS} \
 			${PYTHON_PKGNAMEPREFIX}sphinx>=1.2,1:textproc/py-sphinx@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}sphinx_rtd_theme>=0:textproc/py-sphinx_rtd_theme@${PY_FLAVOR} \
-			${PYTHON_PKGNAMEPREFIX}repoze.sphinx.autointerface>=0:devel/py-repoze.sphinx.autointerface@${PY_FLAVOR} \
-
+			${PYTHON_PKGNAMEPREFIX}sphinx_rtd_theme>=0:textproc/py-sphinx_rtd_theme@${PY_FLAVOR}
 MANPAGES_PLIST_FILES=	share/man/man1/certbot.1.gz \
 			share/man/man7/certbot.7.gz
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' ${WRKSRC}/certbot/compat/misc.py ${WRKSRC}/certbot/_internal/tests/cli_test.py
+	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|' ${WRKSRC}/src/certbot/compat/misc.py ${WRKSRC}/src/certbot/_internal/tests/cli_test.py
 
 post-build-MANPAGES-on:
 	# Avoid gmake / ${DO_MAKE_BUILD} -C ${WRKSRC}/docs man

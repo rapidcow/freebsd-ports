@@ -1,6 +1,6 @@
 PORTNAME=	kinput2
 PORTVERSION=	3.1
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	japanese x11
 MASTER_SITES=	ftp://ftp.sra.co.jp/pub/x11/kinput2/
 DISTNAME=	${PORTNAME}-v${PORTVERSION}
@@ -16,7 +16,7 @@ USE_XORG=	ice sm x11 xaw xext xmu xpm xt
 MAKE_JOBS_UNSAFE=	yes
 
 SUB_FILES=	Kinput2.conf
-PLIST_FILES=	bin/kinput2 lib/X11/app-defaults/Kinput2 man/man1/kinput2.1.gz
+PLIST_FILES=	bin/kinput2 lib/X11/app-defaults/Kinput2 share/man/man1/kinput2.1.gz
 
 OPTIONS_DEFINE=	CANNA FREEWNN WNN6 WNN7 SJ3 TCP
 OPTIONS_DEFAULT=CANNA FREEWNN           SJ3
@@ -91,7 +91,7 @@ CONF+=	TRANSPORTDEFS="-DNO_TCP_TRANSPORT"
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
 .endif
 

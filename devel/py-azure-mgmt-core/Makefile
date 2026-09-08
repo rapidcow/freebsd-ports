@@ -1,10 +1,11 @@
 PORTNAME=	azure-mgmt-core
 DISTVERSION=	1.3.2
+PORTREVISION=	1
 CATEGORIES=	devel python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	dbaio@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Microsoft Azure Management Core Library for Python
 WWW=		https://pypi.org/project/azure-mgmt-core/
 

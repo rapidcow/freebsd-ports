@@ -1,18 +1,16 @@
 PORTNAME=	awesome-vicious
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2.6.0
+DISTVERSION=	2.7.1
 CATEGORIES=	x11-wm
 
 MAINTAINER=	eduardo@FreeBSD.org
 COMMENT=	Widgets for the awesome window manager
-WWW=		https://vicious.readthedocs.io/en/latest/
+WWW=		https://vicious.readthedocs.io/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	awesome:x11-wm/awesome
-
-USES=		tar:xz
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	vicious-widgets

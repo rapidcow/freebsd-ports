@@ -1,6 +1,6 @@
 PORTNAME=	isomaster
-PORTVERSION=	1.3.16
-PORTREVISION=	1
+PORTVERSION=	1.3.17
+PORTREVISION=	2
 CATEGORIES=	sysutils
 MASTER_SITES=	http://littlesvr.ca/isomaster/releases/
 
@@ -16,10 +16,11 @@ LIB_DEPENDS=	libiniparser.so:devel/iniparser \
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
 USES=		desktop-file-utils gettext gmake gnome pkgconfig tar:bzip2
-USE_GNOME=	cairo gdkpixbuf2 gtk20
+USE_GNOME=	cairo gdkpixbuf gtk20
 MAKE_ENV=	DEFAULT_VIEWER="xdg-open" USE_SYSTEM_INIPARSER=1
 
-CPPFLAGS+=	-I${LOCALBASE}/include -Diniparser_setstr=iniparser_set
+CPPFLAGS+=	-I${LOCALBASE}/include/iniparser \
+		-Diniparser_setstr=iniparser_set
 LDFLAGS+=	-L${LOCALBASE}/lib -lintl
 
 post-patch:
@@ -32,7 +33,7 @@ do-install:
 	(cd ${WRKSRC} && ${INSTALL_PROGRAM} isomaster \
 		${STAGEDIR}${PREFIX}/bin)
 	(cd ${WRKSRC} && ${INSTALL_MAN} isomaster.1 \
-		${STAGEDIR}${MANPREFIX}/man/man1)
+		${STAGEDIR}${PREFIX}/share/man/man1)
 	@${MKDIR} ${STAGEDIR}${DATADIR}/icons
 .for i in add2-kearone.png delete-kearone.png extract2-kearone.png \
 	folder-new-kearone.png go-back-kearone.png isomaster.png

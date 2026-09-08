@@ -1,5 +1,5 @@
 PORTNAME=	vc
-DISTVERSION=	1.4.3
+DISTVERSION=	1.4.5
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -18,5 +18,8 @@ GH_TUPLE=	VcDevel:vc-testdata:9ada1f3:testdata/tests/testdata \
 		mattkretz:virtest:f7d03ef:virtest/tests/virtest
 
 CMAKE_OFF=	BUILD_TESTING
+
+# tests fail to compile, see https://github.com/VcDevel/Vc/issues/358
+# tests crash clang, see https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=227339
 
 .include <bsd.port.mk>

@@ -10,8 +10,6 @@ WWW=		https://brlcad.org/
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_sparc64=	does not compile: invokes i386 assembler
-
 BUILD_DEPENDS=	xsltproc:textproc/libxslt
 LIB_DEPENDS=	liblz4.so:archivers/liblz4 \
 		libdrm.so:graphics/libdrm \
@@ -20,7 +18,7 @@ LIB_DEPENDS=	liblz4.so:archivers/liblz4 \
 		libexpat.so:textproc/expat2 \
 		libfontconfig.so:x11-fonts/fontconfig
 
-USES=		bison:alias cmake:insource cpe gl pathfix pkgconfig python:env \
+USES=		bison:alias cmake:insource cpe gl pkgconfig python:env \
 		tar:bzip2 tk xorg
 USE_GL=		gl glu
 USE_LDCONFIG=	yes
@@ -35,7 +33,7 @@ TEST_TARGET=	check
 
 CONFLICTS_INSTALL=	py[23][0-9]-epsilon
 
-MANPREFIX=	${PREFIX}/${PORTNAME}/share
+MANDIRS=	${PREFIX}/${PORTNAME}/share/man
 NO_MTREE=	yes
 
 WRKSRC=${WRKDIR}/${PORTNAME}-${PORTVERSION}
@@ -44,15 +42,13 @@ PLIST_SUB+=	PORTVERSION=${PORTVERSION}
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 USES+=	llvm:max=14
 .endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's+-exact Tcl 8\.6\.10+Tcl 8.6+' \
 		${WRKSRC}/src/other/tcl/library/init.tcl
-	@${REINPLACE_CMD} -e '2745s+^+include(CheckSymbolExists)+' \
-		${WRKSRC}/CMakeLists.txt
 
 pre-install:
 	${CP} ${FILESDIR}/mged.sh ${WRKSRC}

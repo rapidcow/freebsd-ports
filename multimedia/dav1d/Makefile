@@ -1,6 +1,5 @@
 PORTNAME=	dav1d
-DISTVERSION=	1.2.1
-PORTREVISION=	2
+DISTVERSION=	1.5.3
 CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -43,12 +42,9 @@ XXHASH_MESON_ENABLED=	xxhash_muxer
 .MAKEFLAGS:	WITH="${OPTIONS_DEFINE}"
 .endif
 
-# https://github.com/llvm/llvm-project/issues/39981
-.if !empty(CFLAGS:M-flto*)
-MESON_ARGS+=	${MESON_ARGS_${CHOSEN_COMPILER_TYPE}_${ARCH}}
-MESON_ARGS_clang_amd64=	-Dstack_alignment=16
-MESON_ARGS_clang_i386=	-Dstack_alignment=4
-.endif
+post-build-TEST-on:
+# Ensure checkasm is built before tests are run
+	@${DO_MAKE_BUILD} -C ${BUILD_WRKSRC} meson-test-prereq
 
 pre-install-TEST-on: do-test
 

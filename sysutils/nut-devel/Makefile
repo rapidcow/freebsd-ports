@@ -18,8 +18,8 @@ CONFLICTS=	nut-[0-9]*
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	networkupstools
-GH_TAGNAME=	81fca30b2
-NUT_COMMIT_DATE=	2023.09.21
+GH_TAGNAME=	41daedfab
+NUT_COMMIT_DATE=	2025.11.17
 
 MAKE_JOBS_UNSAFE=	yes
 GNU_CONFIGURE=	yes
@@ -28,7 +28,7 @@ USE_LDCONFIG=	yes
 
 NUT_USER?=	nut
 NUT_GROUP?=	nut
-USERS=		${NUT_USER} 
+USERS=		${NUT_USER}
 GROUPS=		${NUT_GROUP} dialer
 STATEDIR?=	/var/db/nut
 PLIST_SUB+=	NUT_USER=${NUT_USER}
@@ -38,11 +38,15 @@ CGIDIR_REL?=	${CGIDIR:S,^${PREFIX}/,,}
 PLIST_SUB+=	CGIDIR="${CGIDIR_REL}"
 PLIST_SUB+=	CGIETCDIR="etc/nut/"
 
-OPTIONS_DEFAULT=	SERIAL USB SNMP NEON PDU MODBUS CGI BASH AVAHI FREEIPMI DOCS MANPAGES OPENSSL
-OPTIONS_DEFAULT_armv6=	SERIAL USB SNMP NEON PDU MODBUS CGI BASH AVAHI DOCS MANPAGES OPENSSL
-OPTIONS_DEFAULT_armv7=	SERIAL USB SNMP NEON PDU MODBUS CGI BASH AVAHI DOCS MANPAGES OPENSSL
-OPTIONS_DEFAULT_armv64=	SERIAL USB SNMP NEON PDU MODBUS CGI BASH AVAHI DOCS MANPAGES OPENSSL
-OPTIONS_DEFINE=	SERIAL USB SNMP NEON PDU MODBUS CGI BASH AVAHI IPMIPSU FREEIPMI DOCS MANPAGES
+OPTIONS_DEFAULT=	SERIAL USB SNMP NEON PDU MODBUS CGI BASH AVAHI DOCS MANPAGES OPENSSL
+OPTIONS_DEFAULT_amd64=	FREEIPMI
+OPTIONS_DEFAULT_i386=	FREEIPMI
+OPTIONS_DEFAULT_powerpc=	FREEIPMI
+OPTIONS_DEFAULT_powerpc64=	FREEIPMI
+OPTIONS_DEFAULT_powerpc64le=	FREEIPMI
+OPTIONS_DEFAULT_riscv64=	FREEIPMI
+OPTIONS_DEFAULT_riscv64sf=	FREEIPMI
+OPTIONS_DEFINE=	SERIAL USB SNMP NEON PDU MODBUS CGI BASH AVAHI IPMIPSU FREEIPMI DOCS MANPAGES DEV
 OPTIONS_SINGLE=	SSL
 OPTIONS_SINGLE_SSL=	SSL_OFF OPENSSL NSS
 OPTIONS_SUB=	yes
@@ -56,6 +60,7 @@ CGI_DESC=	Web CGI interface
 FREEIPMI_DESC=	freeipmi support
 IPMIPSU_DESC=	Use nut-ipmipsu support (experimental)
 SSL_OFF_DESC=	No SSL support
+DEV_DESC=	Install developer tools
 
 USE_RC_SUBR=	nut nut_upsmon nut_upslog
 SUB_LIST+=	STATEDIR=${STATEDIR} NUT_USER=${NUT_USER} NUT_GROUP=${NUT_GROUP}
@@ -69,6 +74,7 @@ CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc/nut \
 		--program-transform-name="" \
 		--localstatedir=${STATEDIR} \
 		--datadir=${PREFIX}/etc/nut \
+		--mandir=${PREFIX}/share/man/nut \
 		--with-devd-dir=${PREFIX}/etc/devd \
 		--with-drvpath=${PREFIX}/libexec/nut \
 		--with-statepath=${STATEDIR} \
@@ -80,10 +86,14 @@ CONFIGURE_ARGS=	--sysconfdir=${PREFIX}/etc/nut \
 		--with-python=${PYTHON_CMD} \
 		--without-python2 \
 		--with-python3=${PYTHON_CMD} \
-		--with-dev \
-		--with-ltdl --with-nut-scanner
+		--without-nut_monitor \
+		--with-ltdl --with-nut-scanner \
+		--without-augeas-lenses-dir \
+		--enable-extapi-enphase=no
 
-CFLAGS+=	-I${LOCALBASE}/include -L${LOCALBASE}/lib -lpthread
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
+
+CFLAGS+=	-I${LOCALBASE}/include -L${LOCALBASE}/lib -pthread
 LIB_DEPENDS+=	libltdl.so:devel/libltdl
 
 # XXX Remove this when copying this port to sysutils/nut. The GA version
@@ -133,6 +143,8 @@ OPENSSL_CONFIGURE_WITH=	openssl
 
 NSS_LIB_DEPENDS=	libnss3.so:security/nss
 NSS_CONFIGURE_WITH=	nss
+
+DEV_CONFIGURE_WITH=	dev
 
 .include <bsd.port.pre.mk>
 

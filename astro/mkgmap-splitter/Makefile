@@ -1,5 +1,5 @@
 PORTNAME=	splitter
-PORTVERSION=	r653
+PORTVERSION=	r654
 CATEGORIES=	astro converters java
 MASTER_SITES=	https://www.mkgmap.org.uk/download/
 PKGNAMEPREFIX=	mkgmap-
@@ -8,8 +8,9 @@ MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Tile splitter for mkgmap
 WWW=		https://www.mkgmap.org.uk/doc/splitter.html
 
-USE_JAVA=	yes
-JAVA_VERSION=	8+
+LICENSE=	GPLv3
+
+USES=		java
 NO_BUILD=	yes
 NO_ARCH=	yes
 

@@ -1,7 +1,7 @@
 PORTNAME?=	portshaker
 PORTVERSION=	1.0.19
 DISTVERSIONPREFIX=	v
-PORTREVISION?=	3
+PORTREVISION?=	5
 CATEGORIES?=	ports-mgmt
 
 MAINTAINER?=	romain@FreeBSD.org
@@ -11,7 +11,7 @@ WWW=		https://github.com/smortex/portshaker
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES+=		uidfix
+USES+=		uidfix python:env
 USE_GITHUB=	yes
 GH_ACCOUNT=	smortex
 GH_PROJECT=	portshaker
@@ -21,11 +21,10 @@ OPTIONS_DEFINE=		GIT MERCURIAL RSYNC SUBVERSION
 OPTIONS_DEFAULT=	RSYNC SUBVERSION
 RSYNC_DESC=	rsync support
 RSYNC_RUN_DEPENDS=	rsync:net/rsync
-WITH_SUBVERSION_VER?=   114
-.if ${WITH_SUBVERSION_VER} == 114
-SUBVERSION_RUN_DEPENDS=	svn:devel/subversion
-.elif ${WITH_SUBVERSION_VER} == LTS
+.if ${WITH_SUBVERSION_VER:U} == LTS
 SUBVERSION_RUN_DEPENDS=	svn:devel/subversion-lts
+.else
+SUBVERSION_RUN_DEPENDS=	svn:devel/subversion
 .endif
 GIT_RUN_DEPENDS=	git:devel/git
 MERCURIAL_RUN_DEPENDS=	${PY_MERCURIAL}

@@ -1,26 +1,29 @@
 PORTNAME=	libcpuid
-PORTVERSION=	0.6.3
+DISTVERSION=	0.8.1
 CATEGORIES=	sysutils
-MASTER_SITES=	https://github.com/anrieff/libcpuid/releases/download/v${PORTVERSION}/
+MASTER_SITES=	https://github.com/anrieff/libcpuid/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Small x86 CPU identification library
-WWW=		http://libcpuid.sourceforge.net/
+WWW=		https://libcpuid.sourceforge.net/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		libtool python:test shebangfix
-GNU_CONFIGURE=	yes
+USES=		libtool pathfix python:test shebangfix
 USE_LDCONFIG=	yes
+SHEBANG_FILES=	tests/run_tests.py
+GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 TEST_TARGET=	test
 
-SHEBANG_FILES=	tests/run_tests.py
-
 PORTDOCS=	AUTHORS ChangeLog Readme.md
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=	DOCS MANPAGES
+OPTIONS_SUB=	yes
+
+MANPAGES_BUILD_DEPENDS=		doxygen:devel/doxygen
+MANPAGES_CONFIGURE_ENV_OFF=	ac_cv_prog_DOXYGEN=
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

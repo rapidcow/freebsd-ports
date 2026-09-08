@@ -1,33 +1,47 @@
 PORTNAME=	idesk
-PORTVERSION=	0.7.5
-PORTREVISION=	11
+PORTVERSION=	0.7.9
 CATEGORIES=	x11
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Place launch icons and background directly on your desktop
-WWW=		http://idesk.sourceforge.net
+WWW=		https://github.com/neagix/idesk
 
-LIB_DEPENDS=	libXft.so:x11-fonts/libXft \
-		libImlib2.so:graphics/imlib2
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYING
+
+LIB_DEPENDS=	libImlib2.so:graphics/imlib2 \
+		libXft.so:x11-fonts/libXft
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	neagix
+GH_TAGNAME=	15f0b51dc7c7adbdf191481423793d7726fa8fab
+
+USES=		autoreconf gmake localbase:ldflags pkgconfig \
+		tar:bzip2 xorg
+USE_XORG=	ice sm x11
 
 GNU_CONFIGURE=	yes
-USES=		gmake pkgconfig tar:bzip2
 
-OPTIONS_DEFINE=	SHAPE SN DOCS
-SHAPE_DESC=	Support of XShape extension
-SN_DESC=	Startup notification support
-OPTIONS_DEFAULT=	SHAPE
-
-CXXFLAGS+=	`imlib2-config --cflags` `freetype-config --cflags`
-MAKE_ARGS=	cc="${CXX}" cflags="${CXXFLAGS}"
+MAKE_ARGS=	cc="${CXX}" \
+		cflags="${CXXFLAGS}"
 SUB_FILES=	pkg-message
 PLIST_FILES=	bin/${PORTNAME}
 PORTDOCS=	README
 
+OPTIONS_DEFINE=		DOCS SHAPE SN
+OPTIONS_DEFAULT=	SHAPE
+
+SHAPE_DESC=	Support of XShape extension
+SN_DESC=	Startup notification support
+
+SHAPE_USE=		XORG=xext
 SHAPE_CONFIGURE_ENABLE=	shape
-SN_LIB_DEPENDS=	libstartup-notification.so:x11/startup-notification
+
+SN_LIB_DEPENDS=		libstartup-notification-1.so:x11/startup-notification
 SN_CONFIGURE_ON=	--enable-libsn
+
+post-patch:
+	${REINPLACE_CMD} -e 's|0.7.8|${PORTVERSION}|g' ${WRKSRC}/configure.ac
 
 do-install:
 		${INSTALL_PROGRAM} ${WRKSRC}/src/idesk ${STAGEDIR}${PREFIX}/bin

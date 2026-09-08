@@ -1,6 +1,6 @@
 PORTNAME=	binaryen
 DISTVERSIONPREFIX=	version_
-DISTVERSION=	116
+DISTVERSION=	125
 CATEGORIES=	devel
 
 MAINTAINER=	eduardo@FreeBSD.org
@@ -10,19 +10,19 @@ WWW=		https://github.com/WebAssembly/binaryen
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake compiler:c++17-lang cpe python:build
+TEST_DEPENDS=	googletest>=0:devel/googletest
+
+USES=		cmake:testing cpe localbase:ldflags python:build
 CPE_VENDOR=	webassembly
 USE_GITHUB=	yes
 GH_ACCOUNT=	WebAssembly
 USE_LDCONFIG=	yes
 
-OPTIONS_DEFINE=	TEST
-OPTIONS_SUB=	yes
+CMAKE_OFF=	BUILD_TESTS
+CMAKE_TESTING_ON=	BUILD_TESTS
+CMAKE_TESTING_TARGET=	# No internal target for running tests. Run via post-test.
 
-TEST_CMAKE_BOOL=	BUILD_TESTS
-TEST_GH_TUPLE=		google:googletest:e2239ee:googletest/third_party/googletest
-
-do-test-TEST-on:
-	binaryen-unittests
+post-test:
+	${BUILD_WRKSRC}/bin/binaryen-unittests
 
 .include <bsd.port.mk>

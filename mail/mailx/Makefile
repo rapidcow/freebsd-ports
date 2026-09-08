@@ -24,7 +24,7 @@ WRKSRC=		${WRKDIR}/mail-2.2.8
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
 .endif
 
@@ -35,7 +35,7 @@ post-patch:
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/mail ${STAGEDIR}${PREFIX}/bin/mailx
 	${INSTALL_MAN} ${WRKSRC}/mail.1.gz \
-		${STAGEDIR}${MAN1PREFIX}/share/man/man1/mailx.1.gz
+		${STAGEDIR}${PREFIX}/share/man/man1/mailx.1.gz
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/doc/mailx
 	${INSTALL_DATA} ${DISTDIR}/mailx-memo-2.2.8R \
 		${STAGEDIR}${DOCSDIR}

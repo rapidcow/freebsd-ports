@@ -1,7 +1,7 @@
 PORTNAME=	flam3
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.1.1-5
-PORTREVISION=	3
+PORTREVISION=	5
 DISTVERSIONSUFFIX=	-g7fb50c8
 CATEGORIES=	graphics
 
@@ -12,13 +12,14 @@ WWW=		http://flam3.com/
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libpng.so:graphics/png \
-		libxml2.so:textproc/libxml2
+LIB_DEPENDS=	libpng.so:graphics/png
 
-USES=		gmake jpeg libtool localbase pathfix
+USES=		gmake gnome jpeg libtool localbase pathfix
+USE_GNOME=	libxml2
 USE_GITHUB=	yes
 GH_ACCOUNT=	scottdraves
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--enable-shared --disable-static
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes

@@ -1,6 +1,6 @@
 PORTNAME=	wmdrawer
 PORTVERSION=	0.10.5
-PORTREVISION=	13
+PORTREVISION=	14
 CATEGORIES=	x11 windowmaker
 MASTER_SITES=	http://people.easter-eggs.org/~valos/wmdrawer/ \
 		http://www.sourcefiles.org/Utilities/Desktops/
@@ -12,14 +12,15 @@ WWW=		http://people.easter-eggs.org/~valos/wmdrawer/
 LICENSE=	GPLv2+
 
 USES=		gmake gnome pkgconfig xorg
-USE_GNOME=	gdkpixbuf2 gdkpixbuf2xlib
+USE_GNOME=	gdkpixbuf gdkpixbuf2xlib
 USE_XORG=	x11 xext xi
+MAKE_ARGS=	MANDIR=$(PREFIX)/share/man/man1
 MAKE_ENV=	USE_GDKPIXBUF2=1
 
 SUB_FILES=	pkg-message
 
 PORTDOCS=	AUTHORS ChangeLog INSTALL README TODO wmdrawerrc.example
-PLIST_FILES=	bin/wmdrawer man/man1/wmdrawer.1x.gz %%DATADIR%%/beastie.png
+PLIST_FILES=	bin/wmdrawer share/man/man1/wmdrawer.1x.gz %%DATADIR%%/beastie.png
 
 OPTIONS_DEFINE=	DOCS
 

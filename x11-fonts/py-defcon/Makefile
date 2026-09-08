@@ -1,5 +1,6 @@
 PORTNAME=	defcon
 PORTVERSION=	0.10.2
+PORTREVISION=	1
 CATEGORIES=	x11-fonts python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,7 +12,7 @@ WWW=		https://github.com/robotools/defcon
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/License.txt
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools_scm>=0:devel/py-setuptools_scm@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools-scm>=0:devel/py-setuptools-scm@${PY_FLAVOR}
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}fonttools>=4.10.0:print/py-fonttools@${PY_FLAVOR}
 
 USES=		python zip

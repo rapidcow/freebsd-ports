@@ -1,6 +1,5 @@
 PORTNAME=	libXinerama
-PORTVERSION=	1.1.4
-PORTREVISION=	2
+PORTVERSION=	1.1.5
 PORTEPOCH=	1
 CATEGORIES=	x11
 
@@ -10,7 +9,7 @@ WWW=		https://www.freedesktop.org/Software/xlibs
 
 LICENSE=	MIT
 
-USES=		cpe xorg xorg-cat:lib
+USES=		cpe tar:xz xorg xorg-cat:lib
 USE_XORG=	x11 xext xorgproto
 CPE_PRODUCT=	libxinerama
 CPE_VENDOR=	x

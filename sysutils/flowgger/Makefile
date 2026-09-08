@@ -1,11 +1,11 @@
 PORTNAME=	flowgger
 DISTVERSION=	0.3.1
-PORTREVISION=	2
+PORTREVISION=	22
 CATEGORIES=	sysutils
 MASTER_SITES=	CRATESIO
 DISTFILES=	${CARGO_DIST_SUBDIR}/${DISTNAME}${CARGO_CRATE_EXT}
 
-MAINTAINER=	mikael@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast data collector
 WWW=		https://github.com/awslabs/flowgger
 
@@ -15,7 +15,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	capnp:devel/capnproto
 
 USES=		cargo ssl
-#BROKEN_SSL=	openssl30 openssl31
+#BROKEN_SSL=	openssl openssl31
 #BROKEN_SSL_REASON=	Cannot detect OpenSSL 3.0.0 and later
 CARGO_CRATES=	addr2line-0.19.0 \
 		adler-1.0.2 \
@@ -200,7 +200,6 @@ CARGO_CRATES=	addr2line-0.19.0 \
 		xml-rs-0.8.4
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/flowgger
 	${INSTALL_DATA} ${WRKSRC}/flowgger.toml \
 		${STAGEDIR}${PREFIX}/etc/flowgger.toml.sample
 

@@ -1,5 +1,6 @@
 PORTNAME=	rlwrap
 DISTVERSION=	0.45.2
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	https://github.com/hanslub42/rlwrap/releases/download/v${DISTVERSION}/
 
@@ -12,13 +13,13 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		autoreconf python readline shebangfix
 PYTHON_NO_DEPENDS=	yes
-SHEBANG_GLOB=	*.py
 SHEBANG_FILES=	filters/dissect_prompt \
 		filters/handle_sigwinch \
 		filters/makefilter
-python_OLD_CMD=	"/usr/bin/env python3"
+SHEBANG_GLOB=	*.py
 
 GNU_CONFIGURE=	yes
+CFLAGS+=	-DHAVE_STDARG_H
 
 PORTDOCS=	AUTHORS BUGS NEWS README
 

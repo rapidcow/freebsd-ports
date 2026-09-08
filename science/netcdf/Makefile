@@ -1,5 +1,5 @@
 PORTNAME=	netcdf
-PORTVERSION=	4.9.2
+PORTVERSION=	4.9.3
 DISTVERSIONPREFIX=	c-
 CATEGORIES=	science
 MASTER_SITES=	https://downloads.unidata.ucar.edu/netcdf-c/${PORTVERSION}/ \
@@ -17,10 +17,10 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libhdf5.so:science/hdf5 \
 		libzstd.so:archivers/zstd
 
-USES=		gmake libtool localbase ncurses pathfix pkgconfig:run
+USES=		gmake libtool localbase ncurses pkgconfig:run
 
 CONFIGURE_ARGS=	--disable-filter-testing --disable-libxml2 \
-		--enable-byterange --enable-dap --enable-netcdf-4
+		--enable-byterange --enable-curl --enable-dap --enable-hdf5 --enable-logging
 CPPFLAGS+=	-fPIC -DPIC
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip

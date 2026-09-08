@@ -1,13 +1,13 @@
 PORTNAME=	nut
 PORTVERSION=	20.1
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	misc
 MASTER_SITES=	SF
 PKGNAMEPREFIX=	health-
 
 MAINTAINER=	jhale@FreeBSD.org
 COMMENT=	Nutrition software to record what you eat
-WWW=		http://nut.sourceforge.net/
+WWW=		https://nut.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -43,7 +43,7 @@ post-patch:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/nut ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/nut.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/nut.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	(cd ${WRKSRC}/raw.data && ${COPYTREE_SHARE} . ${STAGEDIR}${DATADIR})
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

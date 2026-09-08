@@ -1,17 +1,17 @@
 PORTNAME=	xscope
-PORTVERSION=	1.4.1
-PORTREVISION=	2
+DISTVERSION=	1.4.5
 CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	X Window Protocol Viewer
-WWW=		https://www.x.org/releases/X11R7.6/doc/man/man1/xscope.1.xhtml
+WWW=		https://gitlab.freedesktop.org/xorg/app/xscope
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		xorg xorg-cat:app
-USE_XORG=	xorgproto x11 xext
+USES=		tar:xz xorg xorg-cat:app
+USE_XORG=	xorgproto xtrans
 
-PLIST_FILES=	bin/xscope man/man1/xscope.1.gz
+PLIST_FILES=	bin/xscope share/man/man1/xscope.1.gz
 
 .include <bsd.port.mk>

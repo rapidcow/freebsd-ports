@@ -1,6 +1,6 @@
 PORTNAME=	playonbsd
 PORTVERSION=	4.2.10
-PORTREVISION=	10
+PORTREVISION=	17
 CATEGORIES=	emulators games
 
 MAINTAINER=	Clockwork6400@protonmail.com
@@ -18,12 +18,11 @@ RUN_DEPENDS=	7z:archivers/7-zip \
 		gsed:textproc/gsed \
 		icotool:graphics/icoutils \
 		jq:textproc/jq \
-		sudo:security/sudo \
 		wget:ftp/wget \
 		xdg-open:devel/xdg-utils \
 		xterm:x11/xterm
 
-USES=		perl5 python:run shebangfix
+USES=		perl5 python:run shebangfix sudo
 USE_GITHUB=	yes
 GH_ACCOUNT=	Clockwork6400
 GH_PROJECT=	POL-FreeBSD-4
@@ -61,7 +60,7 @@ do-install:
 		cd ${WRKSRC} && ${COPYTREE_BIN} ${d} ${STAGEDIR}${PREFIX}/lib/playonbsd/ "! -name *\.orig ! -name *\.bak"
 .endfor
 		@${REINPLACE_CMD} -e 's:linux:bsd:g;s:linux:BSD:ig' ${WRKSRC}/doc/playonlinux.1
-		${INSTALL_MAN} ${WRKSRC}/doc/playonlinux.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/playonbsd.1
+		${INSTALL_MAN} ${WRKSRC}/doc/playonlinux.1 ${STAGEDIR}${PREFIX}/share/man/man1/playonbsd.1
 		${INSTALL_SCRIPT} ${WRKDIR}/playonbsd.sh ${STAGEDIR}${PREFIX}/bin/playonbsd
 		${INSTALL_SCRIPT} ${WRKSRC}/playonfreebsd ${STAGEDIR}${PREFIX}/lib/playonbsd/playonfreebsd
 		${MKDIR} ${STAGEDIR}${PREFIX}/lib/playonbsd/lang/locale/en_GB/LC_MESSAGES

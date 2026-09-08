@@ -1,10 +1,11 @@
 PORTNAME=	xorriso
-PORTVERSION=	1.5.6
+DISTVERSION=	1.5.6
+PORTREVISION=	2
 CATEGORIES=	sysutils
-MASTER_SITES=	http://files.libburnia-project.org/releases/
+MASTER_SITES=	https://files.libburnia-project.org/releases/
 DISTNAME=	libisoburn-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	ISO image manipulation tool based on Libburnia
 WWW=		https://dev.lovelyhq.com/libburnia/web/wiki
 
@@ -19,6 +20,7 @@ USES=		gmake iconv libedit libtool pathfix pkgconfig readline \
 USE_LDCONFIG=	yes
 SHEBANG_FILES=	frontend/xorriso-tcltk
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 INSTALL_TARGET=	install-strip
 
 INFO=		xorrecord xorriso xorrisofs

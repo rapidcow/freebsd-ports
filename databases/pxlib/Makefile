@@ -5,17 +5,18 @@ MASTER_SITES=	SF
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	C library to read various Paradox files
-WWW=		http://pxlib.sourceforge.net
+WWW=		https://pxlib.sourceforge.net
 
 LICENSE=	GPLv2
 
 BUILD_DEPENDS=	p5-XML-Parser>=0:textproc/p5-XML-Parser
 
-USES=		gmake gnome iconv libtool localbase:ldflags pathfix perl5 pkgconfig
+USES=		gmake gnome iconv libtool localbase:ldflags perl5 pkgconfig
 USE_GNOME=	intltool
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 INSTALL_TARGET=	install-strip
 
@@ -29,7 +30,7 @@ NLS_CONFIGURE_OFF=	--disable-nls
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

@@ -1,6 +1,6 @@
---- src/3rdparty/chromium/net/socket/socks5_client_socket.cc.orig	2022-09-26 10:05:50 UTC
+--- src/3rdparty/chromium/net/socket/socks5_client_socket.cc.orig	2025-08-15 18:30:00 UTC
 +++ src/3rdparty/chromium/net/socket/socks5_client_socket.cc
-@@ -19,6 +19,9 @@
+@@ -24,6 +24,9 @@
  #include "net/log/net_log_event_type.h"
  #include "net/traffic_annotation/network_traffic_annotation.h"
  

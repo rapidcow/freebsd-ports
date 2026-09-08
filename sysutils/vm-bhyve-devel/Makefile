@@ -1,21 +1,21 @@
-PORTNAME=		vm-bhyve
+PORTNAME=	vm-bhyve
+# Generate with 'git describe --tags' and break them up
 DISTVERSIONPREFIX=	v
-DISTVERSION=		1.5.0-17
-DISTVERSIONSUFFIX=	-gbda366b
+DISTVERSION=	1.7.0
+DISTVERSIONSUFFIX=
+PORTREVISION=	1
 CATEGORIES=		sysutils
 PKGNAMESUFFIX=		-devel
 
 MAINTAINER=	driesm@FreeBSD.org
 COMMENT=	Management system for bhyve virtual machines
-WWW=		https://github.com/churchers/vm-bhyve
+WWW=		https://github.com/freebsd/vm-bhyve
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${LOCALBASE}/share/certs/ca-root-nss.crt:security/ca_root_nss
-
 USE_GITHUB=	yes
-GH_ACCOUNT=	churchers
+GH_ACCOUNT=	freebsd
 
 CONFLICTS_INSTALL=	vm-bhyve
 
@@ -32,11 +32,15 @@ BHYVE_FIRMWARE_RUN_DEPENDS=	bhyve-firmware>0:sysutils/bhyve-firmware
 GRUB2_BHYVE_RUN_DEPENDS=	grub2-bhyve>0:sysutils/grub2-bhyve
 TMUX_RUN_DEPENDS=		tmux:sysutils/tmux
 
+post-patch:
+	${REINPLACE_CMD} -E -e '5s#=.+$$#=${DISTVERSION}${DISTVERSIONSUFFIX}#' ${WRKSRC}/lib/vm-base
+
 do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/vm ${STAGEDIR}${PREFIX}/sbin
 	${INSTALL_SCRIPT} ${WRKSRC}/rc.d/vm ${STAGEDIR}${PREFIX}/etc/rc.d
+	${INSTALL_SCRIPT} ${WRKSRC}/rc.d/vm_network ${STAGEDIR}${PREFIX}/etc/rc.d
 	(cd ${WRKSRC}/lib/ && ${COPYTREE_SHARE} . ${STAGEDIR}${PREFIX}/lib/vm-bhyve)
 	(cd ${WRKSRC}/sample-templates/ && ${COPYTREE_SHARE} . ${STAGEDIR}${EXAMPLESDIR})
-	${INSTALL_MAN} ${WRKSRC}/vm.8 ${STAGEDIR}${MAN8PREFIX}/man/man8
+	${INSTALL_MAN} ${WRKSRC}/vm.8 ${STAGEDIR}${PREFIX}/share/man/man8
 
 .include <bsd.port.mk>

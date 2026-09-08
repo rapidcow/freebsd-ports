@@ -1,5 +1,5 @@
 PORTNAME=	mozo
-PORTVERSION=	1.26.1
+PORTVERSION=	1.28.0
 PORTREVISION=	1
 CATEGORIES=	deskutils mate
 MASTER_SITES=	MATE
@@ -14,11 +14,12 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	${LOCALBASE}/bin/mate-desktop-item-edit:x11/mate-panel
 
-USES=		gettext-tools gmake gnome localbase mate pathfix pkgconfig \
+USES=		gettext-tools gmake gnome localbase mate pkgconfig \
 		python tar:xz
 USE_GNOME=	gtk30 intltool pygobject3
 USE_MATE=	menus
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 NO_ARCH=	yes
 
 PORTSCOUT=	limitw:1,even

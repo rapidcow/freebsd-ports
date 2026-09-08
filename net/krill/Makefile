@@ -1,14 +1,14 @@
 PORTNAME=	krill
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.13.1
-PORTREVISION=	3
+DISTVERSION=	0.15.0
+PORTREVISION=	4
 CATEGORIES=	net
 
 MAINTAINER=	jaap@NLnetLabs.nl
 COMMENT=	RPKI daemon, Certificate Authority and Publication Server
 WWW=		https://github.com/NLnetLabs/krill
 
-LICENSE=	BSD3CLAUSE
+LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 ONLY_FOR_ARCHS=	amd64
@@ -25,18 +25,17 @@ USERS=		${PORTNAME}
 GROUPS=		${PORTNAME}
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/krill
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/krillc
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/krillup
 	@${MKDIR} ${STAGEDIR}/${PREFIX}/etc/krill
 	${INSTALL_DATA} ${WRKSRC}/defaults/krill.conf \
 		${STAGEDIR}${PREFIX}/etc/krill/krill.conf.sample
 	${INSTALL_MAN} ${WRKSRC}/doc/krill.1 \
-		${STAGEDIR}${PREFIX}/man/man1/
+		${STAGEDIR}${PREFIX}/share/man/man1/
 	${INSTALL_MAN} ${WRKSRC}/doc/krillc.1 \
-		${STAGEDIR}${PREFIX}/man/man1/
+		${STAGEDIR}${PREFIX}/share/man/man1/
 	${INSTALL_MAN} ${WRKSRC}/doc/krillup.1 \
-		${STAGEDIR}${PREFIX}/man/man1/
+		${STAGEDIR}${PREFIX}/share/man/man1/
+	${INSTALL_MAN} ${WRKSRC}/doc/krillta.1 \
+		${STAGEDIR}${PREFIX}/share/man/man1/
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${WRKSRC}/defaults/krill.conf \
 		${STAGEDIR}${DOCSDIR}

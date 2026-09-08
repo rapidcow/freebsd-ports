@@ -1,6 +1,6 @@
 PORTNAME=	cfv
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.0.0
+DISTVERSION=	3.2.0
 CATEGORIES=	security
 MASTER_SITES=	GH
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -22,6 +22,9 @@ GH_ACCOUNT=	cfv-project
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|man/man1|share/man/man1|' ${WRKSRC}/setup.py
 
 do-test:
 	cd ${WRKSRC}/test && ${SETENV} ${TEST_ENV} ${PYTHON_CMD} test.py

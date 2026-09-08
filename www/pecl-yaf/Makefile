@@ -1,5 +1,5 @@
 PORTNAME=	yaf
-PORTVERSION=	3.3.5
+PORTVERSION=	3.3.7
 CATEGORIES=	www
 
 MAINTAINER=	sunpoet@freeBSD.org
@@ -9,8 +9,6 @@ WWW=		https://pecl.php.net/package/yaf \
 
 LICENSE=	PHP301
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-LIB_DEPENDS=	libpcre.so:devel/pcre
 
 USES=		localbase php:pecl
 

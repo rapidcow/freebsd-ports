@@ -1,6 +1,6 @@
 PORTNAME=	Cairo
 PORTVERSION=	1.109
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics perl5
 MASTER_SITES=	CPAN \
 		SF/gtk2-perl/Cairo/${PORTVERSION}
@@ -9,7 +9,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl bindings to the cairo graphics library
-WWW=		http://gtk2-perl.sourceforge.net/
+WWW=		https://gtk2-perl.sourceforge.net/
 
 LICENSE=	LGPL21
 

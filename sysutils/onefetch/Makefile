@@ -1,5 +1,5 @@
 PORTNAME=	onefetch
-DISTVERSION=	2.18.1
+DISTVERSION=	2.25.0
 PORTREVISION=	2
 CATEGORIES=	sysutils devel
 
@@ -10,7 +10,8 @@ WWW=		https://github.com/o2sh/onefetch
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-LIB_DEPENDS=	libgit2.so:devel/libgit2
+LIB_DEPENDS=	libgit2.so:devel/libgit2 \
+		libzstd.so:archivers/zstd
 RUN_DEPENDS=	git:devel/git
 
 USES=		cargo
@@ -23,16 +24,13 @@ PORTDOCS=	CONTRIBUTING.md README.md
 OPTIONS_DEFINE=		DOCS MANPAGES
 OPTIONS_DEFAULT=	MANPAGES
 
-MANPAGES_PLIST_FILES=	man/man1/${PORTNAME}.1.gz
-
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+MANPAGES_PLIST_FILES=	share/man/man1/${PORTNAME}.1.gz
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
 
 post-install-MANPAGES-on:
-	${INSTALL_MAN} ${WRKSRC}/docs/${PORTNAME}.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/docs/${PORTNAME}.1 ${STAGEDIR}${PREFIX}/share/man/man1
 
 .include <bsd.port.mk>

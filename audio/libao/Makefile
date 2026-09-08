@@ -1,6 +1,6 @@
 PORTNAME=	libao
 PORTVERSION=	1.2.0
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	audio
 MASTER_SITES=	https://downloads.xiph.org/releases/ao/
 
@@ -10,7 +10,7 @@ WWW=		https://www.xiph.org/ao/
 
 LICENSE=	GPLv2
 
-USES=		cpe libtool pathfix pkgconfig
+USES=		cpe libtool pkgconfig
 CPE_VENDOR=	xiph
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes

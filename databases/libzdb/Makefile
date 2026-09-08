@@ -1,5 +1,5 @@
 PORTNAME=	libzdb
-PORTVERSION=	3.2.3
+PORTVERSION=	3.5.0
 CATEGORIES=	databases
 MASTER_SITES=	https://www.tildeslash.com/libzdb/dist/
 
@@ -13,16 +13,16 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BROKEN_i386=	fails to build
 BROKEN_powerpc=	fails to build
 
-USES=		compiler:c11 gmake libtool localbase pathfix
+USES=		compiler:c++20-lang gmake libtool localbase
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
-OPTIONS_DEFINE=		SSL
-OPTIONS_MULTI=		DB
+OPTIONS_DEFINE=	SSL
+OPTIONS_MULTI=	DB
 OPTIONS_MULTI_DB=	MYSQL PGSQL SQLITE
-OPTIONS_DEFAULT=	MYSQL PGSQL SQLITE SSL
+OPTIONS_DEFAULT=MYSQL PGSQL SQLITE SSL
 
 MYSQL_CONFIGURE_WITH=	mysql=${LOCALBASE}/bin/mysql_config
 MYSQL_USES=		mysql
@@ -37,9 +37,9 @@ SSL_USES=		ssl
 # See PR/237200 for details
 .if ${PORT_OPTIONS:MSSL}
 .if ${SSL_DEFAULT} == base
-CONFIGURE_ARGS+=        --enable-openssl
+CONFIGURE_ARGS+=	--enable-openssl
 .else
-CONFIGURE_ARGS+=        --enable-openssl=${OPENSSLBASE}
+CONFIGURE_ARGS+=	--enable-openssl=${OPENSSLBASE}
 .endif
 .endif
 

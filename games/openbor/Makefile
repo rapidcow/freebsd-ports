@@ -1,9 +1,7 @@
 PORTNAME=	openbor
 # Hint: svn revision is git rev-list --count ${GH_TAGNAME}
-PORTVERSION?=	7138
-.ifndef PKGNAMESUFFIX
-PORTREVISION=	2
-.endif
+PORTVERSION?=	7760
+PORTREVISION?=	0
 CATEGORIES=	games
 
 PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
@@ -17,7 +15,10 @@ MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	2D side scrolling engine for beat 'em ups, shooters, and more #'
 WWW=		https://www.chronocrash.com/
 
-LICENSE=	BSD3CLAUSE GPLv2+
+LICENSE=	BSD3CLAUSE
+.if ${PORTVERSION} < 7696
+LICENSE+=	GPLv2+
+.endif
 .if ${PORTVERSION} >= 4134
 LICENSE+=	ISCL
 .endif
@@ -37,7 +38,7 @@ PORTSCOUT=	ignore:1
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	DCurrent
-GH_TAGNAME?=	3caaddd5
+GH_TAGNAME?=	7569231a
 
 USES+=		cpe gmake pkgconfig sdl
 .if ${PORTVERSION} < 4433
@@ -45,7 +46,7 @@ USE_CSTD=	gnu89
 .endif
 .if ${PORTVERSION} < 4108
 USE_SDL=	gfx
-.elif ${PORTVERSION} < 6639
+.elif ${PORTVERSION} < 6639 || ${PORTVERSION} >= 7416
 USE_SDL=	gfx2
 .else
 USE_SDL=	sdl2
@@ -67,7 +68,7 @@ PLIST_FILES=	bin/${PKGBASE} \
 DOCSDIR=	${PREFIX}/share/doc/${PKGBASE}
 PORTDOCS=	README
 
-DESKTOP_ENTRIES="OpenBOR v3.0 Build ${PORTVERSION}" \
+DESKTOP_ENTRIES="OpenBOR v${${PORTVERSION}<7533:?3:4}.0 Build ${PORTVERSION}" \
 		"" \
 		"${PKGBASE}" \
 		"${PKGBASE}" \

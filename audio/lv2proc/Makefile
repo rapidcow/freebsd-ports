@@ -1,6 +1,6 @@
 PORTNAME=	lv2proc
 DISTVERSION=	0.5.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	audio
 MASTER_SITES=	SF/naspro/naspro/${DISTVERSION}/
 
@@ -19,13 +19,14 @@ LIB_DEPENDS=	liblilv-0.so:audio/lilv \
 
 USES=		gmake pkgconfig tar:bz2
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=	${PREFIX}/share
 
 PLIST_FILES=	bin/lv2proc \
-		man/man1/lv2proc.1.gz
+		share/man/man1/lv2proc.1.gz
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=strict-prototypes
 .endif
 

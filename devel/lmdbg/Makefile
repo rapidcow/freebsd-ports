@@ -1,9 +1,10 @@
 PORTNAME=	lmdbg
 PORTVERSION=	1.3.0
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	trociny@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Lightweight malloc debugger
 WWW=		https://sourceforge.net/projects/lmdbg/
 
@@ -23,6 +24,7 @@ PORTDOCS=	LICENSE NEWS README TODO
 
 MKCMAKE_ENV+=	CPPFLAGS=-I${LOCALBASE}/include
 MKCMAKE_ENV+=	LDFLAGS=-L${LOCALBASE}/lib
+MKCMAKE_ENV+=	MANDIR=${PREFIX}/share/man
 
 INSTALL_TARGET=	install install-doc
 

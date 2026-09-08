@@ -1,6 +1,6 @@
 PORTNAME=	netbox
 DISTVERSIONPREFIX=	v
-DISTVERSION=	3.6.3
+DISTVERSION=	4.4.10
 CATEGORIES=	net-mgmt python
 
 MAINTAINER=	kai@FreeBSD.org
@@ -18,50 +18,58 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 # Django packages that are known for regressions in conjunction with NetBox and
 # should therefore only be updated with caution.
 #
-# - devel/py-dj42-django-rq
-# - www/py-dj42-django-filter
-# - www/py-dj42-django-tables2
-# - www/py-dj42-djangorestframework
+# - devel/py-dj52-django-rq
+# - www/py-dj52-django-filter
+# - www/py-dj52-django-tables2
+# - www/py-dj52-djangorestframework
 #
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django42>=4.2.5<4.3:www/py-django42@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dj42-django-cors-headers>=4.2.0<5:www/py-dj42-django-cors-headers@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dj42-django-debug-toolbar>=4.2.0<5:www/py-dj42-django-debug-toolbar@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dj42-django-filter>=23.3<24:www/py-dj42-django-filter@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dj42-django-graphiql-debug-toolbar>=0.2.0<1:www/py-dj42-django-graphiql-debug-toolbar@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dj42-django-mptt>=0.14.0<0.15:www/py-dj42-django-mptt@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dj42-django-prometheus>=2.3.1<2.4:www/py-dj42-django-prometheus@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dj42-django-redis>=5.3.0<6:www/py-dj42-django-redis@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dj42-django-rich>=1.7.0<2:www/py-dj42-django-rich@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dj42-django-rq>=2.8.1<2.9:devel/py-dj42-django-rq@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dj42-django-tables2>=2.6<2.7:www/py-dj42-django-tables2@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dj42-django-taggit>=4.0.0<5:www/py-dj42-django-taggit@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dj42-django-timezone-field>=6.0.1<7:www/py-dj42-django-timezone-field@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dj42-djangorestframework>=3.14.0<3.15.0:www/py-dj42-djangorestframework@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dj42-drf-spectacular>=0.26.4<1:www/py-dj42-drf-spectacular@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dj42-drf-spectacular-sidecar>=2023.9.1:www/py-dj42-drf-spectacular-sidecar@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}dj42-graphene-django>=3.0.0<3.0.0_99:devel/py-dj42-graphene-django@${PY_FLAVOR} \
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django52>=5.2.9<5.3:www/py-django52@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-django-cors-headers>=4.9.0<5:www/py-dj52-django-cors-headers@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-django-debug-toolbar>=6.1.0<7:www/py-dj52-django-debug-toolbar@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-django-filter>=25.2<26:www/py-dj52-django-filter@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-django-htmx>=1.27.0<2:www/py-dj52-django-htmx@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-django-mptt>=0.17.0<0.18:www/py-dj52-django-mptt@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-django-prometheus>=2.4.1<2.5:www/py-dj52-django-prometheus@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-django-redis>=6.0.0<7:www/py-dj52-django-redis@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-django-rich>=2.2.0<3:www/py-dj52-django-rich@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-django-rq>=3.2.1<3.3:devel/py-dj52-django-rq@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-django-storages>=1.14.6<2:www/py-dj52-django-storages@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-django-tables2>=2.8.0<2.9:www/py-dj52-django-tables2@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-django-taggit>=6.1.0<7:www/py-dj52-django-taggit@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-django-timezone-field>=7.2.1<8:www/py-dj52-django-timezone-field@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-djangorestframework>=3.16.1<3.17.0:www/py-dj52-djangorestframework@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-drf-spectacular>=0.29.0<1:www/py-dj52-drf-spectacular@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-drf-spectacular-sidecar>=2026.1.1:www/py-dj52-drf-spectacular-sidecar@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-social-auth-app-django>=5.7.0<6:www/py-dj52-social-auth-app-django@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-sorl-thumbnail>=12.11.0<13:graphics/py-dj52-sorl-thumbnail@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-strawberry-graphql>=0.288.2<0.300:devel/py-dj52-strawberry-graphql@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}dj52-strawberry-graphql-django>=0.73.0<1:www/py-dj52-strawberry-graphql-django@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}django-pglocks>=1.0.4<1.1:www/py-django-pglocks@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}bleach>=6.0.0<7:www/py-bleach@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}feedparser>=6.0.8<7:textproc/py-feedparser@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}Jinja2>=3.1.2<4:devel/py-Jinja2@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}markdown>=3.3.7<3.4:textproc/py-markdown@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}mkdocs-material>=9.4.2<10:textproc/py-mkdocs-material@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}mkdocstrings>=0.23.0<1:textproc/py-mkdocstrings@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}mkdocstrings-python-legacy>0:textproc/py-mkdocstrings-python-legacy@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}netaddr>=0.9.0<1:net/py-netaddr@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}pillow>=10.0.1:graphics/py-pillow@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}psycopg>=3.1.10<4:databases/py-psycopg@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}sentry-sdk>=1.21.1<2:devel/py-sentry-sdk@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}social-auth-app-django>=5.3.0<6:www/py-social-auth-app-django@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}social-auth-core>=4.4.2<5:security/py-social-auth-core@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}colorama>=0.4.6<1:devel/py-colorama@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}feedparser>=6.0.12<7:textproc/py-feedparser@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}Jinja2>=3.1.6<4:devel/py-Jinja2@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}jsonschema>=4.25.1<5:devel/py-jsonschema@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}markdown>=3.9<3.11:textproc/py-markdown@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}mkdocs-material>=9.7.1<10:textproc/py-mkdocs-material@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}mkdocstrings>=1.0.0<2:textproc/py-mkdocstrings@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}mkdocstrings-python>=2.0.1:textproc/py-mkdocstrings-python@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}netaddr>=1.3.0<2:net/py-netaddr@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}nh3>=0.3.2<1:www/py-nh3@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pillow>=11.3.0:graphics/py-pillow@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}psycopg>=3.2.13<4:databases/py-psycopg@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}psycopg-c>=3.2.13<4:databases/py-psycopg-c@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}psycopg-pool>=3.3.0<4:databases/py-psycopg-pool@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}requests>=2.32.5<3:www/py-requests@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}rq>=2.6.1<3:devel/py-rq@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}social-auth-core>=4.8.3<5:security/py-social-auth-core@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}svgwrite>=1.4.3<2:graphics/py-svgwrite@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}tablib>=3.5.0<4:textproc/py-tablib@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}tzdata>=2023.3:devel/py-tzdata@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}yaml>=6.0<7:devel/py-yaml@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}gunicorn>=21.2.0<22:www/py-gunicorn@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}tablib>=3.9.0<4:textproc/py-tablib@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}tzdata>=2025.2:devel/py-tzdata@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pyyaml>=6.0.3<7:devel/py-pyyaml@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}gunicorn>=23.0.0<24:www/py-gunicorn@${PY_FLAVOR}
 
-USES=		cpe pgsql:12+ python
-CPE_VENDOR=	netbox_project
+USES=		cpe pgsql:14+ python
+CPE_VENDOR=	netbox
 USE_GITHUB=	yes
 GH_ACCOUNT=	netbox-community
 
@@ -72,19 +80,21 @@ NO_ARCH=	yes
 
 OPTIONS_DEFINE=	EXAMPLES
 OPTIONS_GROUP=	BACKENDS
-OPTIONS_GROUP_BACKENDS=	GIT LDAP S3
+OPTIONS_GROUP_BACKENDS=	GIT LDAP S3 SENTRY
 
 GIT_DESC=	Git backend support
 LDAP_DESC=	LDAP backend support
 S3_DESC=	Amazon S3 backend support
+SENTRY_DESC=	Sentry monitoring support
 
 GIT_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dulwich>0:devel/py-dulwich@${PY_FLAVOR}
-LDAP_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dj42-django-auth-ldap>0:www/py-dj42-django-auth-ldap
+LDAP_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}dj52-django-auth-ldap>0:www/py-dj52-django-auth-ldap
 S3_RUN_DEPENDS=		${PYTHON_PKGNAMEPREFIX}boto3>0:www/py-boto3@${PY_FLAVOR}
+SENTRY_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sentry-sdk>0:devel/py-sentry-sdk@${PY_FLAVOR}
 
 do-install:
 	cd ${WRKSRC}/netbox ; \
-	for src in $$( ${FIND} . ! -name '*.bak' ) ; do \
+	for src in $$( ${FIND} . ! -name '*.bak' -a ! -name '*.orig' ) ; do \
 		dst=${STAGEDIR}${DATADIR}$${src#.} ; \
 		if ${TEST} -d "$$src" ; then \
 			${MKDIR} "$$dst" ; \

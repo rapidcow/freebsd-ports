@@ -1,6 +1,6 @@
 PORTNAME=	imhangul
 PORTVERSION=	3.1.1
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	korean
 PKGNAMESUFFIX=	-gtk3
 
@@ -21,7 +21,7 @@ USE_GITHUB=	yes
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USE_GNOME=	cairo gdkpixbuf2 gtk30
+USE_GNOME=	cairo gdkpixbuf gtk30
 USES=		autoreconf gmake gnome libtool pkgconfig
 
 OPTIONS_DEFINE=	NLS

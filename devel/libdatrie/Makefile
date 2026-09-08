@@ -1,8 +1,8 @@
 PORTNAME=	libdatrie
-PORTVERSION=	0.2.13
+DISTVERSION=	0.2.14
 PORTREVISION=	1
 CATEGORIES=	devel
-MASTER_SITES=	http://linux.thai.net/pub/thailinux/software/libthai/
+MASTER_SITES=	https://github.com/tlwg/libdatrie/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Double-array trie implementation library

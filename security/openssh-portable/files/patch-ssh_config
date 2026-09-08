@@ -1,17 +1,11 @@
---- UTC
-r100678 | fanf | 2002-07-25 10:59:40 -0500 (Thu, 25 Jul 2002) | 5 lines
-
-Document the FreeBSD default for CheckHostIP, which was changed in
-rev 1.2 of readconf.c.
-
---- ssh_config.orig	2010-01-12 01:40:27.000000000 -0700
-+++ ssh_config	2010-09-14 16:14:13.000000000 -0600
-@@ -27,7 +27,7 @@
- #   GSSAPIAuthentication no
- #   GSSAPIDelegateCredentials no
- #   BatchMode no
--#   CheckHostIP yes
-+#   CheckHostIP no
- #   AddressFamily any
- #   ConnectTimeout 0
- #   StrictHostKeyChecking ask
+--- ssh_config.orig	2024-09-19 15:20:48.000000000 -0700
++++ ssh_config	2024-11-09 12:23:47.263548000 -0800
+@@ -17,6 +17,8 @@
+ # list of available options, their meanings and defaults, please see the
+ # ssh_config(5) man page.
+ 
++Include ssh_config.d/*.conf
++
+ # Host *
+ #   ForwardAgent no
+ #   ForwardX11 no

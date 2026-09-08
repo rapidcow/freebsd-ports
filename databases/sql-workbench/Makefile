@@ -1,5 +1,5 @@
 PORTNAME=	sql-workbench
-PORTVERSION=	127
+PORTVERSION=	141
 PORTEPOCH=	1
 CATEGORIES=	databases java
 MASTER_SITES=	http://www.sql-workbench.net/ \
@@ -12,15 +12,14 @@ WWW=		https://www.sql-workbench.eu/
 
 LICENSE=	APACHE20
 
-USES=		zip
-USE_JAVA=	yes
-JAVA_VERSION=	8+
+USES=		java zip
+JAVA_VERSION=	11+
 
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 
 OPTIONS_DEFINE=	DOCS MYSQL_JDBC PGSQL_JDBC
-MYSQL_JDBC_RUN_DEPENDS=	${JAVALIBDIR}/mysql-connector-java.jar:databases/mysql-connector-java
+MYSQL_JDBC_RUN_DEPENDS=	${JAVALIBDIR}/mysql-connector-j.jar:databases/mysql-connector-j
 PGSQL_JDBC_RUN_DEPENDS=	${JAVALIBDIR}/postgresql.jar:databases/postgresql-jdbc
 
 pre-install:

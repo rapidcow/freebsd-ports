@@ -1,6 +1,6 @@
 PORTNAME=	hotkeys
 PORTVERSION=	0.5.7.1
-PORTREVISION=	20
+PORTREVISION=	22
 CATEGORIES=	misc
 MASTER_SITES=	https://BSDforge.com/projects/source/misc/hotkeys/${PORTVERSION}/
 DISTNAME=	hotkeys_${PORTVERSION}
@@ -12,12 +12,16 @@ WWW=		http://ypwong.org/hotkeys/
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libxml2.so:textproc/libxml2
+LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz \
+		libfreetype.so:print/freetype2 \
+		libfontconfig.so:x11-fonts/fontconfig
 
-USES=		bdb gmake xorg
-USE_XORG=	x11 xft xkbfile xmu
+USES=		bdb gettext-runtime gmake gnome xorg
+USE_GNOME=	glib20 libxml2 pango
+USE_XORG=	x11 xext xft xinerama xkbfile xmu
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-db3-inc=${BDB_INCLUDE_DIR} \
 		--with-db3-lib=${BDB_LIB_DIR} \
 		--with-db-name=${BDB_LIB_NAME}
@@ -32,7 +36,7 @@ OSD_CONFIGURE_WITH=	xosd
 
 .include <bsd.port.options.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400091 || ( ${OSVERSION} >= 1302507 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=incompatible-function-pointer-types
 .endif
 

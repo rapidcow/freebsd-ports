@@ -1,6 +1,6 @@
 PORTNAME=	wangle
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2023.09.25.00
+DISTVERSION=	2026.01.05.00
 PORTREVISION=	1
 CATEGORIES=	net
 
@@ -11,7 +11,7 @@ WWW=		https://github.com/facebook/wangle
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/../LICENSE
 
-LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
+LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libdouble-conversion.so:devel/double-conversion \
 		libevent.so:devel/libevent \
 		libfizz.so:security/fizz \
@@ -36,6 +36,7 @@ WRKSRC_SUBDIR=	${PORTNAME}
 
 CMAKE_ON=	BUILD_SHARED_LIBS
 CMAKE_OFF=	BUILD_TESTS
+CXXFLAGS+=	-DGLOG_USE_GLOG_EXPORT
 
 post-install: # https://github.com/facebook/wangle/issues/179
 	cd ${STAGEDIR}${PREFIX} && \

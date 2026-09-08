@@ -1,6 +1,6 @@
 PORTNAME=	xfireworks
 PORTVERSION=	1.4
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	games
 MASTER_SITES=	http://kozos.jp/myfreesoft/
 
@@ -16,13 +16,13 @@ USE_XORG=	x11
 
 .include <bsd.port.pre.mk>
 
-.if ${OPSYS} == FreeBSD && ( ${OSVERSION} >= 1400079 || ( ${OSVERSION} >= 1302505 && ${OSVERSION} < 1400000 ))
+.if ${OPSYS} == FreeBSD
 CFLAGS+=	-Wno-error=int-conversion
 .endif
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/xfireworks ${STAGEDIR}${PREFIX}/bin/xfireworks
-	${INSTALL_MAN} ${WRKSRC}/xfireworks.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/xfireworks.1 ${STAGEDIR}${PREFIX}/share/man/man1
 	${INSTALL_DATA} ${WRKSRC}/xfireworks.conf ${STAGEDIR}${PREFIX}/etc/xfireworks.conf.sample
 
 .include <bsd.port.post.mk>

@@ -1,5 +1,5 @@
 PORTNAME=	libspiro
-DISTVERSION=	20221101
+DISTVERSION=	20240903
 PORTEPOCH=	1
 CATEGORIES=	graphics
 MASTER_SITES=	https://github.com/fontforge/${PORTNAME}/releases/download/${DISTVERSION}/

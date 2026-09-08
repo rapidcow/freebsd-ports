@@ -1,5 +1,5 @@
 PORTNAME=	hmmer
-PORTVERSION=	3.3.2
+DISTVERSION=	3.4
 CATEGORIES=	biology
 MASTER_SITES=	http://eddylab.org/software/hmmer/
 
@@ -10,8 +10,8 @@ WWW=		http://hmmer.org/
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64
-ONLY_FOR_ARCHS_REASON=	requires SSE2 or AltiVec instructions
+ONLY_FOR_ARCHS=	aarch64 amd64 armv7 i386 powerpc powerpc64
+ONLY_FOR_ARCHS_REASON=	requires NEON, SSE2 or AltiVec instructions
 
 USES=		compiler:c11 gmake perl5 python:test shebangfix
 USE_PERL5=	test
@@ -19,6 +19,7 @@ SHEBANG_FILES=	easel/devkit/*
 SHEBANG_GLOB=	*.pl *.py
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 MAKE_ARGS=	V=1
 
 TEST_TARGET=	check

@@ -3,7 +3,7 @@
 
 PORTNAME?=	unixcw
 PORTVERSION=	3.5.1
-PORTREVISION?=	2
+PORTREVISION?=	3
 CATEGORIES=	comms hamradio
 MASTER_SITES=	SF/unixcw/unixcw-${PORTVERSION}
 DISTNAME=	unixcw_${PORTVERSION}.orig
@@ -16,6 +16,7 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 .ifndef	CONFIGURE_ARGS
 CONFIGURE_ARGS=	--disable-xcwcp
 .endif
@@ -25,7 +26,7 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 #CONFIGURE_ENV+=	LDFLAGS=-L${LOCALBASE}/lib CPPFLAGS=-I${LOCALBASE}/include
 
-USES+=		gmake libtool ncurses pathfix pkgconfig autoreconf
+USES+=		gmake libtool ncurses pkgconfig autoreconf
 USE_LDCONFIG=	yes
 USE_CSTD=	gnu99
 WRKSRC=		${WRKDIR}/unixcw-${PORTVERSION}

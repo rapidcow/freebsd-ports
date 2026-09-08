@@ -1,5 +1,6 @@
 PORTNAME=	Flask-Login
-PORTVERSION=	0.6.2
+PORTVERSION=	0.6.3
+PORTREVISION=	1
 CATEGORIES=	www python
 MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,7 +12,7 @@ WWW=		https://github.com/maxcountryman/flask-login
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Flask>=1.0.4:www/py-flask@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}flask>=1.0.4:www/py-flask@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	autoplist distutils

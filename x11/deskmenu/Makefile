@@ -1,8 +1,8 @@
 PORTNAME=	deskmenu
 PORTVERSION=	1.4.5
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	x11
-MASTER_SITES=	DEBIAN/pool/main/d/${PORTNAME} GENTOO
+MASTER_SITES=	DEBIAN
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	matt@peterson.org
@@ -13,12 +13,13 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		pkgconfig gnome
-GNU_CONFIGURE=	yes
 USE_GNOME=	gtk20
+
+GNU_CONFIGURE=	yes
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
-PLIST_FILES=	bin/deskmenu man/man1/deskmenu.1.gz \
+PLIST_FILES=	bin/deskmenu share/man/man1/deskmenu.1.gz \
 		@sample\ etc/deskmenurc.sample
 PORTDOCS=	AUTHORS ChangeLog
 

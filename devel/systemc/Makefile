@@ -1,6 +1,5 @@
 PORTNAME=	systemc
-DISTVERSION=	2.3.4
-DISTVERSIONSUFFIX=	_pub_rev_20190614
+DISTVERSION=	3.0.1
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
@@ -10,22 +9,22 @@ WWW=		https://www.accellera.org/downloads/standards/systemc
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=		aarch64 amd64 i386
+ONLY_FOR_ARCHS=	aarch64 amd64 i386
 ONLY_FOR_ARCHS_REASON=	configure: error: sorry...architecture not supported
 
-USES=		gmake libtool
-USE_LDCONFIG=	yes
-
+USES=		autoreconf compiler:c++17-lang gmake libtool
+USE_CXXSTD=	c++17 # needs to match that of cad/verilator, to avoid mismatches like https://github.com/verilator/verilator/issues/4499
 USE_GITHUB=	yes
 GH_ACCOUNT=	accellera-official
+USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-unix-layout=yes
 
 INSTALL_TARGET=	install-strip
 
-OPTIONS_DEFINE=	DOCS
-
 PORTDOCS=	*
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

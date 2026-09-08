@@ -1,7 +1,7 @@
 PORTNAME=	mroonga
-PORTVERSION=	13.05
+DISTVERSION=	14.13
 CATEGORIES=	databases textproc
-MASTER_SITES=	http://packages.groonga.org/source/mroonga/
+MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Open-source fulltext search engine for MySQL
@@ -14,7 +14,7 @@ BUILD_DEPENDS=	${NONEXISTENT}:${_MYSQL_SERVER}:configure
 LIB_DEPENDS=	libgroonga.so:textproc/groonga
 
 USES=		compiler:c11 libtool mysql pkgconfig shebangfix
-IGNORE_WITH_MYSQL=	57p 57w
+IGNORE_WITH_MYSQL=	105m 106m 1011m 81
 
 SHEBANG_FILES=	data/rpm/post.sh data/rpm/preun.sh
 
@@ -24,6 +24,8 @@ CONFIGURE_ARGS=	--with-mysql-build="$$(cd ${PORTSDIR}/${_MYSQL_SERVER}; ${MAKE} 
 		--with-mysql-source="$$(cd ${PORTSDIR}/${_MYSQL_SERVER}; ${MAKE} -V WRKSRC)"
 
 SUB_FILES=	pkg-message
+
+PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
 

@@ -1,10 +1,12 @@
 PORTNAME=	w3m
-PORTVERSION=	0.5.3.${SNAPDATE}
+DISTVERSIONPREFIX=	v
+DISTVERSION=	0.5.5
 CATEGORIES+=	www
+MASTER_SITES=	https://git.sr.ht/~rkta/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
 
 MAINTAINER?=	nobutaka@FreeBSD.org
 COMMENT?=	Pager/text-based WWW browser
-WWW=		http://w3m.sourceforge.net/
+WWW=		https://git.sr.ht/~rkta/w3m
 
 LICENSE=	w3m
 LICENSE_NAME=	w3m
@@ -16,32 +18,26 @@ BROKEN_mips64=		fails to build: qemu: uncaught target signal 11 (Segmentation fa
 LIB_DEPENDS=	libgc.so:devel/boehm-gc
 
 USES=		cpe iconv pkgconfig perl5 ssl
-USE_GITHUB=	yes
 
 CPE_VENDOR=	w3m_project
 
-GH_ACCOUNT=	tats
-GH_PROJECT=	w3m
-GH_TAGNAME=	93ad5ee
-
 MAKE_JOBS_UNSAFE=	yes
-SNAPDATE=	20230129
 
 CONFLICTS?=	ja-w3m-0.5.* ja-w3m-img-0.5.* w3m-img-0.5.*
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--with-gc=${LOCALBASE} \
 		ac_cv_path_PERL=${PERL}
 CONFIGURE_ENV=	DEFS="-I${LOCALBASE}/include"
 
-DOCS_COMMON=	FAQ.html HISTORY MANUAL.html README README.cookie \
-		README.cygwin README.dict README.func README.img \
-		README.m17n README.mouse README.passwd README.pre_form \
+DOCS_COMMON=	FAQ.html HISTORY MANUAL.html README README.SSL \
+		README.cookie README.cygwin README.dict README.func \
+		README.img README.keymap README.menu README.m17n \
+		README.mouse README.passwd README.pre_form \
 		README.siteconf README.tab STORY.html \
 		keymap.default keymap.lynx menu.default menu.submenu
 DOCS_DE=	FAQ.html MANUAL.html README.func
-DOCS_EN=	README.sixel
-DOCS_JP=	${DOCS_COMMON} README.SSL README.keymap \
-		README.mailcap README.menu README.migemo
+DOCS_JP=	${DOCS_COMMON} README.mailcap README.menu README.migemo
 
 OPTIONS_DEFINE=	INLINE_IMAGE JAPANESE KEY_LYNX DOCS NLS
 INLINE_IMAGE_DESC=	Inline image support
@@ -94,9 +90,10 @@ post-install:
 	done
 	@cd ${WRKSRC}/doc; \
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/doc/w3m/; \
-	for i in ${DOCS_COMMON} ${DOCS_EN} ; do \
+	for i in ${DOCS_COMMON} ; do \
 		${INSTALL_DATA} $$i ${STAGEDIR}${PREFIX}/share/doc/w3m/ ; \
 	done
-	${INSTALL_MAN} ${WRKSRC}/scripts/w3mman/w3mman.1 ${STAGEDIR}${PREFIX}/man/ja/man1
+	${MKDIR} ${STAGEDIR}${PREFIX}/share/man/ja/man1
+	${INSTALL_MAN} ${WRKSRC}/scripts/w3mman/w3mman.1 ${STAGEDIR}${PREFIX}/share/man/ja/man1
 
 .include <bsd.port.mk>

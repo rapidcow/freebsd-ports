@@ -13,6 +13,7 @@ BUILD_DEPENDS=	gm4:devel/m4
 RUN_DEPENDS=	gm4:devel/m4
 
 GNU_CONFIGURE=	yes
+GNU_CONFIGURE_MANPREFIX=${PREFIX}/share
 CONFIGURE_ARGS=	--disable-ltdl-install
 TEST_TARGET=	check
 
@@ -25,5 +26,11 @@ CC=		cc
 CXX=		c++
 LD=		ld
 .endif
+
+# Perform the patching after the build, because touching m4 files before the
+# configuration step causes autoreconf to be invoked
+post-stage:
+	cd ${STAGEDIR}${PREFIX}/share/aclocal && \
+		${PATCH} --posix -p1 < ${PATCHDIR}/stagepatch-m4_libtool.m4
 
 .include <bsd.port.mk>

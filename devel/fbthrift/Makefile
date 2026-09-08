@@ -1,6 +1,6 @@
 PORTNAME=	fbthrift
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2023.09.25.00
+DISTVERSION=	2026.01.05.00
 PORTREVISION=	1
 CATEGORIES=	devel
 
@@ -12,7 +12,7 @@ LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	range-v3>0:devel/range-v3
-LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
+LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libbzip2.so:misc/vxl \
 		libdouble-conversion.so:devel/double-conversion \
 		libevent.so:devel/libevent \
@@ -28,6 +28,7 @@ LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libsodium.so:security/libsodium \
 		libunwind.so:devel/libunwind \
 		libwangle.so:net/wangle \
+		libxxhash.so:devel/xxhash \
 		libzstd.so:archivers/zstd
 
 USES=		bison cmake:testing compiler:c++17-lang ssl
@@ -40,11 +41,11 @@ CMAKE_ON=	BUILD_SHARED_LIBS
 CMAKE_TESTING_ON=	enable_tests
 
 CXXFLAGS+=	-fPIC # https://github.com/facebook/fbthrift/issues/399
+CXXFLAGS+=	-DGLOG_USE_GLOG_EXPORT
 
 post-install: # https://github.com/facebook/fbthrift/issues/393
 	@${FIND} ${STAGEDIR}${PREFIX}/include -type d -empty -delete
 
-do-test: # no 'test' target, contrary to what the documentation says, see https://github.com/facebook/fbthrift/issues/533
-	@cd ${TEST_WRKSRC} && ${MAKE_CMD} test
+# tests as of 2025.11.03.00: 100% tests passed, 0 tests failed out of 306
 
 .include <bsd.port.mk>

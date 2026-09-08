@@ -1,7 +1,7 @@
 PORTNAME=	syncthing
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.24.0
-PORTREVISION=	1
+DISTVERSION=	2.0.13
+PORTREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	https://github.com/${PORTNAME}/${PORTNAME}/releases/download/v${DISTVERSION}/
 DISTNAME=	${PORTNAME}-source-${DISTVERSIONFULL}
@@ -20,22 +20,25 @@ USE_RC_SUBR=	syncthing syncthing-discosrv syncthing-relaysrv \
 
 BINS=		syncthing stdiscosrv strelaysrv strelaypoolsrv
 
+# Anonymize
+MAKE_ENV+=	BUILD_HOST=freebsd \
+		BUILD_USER=ports
+
+CONFLICTS_INSTALL=	syncthing1
+
+NO_CCACHE=	yes
+NO_WRKSUBDIR=	yes
+
+USERS=		syncthing
+GROUPS=		syncthing
+
 .for x in ${BINS}
 PLIST_FILES+=	bin/${x}
 .endfor
 
 PORTDOCS=	*
 
-USERS=		syncthing
-GROUPS=		syncthing
-
-# Anonymize
-MAKE_ENV+=	BUILD_HOST=freebsd \
-		BUILD_USER=ports
-
 OPTIONS_DEFINE=	DOCS
-
-NO_WRKSUBDIR=	yes
 
 do-build:
 	@( cd ${WRKSRC}/${PORTNAME} ; \
@@ -43,11 +46,6 @@ do-build:
 		${SETENV} ${MAKE_ENV} ${GO_ENV} GOPROXY=off ${GO_CMD} run build.go -version v${DISTVERSION} -no-upgrade build stdiscosrv; \
 		${SETENV} ${MAKE_ENV} ${GO_ENV} GOPROXY=off ${GO_CMD} run build.go -version v${DISTVERSION} -no-upgrade build strelaysrv; \
 		${SETENV} ${MAKE_ENV} ${GO_ENV} GOPROXY=off ${GO_CMD} run build.go -version v${DISTVERSION} -no-upgrade build strelaypoolsrv; \
-		)
-
-do-test:
-	@( cd ${WRKSRC}/${PORTNAME} ; \
-		${SETENV} ${MAKE_ENV} ${GO_ENV} GOPROXY=off ${GO_CMD} run build.go -version v${DISTVERSION} -no-upgrade test ; \
 		)
 
 do-install:
@@ -61,4 +59,8 @@ do-install:
 		${STAGEDIR}${DOCSDIR}
 .endfor
 
+do-test:
+	@( cd ${WRKSRC}/${PORTNAME} ; \
+		${SETENV} ${MAKE_ENV} ${GO_ENV} GOPROXY=off ${GO_CMD} run build.go -version v${DISTVERSION} -no-upgrade test ; \
+		)
 .include <bsd.port.mk>

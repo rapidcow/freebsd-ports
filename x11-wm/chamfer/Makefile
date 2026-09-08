@@ -1,5 +1,6 @@
 PORTNAME=	chamfer
-DISTVERSION=	s20230310
+DISTVERSION=	s20240928
+PORTREVISION=	5
 CATEGORIES=	x11-wm
 
 MAINTAINER=	jbeich@FreeBSD.org
@@ -26,12 +27,13 @@ LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader \
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}psutil>0:sysutils/py-psutil@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}python-xlib>0:x11-toolkits/py-python-xlib@${PY_FLAVOR}
 
-USES=		compiler:c++17-lang meson localbase pkgconfig python xorg
+USES=		cmake:indirect compiler:c++17-lang meson localbase \
+		pkgconfig python xorg
 USE_GITHUB=	yes
 USE_XORG=	xcb
 GH_ACCOUNT=	jaelpark
 GH_PROJECT=	${PORTNAME}wm
-GH_TAGNAME=	93b8f79
+GH_TAGNAME=	b5bc725
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/usr,${PREFIX},' \
@@ -39,6 +41,7 @@ post-patch:
 # XXX import('python').find_installation().dependency()
 	@${REINPLACE_CMD} -e '/boost/!s/python3/python-${PYTHON_VER}/' \
 		-e '/boost/s/,/,static:true,/' \
+		-e "/boost/s/'system',//" \
 		${WRKSRC}/meson.build
 
 do-install:
