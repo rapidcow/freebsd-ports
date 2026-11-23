@@ -43,6 +43,6 @@ CC_PLATFORM=	linux-x64
 .endif
 
 do-install:
-	${INSTALL_PROGRAM} ${DISTDIR}/${DIST_SUBDIR}/${CC_PLATFORM}/claude ${STAGEDIR}${PREFIX}/bin/claude
+	${INSTALL_SCRIPT} ${DISTDIR}/${DIST_SUBDIR}/${CC_PLATFORM}/claude ${STAGEDIR}${PREFIX}/bin/claude
 
 .include <bsd.port.post.mk>
